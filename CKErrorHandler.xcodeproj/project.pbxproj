@@ -6,11 +6,76 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXFileReference section */
+		DC5768601D7E2026001AE4FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DC5768611D7E2026001AE4FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DC5768631D7E2026001AE4FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		DC5768651D7E2026001AE4FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		DC5768661D7E2026001AE4FD /* CloudErrorStrategies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudErrorStrategies.swift; sourceTree = "<group>"; };
+		DC5768671D7E2026001AE4FD /* CloudStrategies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStrategies.swift; sourceTree = "<group>"; };
+		DC5768681D7E2026001AE4FD /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
+		DC5768691D7E2026001AE4FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DC57686B1D7E2026001AE4FD /* Recordable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recordable.swift; sourceTree = "<group>"; };
+		DC57686E1D7E2036001AE4FD /* CloudErrorStrategiesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CloudErrorStrategiesTests.swift; path = "../../CKErrorHandling Tests/CloudErrorStrategiesTests.swift"; sourceTree = "<group>"; };
+		DC57686F1D7E2036001AE4FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "../../CKErrorHandling Tests/Info.plist"; sourceTree = "<group>"; };
+		DC5768701D7E2036001AE4FD /* RecordableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RecordableTests.swift; path = "../../CKErrorHandling Tests/RecordableTests.swift"; sourceTree = "<group>"; };
+		DC5768721D7E2043001AE4FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DC5768731D7E2043001AE4FD /* VoyageUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoyageUITests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
 /* Begin PBXGroup section */
 		DC5768581D7E0F7D001AE4FD = {
 			isa = PBXGroup;
 			children = (
+				DC57685F1D7E2026001AE4FD /* CKErrorHandling Source */,
+				DC57686D1D7E2036001AE4FD /* CKErrorHandling Tests */,
+				DC5768711D7E2043001AE4FD /* CKErrorHandlingUITests */,
 			);
+			sourceTree = "<group>";
+		};
+		DC57685F1D7E2026001AE4FD /* CKErrorHandling Source */ = {
+			isa = PBXGroup;
+			children = (
+				DC5768741D7E210B001AE4FD /* Resources */,
+				DC5768661D7E2026001AE4FD /* CloudErrorStrategies.swift */,
+				DC5768671D7E2026001AE4FD /* CloudStrategies.swift */,
+				DC5768681D7E2026001AE4FD /* ErrorMessage.swift */,
+				DC57686B1D7E2026001AE4FD /* Recordable.swift */,
+			);
+			path = "CKErrorHandling Source";
+			sourceTree = "<group>";
+		};
+		DC57686D1D7E2036001AE4FD /* CKErrorHandling Tests */ = {
+			isa = PBXGroup;
+			children = (
+				DC57686F1D7E2036001AE4FD /* Info.plist */,
+				DC57686E1D7E2036001AE4FD /* CloudErrorStrategiesTests.swift */,
+				DC5768701D7E2036001AE4FD /* RecordableTests.swift */,
+			);
+			name = "CKErrorHandling Tests";
+			path = "CKErrorHandling Source/CKErrorHandling Tests";
+			sourceTree = "<group>";
+		};
+		DC5768711D7E2043001AE4FD /* CKErrorHandlingUITests */ = {
+			isa = PBXGroup;
+			children = (
+				DC5768721D7E2043001AE4FD /* Info.plist */,
+				DC5768731D7E2043001AE4FD /* VoyageUITests.swift */,
+			);
+			name = CKErrorHandlingUITests;
+			path = "CKErrorHandling Source/CKErrorHandling Tests/CKErrorHandlingUITests";
+			sourceTree = "<group>";
+		};
+		DC5768741D7E210B001AE4FD /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DC5768691D7E2026001AE4FD /* Info.plist */,
+				DC5768601D7E2026001AE4FD /* AppDelegate.swift */,
+				DC5768611D7E2026001AE4FD /* Assets.xcassets */,
+				DC5768621D7E2026001AE4FD /* LaunchScreen.storyboard */,
+				DC5768641D7E2026001AE4FD /* Main.storyboard */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -27,6 +92,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = DC5768581D7E0F7D001AE4FD;
 			projectDirPath = "";
@@ -35,6 +101,25 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXVariantGroup section */
+		DC5768621D7E2026001AE4FD /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DC5768631D7E2026001AE4FD /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		DC5768641D7E2026001AE4FD /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DC5768651D7E2026001AE4FD /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		DC57685D1D7E0F7D001AE4FD /* Debug */ = {
