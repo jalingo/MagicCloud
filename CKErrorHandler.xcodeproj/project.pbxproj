@@ -19,8 +19,8 @@
 		DC57686E1D7E2036001AE4FD /* CloudErrorStrategiesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CloudErrorStrategiesTests.swift; path = "../../CKErrorHandling Tests/CloudErrorStrategiesTests.swift"; sourceTree = "<group>"; };
 		DC57686F1D7E2036001AE4FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "../../CKErrorHandling Tests/Info.plist"; sourceTree = "<group>"; };
 		DC5768701D7E2036001AE4FD /* RecordableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RecordableTests.swift; path = "../../CKErrorHandling Tests/RecordableTests.swift"; sourceTree = "<group>"; };
-		DC5768721D7E2043001AE4FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DC5768731D7E2043001AE4FD /* VoyageUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoyageUITests.swift; sourceTree = "<group>"; };
+		DC5768721D7E2043001AE4FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../../../CKErrorHandlingUITests/Info.plist; sourceTree = "<group>"; };
+		DC5768731D7E2043001AE4FD /* VoyageUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VoyageUITests.swift; path = ../../../CKErrorHandlingUITests/VoyageUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -37,10 +37,10 @@
 			isa = PBXGroup;
 			children = (
 				DC5768741D7E210B001AE4FD /* Resources */,
-				DC5768661D7E2026001AE4FD /* CloudErrorStrategies.swift */,
-				DC5768671D7E2026001AE4FD /* CloudStrategies.swift */,
-				DC5768681D7E2026001AE4FD /* ErrorMessage.swift */,
 				DC57686B1D7E2026001AE4FD /* Recordable.swift */,
+				DC5768671D7E2026001AE4FD /* CloudStrategies.swift */,
+				DC5768661D7E2026001AE4FD /* CloudErrorStrategies.swift */,
+				DC5768681D7E2026001AE4FD /* ErrorMessage.swift */,
 			);
 			path = "CKErrorHandling Source";
 			sourceTree = "<group>";
