@@ -126,7 +126,11 @@ class CloudErrorStrategies {
     }
     
     /**
-     *
+     * This method recovers the original (record that app expected to find in the database), the attempt (record that
+     * app tried to upload during failure), and the current (record that is in the database) records and determines
+     * which individual fields in current can be matched to the attempt based on current values' differences from the
+     * original. Field will only be updated if current field value was not an update to the original record and the 
+     * attempt is not the same as the current.
      */
     fileprivate func dealWithVersionConflict<T: Recordable>(_ error: CKError, recordableObject: T, successHandler: OptionalClosure, failureHandler: OptionalClosure) {
         
@@ -164,7 +168,8 @@ class CloudErrorStrategies {
             if let handler = successHandler { handler() }
         }
         
-        operation.start()
+        let queue = DispatchQueue(label: "modifyRecords", attributes: .serial)
+        
     }
     
     /**
