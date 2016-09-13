@@ -16,11 +16,12 @@ typealias OptionalClosure = (()->())?
 /// This global type alias represents completion handlers and other executable blocks.
 typealias NonOptionalClosure = (()->())
 
-// Must create a new instance for each error resolution to ensure property 'executableBlock' doesn't get overwritten before func 'executeBlock' is called.
+// TODO: (expand this into full commentary) Must create a new instance for each error resolution to ensure property 'executableBlock' doesn't get overwritten before func 'executeBlock' is called.
 class CloudErrorStrategies {
     
     // MARK: - Properties
 
+    /// This property stores the targeted database.
     var database: CKDatabase
     
     /// This property and 'reRunMethodOriginatingError' func allow the use of selector syntax with arguments.
@@ -62,35 +63,34 @@ class CloudErrorStrategies {
      *
      * - parameter failureHandler: An executable block that will be called at conclusion of a FAILED error resolution.
      */
-    func handle<T: Recordable>(_ error: Error, recordableObject: T, failureHandler: OptionalClosure = nil, successHandler: OptionalClosure = nil) {
+    func handle<T: Recordable>(_ error: Error, recordableObject: T, completionHandler: ErrorClosure = nil) {
         
         if let cloudError = error as? CKError {
             switch cloudError.code {
                 
-            // This case requires a message to USER (with USER action to resolve), graceful disabling cloud and retry attempt.
-            case .notAuthenticated: dealWithAuthenticationError(cloudError,
-                                                                successHandler: successHandler,
-                                                                failureHandler: failureHandler)
+            // This case requires a message to USER (with USER action to resolve), graceful disabling 
+            // cloud and retry attempt.
+            case .notAuthenticated:
+                dealWithAuthenticationError(cloudError, completionHandler: completionHandler)
                 
             // This case requires conflict resolution between the various records returned in error dictionary, but no retry.
             case .serverRecordChanged: dealWithVersionConflict(cloudError,
                                                                recordableObject: recordableObject,
-                                                               successHandler: successHandler,
-                                                               failureHandler: failureHandler)
+                                                               completionHandler: completionHandler)
                 
-            // This case requires isolating
-            case .partialFailure: dealWithPartialError(cloudError,
-                                                       successHandler: successHandler,
-                                                       failureHandler: failureHandler)
+            // This case requires isolating the specific error(s) and handling them individually.
+            case .partialFailure: dealWithPartialError(cloudError, completionHandler: completionHandler)
                 
             // These cases require retry attempts, but without error messages or USER actions.
             case .networkUnavailable, .networkFailure, .serviceUnavailable, .requestRateLimited, .zoneBusy, .resultsTruncated:
-                retryAfterError(cloudError, successHandler: successHandler, failureHandler: failureHandler)
+                retryAfterError(cloudError, completionHandler: completionHandler)
+                
+            // TODO: Handle CKErrorLimitExceeded, need to balkanize operations
                 
             // These cases require no message to USER or retry attempts.
             default:
-                print("CKError: \(cloudError)")
-                if let block = failureHandler { block() }
+                print("Fatal CKError: \(cloudError)")
+                if let block = completionHandler { block(false) }
             }
         } else {
             print("NOT a CKError: \(error)")
@@ -106,9 +106,9 @@ class CloudErrorStrategies {
      * If cloud capabilities aren't integral to core app performance (i.e. it can be disabled) than whatever changes 
      * to the UI that are needed to ensure 'graceful' disabling of cloud features should also occur here.
      */
-    fileprivate func dealWithAuthenticationError(_ error: CKError, successHandler: OptionalClosure, failureHandler: OptionalClosure) {
+    fileprivate func dealWithAuthenticationError(_ error: CKError, completionHandler: ErrorCompletion) {
         
-        // Gracefully disable any functionality requiring cloud authentication here...
+        // TODO: Gracefully disable any functionality requiring cloud authentication here...
         
         // Message presented to USER, and app switched to 'Settings'
         let message = "Your device needs to be logged in to your iCloud Account in order for Voyager to work correctly. After clicking 'OK' you will be taken to Voyager Settings. From there you can back out and select iCloud Settings to log in."
@@ -121,7 +121,7 @@ class CloudErrorStrategies {
                 }
             }
             
-            // This will attempt to retry original cloud interaction... //<-- This shouldn't happen until notified account change and not as a retry !!
+            // TODO: This will attempt to retry original cloud interaction... //<-- This shouldn't happen until notified account change and not as a retry !!
         }
     }
     
@@ -132,12 +132,16 @@ class CloudErrorStrategies {
      * original. Field will only be updated if current field value was not an update to the original record and the 
      * attempt is not the same as the current.
      */
-    fileprivate func dealWithVersionConflict<T: Recordable>(_ error: CKError, recordableObject: T, successHandler: OptionalClosure, failureHandler: OptionalClosure) {
+    fileprivate func dealWithVersionConflict<T: Recordable>
+        (_ error: CKError, recordableObject: T, completionHandler: ErrorCompletion) {
         
         guard let original = error.userInfo[CKRecordChangedErrorAncestorRecordKey] as? CKRecord,
             let current = error.userInfo[CKRecordChangedErrorServerRecordKey] as? CKRecord,
             let attempt = error.userInfo[CKRecordChangedErrorClientRecordKey] as? CKRecord
-            else { return }     // <-- If we're triggering completion handler
+            else {
+                completionHandler(false)    // <-- Error not dealt with, completion failed.
+                return
+        }
         
         // This for loop goes through every record field, attempting version conflict resolution.
         for entry in T.dictionaryOfKeysAndAssociatedValueTypes {
@@ -159,8 +163,7 @@ class CloudErrorStrategies {
                                                         database: self.database)
                 errorHandler.handle(error!,
                                     recordableObject: recordableObject,
-                                    failureHandler: failureHandler,
-                                    successHandler: successHandler)
+                                    completionHandler: completionHandler)
                 return
             }
             
@@ -169,13 +172,17 @@ class CloudErrorStrategies {
         }
         
         let queue = DispatchQueue(label: "modifyRecords", attributes: .serial)
-        
+        queue.addOperation(operation)
+        queue.sync {
+            
+        }
+        // TODO: add operation to queue.
     }
     
     /**
      *
      */
-    fileprivate func dealWithPartialError(_ error: CKError, successHandler: OptionalClosure, failureHandler: OptionalClosure) {
+    fileprivate func dealWithPartialError(_ error: CKError, completionHandler: ErrorCompletion) {
         guard let dictionary = error.userInfo[CKPartialErrorsByItemIDKey] else {
             if let handler = failureHandler { handler() }
             return
@@ -185,12 +192,12 @@ class CloudErrorStrategies {
     }
     
     /**
-     * Certain errors require a retry attempt (e.g. ZoneBusy), so this method recovers retry time from userInfo dictionary
-     * and then schedules another attempt.
+     * Certain errors require a retry attempt (e.g. ZoneBusy), so this method recovers retry time from userInfo 
+     * dictionary and then schedules another attempt.
      */
-    fileprivate func retryAfterError(_ error: CKError, successHandler: OptionalClosure, failureHandler: OptionalClosure) {
+    fileprivate func retryAfterError(_ error: CKError, completionHandler: ErrorCompletion) {
         
-        // Need to setup a notification that will trigger completionHandler...
+        // TODO: Need to setup a notification that will trigger completionHandler...
         let predicate = NSPredicate(format: <#T##String#>, <#T##args: CVarArg...##CVarArg#>)
         let subsription = CKSubscription(recordType: <#T##String#>, predicate: <#T##NSPredicate#>, options: <#T##CKSubscriptionOptions#>)
         
@@ -206,8 +213,6 @@ class CloudErrorStrategies {
                 }
             }
         }
-        
-
     }
 }
 

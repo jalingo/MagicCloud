@@ -83,6 +83,9 @@ struct CloudStrategies {
      
         let queue = OperationQueue()
         queue.addOperation(operation)
+        queue.sync {
+            print("upload operation completed.")
+        }
     }
     
     /**
@@ -149,6 +152,9 @@ struct CloudStrategies {
 
         let queue = OperationQueue()
         queue.addOperation(operation)
+        queue.sync {
+            print("download operation completed.")
+        }
     }
     
     /**
