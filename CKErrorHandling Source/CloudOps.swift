@@ -1,5 +1,5 @@
 //
-//  CloudStrategies.swift
+//  CloudOps.swift
 //  Voyage
 //
 //  Created by Jimmy Lingo on 9/1/16.
@@ -11,7 +11,7 @@ import CloudKit
 /**
  *
  */
-struct CloudStrategies {
+struct CloudOps {
     
     // MARK: - Properties
 

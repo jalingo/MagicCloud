@@ -11,8 +11,8 @@
 		DC5768611D7E2026001AE4FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC5768631D7E2026001AE4FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DC5768651D7E2026001AE4FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		DC5768661D7E2026001AE4FD /* CloudErrorStrategies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudErrorStrategies.swift; sourceTree = "<group>"; };
-		DC5768671D7E2026001AE4FD /* CloudStrategies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStrategies.swift; sourceTree = "<group>"; };
+		DC5768661D7E2026001AE4FD /* CloudErrorOps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudErrorOps.swift; sourceTree = "<group>"; };
+		DC5768671D7E2026001AE4FD /* CloudOps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudOps.swift; sourceTree = "<group>"; };
 		DC5768681D7E2026001AE4FD /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
 		DC5768691D7E2026001AE4FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DC57686B1D7E2026001AE4FD /* Recordable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recordable.swift; sourceTree = "<group>"; };
@@ -24,6 +24,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		9D8CBBAF1D89D38B0039B768 /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Operations;
+			sourceTree = "<group>";
+		};
 		DC5768581D7E0F7D001AE4FD = {
 			isa = PBXGroup;
 			children = (
@@ -36,10 +43,11 @@
 		DC57685F1D7E2026001AE4FD /* CKErrorHandling Source */ = {
 			isa = PBXGroup;
 			children = (
+				9D8CBBAF1D89D38B0039B768 /* Operations */,
 				DC5768741D7E210B001AE4FD /* Resources */,
 				DC57686B1D7E2026001AE4FD /* Recordable.swift */,
-				DC5768671D7E2026001AE4FD /* CloudStrategies.swift */,
-				DC5768661D7E2026001AE4FD /* CloudErrorStrategies.swift */,
+				DC5768671D7E2026001AE4FD /* CloudOps.swift */,
+				DC5768661D7E2026001AE4FD /* CloudErrorOps.swift */,
 				DC5768681D7E2026001AE4FD /* ErrorMessage.swift */,
 			);
 			path = "CKErrorHandling Source";
