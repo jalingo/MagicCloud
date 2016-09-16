@@ -81,7 +81,7 @@ class CloudErrorOps {
      * - parameter failureHandler: An executable block that will be called at conclusion of a FAILED 
      *      error resolution.
      */
-    func handle<T: Recordable>(_ error: Error, recordableObject: T, completionHandler: ErrorClosure = nil) {
+    func handle<T: Recordable>(_ error: Error, recordableObject: T, completionHandler: ErrorCompletion = nil) {
         
         if let cloudError = error as? CKError {
             switch cloudError.code {
@@ -168,7 +168,8 @@ class CloudErrorOps {
             let current = error.userInfo[CKRecordChangedErrorServerRecordKey] as? CKRecord,
             let attempt = error.userInfo[CKRecordChangedErrorClientRecordKey] as? CKRecord
             else {
-                completionHandler(false, nil)    // <-- Error not dealt with, completion failed.
+                // Error not dealt with, completion failed.
+                if let handler = completionHandler { handler(false, nil) }
                 return
         }
         
@@ -188,8 +189,8 @@ class CloudErrorOps {
         let operation = CKModifyRecordsOperation(recordsToSave: [current], recordIDsToDelete: nil)
         operation.perRecordCompletionBlock = { record, error in
             guard error == nil else {
-                let errorHandler = CloudErrorStrategies(originatingMethodInAnEnclosure: self.executableBlock,
-                                                        database: self.database)
+                let errorHandler = CloudErrorOps(originatingMethodInAnEnclosure: self.executableBlock,
+                                                 database: self.database)
                 errorHandler.handle(error!,
                                     recordableObject: recordableObject,
                                     completionHandler: completionHandler)
@@ -200,12 +201,15 @@ class CloudErrorOps {
             if let handler = completionHandler { handler(true, nil) }
         }
 
-        // TODO: Not sure if this is correct with Swift 3.0?
-        let queue = DispatchQueue(label: "modifyRecords", attributes: .serial)
-        queue.addOperation(operation)
-        queue.async(execute: operation) {
-            completionHandler(true, nil)
+        // Add operation to queue with successful completion handler.
+        let queue = OperationQueue()
+        
+        if let handler = completionHandler {
+            operation.completionBlock = { handler(true, nil) }
         }
+        
+        queue.addOperation(operation)
+        
     }
     
     /**
@@ -226,6 +230,8 @@ class CloudErrorOps {
      * userInfo dictionary and then schedules another attempt.
      */
     fileprivate func retryAfterError(_ error: CKError, completionHandler: ErrorCompletion) {
+        guard let handler = completionHandler else { return }
+        
         if let retryAfterValue = error.userInfo[CKErrorRetryAfterKey] as? TimeInterval {
             DispatchQueue.main.async {
                 if let controller = UIApplication.shared.keyWindow?.rootViewController {
@@ -235,13 +241,13 @@ class CloudErrorOps {
                                          userInfo: nil,
                                          repeats: false)
                     
-                    completionHandler(false, true)  // <-- Indicates failure with retry underway.
+                    handler(false, true)  // <-- Indicates failure with retry underway.
                 } else {
-                    completionHandler(false, false) // <-- Indicates failure without retry attempt.
+                    handler(false, false) // <-- Indicates failure without retry attempt.
                 }
             }
         } else {
-            completionHandler(false, false)         // <-- Indicates failure without retry attempt.
+            handler(false, false)         // <-- Indicates failure without retry attempt.
         }
     }
 }

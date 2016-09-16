@@ -30,13 +30,9 @@ struct CloudOps {
      * - parameter recordablesToUpdate: An array of a single type, conforming to 'Recordable' protocol that will be 
      * uploaded to database.
      *
-     * - parameter successHandler: An optional closure that will execute each time a record is successfully uploaded.
-     *
-     * - parameter failureHandler: An optional closure that will execute each time a record in the batch fails.
-     *
-     * - parameter completionHandler: An optional closure that will execute at the end of the entire batch completes.
+     * - parameter completionHandler: An optional closure that will execute each time a record in the batch completes.
      */
-    func uploadRecordables<T: Recordable>(recordablesToUpdate: [T], successHandler: OptionalClosure, failureHandler: OptionalClosure, completionHandler: OptionalClosure = nil) {
+    func uploadRecordables<T: Recordable>(recordablesToUpdate: [T], completionHandler: ErrorCompletion = nil) {
         
         let records = recordablesToUpdate.map() { $0.record }
         let operation = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: nil)
@@ -58,34 +54,26 @@ struct CloudOps {
                     // Prepare for selector in the event of a retry.
                     let executableBlock = {
                         self.uploadRecordables(recordablesToUpdate: [recordableToUpdate],
-                                               successHandler: successHandler,
-                                               failureHandler: failureHandler,
                                                completionHandler: completionHandler)
                     }
                     
                     // Generic error handling
-                    let errorHandler = CloudErrorStrategies(originatingMethodInAnEnclosure: executableBlock,
-                                                            database: self.database)
+                    let errorHandler = CloudErrorOps(originatingMethodInAnEnclosure: executableBlock,
+                                                     database: self.database)
                     errorHandler.handle(error!,
                                         recordableObject: recordableToUpdate,
-                                        failureHandler: failureHandler,
-                                        successHandler: successHandler)
+                                        completionHandler: completionHandler)
                 }
                 
                 return
             }
             
             // After saving without error, executes successHandler each time...
-            if let handler = successHandler { handler() }
+            if let handler = completionHandler { handler(true, nil) }
         }
         
-        operation.completionBlock = completionHandler
-     
         let queue = OperationQueue()
         queue.addOperation(operation)
-        queue.sync {
-            print("upload operation completed.")
-        }
     }
     
     /**
@@ -98,13 +86,10 @@ struct CloudOps {
      * - parameter recordablesToDelete: An array of a single type, conforming to 'Recordable' protocol that will be
      * removed from database.
      *
-     * - parameter successHandler: An optional closure that will execute each time a record is successfully deleted.
-     *
-     * - parameter failureHandler: An optional closure that will execute each time a record in the batch fails.
-     *
-     * - parameter completionHandler: An optional closure that will execute at the end of the entire batch completes.
+     * - parameter completionHandler: An optional closure that will execute each time an operation in the batch
+     *      completes.
      */
-    func removeRecordables<T: Recordable>(recordablesToDelete: [T], successHandler: OptionalClosure, failureHandler: OptionalClosure, completionHandler: OptionalClosure = nil) {
+    func removeRecordables<T: Recordable>(recordablesToDelete: [T], completionHandler: ErrorCompletion = nil) {
         
         let records = recordablesToDelete.map() { $0.recordID }
         let operation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: records)
@@ -127,34 +112,29 @@ struct CloudOps {
                     // Prepare for selector in the event of a retry.
                     let executableBlock = {
                         self.uploadRecordables(recordablesToUpdate: [recordableToRemove],
-                                               successHandler: successHandler,
-                                               failureHandler: failureHandler,
                                                completionHandler: completionHandler)
                     }
                     
                     // Generic error handling
-                    let errorHandler = CloudErrorStrategies(originatingMethodInAnEnclosure: executableBlock,
-                                                            database: self.database)
+                    let errorHandler = CloudErrorOps(originatingMethodInAnEnclosure: executableBlock,
+                                                     database: self.database)
                     errorHandler.handle(error!,
                                         recordableObject: recordableToRemove,
-                                        failureHandler: failureHandler,
-                                        successHandler: successHandler)
+                                        completionHandler: completionHandler)
                 }
 
                 return
             }
             
             // After deleting without error, executes successHandler each time...
-            if let handler = successHandler { handler() }
+            if let handler = completionHandler { handler(true, nil) }
         }
         
-        operation.completionBlock = completionHandler
-
         let queue = OperationQueue()
         queue.addOperation(operation)
-        queue.sync {
-            print("download operation completed.")
-        }
+//        queue.sync {
+//            print("download operation completed.")
+//        }
     }
     
     /**
