@@ -75,10 +75,7 @@ class CloudErrorOps {
      *      in case a retry attempt is warranted. If left nil, no retries will be attempted, regardless 
      *      of error type.
      *
-     * - parameter successHandler: An executable block that will be called at conclusion of a SUCCESSFUL 
-     *      error resolution.
-     *
-     * - parameter failureHandler: An executable block that will be called at conclusion of a FAILED 
+     * - parameter completionHandler: An executable block that will be called at conclusion of a
      *      error resolution.
      */
     func handle<T: Recordable>(_ error: Error, recordableObject: T, completionHandler: ErrorCompletion = nil) {

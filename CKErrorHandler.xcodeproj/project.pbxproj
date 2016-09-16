@@ -10,19 +10,21 @@
 		9D67A2991D8B0E7D009FF46C /* RecordableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5768701D7E2036001AE4FD /* RecordableTests.swift */; };
 		9D67A29A1D8B1174009FF46C /* CloudQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D67A28B1D8AF1A2009FF46C /* CloudQueue.swift */; };
 		9D67A29B1D8B1177009FF46C /* OperationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D67A2891D8AEAAF009FF46C /* OperationState.swift */; };
-		9D67A29C1D8B117B009FF46C /* infiniteRetryOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D67A2881D8AE913009FF46C /* infiniteRetryOperation.swift */; };
+		9D67A29C1D8B117B009FF46C /* InfiniteRetryOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D67A2881D8AE913009FF46C /* InfiniteRetryOperation.swift */; };
 		9D67A29D1D8B117F009FF46C /* Recordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC57686B1D7E2026001AE4FD /* Recordable.swift */; };
 		9D67A29E1D8B1183009FF46C /* CloudOps.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5768671D7E2026001AE4FD /* CloudOps.swift */; };
 		9D67A29F1D8B1186009FF46C /* CloudErrorOps.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5768661D7E2026001AE4FD /* CloudErrorOps.swift */; };
 		9D67A2A01D8B1188009FF46C /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5768681D7E2026001AE4FD /* ErrorMessage.swift */; };
+		9D67A2A21D8B9F57009FF46C /* RetryOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D67A2A11D8B9F57009FF46C /* RetryOperation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9D67A2881D8AE913009FF46C /* infiniteRetryOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = infiniteRetryOperation.swift; sourceTree = "<group>"; };
+		9D67A2881D8AE913009FF46C /* InfiniteRetryOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteRetryOperation.swift; sourceTree = "<group>"; };
 		9D67A2891D8AEAAF009FF46C /* OperationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationState.swift; sourceTree = "<group>"; };
 		9D67A28B1D8AF1A2009FF46C /* CloudQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudQueue.swift; sourceTree = "<group>"; };
 		9D67A2901D8B0E4B009FF46C /* CKErrorHandling Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CKErrorHandling Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D67A2951D8B0E4B009FF46C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9D67A2A11D8B9F57009FF46C /* RetryOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetryOperation.swift; sourceTree = "<group>"; };
 		DC5768601D7E2026001AE4FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DC5768611D7E2026001AE4FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC5768631D7E2026001AE4FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -79,7 +81,8 @@
 			isa = PBXGroup;
 			children = (
 				9D67A2891D8AEAAF009FF46C /* OperationState.swift */,
-				9D67A2881D8AE913009FF46C /* infiniteRetryOperation.swift */,
+				9D67A2881D8AE913009FF46C /* InfiniteRetryOperation.swift */,
+				9D67A2A11D8B9F57009FF46C /* RetryOperation.swift */,
 			);
 			name = Operations;
 			sourceTree = "<group>";
@@ -199,10 +202,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D67A29C1D8B117B009FF46C /* infiniteRetryOperation.swift in Sources */,
+				9D67A29C1D8B117B009FF46C /* InfiniteRetryOperation.swift in Sources */,
 				9D67A2991D8B0E7D009FF46C /* RecordableTests.swift in Sources */,
 				9D67A29D1D8B117F009FF46C /* Recordable.swift in Sources */,
 				9D67A29A1D8B1174009FF46C /* CloudQueue.swift in Sources */,
+				9D67A2A21D8B9F57009FF46C /* RetryOperation.swift in Sources */,
 				9D67A2A01D8B1188009FF46C /* ErrorMessage.swift in Sources */,
 				9D67A29E1D8B1183009FF46C /* CloudOps.swift in Sources */,
 				9D67A29B1D8B1177009FF46C /* OperationState.swift in Sources */,
