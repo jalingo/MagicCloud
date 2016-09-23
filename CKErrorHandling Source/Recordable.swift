@@ -18,14 +18,14 @@ protocol Recordable {
     /**
      * This is a token used with cloudkit to build CKRecordID for this object's CKRecord.
      */
-    static var REC_TYPE: String { get }
+    var REC_TYPE: String { get }
 
     /**
      * This dictionary has to match all of the keys used in CKRecord in order for version
      * conflicts and retry attempts to succeed. It values chould reflect the Type associated
      * with keys in CKRecord.
      */
-    static var dictionaryOfKeysAndAssociatedValueTypes: Dictionary<String, CKRecordValue.Type> { get }
+    var dictionaryOfKeysAndAssociatedValueTypes: Dictionary<String, CKRecordValue.Type> { get }
     
     /**
      * This string identifier is used when constructing a conforming instance's CKRecordID.

@@ -171,7 +171,7 @@ class CloudErrorOps {
         }
         
         // This for loop goes through every record field, attempting version conflict resolution.
-        for entry in T.dictionaryOfKeysAndAssociatedValueTypes {
+        for entry in recordableObject.dictionaryOfKeysAndAssociatedValueTypes {
             if let originalValue = original[entry.key] as? entry.Type,
                 let currentValue = current[entry.key] as? entry.Type,
                 let attemptValue = attempt[entry.key] as? entry.Type {

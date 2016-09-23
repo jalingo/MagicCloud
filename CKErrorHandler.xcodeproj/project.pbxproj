@@ -10,21 +10,39 @@
 		9D67A2991D8B0E7D009FF46C /* RecordableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5768701D7E2036001AE4FD /* RecordableTests.swift */; };
 		9D67A29A1D8B1174009FF46C /* CloudQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D67A28B1D8AF1A2009FF46C /* CloudQueue.swift */; };
 		9D67A29B1D8B1177009FF46C /* OperationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D67A2891D8AEAAF009FF46C /* OperationState.swift */; };
-		9D67A29C1D8B117B009FF46C /* InfiniteRetryOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D67A2881D8AE913009FF46C /* InfiniteRetryOperation.swift */; };
 		9D67A29D1D8B117F009FF46C /* Recordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC57686B1D7E2026001AE4FD /* Recordable.swift */; };
 		9D67A29E1D8B1183009FF46C /* CloudOps.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5768671D7E2026001AE4FD /* CloudOps.swift */; };
 		9D67A29F1D8B1186009FF46C /* CloudErrorOps.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5768661D7E2026001AE4FD /* CloudErrorOps.swift */; };
 		9D67A2A01D8B1188009FF46C /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5768681D7E2026001AE4FD /* ErrorMessage.swift */; };
-		9D67A2A21D8B9F57009FF46C /* RetryOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D67A2A11D8B9F57009FF46C /* RetryOperation.swift */; };
+		9D67A2A21D8B9F57009FF46C /* RetriableErrorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D67A2A11D8B9F57009FF46C /* RetriableErrorOperation.swift */; };
+		9D67A2A61D8C4FCA009FF46C /* AlertOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D67A2A51D8C4FCA009FF46C /* AlertOperation.swift */; };
+		9D76586E1D8CAE9E004C7ED6 /* TestOperationAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D76586D1D8CAE9E004C7ED6 /* TestOperationAlert.swift */; };
+		9D9935E21D9245C4003C079E /* FatalErrorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9935E11D9245C4003C079E /* FatalErrorOperation.swift */; };
+		9D9935E41D924D87003C079E /* VerifyAuthenticityOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9935E31D924D87003C079E /* VerifyAuthenticityOperation.swift */; };
+		9D9935E61D92605D003C079E /* UnauthenticErrorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9935E51D92605D003C079E /* UnauthenticErrorOperation.swift */; };
+		9D9935E81D9384F9003C079E /* CloudErrorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9935E71D9384F9003C079E /* CloudErrorOperation.swift */; };
+		9D9935EA1D938743003C079E /* ErrorHandlingQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9935E91D938743003C079E /* ErrorHandlingQueue.swift */; };
+		9D9935EC1D938FD5003C079E /* BatchErrorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9935EB1D938FD5003C079E /* BatchErrorOperation.swift */; };
+		9D9935EE1D9394A8003C079E /* VersionConflictOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9935ED1D9394A8003C079E /* VersionConflictOperation.swift */; };
+		9D9935F21D94B496003C079E /* DisableCloudOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9935F11D94B496003C079E /* DisableCloudOperation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9D67A2881D8AE913009FF46C /* InfiniteRetryOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteRetryOperation.swift; sourceTree = "<group>"; };
 		9D67A2891D8AEAAF009FF46C /* OperationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationState.swift; sourceTree = "<group>"; };
 		9D67A28B1D8AF1A2009FF46C /* CloudQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudQueue.swift; sourceTree = "<group>"; };
 		9D67A2901D8B0E4B009FF46C /* CKErrorHandling Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CKErrorHandling Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D67A2951D8B0E4B009FF46C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9D67A2A11D8B9F57009FF46C /* RetryOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetryOperation.swift; sourceTree = "<group>"; };
+		9D67A2A11D8B9F57009FF46C /* RetriableErrorOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetriableErrorOperation.swift; sourceTree = "<group>"; };
+		9D67A2A51D8C4FCA009FF46C /* AlertOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertOperation.swift; sourceTree = "<group>"; };
+		9D76586D1D8CAE9E004C7ED6 /* TestOperationAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestOperationAlert.swift; sourceTree = "<group>"; };
+		9D9935E11D9245C4003C079E /* FatalErrorOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FatalErrorOperation.swift; sourceTree = "<group>"; };
+		9D9935E31D924D87003C079E /* VerifyAuthenticityOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyAuthenticityOperation.swift; sourceTree = "<group>"; };
+		9D9935E51D92605D003C079E /* UnauthenticErrorOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnauthenticErrorOperation.swift; sourceTree = "<group>"; };
+		9D9935E71D9384F9003C079E /* CloudErrorOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudErrorOperation.swift; sourceTree = "<group>"; };
+		9D9935E91D938743003C079E /* ErrorHandlingQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandlingQueue.swift; sourceTree = "<group>"; };
+		9D9935EB1D938FD5003C079E /* BatchErrorOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchErrorOperation.swift; sourceTree = "<group>"; };
+		9D9935ED1D9394A8003C079E /* VersionConflictOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionConflictOperation.swift; sourceTree = "<group>"; };
+		9D9935F11D94B496003C079E /* DisableCloudOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisableCloudOperation.swift; sourceTree = "<group>"; };
 		DC5768601D7E2026001AE4FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DC5768611D7E2026001AE4FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC5768631D7E2026001AE4FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -34,10 +52,8 @@
 		DC5768681D7E2026001AE4FD /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
 		DC5768691D7E2026001AE4FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DC57686B1D7E2026001AE4FD /* Recordable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recordable.swift; sourceTree = "<group>"; };
-		DC57686E1D7E2036001AE4FD /* CloudErrorStrategiesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudErrorStrategiesTests.swift; sourceTree = "<group>"; };
 		DC5768701D7E2036001AE4FD /* RecordableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordableTests.swift; sourceTree = "<group>"; };
 		DC5768721D7E2043001AE4FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = CKErrorHandlingUITests/Info.plist; sourceTree = "<group>"; };
-		DC5768731D7E2043001AE4FD /* VoyageUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VoyageUITests.swift; path = CKErrorHandlingUITests/VoyageUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				9D67A28B1D8AF1A2009FF46C /* CloudQueue.swift */,
+				9D9935E91D938743003C079E /* ErrorHandlingQueue.swift */,
 			);
 			name = Queues;
 			sourceTree = "<group>";
@@ -71,8 +88,8 @@
 			isa = PBXGroup;
 			children = (
 				DC5768701D7E2036001AE4FD /* RecordableTests.swift */,
-				DC57686E1D7E2036001AE4FD /* CloudErrorStrategiesTests.swift */,
 				9D67A2951D8B0E4B009FF46C /* Info.plist */,
+				9D76586D1D8CAE9E004C7ED6 /* TestOperationAlert.swift */,
 			);
 			path = "CKErrorHandling Tests";
 			sourceTree = "<group>";
@@ -80,11 +97,33 @@
 		9D8CBBAF1D89D38B0039B768 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
-				9D67A2891D8AEAAF009FF46C /* OperationState.swift */,
-				9D67A2881D8AE913009FF46C /* InfiniteRetryOperation.swift */,
-				9D67A2A11D8B9F57009FF46C /* RetryOperation.swift */,
+				9D9935E71D9384F9003C079E /* CloudErrorOperation.swift */,
+				9D9935EF1D9394F3003C079E /* Authentication Error */,
+				9D9935ED1D9394A8003C079E /* VersionConflictOperation.swift */,
+				9D9935F01D93968E003C079E /* Batch Error */,
+				9D67A2A11D8B9F57009FF46C /* RetriableErrorOperation.swift */,
+				9D9935E11D9245C4003C079E /* FatalErrorOperation.swift */,
+				9D67A2A51D8C4FCA009FF46C /* AlertOperation.swift */,
+				9D9935E31D924D87003C079E /* VerifyAuthenticityOperation.swift */,
 			);
 			name = Operations;
+			sourceTree = "<group>";
+		};
+		9D9935EF1D9394F3003C079E /* Authentication Error */ = {
+			isa = PBXGroup;
+			children = (
+				9D9935E51D92605D003C079E /* UnauthenticErrorOperation.swift */,
+				9D9935F11D94B496003C079E /* DisableCloudOperation.swift */,
+			);
+			name = "Authentication Error";
+			sourceTree = "<group>";
+		};
+		9D9935F01D93968E003C079E /* Batch Error */ = {
+			isa = PBXGroup;
+			children = (
+				9D9935EB1D938FD5003C079E /* BatchErrorOperation.swift */,
+			);
+			name = "Batch Error";
 			sourceTree = "<group>";
 		};
 		DC5768581D7E0F7D001AE4FD = {
@@ -101,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				9D67A28A1D8AF07B009FF46C /* Queues */,
+				9D67A2891D8AEAAF009FF46C /* OperationState.swift */,
 				9D8CBBAF1D89D38B0039B768 /* Operations */,
 				DC5768741D7E210B001AE4FD /* Resources */,
 				DC57686B1D7E2026001AE4FD /* Recordable.swift */,
@@ -115,7 +155,6 @@
 			isa = PBXGroup;
 			children = (
 				DC5768721D7E2043001AE4FD /* Info.plist */,
-				DC5768731D7E2043001AE4FD /* VoyageUITests.swift */,
 			);
 			name = CKErrorHandlingUITests;
 			path = "CKErrorHandling Source/CKErrorHandling Tests/CKErrorHandlingUITests";
@@ -202,14 +241,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D67A29C1D8B117B009FF46C /* InfiniteRetryOperation.swift in Sources */,
 				9D67A2991D8B0E7D009FF46C /* RecordableTests.swift in Sources */,
 				9D67A29D1D8B117F009FF46C /* Recordable.swift in Sources */,
 				9D67A29A1D8B1174009FF46C /* CloudQueue.swift in Sources */,
-				9D67A2A21D8B9F57009FF46C /* RetryOperation.swift in Sources */,
+				9D67A2A21D8B9F57009FF46C /* RetriableErrorOperation.swift in Sources */,
 				9D67A2A01D8B1188009FF46C /* ErrorMessage.swift in Sources */,
+				9D9935E41D924D87003C079E /* VerifyAuthenticityOperation.swift in Sources */,
+				9D9935EA1D938743003C079E /* ErrorHandlingQueue.swift in Sources */,
+				9D9935EC1D938FD5003C079E /* BatchErrorOperation.swift in Sources */,
+				9D9935E81D9384F9003C079E /* CloudErrorOperation.swift in Sources */,
+				9D76586E1D8CAE9E004C7ED6 /* TestOperationAlert.swift in Sources */,
+				9D9935F21D94B496003C079E /* DisableCloudOperation.swift in Sources */,
+				9D9935E21D9245C4003C079E /* FatalErrorOperation.swift in Sources */,
 				9D67A29E1D8B1183009FF46C /* CloudOps.swift in Sources */,
 				9D67A29B1D8B1177009FF46C /* OperationState.swift in Sources */,
+				9D9935EE1D9394A8003C079E /* VersionConflictOperation.swift in Sources */,
+				9D9935E61D92605D003C079E /* UnauthenticErrorOperation.swift in Sources */,
+				9D67A2A61D8C4FCA009FF46C /* AlertOperation.swift in Sources */,
 				9D67A29F1D8B1186009FF46C /* CloudErrorOps.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -361,6 +409,7 @@
 				9D67A2981D8B0E4B009FF46C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DC57685C1D7E0F7D001AE4FD /* Build configuration list for PBXProject "CKErrorHandler" */ = {
 			isa = XCConfigurationList;

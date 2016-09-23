@@ -91,6 +91,17 @@ struct mockRecordable: Recordable {
         set { _record = newValue }
     }
     
+    /**
+     * This dictionary has to match all of the keys used in CKRecord in order for version
+     * conflicts and retry attempts to succeed. It values chould reflect the Type associated
+     * with keys in CKRecord.
+     */
+    static var dictionaryOfKeysAndAssociatedValueTypes: Dictionary<String, CKRecordValue.Type> {
+        let dictionary = [String: CKRecordValue.Type]()
+        
+        return dictionary
+    }
+    
     /// Active memory storage for 'record' computed property.
     fileprivate var _record: CKRecord?
 }
