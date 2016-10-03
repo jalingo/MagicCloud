@@ -12,6 +12,6 @@ import Foundation
 class DisableCloudOperation: Operation {
     
     override func main() {
-        
+        print("incomplete @ DisableCloudOperation")
     }
 }

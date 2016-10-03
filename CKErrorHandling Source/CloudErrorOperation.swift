@@ -31,7 +31,7 @@ class CloudErrorOperation: Operation {
     /// This is the operation that was running when error was generated.
     var operation: Operation?
     /// This is the queue that operation was running in when error was generated.
-    var queue: OperationQueue?
+    var queue: OperationQueue?  
     
     override func main() {
 
