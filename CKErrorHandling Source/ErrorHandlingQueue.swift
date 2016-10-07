@@ -1,5 +1,5 @@
 //
-//  ErrorHandlingQueue.swift
+//  ErrorQueue.swift
 //  CKErrorHandler
 //
 //  Created by j.lingo on 9/21/16.
@@ -8,10 +8,10 @@
 
 import Foundation
 
-class ErrorHandlingQueue: OperationQueue {
+class ErrorQueue: OperationQueue {
     
     override var name: String? {
-        get { return "ErrorHandlingQueue" }
+        get { return "ErrorQueue" }
         set { }     // <-- For our purposes, `name` is (essentially) read-only now.
     }
 }

@@ -80,7 +80,7 @@ class CloudErrorOperation: Operation {
         if isCancelled { return }
 
         // After resolution determined in previous switch statement, resolution is initiated here.
-        let resolvingQueue = ErrorHandlingQueue()
+        let resolvingQueue = ErrorQueue()
         resolvingQueue.addOperation(resolvingOperation)
     }
     

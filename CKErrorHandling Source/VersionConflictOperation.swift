@@ -53,7 +53,7 @@ class VersionConflictOperation: Operation {
             
             guard error == nil else {
 
-                let queue = ErrorHandlingQueue()
+                let queue = ErrorQueue()
 
                 let errorHandler = CloudErrorOperation(error: error as! CKError,
                                                        instance: self.recordable!,

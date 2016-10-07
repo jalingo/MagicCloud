@@ -39,7 +39,7 @@ class UnauthenticErrorOperation: Operation {
         if isCancelled { return }
         
         // Fires operation, with alert waiting until cloud functionality completes disablement.
-        let queue = ErrorHandlingQueue()
+        let queue = ErrorQueue()
         alertOp.addDependency(gracefulDisable)
         queue.addOperation(gracefulDisable)
         queue.addOperation(alertOp)
