@@ -10,14 +10,14 @@ import CloudKit
 
 // MARK: - Closures
 
-typealias OptionalClosure = (()->())?
+public typealias OptionalClosure = (()->())?
 
 // MARK: - Cloud Closures
 
-typealias QueryBlock = (CKQueryCursor?, Error?) -> Void
+public typealias QueryBlock = (CKQueryCursor?, Error?) -> Void
 
-typealias FetchBlock = (CKRecord) -> Void
+public typealias FetchBlock = (CKRecord) -> Void
 
-typealias ModifyBlock = ([CKRecord]?, [CKRecordID]?, Error?) -> Void
+public typealias ModifyBlock = ([CKRecord]?, [CKRecordID]?, Error?) -> Void
 
-typealias NotifyBlock = (Notification) -> Void
+public typealias NotifyBlock = (Notification) -> Void
