@@ -7,14 +7,14 @@
 //
 
 import Foundation
-import CloudKit
 
+/// These notifications are launched at various stages of error handling, and allow for additional implementation.
 public struct MCNotification {
     
     // MARK: - Properties: Static Constants
     
     /// Notification.Name for any CKError detected...
-    static let cloudError = Notification.Name("CLOUD_ERROR_OCCURED")
+    static let cloudError = Notification.Name("CLOUD_ERROR_OCCURED")    // <-- Deprecate?
     
     /// Notification.Name for CKError.notAuthenticated...
     static let notAuthenticated = Notification.Name("CLOUD_ERROR_NOT_AUTHENTICATED")
