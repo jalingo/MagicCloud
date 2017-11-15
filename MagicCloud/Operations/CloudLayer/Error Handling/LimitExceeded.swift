@@ -13,7 +13,7 @@ class LimitExceeded<R: ReceivesRecordable>: Operation {
     
     // MARK: - Properties
     
-    var receiver: R?
+    fileprivate let receiver: R
     
     fileprivate var cloudError = CKError(_nsError: NSError())
     
@@ -21,7 +21,7 @@ class LimitExceeded<R: ReceivesRecordable>: Operation {
     
     fileprivate var recordables = [R.type]()
     
-    fileprivate var database = CKContainer.default().privateCloudDatabase
+    fileprivate var database: DatabaseType
     
     // MARK: - Functions
     
@@ -35,15 +35,16 @@ class LimitExceeded<R: ReceivesRecordable>: Operation {
         var resolver0: Operation?
         var resolver1: Operation?
         
-        if let _ = erringOperation as? Delete<R.type> {
+        if let _ = erringOperation as? Delete<R> {
             let first = Array(firstHalf)
             let second = Array(secondHalf)
-            resolver0 = Delete/*<R.type>*/(first)
-            resolver1 = Delete<R.type>(second)
+
+            resolver0 = Delete(first, from: receiver, to: database)
+            resolver1 = Delete(second, from: receiver, to: database)
         }
         
-        if let op = erringOperation as? Download<R> {
-            resolver0 = duplicate(op, for: R.self)
+        if let op = erringOperation as? Download<R> {   // <- Is this even possible? Downloads shouldn't get error...
+            resolver0 = duplicate(op, with: receiver)
             resolver1 = Operation()
             
             if let limit = op.limit {
@@ -64,17 +65,13 @@ class LimitExceeded<R: ReceivesRecordable>: Operation {
     
     // MARK: - Functions: Constructors
     
-    init(error: CKError, occuredIn: Operation, /*instances: [T],*/ target: CKDatabase, rec: R) {
+    init(error: CKError, occuredIn: Operation, rec: R, instances: [R.type], target: DatabaseType) {
         cloudError = error
         erringOperation = occuredIn
-//        recordables = instances
-        recordables = rec.recordables
+        recordables = instances
         database = target
         receiver = rec
         
         super.init()
     }
-    
-    /// This overrides ensures that init without parameters is fileprivate.
-    fileprivate override init() { }
 }

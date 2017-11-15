@@ -9,7 +9,7 @@
 import CloudKit
 
 //public class Download<R: ReceivesRecordable>: Operation {
-public class Download</*T: Recordable, */R: ReceivesRecordable>: Operation {
+public class Download<R: ReceivesRecordable>: Operation {
 
     // MARK: - Properties
     
@@ -24,8 +24,18 @@ public class Download</*T: Recordable, */R: ReceivesRecordable>: Operation {
     /// - Caution: Setting this property does not effect `ignoreUnknownItem` property.
     var ignoreUnknownItemCustomAction: OptionalClosure
     
-    /// This property enables conforming types to give access to an array of Recordable, and to prevent / allow that array’s didSet to upload said array’s changes to the cloud.
-    var anyReciever: AnyReceiver<R.type, R>
+    /**
+     * A CKQuery object manages the criteria to apply when searching for records in a database. You create a query object as the first step in the search process. The query object stores the search parameters, including the type of records to search, the match criteria (predicate) to apply, and the sort parameters to apply to the results. The second step is to use the query object to initialize a CKQueryOperation object, which you then execute to generate the results.
+     *
+     * Always designate a record type and predicate when you create a query object. The record type narrows the scope of the search to one type of record, and the predicate defines the conditions for which records of that type are considered a match. Predicates usually compare one or more fields of a record to constant values, but you can create predicates that return all records of a given type or perform more nuanced searches.
+     *
+     * Because the record type and predicate cannot be changed later, you can use the same CKQuery object to initialize multiple CKQueryOperation objects, each of which targets a different database or zone.
+     */
+    var query: CKQuery
+    
+    ///
+    let receiver: R
+    //    var anyReciever: AnyReceiver<R.type, R>
     
     /**
      * A conduit for accessing and for performing operations on the public and private data of an app container.
@@ -37,48 +47,39 @@ public class Download</*T: Recordable, */R: ReceivesRecordable>: Operation {
      * The public database is always available, regardless of whether the device has an an active iCloud account. When no iCloud account is available, your app may fetch records and perform queries on the public database, but it may not save changes. (Saving records to the public database requires an active iCloud account to identify the owner of those records.) Access to the private database always requires an active iCloud account on the device.
      * - Note: Interactions with CKDatabase objects occur at a quality of service level of NSQualityOfServiceUserInitiated by default. For information about quality of service, see Prioritize Work with Quality of Service Classes in Energy Efficiency Guide for iOS Apps and Prioritize Work at the Task Level in Energy Efficiency Guide for Mac Apps.
      */
-    var db: CKDatabase?
-    
-    /**
-     * A CKQuery object manages the criteria to apply when searching for records in a database. You create a query object as the first step in the search process. The query object stores the search parameters, including the type of records to search, the match criteria (predicate) to apply, and the sort parameters to apply to the results. The second step is to use the query object to initialize a CKQueryOperation object, which you then execute to generate the results.
-     *
-     * Always designate a record type and predicate when you create a query object. The record type narrows the scope of the search to one type of record, and the predicate defines the conditions for which records of that type are considered a match. Predicates usually compare one or more fields of a record to constant values, but you can create predicates that return all records of a given type or perform more nuanced searches.
-     *
-     * Because the record type and predicate cannot be changed later, you can use the same CKQuery object to initialize multiple CKQueryOperation objects, each of which targets a different database or zone.
-     */
-    var query: CKQuery
+    let database: DatabaseType
     
     // MARK: - Functions
     
-    fileprivate func decorate(op: CKQueryOperation, for db: CKDatabase) { //}, and type: String) {
+    fileprivate func decorate(op: CKQueryOperation) {
         if let integer = limit { op.resultsLimit = integer }
-        op.recordFetchedBlock = recordFetched(/*type: type, */from: db)
-        op.queryCompletionBlock = queryCompletion(op: op, database: db)
+        op.recordFetchedBlock = recordFetched()
+        op.queryCompletionBlock = queryCompletion(op: op)
+        op.name = "Download @ \(database.db.databaseScope)"
     }
     
-    fileprivate func recordFetched(/*type: String, */from db: CKDatabase) -> FetchBlock {
+    fileprivate func recordFetched() -> FetchBlock {
         return { record in
-print("* \(record.recordID.recordName) fetched from: \(db)")
-
-            let fetched = prepare(type: R.type.self, from: record, in: db)
-
-            self.anyReciever.allowComponentsDidSetToUploadDataModel = false
-            if let new = fetched as? R.type { self.anyReciever.recordables.append(new) }
+print("* \(record.recordID.recordName) fetched from: \(self.database)")
+            let fetched = prepare(type: R.type.self, from: record)
+            
+            self.receiver.allowComponentsDidSetToUploadDataModel = false
+            if let new = fetched as? R.type { self.receiver.recordables.append(new) }
         }
     }
     
-    fileprivate func queryCompletion(op: CKQueryOperation, database: CKDatabase) -> QueryBlock {
+    fileprivate func queryCompletion(op: CKQueryOperation) -> QueryBlock {
         return { cursor, error in
             if let queryCursor = cursor {
-                database.add(self.followUp(cursor: queryCursor, op: op))
+                self.database.db.add(self.followUp(cursor: queryCursor, op: op))
             } else {
                 guard error == nil else {
                     if let cloudError = error as? CKError {
-                        print("handling error @ Download.queryCompletion")
+print("handling error @ Download.queryCompletion")
                         let errorHandler = MCErrorHandler(error: cloudError,
                                                           originating: op,
-                                                          target: database,
-                                                          instances: self.anyReciever.recordables)
+                                                          target: self.database, instances: [],
+                                                          receiver: self.receiver)
                         errorHandler.ignoreUnknownItem = true
                         errorHandler.ignoreUnknownItemCustomAction = self.ignoreUnknownItemCustomAction
                         ErrorQueue().addOperation(errorHandler)
@@ -109,30 +110,13 @@ print("* \(record.recordID.recordName) fetched from: \(db)")
         if isCancelled { return }
         
         let op = CKQueryOperation(query: query)
+
+        // This passes the completion block down to the end of the operation.
         op.completionBlock = self.completionBlock
         self.completionBlock = nil
         
-        if let database = db {
-            decorate(op: op, for: database)//, and: query.recordType)
-            op.name = "Download.any: \(database.description)"
-            
-            if isCancelled { return }
-            database.add(op)
-        } else {
-            let publicDB = CKContainer.default().publicCloudDatabase
-            let privateDB = CKContainer.default().privateCloudDatabase
-            
-            decorate(op: op, for: privateDB)//, and: query.recordType)
-            op.name = "Download.private"
-
-            let pubOp = CKQueryOperation(query: query)
-            decorate(op: pubOp, for: publicDB)//, and: query.recordType)
-            pubOp.completionBlock = { privateDB.add(op) }
-            pubOp.name = "Download.public"
-            
-            if isCancelled { return }
-            publicDB.add(pubOp)
-        }
+        decorate(op: op)
+        database.db.add(op)
     }
     
     // MARK: - Functions: Constructors
@@ -150,12 +134,11 @@ print("* \(record.recordID.recordName) fetched from: \(db)")
      *
      * - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    init(type: String, queryField: String, queryValues: [CKRecordValue], to rec: R, from database: CKDatabase? = nil) {
+    init(type: String, queryField: String, queryValues: [CKRecordValue], to rec: R, from db: DatabaseType) {
         let predicate = NSPredicate(format: "%K IN %@", queryField, queryValues)
         query = CKQuery(recordType: type, predicate: predicate)
-        
-        anyReciever = AnyReceiver(recordable: R.type.self, rec: rec)
-        db = database
+        receiver = rec
+        database = db
         
         super.init()
     }
@@ -171,13 +154,12 @@ print("* \(record.recordID.recordName) fetched from: \(db)")
      *
      * - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    init(type: String, ownedBy: Recordable, to rec: R, from database: CKDatabase? = nil) {
+    init(type: String, ownedBy: Recordable, to rec: R, from db: DatabaseType) {
         let ref = CKReference(recordID: ownedBy.recordID, action: .deleteSelf)
         let predicate = NSPredicate(format: "%K CONTAINS %@", OWNER_KEY, ref)
         query = CKQuery(recordType: type, predicate: predicate)
-        
-        anyReciever = AnyReceiver(recordable: R.type.self, rec: rec)
-        db = database
+        receiver = rec
+        database = db
         
         super.init()
     }
@@ -191,12 +173,11 @@ print("* \(record.recordID.recordName) fetched from: \(db)")
      *
      * - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    init(type: String, to rec: R, from database: CKDatabase? = nil) {
+    init(type: String, to rec: R, from db: DatabaseType) {
         let predicate = NSPredicate(format: "TRUEPREDICATE")
         query = CKQuery(recordType: type, predicate: predicate)
-        
-        anyReciever = AnyReceiver(recordable: R.type.self, rec: rec)
-        db = database
+        receiver = rec
+        database = db
         
         super.init()
     }

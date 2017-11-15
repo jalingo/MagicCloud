@@ -9,7 +9,7 @@
 import CloudKit
 
 /// Builds an appropriate recordable based on type.
-func prepare<T: Recordable>(type: T.Type, from record: CKRecord, in db: CKDatabase) -> Recordable {
+func prepare<T: Recordable>(type: T.Type, from record: CKRecord/*, in db: CKDatabase*/) -> Recordable {
     var recordable: Recordable = T()
     
 //    switch type {
@@ -24,7 +24,7 @@ func prepare<T: Recordable>(type: T.Type, from record: CKRecord, in db: CKDataba
     // Order of these two lines is important.
     recordable.recordID = record.recordID
     for (key, _) in recordable.recordFields { recordable.recordFields[key] = record[key] }
-    recordable.database = db
+//    recordable.database = db
     
     return recordable
 }

@@ -13,10 +13,10 @@
 		A1268EDF1FBA80BC00ADAA74 /* Referable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDC1FBA80BB00ADAA74 /* Referable.swift */; };
 		A1268EE01FBA80BC00ADAA74 /* Referable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDC1FBA80BB00ADAA74 /* Referable.swift */; };
 		A1268EE11FBA80BC00ADAA74 /* Receiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDD1FBA80BC00ADAA74 /* Receiver.swift */; };
-		A1268EE31FBA80BC00ADAA74 /* Recordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* Recordable.swift */; };
-		A1268EE41FBA80BC00ADAA74 /* Recordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* Recordable.swift */; };
+		A1268EE31FBA80BC00ADAA74 /* *Recordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* *Recordable.swift */; };
+		A1268EE41FBA80BC00ADAA74 /* *Recordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* *Recordable.swift */; };
 		A1268EE71FBA821400ADAA74 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE61FBA821400ADAA74 /* TypeAliases.swift */; };
-		A1268EEA1FBA821C00ADAA74 /* Queues.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE91FBA821C00ADAA74 /* Queues.swift */; };
+		A1268EEA1FBA821C00ADAA74 /* Queues & Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE91FBA821C00ADAA74 /* Queues & Enums.swift */; };
 		A1CB77151FBA8535008ADF09 /* *PrepareFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77131FBA8535008ADF09 /* *PrepareFrom.swift */; };
 		A1CB77161FBA8535008ADF09 /* *PrepareFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77131FBA8535008ADF09 /* *PrepareFrom.swift */; };
 		A1CB77171FBA8535008ADF09 /* Duplicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77141FBA8535008ADF09 /* Duplicate.swift */; };
@@ -28,11 +28,7 @@
 		A1CB77381FBA86AF008ADF09 /* Delete.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77351FBA86AD008ADF09 /* Delete.swift */; };
 		A1CB77391FBA86AF008ADF09 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77361FBA86AE008ADF09 /* Upload.swift */; };
 		A1CB773C1FBA86CB008ADF09 /* MCErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB773B1FBA86CB008ADF09 /* MCErrorHandler.swift */; };
-		A1CB77421FBA86E7008ADF09 /* BatchError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB773E1FBA86E4008ADF09 /* BatchError.swift */; };
-		A1CB77431FBA86E7008ADF09 /* PartialError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB773F1FBA86E5008ADF09 /* PartialError.swift */; };
-		A1CB77441FBA86E7008ADF09 /* LimitExceeded.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77401FBA86E5008ADF09 /* LimitExceeded.swift */; };
 		A1CB77451FBA86E7008ADF09 /* RetriableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77411FBA86E6008ADF09 /* RetriableError.swift */; };
-		A1CB77471FBA86ED008ADF09 /* VersionConflict.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77461FBA86EC008ADF09 /* VersionConflict.swift */; };
 		A1CB774C1FBA874F008ADF09 /* RecieverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77481FBA874F008ADF09 /* RecieverTests.swift */; };
 		A1CB774E1FBA874F008ADF09 /* RecordableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77491FBA874F008ADF09 /* RecordableTests.swift */; };
 		A1CB77501FBA874F008ADF09 /* ReferableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB774A1FBA874F008ADF09 /* ReferableTests.swift */; };
@@ -41,7 +37,7 @@
 		A1CB77581FBA8793008ADF09 /* DeleteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77551FBA8792008ADF09 /* DeleteTests.swift */; };
 		A1CB77591FBA8793008ADF09 /* UploadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77561FBA8792008ADF09 /* UploadTests.swift */; };
 		A1CB775D1FBA87DB008ADF09 /* MCErrorHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB775C1FBA87DB008ADF09 /* MCErrorHandlerTests.swift */; };
-		A1CB77681FBAAE9A008ADF09 /* Queues.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE91FBA821C00ADAA74 /* Queues.swift */; };
+		A1CB77681FBAAE9A008ADF09 /* Queues & Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE91FBA821C00ADAA74 /* Queues & Enums.swift */; };
 		A1CB77691FBAAE9D008ADF09 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE61FBA821400ADAA74 /* TypeAliases.swift */; };
 		A1CB776A1FBAAEA1008ADF09 /* MCNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268ED91FBA807D00ADAA74 /* MCNotification.swift */; };
 		A1CB77821FBB986F008ADF09 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77341FBA86AC008ADF09 /* Download.swift */; };
@@ -56,6 +52,15 @@
 		A1CB77CA1FBC3241008ADF09 /* RetriableErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77C51FBC3241008ADF09 /* RetriableErrorTests.swift */; };
 		A1CB77CB1FBC3241008ADF09 /* LimitExceededTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77C61FBC3241008ADF09 /* LimitExceededTests.swift */; };
 		A1CB77CC1FBC3326008ADF09 /* Receiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDD1FBA80BC00ADAA74 /* Receiver.swift */; };
+		A1CB77CD1FBCB1C1008ADF09 /* LimitExceeded.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77401FBA86E5008ADF09 /* LimitExceeded.swift */; };
+		A1CB77CE1FBCB1C1008ADF09 /* PartialError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB773F1FBA86E5008ADF09 /* PartialError.swift */; };
+		A1CB77CF1FBCB1C1008ADF09 /* BatchError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB773E1FBA86E4008ADF09 /* BatchError.swift */; };
+		A1CB77D11FBCBF47008ADF09 /* VersionConflict.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77461FBA86EC008ADF09 /* VersionConflict.swift */; };
+		A1CB77D21FBCBF4B008ADF09 /* VersionConflict.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77461FBA86EC008ADF09 /* VersionConflict.swift */; };
+		A1CB77D31FBCBF52008ADF09 /* BatchError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB773E1FBA86E4008ADF09 /* BatchError.swift */; };
+		A1CB77D41FBCBF59008ADF09 /* RetriableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77411FBA86E6008ADF09 /* RetriableError.swift */; };
+		A1CB77D51FBCBF5E008ADF09 /* PartialError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB773F1FBA86E5008ADF09 /* PartialError.swift */; };
+		A1CB77D61FBCBF62008ADF09 /* LimitExceeded.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77401FBA86E5008ADF09 /* LimitExceeded.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,9 +82,9 @@
 		A1268ED91FBA807D00ADAA74 /* MCNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCNotification.swift; sourceTree = "<group>"; };
 		A1268EDC1FBA80BB00ADAA74 /* Referable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Referable.swift; sourceTree = "<group>"; };
 		A1268EDD1FBA80BC00ADAA74 /* Receiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Receiver.swift; sourceTree = "<group>"; };
-		A1268EDE1FBA80BC00ADAA74 /* Recordable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recordable.swift; sourceTree = "<group>"; };
+		A1268EDE1FBA80BC00ADAA74 /* *Recordable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "*Recordable.swift"; sourceTree = "<group>"; };
 		A1268EE61FBA821400ADAA74 /* TypeAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
-		A1268EE91FBA821C00ADAA74 /* Queues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queues.swift; sourceTree = "<group>"; };
+		A1268EE91FBA821C00ADAA74 /* Queues & Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Queues & Enums.swift"; sourceTree = "<group>"; };
 		A1CB77131FBA8535008ADF09 /* *PrepareFrom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "*PrepareFrom.swift"; sourceTree = "<group>"; };
 		A1CB77141FBA8535008ADF09 /* Duplicate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Duplicate.swift; sourceTree = "<group>"; };
 		A1CB77241FBA8682008ADF09 /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
@@ -172,7 +177,7 @@
 		A1268EE51FBA811F00ADAA74 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				A1268EDE1FBA80BC00ADAA74 /* Recordable.swift */,
+				A1268EDE1FBA80BC00ADAA74 /* *Recordable.swift */,
 				A1268EDC1FBA80BB00ADAA74 /* Referable.swift */,
 				A1268EDD1FBA80BC00ADAA74 /* Receiver.swift */,
 			);
@@ -193,7 +198,7 @@
 			children = (
 				A1268ED91FBA807D00ADAA74 /* MCNotification.swift */,
 				A1268EE61FBA821400ADAA74 /* TypeAliases.swift */,
-				A1268EE91FBA821C00ADAA74 /* Queues.swift */,
+				A1268EE91FBA821C00ADAA74 /* Queues & Enums.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -378,24 +383,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1CB77CD1FBCB1C1008ADF09 /* LimitExceeded.swift in Sources */,
+				A1CB77CE1FBCB1C1008ADF09 /* PartialError.swift in Sources */,
+				A1CB77CF1FBCB1C1008ADF09 /* BatchError.swift in Sources */,
 				A1CB77391FBA86AF008ADF09 /* Upload.swift in Sources */,
+				A1CB77D21FBCBF4B008ADF09 /* VersionConflict.swift in Sources */,
 				A1CB77151FBA8535008ADF09 /* *PrepareFrom.swift in Sources */,
 				A1CB77451FBA86E7008ADF09 /* RetriableError.swift in Sources */,
 				A1268EE11FBA80BC00ADAA74 /* Receiver.swift in Sources */,
-				A1CB77471FBA86ED008ADF09 /* VersionConflict.swift in Sources */,
-				A1268EEA1FBA821C00ADAA74 /* Queues.swift in Sources */,
+				A1268EEA1FBA821C00ADAA74 /* Queues & Enums.swift in Sources */,
 				A1268EDF1FBA80BC00ADAA74 /* Referable.swift in Sources */,
 				A1CB77271FBA8683008ADF09 /* Alert.swift in Sources */,
 				A1CB77281FBA8683008ADF09 /* FailedOp.swift in Sources */,
-				A1CB77421FBA86E7008ADF09 /* BatchError.swift in Sources */,
-				A1CB77441FBA86E7008ADF09 /* LimitExceeded.swift in Sources */,
 				A1CB773C1FBA86CB008ADF09 /* MCErrorHandler.swift in Sources */,
 				A1CB77291FBA8683008ADF09 /* Pause.swift in Sources */,
-				A1268EE31FBA80BC00ADAA74 /* Recordable.swift in Sources */,
+				A1268EE31FBA80BC00ADAA74 /* *Recordable.swift in Sources */,
 				A1CB77171FBA8535008ADF09 /* Duplicate.swift in Sources */,
 				A1CB77371FBA86AF008ADF09 /* Download.swift in Sources */,
 				A1268EE71FBA821400ADAA74 /* TypeAliases.swift in Sources */,
-				A1CB77431FBA86E7008ADF09 /* PartialError.swift in Sources */,
 				A1268EDA1FBA807D00ADAA74 /* MCNotification.swift in Sources */,
 				A1CB77381FBA86AF008ADF09 /* Delete.swift in Sources */,
 			);
@@ -409,6 +414,7 @@
 				A1CB77C71FBC3241008ADF09 /* PartialErrorTests.swift in Sources */,
 				A1CB77161FBA8535008ADF09 /* *PrepareFrom.swift in Sources */,
 				A1CB77861FBB9B94008ADF09 /* MCErrorHandler.swift in Sources */,
+				A1CB77D61FBCBF62008ADF09 /* LimitExceeded.swift in Sources */,
 				A1CB77591FBA8793008ADF09 /* UploadTests.swift in Sources */,
 				A1CB774C1FBA874F008ADF09 /* RecieverTests.swift in Sources */,
 				A1CB77521FBA8773008ADF09 /* PauseTests.swift in Sources */,
@@ -416,17 +422,21 @@
 				A1268EE01FBA80BC00ADAA74 /* Referable.swift in Sources */,
 				A1CB77CC1FBC3326008ADF09 /* Receiver.swift in Sources */,
 				A1CB77CB1FBC3241008ADF09 /* LimitExceededTests.swift in Sources */,
-				A1268EE41FBA80BC00ADAA74 /* Recordable.swift in Sources */,
+				A1268EE41FBA80BC00ADAA74 /* *Recordable.swift in Sources */,
 				A1CB77501FBA874F008ADF09 /* ReferableTests.swift in Sources */,
 				A1CB77871FBB9CB7008ADF09 /* FailedOp.swift in Sources */,
 				A1CB77831FBB9874008ADF09 /* Delete.swift in Sources */,
 				A1CB77691FBAAE9D008ADF09 /* TypeAliases.swift in Sources */,
-				A1CB77681FBAAE9A008ADF09 /* Queues.swift in Sources */,
+				A1CB77D11FBCBF47008ADF09 /* VersionConflict.swift in Sources */,
+				A1CB77681FBAAE9A008ADF09 /* Queues & Enums.swift in Sources */,
 				A1CB77841FBB9879008ADF09 /* Upload.swift in Sources */,
 				A1CB77CA1FBC3241008ADF09 /* RetriableErrorTests.swift in Sources */,
 				A1CB77851FBB9881008ADF09 /* Pause.swift in Sources */,
+				A1CB77D41FBCBF59008ADF09 /* RetriableError.swift in Sources */,
 				A1CB77181FBA8535008ADF09 /* Duplicate.swift in Sources */,
 				A1CB77821FBB986F008ADF09 /* Download.swift in Sources */,
+				A1CB77D31FBCBF52008ADF09 /* BatchError.swift in Sources */,
+				A1CB77D51FBCBF5E008ADF09 /* PartialError.swift in Sources */,
 				A1CB77571FBA8793008ADF09 /* DownloadTests.swift in Sources */,
 				A1CB774E1FBA874F008ADF09 /* RecordableTests.swift in Sources */,
 				A1CB776A1FBAAEA1008ADF09 /* MCNotification.swift in Sources */,

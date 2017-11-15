@@ -12,7 +12,9 @@ import CloudKit
  * This class takes partial errors (resulting from batch attempt) and isolates to the failed transactions.
  * After isolation, they can be passed back to through the error handling system individually.
  */
-class PartialError: Operation {
+class PartialError<R: ReceivesRecordable>: Operation {
+    
+    // MARK: - Properties
     
     fileprivate let error: CKError
     
@@ -20,9 +22,11 @@ class PartialError: Operation {
     
     fileprivate let queue = ErrorQueue()
     
-    fileprivate var recordables = [Recordable]()
+    fileprivate let receiver: R
     
-    fileprivate var database = CKContainer.default().privateCloudDatabase
+    var recordables = [R.type]()
+    
+    var database: DatabaseType
     
     /// Skips over any error handling for `.unknownItem` errors.
     var ignoreUnknownItem = false
@@ -44,7 +48,8 @@ class PartialError: Operation {
                     let errorHandler = MCErrorHandler(error: partialError,
                                                       originating: operation,
                                                       target: database,
-                                                      instances: recordables)
+                                                      instances: recordables,
+                                                      receiver: receiver)
                     errorHandler.ignoreUnknownItem = self.ignoreUnknownItem
                     errorHandler.ignoreUnknownItemCustomAction = self.ignoreUnknownItemCustomAction
                     
@@ -55,13 +60,9 @@ class PartialError: Operation {
             }
         }
     }
-    
-    fileprivate override init() {
-        error = CKError(_nsError: NSError())
-        operation = Operation()
-    }
-    
-    init(error: CKError, occuredIn: Operation, instances: [Recordable], target: CKDatabase) {
+        
+    init(error: CKError, occuredIn: Operation, at rec: R, instances: [R.type], target: DatabaseType) {
+        receiver = rec
         self.error = error
         operation = occuredIn
         recordables = instances

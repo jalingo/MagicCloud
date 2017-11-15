@@ -8,142 +8,95 @@
 
 import CloudKit
 
-public class Delete<T: Recordable>: Operation {
+public class Delete<R: ReceivesRecordable>: Operation {
     
     // MARK: - Properties
     
     var delayInSeconds: UInt64 = 0
     
-    let recordables: [T]
+    let recordables: [R.type]
     
-    fileprivate var publicRecordables: [T] {
-        return recordables.filter({ $0.database == CKContainer.default().publicCloudDatabase })
+    let receiver: R
+
+    let database: DatabaseType
+    
+    var savedForAsyncCompletion: OptionalClosure
+    
+    // MARK: - Properties: Computed
+    
+    public override var completionBlock: (() -> Void)? {
+        get { return nil }                              // <-- This ensures completionBlock doesn't execute prematurely...
+        set { savedForAsyncCompletion = newValue }
     }
     
-    fileprivate var privateRecordables: [T] {
-        return recordables.filter({ $0.database == CKContainer.default().privateCloudDatabase })
-    }
+    fileprivate var recordIDs: [CKRecordID] { return recordables.map({ $0.recordID }) }
     
     // MARK: - Functions
     
     public override func main() {
         if isCancelled { return }
-        
-        let publicDb = CKContainer.default().publicCloudDatabase
-        let publicOp = Modify<T>(publicRecordables, on: publicDb)
-        publicOp.delay = delayInSeconds
-        
-        if isCancelled { return }
-        
-        let privateDb = CKContainer.default().privateCloudDatabase
-        let privateOp = Modify<T>(privateRecordables, on: privateDb)
-        privateOp.delay = delayInSeconds
-        
-        if isCancelled { return }
-        
-        // These three lines pass the completionBlock down to the last operation...
-        privateOp.addDependency(publicOp)
-        privateOp.completionBlock = completionBlock
-        completionBlock = nil
-        
-        if isCancelled { return }
 
-        CloudQueue().addOperation(privateOp)
-        CloudQueue().addOperation(publicOp)
+        let op = decorate()
+        
+        if isCancelled { return }
+        
+        delayDispatch(op)
+    }
+    
+    /// This method dispatches operation after specified delay.
+    func delayDispatch(_ op: CKDatabaseOperation) {
+        let time = DispatchTime.now() + Double(delayInSeconds)
+        DispatchQueue(label: "DelayedRecordDeletion").asyncAfter(deadline: time) {
+            if self.isCancelled { return }
+            self.database.db.add(op)
+        }
+    }
+    
+    /// This method returns a ready made enclosure for 'modifyRecordsCompletionBlock'.
+    func modifyRecordsCB() -> ModifyBlock {
+        return { records, ids, error in
+            guard error == nil else {
+                if let cloudError = error as? CKError {
+                    print("handling error @ Delete")
+                    let errorHandler = MCErrorHandler(error: cloudError,
+                                                      originating: self,
+                                                      target: self.database, instances: self.recordables,
+                                                      receiver: self.receiver)
+                    ErrorQueue().addOperation(errorHandler)
+                } else {
+                    print("NSError: \(String(describing: error)) @ Delete")
+                }
+                
+                return
+            }
+        }
+    }
+    
+    /// This method decorates a modify operation.
+    func decorate() -> CKModifyRecordsOperation {
+        let op = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: recordIDs)
+        
+        op.name = "Delete"
+        op.modifyRecordsCompletionBlock = modifyRecordsCB()
+        if #available(iOS 11.0, *) {
+            op.configuration.isLongLived = true
+        } else {
+            op.isLongLived = true
+        }
+        
+        // This passes the completion block down to the last operation...
+        op.completionBlock = self.savedForAsyncCompletion
+        
+        return op
     }
     
     // MARK: - Functions: Constructors
     
-    init(_ array: [T]) {
-        recordables = array
+    init(_ array: [R.type]? = nil, from rec: R, to type: DatabaseType) {
+        recordables = array ?? rec.recordables
+        receiver = rec
+        database = type
         
         super.init()
-    }
-    
-    // MARK: - InnerClass
-    
-    class Modify<T: Recordable>: Operation {
-        
-        // MARK: - Properties
-        
-        var delay: UInt64 = 0
-        
-        var recordables: [T]
-        
-        fileprivate var recordIDs: [CKRecordID] { return recordables.map({ $0.recordID }) }
-        
-        var database: CKDatabase
-        
-        var savedForAsyncCompletion: OptionalClosure 
-        
-        override var completionBlock: (() -> Void)? {
-            get { return nil }                              // <-- This ensures completionBlock doesn't execute prematurely...
-            set { savedForAsyncCompletion = newValue }
-        }
-        
-        // MARK: - Functions
-        
-        override func main() {
-            if isCancelled { return }
-            
-            let op = modifyOpDecorator(recordables)
-            delayDispatch(op)
-        }
-        
-        /// This method dispatches operation after specified delay.
-        func delayDispatch(_ op: CKDatabaseOperation) {
-            let time = DispatchTime.now() + Double(delay)// * NSEC_PER_SEC)
-            DispatchQueue(label: "DelayedRecordDeletion").asyncAfter(deadline: time) {
-                if self.isCancelled { return }
-                self.database.add(op)
-            }
-        }
-        
-        /// This method decorates a modify operation and returns it for use.
-        func modifyOpDecorator(_ recordables: [Recordable]) -> CKModifyRecordsOperation {
-            let modifyOp = CKModifyRecordsOperation(recordsToSave: nil,
-                                                    recordIDsToDelete: recordables.map({ $0.recordID }))
-            if #available(iOS 11.0, *) {
-                modifyOp.configuration.isLongLived = true
-            } else {
-                modifyOp.isLongLived = true
-            }
-            modifyOp.name = "Upload.Modify.modifyOp"
-            modifyOp.modifyRecordsCompletionBlock = modifyRecordsCB()
-            
-            // This passes the completion block down to the last operation...
-            modifyOp.completionBlock = self.savedForAsyncCompletion
-            
-            return modifyOp
-        }
-        
-        /// This method returns a ready made enclosure for 'modifyRecordsCompletionBlock'.
-        func modifyRecordsCB() -> ModifyBlock {
-            return { records, ids, error in
-                guard error == nil else {
-                    if let cloudError = error as? CKError {
-                        print("handling error @ Delete.Modify")
-                        let errorHandler = MCErrorHandler(error: cloudError,
-                                                          originating: self,
-                                                          target: self.database,
-                                                          instances: self.recordables)
-                        ErrorQueue().addOperation(errorHandler)
-                    } else {
-                        print("NSError: \(String(describing: error)) @ Delete.Modify")
-                    }
-                    
-                    return
-                }
-            }
-        }
-        
-        // MARK: - Functions: Constructors
-        
-        init(_ these: [T], on: CKDatabase) {
-            recordables = these
-            database = on
-            
-            super.init()
-        }
     }
 }

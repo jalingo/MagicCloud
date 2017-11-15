@@ -10,165 +10,105 @@ import Foundation
 import CloudKit
 import UIKit
 
-public class Upload<T: Recordable>: Operation {
+// MARK: - Class
+
+public class Upload<R: ReceivesRecordable>: Operation {
     
     // MARK: - Properties
+
+    let database: DatabaseType
     
-    let publicDB = CKContainer.default().publicCloudDatabase
+    let receiver: R
     
-    let privateDB = CKContainer.default().privateCloudDatabase
+    let recordables: [R.type] 
+
+    var savedForAsyncCompletion: OptionalClosure
     
-    let sharedDB = CKContainer.default().sharedCloudDatabase
+    // MARK: - Properties: Computed
     
-    let recordables: [T]
-    
-    fileprivate var publicRecordables: [T] {
-        return recordables.filter() { $0.database == CKContainer.default().publicCloudDatabase }
+    public override var completionBlock: (() -> Void)? {
+        get { return nil }                              // <-- This ensures completionBlock doesn't execute prematurely...
+        set { savedForAsyncCompletion = newValue }
     }
     
-    fileprivate var privateRecordables: [T] {
-        return recordables.filter() { $0.database == CKContainer.default().privateCloudDatabase }
+    var records: [CKRecord] {
+        var recs = [CKRecord]()
+        
+        // This loop converts recordables into CKRecord's for array
+        for recordable in recordables {
+            let rec = CKRecord(recordType: recordable.recordType, recordID: recordable.recordID)
+            for entry in recordable.recordFields { rec[entry.key] = entry.value }
+            recs.append(rec)
+        }
+        
+        return recs
     }
     
-    fileprivate var sharedRecordables: [T] {
-        return recordables.filter() { $0.database == CKContainer.default().sharedCloudDatabase }
+    var modifyCompletion: ModifyBlock {
+        return { _, _, error in
+            guard error == nil else {
+                self.completionBlock = self.savedForAsyncCompletion
+                self.handle(error, from: self, whileIgnoringUnknownItem: false)
+                return
+            }
+            
+            // This transfers `Modify.completionBlock` to the end of modify operation...
+            if let closure = self.savedForAsyncCompletion { closure() }
+        }
     }
+    
     // MARK: - Functions
     
     public override func main() {
         if isCancelled { return }
         
-        let publicOp = Modify<T>(these: publicRecordables, on: .publicDB, completion: completionBlock)
-        completionBlock = nil
+        let op = decorate()
 
         if isCancelled { return }
         
-        let privateOp = Modify<T>(these: privateRecordables, on: .privateDB)
+        database.db.add(op)
+    }
+    
+    fileprivate func decorate() -> CKModifyRecordsOperation {
+        let op = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: nil)
+        op.name = "Upload: \(database.db.description)"
+        
+        op.savePolicy = .changedKeys
+        if #available(iOS 11.0, *) {
+            op.configuration.isLongLived = true
+        } else {
+            op.isLongLived = true
+        }
+        
+        return op
+    }
+    
+    fileprivate func handle(_ error: Error?, from op: Operation, whileIgnoringUnknownItem: Bool) {
         
         if isCancelled { return }
         
-        let sharedOp = Modify<T>(these: sharedRecordables, on: .sharedDB)
-        
-        privateOp.addDependency(sharedOp)
-        publicOp.addDependency(privateOp)
-        
-        if isCancelled { return }
-
-        publicDB.add(publicOp)
-        privateDB.add(privateOp)
-        sharedDB.add(sharedOp)
+        if let cloudError = error as? CKError {
+print("handling error @ Upload")
+            let errorHandler = MCErrorHandler(error: cloudError,
+                                              originating: op,
+                                              target: database, instances: recordables,
+                                              receiver: receiver)
+            errorHandler.ignoreUnknownItem = whileIgnoringUnknownItem
+            ErrorQueue().addOperation(errorHandler)
+        } else {
+            print("NSError: \(String(describing: error?.localizedDescription)) @ Upload::\(op)")
+        }
     }
     
     // MARK: - Functions: Constructors
     
-    init(_ array: [T]) {
-        recordables = array
+    init(_ recs: [R.type]? = nil, from rec: R, to db: DatabaseType) {
+        receiver = rec
+        database = db
+        recordables = recs ?? rec.recordables
         
         super.init()
         
-        self.name = "NewUpload"
-    }
-    
-    // MARK: - InnerClasses
-    
-    class Modify<T: Recordable>: CKModifyRecordsOperation {
-        
-        // MARK: - Enum
-        
-        enum DatabaseType {
-            case publicDB, privateDB, sharedDB
-        }
-        
-        // MARK: - Properties
-        
-        var db: CKDatabase
-        
-        var recordables: [Recordable]
-
-        var records: [CKRecord] {
-            var recs = [CKRecord]()
-            
-            // This loop converts recordables into CKRecord's for array
-            for recordable in recordables {
-                let rec = CKRecord(recordType: recordable.recordType, recordID: recordable.recordID)
-                for entry in recordable.recordFields { rec[entry.key] = entry.value }
-                recs.append(rec)
-            }
-            
-            return recs
-        }
-        
-        var modifyCompletion: ModifyBlock {
-            return { _, _, error in
-                guard error == nil else {
-                    self.completionBlock = self.totalCompletion
-                    self.handle(error, from: self, whileIgnoringUnknownItem: false)
-                    return
-                }
-                
-                // This transfers `Modify.completionBlock` to the end of modify operation...
-                if let closure = self.totalCompletion {
-print("NewUpload.Modify concluding...")
-                    closure()
-                }
-            }
-        }
-        
-        var totalCompletion: OptionalClosure
-
-        // MARK: - Functions
-        
-        fileprivate func decorate(completion: OptionalClosure) {
-            
-            if isCancelled { return }
-            
-            self.recordsToSave = records
-            self.name = "NewUpload.Modify: \(db.description)"
-
-            self.savePolicy = .changedKeys
-            if #available(iOS 11.0, *) {
-                self.configuration.isLongLived = true
-            } else {
-                self.isLongLived = true
-            }
-            
-            self.totalCompletion = completion
-            self.modifyRecordsCompletionBlock = modifyCompletion
-        }
-        
-        fileprivate func handle(_ error: Error?, from op: CKOperation, whileIgnoringUnknownItem: Bool) {
-            
-            if isCancelled { return }
-            
-            if let cloudError = error as? CKError, let recordables = self.recordables as? [T] {
-print("handling error @ NewUpload")
-                let errorHandler = MCErrorHandler(error: cloudError,
-                                                  originating: op,
-                                                  target: self.db,
-                                                  instances: recordables)
-                errorHandler.ignoreUnknownItem = whileIgnoringUnknownItem
-                ErrorQueue().addOperation(errorHandler)
-            } else {
-                print("NSError: \(String(describing: error?.localizedDescription)) @ NewUpload::\(op)")
-            }
-        }
-        
-        // MARK: - Functions: Inits
-        
-        init(these recs: [T], on database: DatabaseType, completion: OptionalClosure = nil) {
-           
-            recordables = recs
-            
-            switch database {
-            case .privateDB: db = CKContainer.default().privateCloudDatabase
-            case .publicDB: db = CKContainer.default().publicCloudDatabase
-            case .sharedDB: db = CKContainer.default().sharedCloudDatabase
-            }
-            
-            super.init()
-
-            decorate(completion: completion)
-            
-        }
+        self.name = "Upload"
     }
 }

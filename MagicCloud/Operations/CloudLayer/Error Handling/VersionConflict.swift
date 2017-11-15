@@ -34,7 +34,7 @@ class VersionConflict<R: ReceivesRecordable>: Operation {
     fileprivate var recordables = [R.type]()
 
     /// This is the database where version conflict was detected.
-    fileprivate var database: CKDatabase = CKContainer.default().privateCloudDatabase
+    fileprivate var database: DatabaseType
     
     /// This operation is launched after version conflict resolved.
     fileprivate var completionOperation = Operation()
@@ -139,8 +139,9 @@ print("recordables: \(recordables.count)")
             print("handling error @ VersionConflict")
             let errorHandler = MCErrorHandler(error: cloudError,
                                               originating: op,
-                                              target: self.database,
-                                              receiver: self.receiver)
+                                              target: database,
+                                              instances: recordables,
+                                              receiver: receiver)
             
             self.completionOperation.addDependency(errorHandler)
             
@@ -173,7 +174,7 @@ print("conflict resolved")
                 CloudQueue().addOperation(completionOperation)
             }
             
-            database.add(op)
+            database.db.add(op)
         }
     }
     
@@ -182,14 +183,13 @@ print("conflict resolved")
     
     // MARK: - Functions: Constructor
     
-    init(rec: R, error: CKError, target: CKDatabase, policy: CKRecordSavePolicy, completionBlock: OptionalClosure) {
+    init(rec: R, error: CKError, target: DatabaseType, policy: CKRecordSavePolicy, instances: [R.type], completionBlock: OptionalClosure) {
         receiver = rec
         
         self.error = error
         self.policy = policy
         
-//        recordables = instances
-        recordables = rec.recordables
+        recordables = instances
         completionOperation.completionBlock = completionBlock
         database = target
 

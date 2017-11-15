@@ -19,12 +19,15 @@ class MCErrorHandlerTests: XCTestCase {
     
     let db = CKContainer.default().privateCloudDatabase
     
-    var testOp: MCErrorHandler<RecievesRecordable<MockRecordable>>?
+    let mockRec = MockReceiver()
+    
+    var testOp: MCErrorHandler<MockReceiver>?
     
     // MARK: - Functions
     
     func loadTestOp(error: CKError) {
-        testOp = MCErrorHandler(error: error, originating: mockOp, instances: mocks, target: db)
+        let database = DatabaseType.from(scope: db.databaseScope)
+        testOp = MCErrorHandler(error: error, originating: mockOp, target: database, instances: mocks as! [MockReceiver.type], receiver: mockRec)
     }
     
     // MARK: - Functions: Unit Tests

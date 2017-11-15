@@ -14,12 +14,14 @@ import CloudKit
  * Certain cloud errors require a retry attempt (e.g. ZoneBusy), so this operation recovers retry time from
  * userInfo dictionary and then schedules another attempt.
  */
-class RetriableError: Operation {
+class RetriableError<R: ReceivesRecordable>: Operation {
     
     // MARK: - Properties
     
     /// This property contains the dispatch queue the timer will use during retry attempt.
     fileprivate let queue = DispatchQueue(label: "RetryAttemptQueue")
+    
+    fileprivate let receiver: R
     
     /// This property contains the error that generated this retry attempt.
     fileprivate var error: CKError
@@ -28,7 +30,7 @@ class RetriableError: Operation {
     fileprivate var originatingOp: Operation
     
     /// The CKDatabase in which CKDatabaseOperations should be retried.
-    fileprivate var database = CKContainer.default().privateCloudDatabase
+    fileprivate var database: DatabaseType
     
     // MARK: - Functions
     
@@ -40,13 +42,13 @@ class RetriableError: Operation {
         
         if isCancelled { return }
 
-        if let op = duplicate(originatingOp, for: R.self) {
+        if let op = duplicate(originatingOp, with: receiver) {
             queue.async {
                 let timer = Timer.scheduledTimer(withTimeInterval: retryAfterValue, repeats: false) { timer in
                     if self.isCancelled { return }
                     
                     if let cloudOp = op as? CKDatabaseOperation {
-                        self.database.add(cloudOp)
+                        self.database.db.add(cloudOp)
                     } else {
                         ErrorQueue().addOperation(op)
                     }
@@ -67,7 +69,8 @@ class RetriableError: Operation {
      *
      * - parameter database: TODO...
      */
-    init(error: CKError, originating: Operation, target: CKDatabase, completion: OptionalClosure = nil) {
+    init(error: CKError, originating: Operation, target: DatabaseType, receiver: R, completion: OptionalClosure = nil) {
+        self.receiver = receiver
         self.error = error
         originatingOp = originating
         originatingOp.completionBlock = completion

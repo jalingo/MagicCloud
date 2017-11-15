@@ -16,13 +16,13 @@ class BatchError<R: ReceivesRecordable>: Operation {
     let error: CKError
 
     /// This receiver contains storage site for batch of instances
-    var receiver: R?
+    let receiver: R
     
     fileprivate let operation: Operation
     
     fileprivate var recordables = [R.type]()
     
-    fileprivate var database = CKContainer.default().privateCloudDatabase
+    fileprivate var database: DatabaseType
     
     /// Skips over any error handling for `.unknownItem` errors.
     var ignoreUnknownItem = false
@@ -43,10 +43,10 @@ class BatchError<R: ReceivesRecordable>: Operation {
         case .partialFailure:
             NotificationCenter.default.post(name: MCNotification.partialFailure, object: error)
             resolution = PartialError(error: error,
-                                      occuredIn: operation,
+                                      occuredIn: operation, at: receiver,
                                       instances: recordables,
                                       target: database)
-            if let resolverOp = resolution as? PartialError {
+            if let resolverOp = resolution as? PartialError<R> {
                 resolverOp.ignoreUnknownItem = self.ignoreUnknownItem
                 resolverOp.ignoreUnknownItemCustomAction = self.ignoreUnknownItemCustomAction
             }
@@ -54,8 +54,7 @@ class BatchError<R: ReceivesRecordable>: Operation {
             NotificationCenter.default.post(name: MCNotification.limitExceeded, object: error)
             resolution = LimitExceeded<R>(error: error,
                                           occuredIn: operation,
-                                          target: database,
-                                          rec: receiver!)
+                                          rec: receiver, instances: recordables, target: database)
         case .batchRequestFailed:
             NotificationCenter.default.post(name: MCNotification.limitExceeded, object: error)
         default:
@@ -69,16 +68,10 @@ class BatchError<R: ReceivesRecordable>: Operation {
     
     // MARK: - Functions: Constructors
     
-    fileprivate override init() {
-        error = CKError(_nsError: NSError())
-        operation = Operation()
-        receiver = nil
-    }
-    
-    init(error: CKError, occuredIn: Operation, target: CKDatabase, receiver: R) {
+    init(error: CKError, occuredIn: Operation, target: DatabaseType, receiver: R, instances: [R.type]) {
         self.error = error
         operation = occuredIn
-        recordables = receiver.recordables
+        recordables = instances
         self.receiver = receiver
         database = target
     }

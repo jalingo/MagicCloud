@@ -21,4 +21,3 @@ public typealias FetchBlock = (CKRecord) -> Void
 public typealias ModifyBlock = ([CKRecord]?, [CKRecordID]?, Error?) -> Void
 
 public typealias NotifyBlock = (Notification) -> Void
- 

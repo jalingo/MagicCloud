@@ -32,10 +32,10 @@ class MCErrorHandler<R: ReceivesRecordable>: Operation {
     fileprivate let originatingOp: Operation
     
     /// This property represents the instances conforming to recordable that were interacting with cloud.
-    fileprivate var recordables = [Recordable]()
+    fileprivate var recordables = [R.type]()
     
     /// This is the database cloud activity generated an error in.
-    fileprivate var database = CKContainer.default().privateCloudDatabase
+    fileprivate var database: DatabaseType// = CKContainer.default().privateCloudDatabase
     
     // MARK: - Properties: Accessors
     
@@ -79,9 +79,9 @@ class MCErrorHandler<R: ReceivesRecordable>: Operation {
             NotificationCenter.default.post(name: MCNotification.serverRecordChanged, object: error)
             resolvingOperation = VersionConflict(rec: receiver,
                                                  error: error,
-//                                                 instances: recordables,
                                                  target: database,
                                                  policy: self.conflictResolutionPolicy,
+                                                 instances: recordables,
                                                  completionBlock: completionBlock)
             completionBlock = nil
      
@@ -90,7 +90,7 @@ class MCErrorHandler<R: ReceivesRecordable>: Operation {
             NotificationCenter.default.post(name: MCNotification.batchIssue, object: error)
             resolvingOperation = BatchError(error: error,
                                             occuredIn: originatingOp,
-                                            target: database, receiver: receiver)
+                                            target: database, receiver: receiver, instances: recordables)
                                             
             if let resolver = resolvingOperation as? BatchError<R> {
                 resolver.ignoreUnknownItem = self.ignoreUnknownItem
@@ -106,6 +106,7 @@ class MCErrorHandler<R: ReceivesRecordable>: Operation {
             resolvingOperation = RetriableError(error: error,
                                                 originating: originatingOp,
                                                 target: database,
+                                                receiver: receiver,
                                                 completion: completionBlock)
             completionBlock = nil
         
@@ -121,11 +122,6 @@ class MCErrorHandler<R: ReceivesRecordable>: Operation {
         // These fatal errors do not require any further handling, except for a USER notification.
         default:
             NotificationCenter.default.post(name: MCNotification.fatalError, object: error)
-//            resolvingOperation = FatalError(error: error)
-//            if let resolver = resolvingOperation as? FatalError {
-//                resolver.ignoreUnknownItem = self.ignoreUnknownItem
-////                resolver.ignoreUnknownItemCustomAction = self.ignoreUnknownItemCustomAction
-//            }
         }
         
         if isCancelled { return }
@@ -135,10 +131,10 @@ class MCErrorHandler<R: ReceivesRecordable>: Operation {
     }
     
     /// This override hides no argument initializer to ensure dependencies get injected.
-    fileprivate override init() {
-        error = CKError(_nsError: NSError())
-        originatingOp = Operation()
-    }
+//    fileprivate override init() {
+//        error = CKError(_nsError: NSError())
+//        originatingOp = Operation()
+//    }
     
     /**
      * - parameter error: CKError that was generated. Not optional to force check for nil / check for
@@ -153,12 +149,12 @@ class MCErrorHandler<R: ReceivesRecordable>: Operation {
      * - parameter target: Cloud Database in which error was generated, and in which resolution will
      *      occur.
      */
-    init(error: CKError, originating: Operation, target: CKDatabase, receiver: R/*instances: [Recordable]*/) {
+    init(error: CKError, originating: Operation, target: DatabaseType, instances: [R.type], receiver: R) {
         self.error = error
         self.receiver = receiver
         
         originatingOp = originating
-        recordables = receiver.recordables
+        recordables = instances
         database = target
         
         super.init()
