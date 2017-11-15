@@ -139,31 +139,3 @@ class BatchErrorTests: XCTestCase {
 
 class MockOperation: Operation { }
 
-///// This mock overrides main with the only change to implementation being that
-///// a notification is launched rather than the follow up operation.
-//class MockBatchError: BatchError {
-//
-//    override func main() {
-//        if isCancelled { return }
-//
-//        var notifier: Notification?
-//
-//        switch error.code {
-//        case .partialFailure:
-//            notifier = Notification(name: MCNotification.partialFailure)
-//        case .limitExceeded:
-//            notifier = Notification(name: MCNotification.limitExceeded)
-//        case .batchRequestFailed:
-//            notifier = Notification(name: MCNotification.batchRequestFailed)
-//        default:
-//            notifier = Notification(name: MCNotification.cloudError)
-//        }
-//
-//        if isCancelled { return }
-//
-//        if let note = notifier {
-//            NotificationCenter.default.post(name: note.name, object: nil)
-//        }
-//    }
-//}
-

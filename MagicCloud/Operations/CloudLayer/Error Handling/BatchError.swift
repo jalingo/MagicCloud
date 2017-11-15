@@ -56,7 +56,7 @@ class BatchError<R: ReceivesRecordable>: Operation {
                                           occuredIn: operation,
                                           rec: receiver, instances: recordables, target: database)
         case .batchRequestFailed:
-            NotificationCenter.default.post(name: MCNotification.limitExceeded, object: error)
+            NotificationCenter.default.post(name: MCNotification.batchRequestFailed, object: error)
         default:
             print("undefined failure @ BatchError: \(error.localizedDescription)")
         }

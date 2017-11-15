@@ -61,6 +61,7 @@
 		A1CB77D41FBCBF59008ADF09 /* RetriableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77411FBA86E6008ADF09 /* RetriableError.swift */; };
 		A1CB77D51FBCBF5E008ADF09 /* PartialError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB773F1FBA86E5008ADF09 /* PartialError.swift */; };
 		A1CB77D61FBCBF62008ADF09 /* LimitExceeded.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77401FBA86E5008ADF09 /* LimitExceeded.swift */; };
+		A1CB77D91FBCE8F0008ADF09 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1CB77D81FBCE8E5008ADF09 /* CloudKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +113,7 @@
 		A1CB77C41FBC3241008ADF09 /* VersionConflictTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionConflictTests.swift; sourceTree = "<group>"; };
 		A1CB77C51FBC3241008ADF09 /* RetriableErrorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetriableErrorTests.swift; sourceTree = "<group>"; };
 		A1CB77C61FBC3241008ADF09 /* LimitExceededTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LimitExceededTests.swift; sourceTree = "<group>"; };
+		A1CB77D81FBCE8E5008ADF09 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1CB77D91FBCE8F0008ADF09 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,6 +142,7 @@
 				A1268EB81FBA806200ADAA74 /* MagicCloud */,
 				A1268EC31FBA806300ADAA74 /* MagicCloudTests */,
 				A1268EB71FBA806200ADAA74 /* Products */,
+				A1CB77D71FBCE8E5008ADF09 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -271,6 +275,14 @@
 				A1CB77C41FBC3241008ADF09 /* VersionConflictTests.swift */,
 			);
 			path = ErrorHandling;
+			sourceTree = "<group>";
+		};
+		A1CB77D71FBCE8E5008ADF09 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A1CB77D81FBCE8E5008ADF09 /* CloudKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
