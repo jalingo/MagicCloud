@@ -9,13 +9,13 @@
 import CloudKit
 
 /// Builds an appropriate recordable based on type.
-func prepare(_ type: String, from record: CKRecord, in db: CKDatabase) -> Recordable {
-    var recordable: Recordable
+func prepare<T: Recordable>(type: T.Type, from record: CKRecord, in db: CKDatabase) -> Recordable {
+    var recordable: Recordable = T()
     
-    switch type {
-    case MockReferable().recordType: recordable = MockReferable()
-    default: recordable = MockRecordable()
-    }
+//    switch type {
+//    case MockReferable().recordType: recordable = MockReferable()
+//    default: recordable = MockRecordable()
+//    }
 
     // TODO: Need to make generic or won't be compatible for non-mocks without coupling...
 //    recordable =

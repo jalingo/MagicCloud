@@ -9,7 +9,7 @@
 import CloudKit
 
 /// Deals with serverRecordChanged CKErrors based on specified policy.
-class VersionConflict: Operation {
+class VersionConflict<R: ReceivesRecordable>: Operation {
     
     // MARK: - Properties
 
@@ -20,7 +20,9 @@ class VersionConflict: Operation {
         - .allKeys: Ignores record tags and overwrites all fields from newer record.
         - .ifServerUnchanged: Respects record tags and rejects all values from newer record.
      */
-    var policy: CKRecordSavePolicy = .changedKeys
+    let policy: CKRecordSavePolicy
+    
+    let receiver: R
     
     /**
      * This is the CKError that has already been identified as a version conflict (guard statement
@@ -29,7 +31,7 @@ class VersionConflict: Operation {
     fileprivate var error: CKError?
     
     /// These are the recordables that threw CKError.serverRecordChanged.
-    fileprivate var recordables = [Recordable]()
+    fileprivate var recordables = [R.type]()
 
     /// This is the database where version conflict was detected.
     fileprivate var database: CKDatabase = CKContainer.default().privateCloudDatabase
@@ -137,8 +139,8 @@ print("recordables: \(recordables.count)")
             print("handling error @ VersionConflict")
             let errorHandler = MCErrorHandler(error: cloudError,
                                               originating: op,
-                                              instances: self.recordables,
-                                              target: self.database)
+                                              target: self.database,
+                                              receiver: self.receiver)
             
             self.completionOperation.addDependency(errorHandler)
             
@@ -176,16 +178,21 @@ print("conflict resolved")
     }
     
     // This override's purpose is to make the empty init inaccessible.
-    fileprivate override init() { }
+//    fileprivate override init() { policy = .changedKeys }
     
     // MARK: - Functions: Constructor
     
-    init(error: CKError, instances: [Recordable], target: CKDatabase, completionBlock: OptionalClosure) {
+    init(error: CKError, rec: R, target: CKDatabase, policy: CKRecordSavePolicy, completionBlock: OptionalClosure) {
+        receiver = rec
+        
         self.error = error
-        recordables = instances
+        self.policy = policy
+        
+//        recordables = instances
+        recordables = rec.recordables
         completionOperation.completionBlock = completionBlock
         database = target
-        
+
         super.init()
     }
 }

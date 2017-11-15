@@ -13,7 +13,7 @@ class RecievesRecTests: XCTestCase {
     
     // MARK: - Properties
 
-    var mock: RecievesRecordable?
+    var mock: MockReceiver?
     
     // MARK: - Functions
     
@@ -28,7 +28,7 @@ class RecievesRecTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        mock = MockReciever()
+        mock = MockReceiver()
     }
     
     override func tearDown() {
@@ -40,12 +40,14 @@ class RecievesRecTests: XCTestCase {
 
 // MARK: - Mocks
 
-class MockReciever: RecievesRecordable {
+class MockReceiver: ReceivesRecordable {
+    
+    typealias type = MockRecordable
     
     /**
      * This protected property is an array of recordables used by reciever.
      */
-    var recordables = [Recordable]() {
+    var recordables = [type]() {
         didSet { print("MockReciever.recordables didSet: \(recordables.count)") }
     }
 

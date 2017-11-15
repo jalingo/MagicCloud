@@ -19,7 +19,7 @@ import CloudKit
  *
  * Operation requires local cache to conform to `Recordable` protocol for version conflict resolution.
  */
-class MCErrorHandler: Operation {
+class MCErrorHandler<R: ReceivesRecordable>: Operation {
     
     // MARK: - Properties
     
@@ -76,10 +76,10 @@ class MCErrorHandler: Operation {
         case .serverRecordChanged:
             NotificationCenter.default.post(name: MCNotification.serverRecordChanged, object: error)
             resolvingOperation = VersionConflict(error: error,
-                                                 instances: recordables,
+//                                                 instances: recordables,
+//                                                 policy: conflictResolutionPolicy,
                                                  target: database,
                                                  completionBlock: completionBlock)
-            if let resolver = resolvingOperation as? VersionConflict { resolver.policy = conflictResolutionPolicy }
             completionBlock = nil
      
         // These errors occur when a batch of requests fails or partially fails.
@@ -87,9 +87,9 @@ class MCErrorHandler: Operation {
             NotificationCenter.default.post(name: MCNotification.batchIssue, object: error)
             resolvingOperation = BatchError(error: error,
                                             occuredIn: originatingOp,
-                                            instances: recordables,
-                                            target: database)
-            if let resolver = resolvingOperation as? BatchError {
+                                            target: database, instances: recordables)
+                                            
+            if let resolver = resolvingOperation as? BatchError<R> {
                 resolver.ignoreUnknownItem = self.ignoreUnknownItem
                 resolver.ignoreUnknownItemCustomAction = self.ignoreUnknownItemCustomAction
             }
@@ -150,10 +150,10 @@ class MCErrorHandler: Operation {
      * - parameter target: Cloud Database in which error was generated, and in which resolution will
      *      occur.
      */
-    init(error: CKError, originating: Operation, instances: [Recordable], target: CKDatabase) {
+    init(error: CKError, originating: Operation, target: CKDatabase, receiver: R/*instances: [Recordable]*/) {
         self.error = error
         originatingOp = originating
-        recordables = instances
+        recordables = receiver.recordables
         database = target
         
         super.init()

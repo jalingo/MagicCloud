@@ -40,7 +40,7 @@ class RetriableError: Operation {
         
         if isCancelled { return }
 
-        if let op = duplicate(originatingOp) {
+        if let op = duplicate(originatingOp, for: R.self) {
             queue.async {
                 let timer = Timer.scheduledTimer(withTimeInterval: retryAfterValue, repeats: false) { timer in
                     if self.isCancelled { return }

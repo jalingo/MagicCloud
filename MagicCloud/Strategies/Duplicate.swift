@@ -11,7 +11,7 @@ import CloudKit
 
 /// This function takes the originatingOp (which has already been spent) and creates a
 /// a new version with the same property values and completion blocks.
-func duplicate(_ op: Operation) -> Operation? {
+func duplicate<R: ReceivesRecordable/*T: Recordable*/>(_ op: Operation, for typ: R.Type) -> Operation? {
     print("resetting: \(String(describing: op.name))")
     
     // Custom Operations
@@ -22,8 +22,8 @@ func duplicate(_ op: Operation) -> Operation? {
     
     // Custom Recordable Operations
     
-    if let uploader = op as? Upload {
-        let new = Upload(uploader.recordables)
+    if let uploader = op as? Upload<R.type> {
+        let new = Upload<R.type>(uploader.recordables)
         
         new.completionBlock = uploader.completionBlock
         new.name = "\(String(describing: uploader.name))+"
@@ -31,8 +31,8 @@ func duplicate(_ op: Operation) -> Operation? {
         return new
     }
     
-    if let uploader = op as? Upload.Modify {
-        var database: Upload.Modify.DatabaseType
+    if let uploader = op as? Upload<R.type>.Modify<R.type> {
+        var database: Upload<R.type>.Modify<R.type>.DatabaseType
         
         switch uploader.db {
         case CKContainer.default().privateCloudDatabase: database = .privateDB
@@ -43,7 +43,8 @@ print("Error @ duplicate.uploader = Upload.Modify")
             database = .privateDB
         }
         
-        let new = Upload.Modify(these: uploader.recordables, on: database)
+        guard let recordables = uploader.recordables as? [R.type] else { return nil }
+        let new = Upload<R.type>.Modify<R.type>(these: recordables, on: database)
         
         new.completionBlock = uploader.totalCompletion
         new.name = "\(String(describing: uploader.name))+"
@@ -51,8 +52,8 @@ print("Error @ duplicate.uploader = Upload.Modify")
         return new
     }
     
-    if let deleter = op as? Delete {
-        let new = Delete(deleter.recordables)
+    if let deleter = op as? Delete<R.type> {
+        let new = Delete<R.type>(deleter.recordables)
         
         new.delayInSeconds = deleter.delayInSeconds
         new.completionBlock = deleter.completionBlock
@@ -61,8 +62,8 @@ print("Error @ duplicate.uploader = Upload.Modify")
         return new
     }
     
-    if let deleter = op as? Delete.Modify {
-        let new = Delete.Modify(deleter.recordables, on: deleter.database)
+    if let deleter = op as? Delete<R.type>.Modify<R.type> {
+        let new = Delete<R.type>.Modify(deleter.recordables, on: deleter.database)
         
         new.delay = deleter.delay
         new.completionBlock = deleter.savedForAsyncCompletion
@@ -71,8 +72,8 @@ print("Error @ duplicate.uploader = Upload.Modify")
         return new
     }
     
-    if let downloader = op as? Download {
-        let new = Download(type: downloader.query.recordType, to: downloader.reciever)
+    if let downloader = op as? Download<R> {
+        let new = Download<R>(type: downloader.query.recordType, to: downloader.anyReciever.receiver)
         
         new.query = downloader.query
         new.db = downloader.db

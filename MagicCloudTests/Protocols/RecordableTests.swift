@@ -48,6 +48,10 @@ class RecordableTests: XCTestCase {
             XCTFail()
         }
     }
+    
+    func testRecordableRequiresBlankInit() {
+        XCTAssertNotNil(MockRecordable())
+    }
 }
 
 // MARK: - Mocks
@@ -57,4 +61,3 @@ extension MockRecordable: Equatable { }
 func ==(left: MockRecordable, right: MockRecordable) -> Bool {
     return left.created == right.created
 }
-

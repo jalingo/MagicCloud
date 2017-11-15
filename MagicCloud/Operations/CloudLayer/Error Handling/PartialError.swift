@@ -43,8 +43,8 @@ class PartialError: Operation {
                     
                     let errorHandler = MCErrorHandler(error: partialError,
                                                       originating: operation,
-                                                      instances: recordables,
-                                                      target: database)
+                                                      target: database,
+                                                      instances: recordables)
                     errorHandler.ignoreUnknownItem = self.ignoreUnknownItem
                     errorHandler.ignoreUnknownItemCustomAction = self.ignoreUnknownItemCustomAction
                     

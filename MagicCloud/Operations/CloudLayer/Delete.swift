@@ -8,19 +8,19 @@
 
 import CloudKit
 
-public class Delete: Operation {
+public class Delete<T: Recordable>: Operation {
     
     // MARK: - Properties
     
     var delayInSeconds: UInt64 = 0
     
-    let recordables: [Recordable]
+    let recordables: [T]
     
-    fileprivate var publicRecordables: [Recordable] {
+    fileprivate var publicRecordables: [T] {
         return recordables.filter({ $0.database == CKContainer.default().publicCloudDatabase })
     }
     
-    fileprivate var privateRecordables: [Recordable] {
+    fileprivate var privateRecordables: [T] {
         return recordables.filter({ $0.database == CKContainer.default().privateCloudDatabase })
     }
     
@@ -30,13 +30,13 @@ public class Delete: Operation {
         if isCancelled { return }
         
         let publicDb = CKContainer.default().publicCloudDatabase
-        let publicOp = Modify(publicRecordables, on: publicDb)
+        let publicOp = Modify<T>(publicRecordables, on: publicDb)
         publicOp.delay = delayInSeconds
         
         if isCancelled { return }
         
         let privateDb = CKContainer.default().privateCloudDatabase
-        let privateOp = Modify(privateRecordables, on: privateDb)
+        let privateOp = Modify<T>(privateRecordables, on: privateDb)
         privateOp.delay = delayInSeconds
         
         if isCancelled { return }
@@ -54,7 +54,7 @@ public class Delete: Operation {
     
     // MARK: - Functions: Constructors
     
-    init(_ array: [Recordable]) {
+    init(_ array: [T]) {
         recordables = array
         
         super.init()
@@ -62,13 +62,13 @@ public class Delete: Operation {
     
     // MARK: - InnerClass
     
-    class Modify: Operation {
+    class Modify<T: Recordable>: Operation {
         
         // MARK: - Properties
         
         var delay: UInt64 = 0
         
-        var recordables: [Recordable]
+        var recordables: [T]
         
         fileprivate var recordIDs: [CKRecordID] { return recordables.map({ $0.recordID }) }
         
@@ -103,7 +103,11 @@ public class Delete: Operation {
         func modifyOpDecorator(_ recordables: [Recordable]) -> CKModifyRecordsOperation {
             let modifyOp = CKModifyRecordsOperation(recordsToSave: nil,
                                                     recordIDsToDelete: recordables.map({ $0.recordID }))
-            modifyOp.configuration.isLongLived = true
+            if #available(iOS 11.0, *) {
+                modifyOp.configuration.isLongLived = true
+            } else {
+                modifyOp.isLongLived = true
+            }
             modifyOp.name = "Upload.Modify.modifyOp"
             modifyOp.modifyRecordsCompletionBlock = modifyRecordsCB()
             
@@ -121,8 +125,8 @@ public class Delete: Operation {
                         print("handling error @ Delete.Modify")
                         let errorHandler = MCErrorHandler(error: cloudError,
                                                           originating: self,
-                                                          instances: self.recordables,
-                                                          target: self.database)
+                                                          target: self.database,
+                                                          instances: self.recordables)
                         ErrorQueue().addOperation(errorHandler)
                     } else {
                         print("NSError: \(String(describing: error)) @ Delete.Modify")
@@ -135,7 +139,7 @@ public class Delete: Operation {
         
         // MARK: - Functions: Constructors
         
-        init(_ these: [Recordable], on: CKDatabase) {
+        init(_ these: [T], on: CKDatabase) {
             recordables = these
             database = on
             

@@ -15,11 +15,11 @@ class DownloadTests: XCTestCase {
 
     let start = Date()
 
-    var testOp: Download?
+    var testOp: Download<MockRecordable>?
     
     var mock = MockRecordable()
     
-    var mockRec: RecievesRecordable?
+    var mockRec: ReceivesRecordable?
     
     // MARK: - Functions
     
@@ -28,7 +28,7 @@ class DownloadTests: XCTestCase {
     func mixOfMocks() -> [MockRecordable] {
         var mix = [mock]
 
-        var pubMock = MockRecordable()
+        let pubMock = MockRecordable()
         pubMock.created = Date.distantPast
         pubMock.database = CKContainer.default().publicCloudDatabase
         mix.append(pubMock)
@@ -465,7 +465,7 @@ print("results: \(results.count)")
         super.setUp()
 
         mock = MockRecordable()
-        mockRec = MockReciever()
+        mockRec = MockReceiver()
         
         testOp = Download(type: mock.recordType, to: mockRec!)
     }

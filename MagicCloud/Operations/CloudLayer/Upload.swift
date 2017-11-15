@@ -8,8 +8,9 @@
 
 import Foundation
 import CloudKit
+import UIKit
 
-public class Upload: Operation {
+public class Upload<T: Recordable>: Operation {
     
     // MARK: - Properties
     
@@ -19,17 +20,17 @@ public class Upload: Operation {
     
     let sharedDB = CKContainer.default().sharedCloudDatabase
     
-    let recordables: [Recordable]
+    let recordables: [T]
     
-    fileprivate var publicRecordables: [Recordable] {
+    fileprivate var publicRecordables: [T] {
         return recordables.filter() { $0.database == CKContainer.default().publicCloudDatabase }
     }
     
-    fileprivate var privateRecordables: [Recordable] {
+    fileprivate var privateRecordables: [T] {
         return recordables.filter() { $0.database == CKContainer.default().privateCloudDatabase }
     }
     
-    fileprivate var sharedRecordables: [Recordable] {
+    fileprivate var sharedRecordables: [T] {
         return recordables.filter() { $0.database == CKContainer.default().sharedCloudDatabase }
     }
     // MARK: - Functions
@@ -37,16 +38,16 @@ public class Upload: Operation {
     public override func main() {
         if isCancelled { return }
         
-        let publicOp = Modify(these: publicRecordables, on: .publicDB, completion: completionBlock)
+        let publicOp = Modify<T>(these: publicRecordables, on: .publicDB, completion: completionBlock)
         completionBlock = nil
 
         if isCancelled { return }
         
-        let privateOp = Modify(these: privateRecordables, on: .privateDB)
+        let privateOp = Modify<T>(these: privateRecordables, on: .privateDB)
         
         if isCancelled { return }
         
-        let sharedOp = Modify(these: sharedRecordables, on: .sharedDB)
+        let sharedOp = Modify<T>(these: sharedRecordables, on: .sharedDB)
         
         privateOp.addDependency(sharedOp)
         publicOp.addDependency(privateOp)
@@ -60,7 +61,7 @@ public class Upload: Operation {
     
     // MARK: - Functions: Constructors
     
-    init(_ array: [Recordable]) {
+    init(_ array: [T]) {
         recordables = array
         
         super.init()
@@ -70,7 +71,7 @@ public class Upload: Operation {
     
     // MARK: - InnerClasses
     
-    class Modify: CKModifyRecordsOperation {
+    class Modify<T: Recordable>: CKModifyRecordsOperation {
         
         // MARK: - Enum
         
@@ -125,8 +126,12 @@ print("NewUpload.Modify concluding...")
             self.name = "NewUpload.Modify: \(db.description)"
 
             self.savePolicy = .changedKeys
-            self.configuration.isLongLived = true
-
+            if #available(iOS 11.0, *) {
+                self.configuration.isLongLived = true
+            } else {
+                self.isLongLived = true
+            }
+            
             self.totalCompletion = completion
             self.modifyRecordsCompletionBlock = modifyCompletion
         }
@@ -135,12 +140,12 @@ print("NewUpload.Modify concluding...")
             
             if isCancelled { return }
             
-            if let cloudError = error as? CKError {
+            if let cloudError = error as? CKError, let recordables = self.recordables as? [T] {
 print("handling error @ NewUpload")
                 let errorHandler = MCErrorHandler(error: cloudError,
                                                   originating: op,
-                                                  instances: self.recordables,
-                                                  target: self.db)
+                                                  target: self.db,
+                                                  instances: recordables)
                 errorHandler.ignoreUnknownItem = whileIgnoringUnknownItem
                 ErrorQueue().addOperation(errorHandler)
             } else {
@@ -150,7 +155,7 @@ print("handling error @ NewUpload")
         
         // MARK: - Functions: Inits
         
-        init(these recs: [Recordable], on database: DatabaseType, completion: OptionalClosure = nil) {
+        init(these recs: [T], on database: DatabaseType, completion: OptionalClosure = nil) {
            
             recordables = recs
             

@@ -18,8 +18,8 @@
 		A1268EE41FBA80BC00ADAA74 /* Recordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* Recordable.swift */; };
 		A1268EE71FBA821400ADAA74 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE61FBA821400ADAA74 /* TypeAliases.swift */; };
 		A1268EEA1FBA821C00ADAA74 /* Queues.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE91FBA821C00ADAA74 /* Queues.swift */; };
-		A1CB77151FBA8535008ADF09 /* PrepareFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77131FBA8535008ADF09 /* PrepareFrom.swift */; };
-		A1CB77161FBA8535008ADF09 /* PrepareFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77131FBA8535008ADF09 /* PrepareFrom.swift */; };
+		A1CB77151FBA8535008ADF09 /* *PrepareFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77131FBA8535008ADF09 /* *PrepareFrom.swift */; };
+		A1CB77161FBA8535008ADF09 /* *PrepareFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77131FBA8535008ADF09 /* *PrepareFrom.swift */; };
 		A1CB77171FBA8535008ADF09 /* Duplicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77141FBA8535008ADF09 /* Duplicate.swift */; };
 		A1CB77181FBA8535008ADF09 /* Duplicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77141FBA8535008ADF09 /* Duplicate.swift */; };
 		A1CB77271FBA8683008ADF09 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77241FBA8682008ADF09 /* Alert.swift */; };
@@ -50,6 +50,12 @@
 		A1CB77681FBAAE9A008ADF09 /* Queues.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE91FBA821C00ADAA74 /* Queues.swift */; };
 		A1CB77691FBAAE9D008ADF09 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE61FBA821400ADAA74 /* TypeAliases.swift */; };
 		A1CB776A1FBAAEA1008ADF09 /* MCNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268ED91FBA807D00ADAA74 /* MCNotification.swift */; };
+		A1CB77821FBB986F008ADF09 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77341FBA86AC008ADF09 /* Download.swift */; };
+		A1CB77831FBB9874008ADF09 /* Delete.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77351FBA86AD008ADF09 /* Delete.swift */; };
+		A1CB77841FBB9879008ADF09 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77361FBA86AE008ADF09 /* Upload.swift */; };
+		A1CB77851FBB9881008ADF09 /* Pause.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77261FBA8682008ADF09 /* Pause.swift */; };
+		A1CB77861FBB9B94008ADF09 /* MCErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB773B1FBA86CB008ADF09 /* MCErrorHandler.swift */; };
+		A1CB77871FBB9CB7008ADF09 /* FailedOp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77251FBA8682008ADF09 /* FailedOp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,7 +80,7 @@
 		A1268EDE1FBA80BC00ADAA74 /* Recordable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recordable.swift; sourceTree = "<group>"; };
 		A1268EE61FBA821400ADAA74 /* TypeAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
 		A1268EE91FBA821C00ADAA74 /* Queues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queues.swift; sourceTree = "<group>"; };
-		A1CB77131FBA8535008ADF09 /* PrepareFrom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrepareFrom.swift; sourceTree = "<group>"; };
+		A1CB77131FBA8535008ADF09 /* *PrepareFrom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "*PrepareFrom.swift"; sourceTree = "<group>"; };
 		A1CB77141FBA8535008ADF09 /* Duplicate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Duplicate.swift; sourceTree = "<group>"; };
 		A1CB77241FBA8682008ADF09 /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		A1CB77251FBA8682008ADF09 /* FailedOp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FailedOp.swift; sourceTree = "<group>"; };
@@ -177,7 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				A1CB77141FBA8535008ADF09 /* Duplicate.swift */,
-				A1CB77131FBA8535008ADF09 /* PrepareFrom.swift */,
+				A1CB77131FBA8535008ADF09 /* *PrepareFrom.swift */,
 			);
 			path = Strategies;
 			sourceTree = "<group>";
@@ -373,7 +379,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1CB77391FBA86AF008ADF09 /* Upload.swift in Sources */,
-				A1CB77151FBA8535008ADF09 /* PrepareFrom.swift in Sources */,
+				A1CB77151FBA8535008ADF09 /* *PrepareFrom.swift in Sources */,
 				A1CB77451FBA86E7008ADF09 /* RetriableError.swift in Sources */,
 				A1268EE11FBA80BC00ADAA74 /* Receiver.swift in Sources */,
 				A1CB77471FBA86ED008ADF09 /* VersionConflict.swift in Sources */,
@@ -399,7 +405,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1CB77161FBA8535008ADF09 /* PrepareFrom.swift in Sources */,
+				A1CB77161FBA8535008ADF09 /* *PrepareFrom.swift in Sources */,
+				A1CB77861FBB9B94008ADF09 /* MCErrorHandler.swift in Sources */,
 				A1268EE21FBA80BC00ADAA74 /* Receiver.swift in Sources */,
 				A1CB77591FBA8793008ADF09 /* UploadTests.swift in Sources */,
 				A1CB774C1FBA874F008ADF09 /* RecieverTests.swift in Sources */,
@@ -407,11 +414,16 @@
 				A1268EE01FBA80BC00ADAA74 /* Referable.swift in Sources */,
 				A1268EE41FBA80BC00ADAA74 /* Recordable.swift in Sources */,
 				A1CB77501FBA874F008ADF09 /* ReferableTests.swift in Sources */,
+				A1CB77871FBB9CB7008ADF09 /* FailedOp.swift in Sources */,
+				A1CB77831FBB9874008ADF09 /* Delete.swift in Sources */,
 				A1CB77691FBAAE9D008ADF09 /* TypeAliases.swift in Sources */,
 				A1CB77671FBA87F0008ADF09 /* VersionConflict.swift in Sources */,
 				A1CB77681FBAAE9A008ADF09 /* Queues.swift in Sources */,
+				A1CB77841FBB9879008ADF09 /* Upload.swift in Sources */,
+				A1CB77851FBB9881008ADF09 /* Pause.swift in Sources */,
 				A1CB77181FBA8535008ADF09 /* Duplicate.swift in Sources */,
 				A1CB77621FBA87EB008ADF09 /* BatchError.swift in Sources */,
+				A1CB77821FBB986F008ADF09 /* Download.swift in Sources */,
 				A1CB77651FBA87EB008ADF09 /* RetriableError.swift in Sources */,
 				A1CB77641FBA87EB008ADF09 /* LimitExceeded.swift in Sources */,
 				A1CB77571FBA8793008ADF09 /* DownloadTests.swift in Sources */,
@@ -559,6 +571,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = MagicCloud/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = EscapeChaos.MagicCloud;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -580,6 +593,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = MagicCloud/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = EscapeChaos.MagicCloud;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";

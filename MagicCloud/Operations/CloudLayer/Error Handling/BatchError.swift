@@ -8,16 +8,19 @@
 
 import CloudKit
 
-class BatchError: Operation {
+class BatchError<R: ReceivesRecordable>: Operation {
     
     // MARK: - Properties
     
     /// Not fileprivate so that testing mock can access.
     let error: CKError
+
+    /// This receiver contains storage site for batch of instances
+    var receiver: R?
     
     fileprivate let operation: Operation
     
-    fileprivate var recordables = [Recordable]()
+    fileprivate var recordables = [R.type]()
     
     fileprivate var database = CKContainer.default().privateCloudDatabase
     
@@ -49,10 +52,10 @@ class BatchError: Operation {
             }
         case .limitExceeded:
             NotificationCenter.default.post(name: MCNotification.limitExceeded, object: error)
-            resolution = LimitExceeded(error: error,
-                                       occuredIn: operation,
-                                       instances: recordables,
-                                       target: database)
+            resolution = LimitExceeded<R>(error: error,
+                                          occuredIn: operation,
+                                          target: database,
+                                          rec: receiver!)
         case .batchRequestFailed:
             NotificationCenter.default.post(name: MCNotification.limitExceeded, object: error)
         default:
@@ -69,12 +72,14 @@ class BatchError: Operation {
     fileprivate override init() {
         error = CKError(_nsError: NSError())
         operation = Operation()
+        receiver = nil
     }
     
-    init(error: CKError, occuredIn: Operation, instances: [Recordable], target: CKDatabase) {
+    init(error: CKError, occuredIn: Operation, target: CKDatabase, receiver: R) {
         self.error = error
         operation = occuredIn
-        recordables = instances
+        recordables = receiver.recordables
+        self.receiver = receiver
         database = target
     }
 }

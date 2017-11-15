@@ -9,15 +9,17 @@
 import Foundation
 import CloudKit
 
-class LimitExceeded: Operation {
+class LimitExceeded<R: ReceivesRecordable>: Operation {
     
     // MARK: - Properties
+    
+    var receiver: R?
     
     fileprivate var cloudError = CKError(_nsError: NSError())
     
     fileprivate var erringOperation = Operation()
     
-    fileprivate var recordables = [Recordable]()
+    fileprivate var recordables = [R.type]()
     
     fileprivate var database = CKContainer.default().privateCloudDatabase
     
@@ -33,21 +35,21 @@ class LimitExceeded: Operation {
         var resolver0: Operation?
         var resolver1: Operation?
         
-        if let _ = erringOperation as? Delete {
+        if let _ = erringOperation as? Delete<R.type> {
             let first = Array(firstHalf)
             let second = Array(secondHalf)
-            resolver0 = Delete(first)
-            resolver1 = Delete(second)
+            resolver0 = Delete/*<R.type>*/(first)
+            resolver1 = Delete<R.type>(second)
         }
         
-        if let op = erringOperation as? Download {
-            resolver0 = duplicate(op)
+        if let op = erringOperation as? Download<R> {
+            resolver0 = duplicate(op, for: R.self)
             resolver1 = Operation()
             
             if let limit = op.limit {
-                (resolver0 as? Download)?.limit = Int(round(Double(limit / 2)))
+                (resolver0 as? Download<R>)?.limit = Int(round(Double(limit / 2)))
             } else {
-                (resolver0 as? Download)?.limit = 20
+                (resolver0 as? Download<R>)?.limit = 20
             }
         }
         
@@ -62,11 +64,13 @@ class LimitExceeded: Operation {
     
     // MARK: - Functions: Constructors
     
-    init(error: CKError, occuredIn: Operation, instances: [Recordable], target: CKDatabase) {
+    init(error: CKError, occuredIn: Operation, /*instances: [T],*/ target: CKDatabase, rec: R) {
         cloudError = error
         erringOperation = occuredIn
-        recordables = instances
+//        recordables = instances
+        recordables = rec.recordables
         database = target
+        receiver = rec
         
         super.init()
     }

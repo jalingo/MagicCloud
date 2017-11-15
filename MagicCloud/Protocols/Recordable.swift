@@ -43,12 +43,15 @@ public protocol Recordable {
      * - Warning: Must be unique in the database.
      */
     var recordID: CKRecordID { get set }
+    
+    /// This requires a 'blank' init for preparation from record values.
+    init()
 }
 
 // MARK: - Mock
 
 /// Mock instance that only conforms to `Recordable` for testing and prototype development.
-struct MockRecordable: Recordable {
+class MockRecordable: Recordable {
     
     // MARK: - Properties
     
@@ -87,6 +90,8 @@ struct MockRecordable: Recordable {
     }
     
     // MARK: - Functions: Constructor
+    
+    required init() { }
     
     init(created: Date? = nil) {
         if let date = created { self.created = date }

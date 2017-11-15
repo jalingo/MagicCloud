@@ -8,8 +8,9 @@
 
 import CloudKit
 
-public class Download: Operation {
-    
+//public class Download<R: ReceivesRecordable>: Operation {
+public class Download</*T: Recordable, */R: ReceivesRecordable>: Operation {
+
     // MARK: - Properties
     
     /**
@@ -23,8 +24,8 @@ public class Download: Operation {
     /// - Caution: Setting this property does not effect `ignoreUnknownItem` property.
     var ignoreUnknownItemCustomAction: OptionalClosure
     
-    /// This protocol enables conforming types to give access to an array of Recordable, and to prevent / allow that array’s didSet to upload said array’s changes to the cloud.
-    var reciever: ReceivesRecordable
+    /// This property enables conforming types to give access to an array of Recordable, and to prevent / allow that array’s didSet to upload said array’s changes to the cloud.
+    var anyReciever: AnyReceiver<R.type, R>
     
     /**
      * A conduit for accessing and for performing operations on the public and private data of an app container.
@@ -49,20 +50,20 @@ public class Download: Operation {
     
     // MARK: - Functions
     
-    fileprivate func decorate(op: CKQueryOperation, for db: CKDatabase, and type: String) {
+    fileprivate func decorate(op: CKQueryOperation, for db: CKDatabase) { //}, and type: String) {
         if let integer = limit { op.resultsLimit = integer }
-        op.recordFetchedBlock = recordFetched(type: type, from: db)
+        op.recordFetchedBlock = recordFetched(/*type: type, */from: db)
         op.queryCompletionBlock = queryCompletion(op: op, database: db)
     }
     
-    fileprivate func recordFetched(type: String, from db: CKDatabase) -> FetchBlock {
+    fileprivate func recordFetched(/*type: String, */from db: CKDatabase) -> FetchBlock {
         return { record in
 print("* \(record.recordID.recordName) fetched from: \(db)")
 
-            let fetched = prepare(type, from: record, in: db)
-            
-            self.reciever.allowComponentsDidSetToUploadDataModel = false
-            self.reciever.recordables.append(fetched)
+            let fetched = prepare(type: R.type.self, from: record, in: db)
+
+            self.anyReciever.allowComponentsDidSetToUploadDataModel = false
+            if let new = fetched as? R.type { self.anyReciever.recordables.append(new) }
         }
     }
     
@@ -76,8 +77,8 @@ print("* \(record.recordID.recordName) fetched from: \(db)")
                         print("handling error @ Download.queryCompletion")
                         let errorHandler = MCErrorHandler(error: cloudError,
                                                           originating: op,
-                                                          instances: self.reciever.recordables,
-                                                          target: database)
+                                                          target: database,
+                                                          instances: self.anyReciever.recordables)
                         errorHandler.ignoreUnknownItem = true
                         errorHandler.ignoreUnknownItemCustomAction = self.ignoreUnknownItemCustomAction
                         ErrorQueue().addOperation(errorHandler)
@@ -112,7 +113,7 @@ print("* \(record.recordID.recordName) fetched from: \(db)")
         self.completionBlock = nil
         
         if let database = db {
-            decorate(op: op, for: database, and: query.recordType)
+            decorate(op: op, for: database)//, and: query.recordType)
             op.name = "Download.any: \(database.description)"
             
             if isCancelled { return }
@@ -121,11 +122,11 @@ print("* \(record.recordID.recordName) fetched from: \(db)")
             let publicDB = CKContainer.default().publicCloudDatabase
             let privateDB = CKContainer.default().privateCloudDatabase
             
-            decorate(op: op, for: privateDB, and: query.recordType)
+            decorate(op: op, for: privateDB)//, and: query.recordType)
             op.name = "Download.private"
 
             let pubOp = CKQueryOperation(query: query)
-            decorate(op: pubOp, for: publicDB, and: query.recordType)
+            decorate(op: pubOp, for: publicDB)//, and: query.recordType)
             pubOp.completionBlock = { privateDB.add(op) }
             pubOp.name = "Download.public"
             
@@ -149,11 +150,11 @@ print("* \(record.recordID.recordName) fetched from: \(db)")
      *
      * - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    init(type: String, queryField: String, queryValues: [CKRecordValue], to rec: ReceivesRecordable, from database: CKDatabase? = nil) {
+    init(type: String, queryField: String, queryValues: [CKRecordValue], to rec: R, from database: CKDatabase? = nil) {
         let predicate = NSPredicate(format: "%K IN %@", queryField, queryValues)
         query = CKQuery(recordType: type, predicate: predicate)
         
-        reciever = rec
+        anyReciever = AnyReceiver(recordable: R.type.self, rec: rec)
         db = database
         
         super.init()
@@ -170,12 +171,12 @@ print("* \(record.recordID.recordName) fetched from: \(db)")
      *
      * - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    init(type: String, ownedBy: Recordable, to rec: ReceivesRecordable, from database: CKDatabase? = nil) {
+    init(type: String, ownedBy: Recordable, to rec: R, from database: CKDatabase? = nil) {
         let ref = CKReference(recordID: ownedBy.recordID, action: .deleteSelf)
         let predicate = NSPredicate(format: "%K CONTAINS %@", OWNER_KEY, ref)
         query = CKQuery(recordType: type, predicate: predicate)
         
-        reciever = rec
+        anyReciever = AnyReceiver(recordable: R.type.self, rec: rec)
         db = database
         
         super.init()
@@ -190,11 +191,11 @@ print("* \(record.recordID.recordName) fetched from: \(db)")
      *
      * - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    init(type: String, to rec: ReceivesRecordable, from database: CKDatabase? = nil) {
+    init(type: String, to rec: R, from database: CKDatabase? = nil) {
         let predicate = NSPredicate(format: "TRUEPREDICATE")
         query = CKQuery(recordType: type, predicate: predicate)
         
-        reciever = rec
+        anyReciever = AnyReceiver(recordable: R.type.self, rec: rec)
         db = database
         
         super.init()

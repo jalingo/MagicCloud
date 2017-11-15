@@ -51,14 +51,14 @@ public protocol Referable: Recordable {
 
 // MARK: - Mocks
 
-class MockReferable: Referable {
+class MockReferable: MockRecordable, Referable {
     
     // MARK: - Properties
     
     let REC_TYPE = "MockReferable"
     let REFS_KEY = OWNER_KEY
     
-    var created = Date().description
+//    var created = Date().description
     
     // MARK: - Properties: Referrable
     
@@ -72,27 +72,27 @@ class MockReferable: Referable {
      * This database is used to determine whether conforming instance is stored in the
      * public or private cloud database.
      */
-    var database: CKDatabase = CKContainer.default().privateCloudDatabase
+//    var database: CKDatabase = CKContainer.default().privateCloudDatabase
     
     /**
      * This is a token used with cloudkit to build CKRecordID for this object's CKRecord.
      */
-    var recordType: String { return REC_TYPE }
+    override var recordType: String { return REC_TYPE }
     
     /**
      * This dictionary has to match all of the keys used in CKRecord in order for version
      * conflicts and retry attempts to succeed. Its values should match the associated
      * fields in CKRecord.
      */
-    var recordFields: Dictionary<String, CKRecordValue> {
-        get {
-            return [REFS_KEY: references as CKRecordValue]
-        }
-        
-        set {
-            owners = newValue[REFS_KEY] as? [CKReference]
-        }
-    }
+//    var recordFields: Dictionary<String, CKRecordValue> {
+//        get {
+//            return [REFS_KEY: references as CKRecordValue]
+//        }
+//
+//        set {
+//            owners = newValue[REFS_KEY] as? [CKReference]
+//        }
+//    }
     
     /**
      * A record identifier used to store and recover conforming instance's record. This ID is
@@ -101,10 +101,10 @@ class MockReferable: Referable {
      *
      * - Warning: Must be unique in the database.
      */
-    var recordID: CKRecordID {//= CKRecordID(recordName: "Mock Referable")
-        get { return CKRecordID(recordName: created) }
-        set { created = newValue.recordName }
-    }
+//    var recordID: CKRecordID {//= CKRecordID(recordName: "Mock Referable")
+//        get { return CKRecordID(recordName: created) }
+//        set { created = newValue.recordName }
+//    }
     
     // MARK: - Functions: Referrable
     
@@ -119,8 +119,9 @@ class MockReferable: Referable {
     }
 }
 
-extension MockReferable: Equatable { }
+//extension MockReferable: Equatable { }
+//
+//func ==(left: MockReferable, right: MockReferable) -> Bool {
+//    return left.recordID == right.recordID
+//}
 
-func ==(left: MockReferable, right: MockReferable) -> Bool {
-    return left.recordID == right.recordID
-}
