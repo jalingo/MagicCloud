@@ -23,8 +23,10 @@ class MCErrorHandler<R: ReceivesRecordable>: Operation {
     
     // MARK: - Properties
     
+    fileprivate let receiver: R
+    
     /// This is the error that needs to be handled by this operation.
-    let error: CKError
+    fileprivate let error: CKError
     
     /// This is the operation that was running when error was generated.
     fileprivate let originatingOp: Operation
@@ -75,10 +77,11 @@ class MCErrorHandler<R: ReceivesRecordable>: Operation {
         // This error occurs when record's change tag indicates a version conflict.
         case .serverRecordChanged:
             NotificationCenter.default.post(name: MCNotification.serverRecordChanged, object: error)
-            resolvingOperation = VersionConflict(error: error,
+            resolvingOperation = VersionConflict(rec: receiver,
+                                                 error: error,
 //                                                 instances: recordables,
-//                                                 policy: conflictResolutionPolicy,
                                                  target: database,
+                                                 policy: self.conflictResolutionPolicy,
                                                  completionBlock: completionBlock)
             completionBlock = nil
      
@@ -87,7 +90,7 @@ class MCErrorHandler<R: ReceivesRecordable>: Operation {
             NotificationCenter.default.post(name: MCNotification.batchIssue, object: error)
             resolvingOperation = BatchError(error: error,
                                             occuredIn: originatingOp,
-                                            target: database, instances: recordables)
+                                            target: database, receiver: receiver)
                                             
             if let resolver = resolvingOperation as? BatchError<R> {
                 resolver.ignoreUnknownItem = self.ignoreUnknownItem
@@ -152,6 +155,8 @@ class MCErrorHandler<R: ReceivesRecordable>: Operation {
      */
     init(error: CKError, originating: Operation, target: CKDatabase, receiver: R/*instances: [Recordable]*/) {
         self.error = error
+        self.receiver = receiver
+        
         originatingOp = originating
         recordables = receiver.recordables
         database = target

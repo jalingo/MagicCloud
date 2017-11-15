@@ -182,7 +182,7 @@ print("conflict resolved")
     
     // MARK: - Functions: Constructor
     
-    init(error: CKError, rec: R, target: CKDatabase, policy: CKRecordSavePolicy, completionBlock: OptionalClosure) {
+    init(rec: R, error: CKError, target: CKDatabase, policy: CKRecordSavePolicy, completionBlock: OptionalClosure) {
         receiver = rec
         
         self.error = error
