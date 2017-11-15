@@ -13,7 +13,7 @@ class PartialErrorTests: XCTestCase {
     
     // MARK: - Properties
     
-    var testOp: PartialError?
+    var testOp: PartialError<MockReceiver>?
     
     var error: CKError {
      
@@ -33,13 +33,13 @@ class PartialErrorTests: XCTestCase {
         return CKError(_nsError: error)
     }
     
-    var failedOp: Upload?
+    var failedOp: Upload<MockReceiver>?
     
     var mocks: [Recordable]?
     
-    var database: CKDatabase {
-        return CKContainer.default().privateCloudDatabase
-    }
+    var mockRec = MockReceiver()
+    
+    var database: DatabaseType { return .privateDB }
     
     // MARK: - Functions
     
@@ -47,6 +47,8 @@ class PartialErrorTests: XCTestCase {
         mocks = [Recordable]()
         mocks?.append(MockRecordable())
         mocks?.append(MockRecordable(created: Date.distantPast))
+        
+        mockRec = MockReceiver()
     }
     
     // MARK: - Functions: Unit Tests
@@ -62,9 +64,9 @@ class PartialErrorTests: XCTestCase {
         }
     
         // These operations are used in test sequence.
-        let prepOp = Delete(mocks!)
+        let prepOp = Delete(mocks as? [MockRecordable], from: mockRec, to: database)
         let pause   = Pause(seconds: 3)
-        let cleanUp = Delete(mocks!)
+        let cleanUp = Delete(mocks as? [MockRecordable], from: mockRec, to: database)
         
         // This operation will verify that mock was uploaded, and record it's findings in `recordInDatabase`.
         let mockIDs = mocks!.map({ $0.recordID })
@@ -74,8 +76,9 @@ class PartialErrorTests: XCTestCase {
                 if let cloudError = error as? CKError {
                     let errorHandler = MCErrorHandler(error: cloudError,
                                                       originating: verifyOp,
-                                                      instances: self.mocks!,
-                                                      target: self.database)
+                                                      target: self.database,
+                                                      instances: self.mocks as! [MockRecordable],
+                                                      receiver: self.mockRec)
                     ErrorQueue().addOperation(errorHandler)
                 } else {
                     print("NSError: \(error!) @ testPartialErrorHandles.0")
@@ -93,8 +96,9 @@ class PartialErrorTests: XCTestCase {
                 if let cloudError = error as? CKError {
                     let errorHandler = MCErrorHandler(error: cloudError,
                                                       originating: verifyOp,
-                                                      instances: self.mocks!,
-                                                      target: self.database)
+                                                      target: self.database,
+                                                      instances: self.mocks as! [MockRecordable],
+                                                      receiver: self.mockRec)
                     errorHandler.ignoreUnknownItem = true
                     ErrorQueue().addOperation(errorHandler)
                 } else {
@@ -138,8 +142,8 @@ class PartialErrorTests: XCTestCase {
         super.setUp()
 
         loadMocks()
-        failedOp = Upload(mocks!)
-        testOp = PartialError(error: error, occuredIn: failedOp!, instances: mocks!, target: database)
+        failedOp = Upload(mocks as? [MockRecordable], from: mockRec, to: database)
+        testOp = PartialError(error: error, occuredIn: failedOp!, at: mockRec, instances: mocks as! [MockRecordable], target: database)
     }
     
     override func tearDown() {

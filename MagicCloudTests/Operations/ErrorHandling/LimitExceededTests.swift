@@ -13,11 +13,13 @@ class LimitExceededTests: XCTestCase {
     
     // MARK: - Properties
     
-    var testOp: LimitExceeded?
+    var testOp: LimitExceeded<MockReceiver>?
     
-    var mock: Upload?
+    var mock: Upload<MockReceiver>?
     
-    var mocks: [Recordable]?
+    var mockRec = MockReceiver()
+    
+    var mocks: [MockRecordable]?
     
     var error: CKError {
         let error = NSError(domain: CKErrorDomain, code: CKError.limitExceeded.rawValue, userInfo: nil)
@@ -27,7 +29,7 @@ class LimitExceededTests: XCTestCase {
     // MARK: - Functions
     
     func loadMocks() {
-        mocks = [Recordable]()
+        mocks = [MockRecordable]()
         mocks?.append(MockRecordable())
         mocks?.append(MockRecordable(created: Date.distantPast))
     }
@@ -45,13 +47,12 @@ class LimitExceededTests: XCTestCase {
         }
         
         // Creates mock error situation.
-        let db = CKContainer.default().privateCloudDatabase
-        testOp = LimitExceeded(error: error, occuredIn: mock!, instances: mocks!, target: db)
+        testOp = LimitExceeded(error: error, occuredIn: mock!, rec: mockRec, instances: mocks!, target: .privateDB)
         
         // These operations are used in test sequence.
-        let prepOp = Delete(mocks!)
+        let prepOp = Delete(mocks, from: mockRec, to: .privateDB)
         let pause   = Pause(seconds: 3)
-        let cleanUp = Delete(mocks!)
+        let cleanUp = Delete(mocks, from: mockRec, to: .privateDB)
 
         // This operation will verify that mock was uploaded, and record it's findings in `recordInDatabase`.
         let mockIDs = mocks!.map({ $0.recordID })
@@ -61,8 +62,9 @@ class LimitExceededTests: XCTestCase {
                 if let cloudError = error as? CKError {
                     let errorHandler = MCErrorHandler(error: cloudError,
                                                       originating: verifyOp,
+                                                      target: .privateDB,
                                                       instances: self.mocks!,
-                                                      target: db)
+                                                      receiver: self.mockRec)
                     ErrorQueue().addOperation(errorHandler)
                 } else {
                     print("NSError: \(error!) @ testLimitExceededHandles.0")
@@ -80,8 +82,9 @@ class LimitExceededTests: XCTestCase {
                 if let cloudError = error as? CKError {
                     let errorHandler = MCErrorHandler(error: cloudError,
                                                       originating: verifyOp,
+                                                      target: .privateDB,
                                                       instances: self.mocks!,
-                                                      target: db)
+                                                      receiver: self.mockRec)
                     errorHandler.ignoreUnknownItem = true
                     ErrorQueue().addOperation(errorHandler)
                 } else {
@@ -125,7 +128,7 @@ class LimitExceededTests: XCTestCase {
         super.setUp()
      
         loadMocks()
-        mock = Upload(mocks!)
+        mock = Upload(mocks!, from: mockRec, to: .privateDB)
     }
     
     override func tearDown() {

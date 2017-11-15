@@ -15,10 +15,12 @@ class VersionConflictTests: XCTestCase {
     
     let TEST_KEY = "MockValue"
     
-    var testOp: VersionConflict?
+    var testOp: VersionConflict<MockReceiver>?
     
     var mock: Recordable?
 
+    var mockRec = MockReceiver()
+    
     var dict: [AnyHashable: Any]? {
         var dict = [AnyHashable: Any]()
         
@@ -62,6 +64,8 @@ class VersionConflictTests: XCTestCase {
         previous = _previous
         saved = _saved
         attempted = _attempted
+        
+        mockRec = MockReceiver()
     }
 
     func nullifyInfo() {
@@ -72,9 +76,12 @@ class VersionConflictTests: XCTestCase {
     
     func loadTestOp() {
         let error = NSError(domain: CKErrorDomain, code: CKError.serverRecordChanged.rawValue, userInfo: dict as? [String : Any])
-        let db = CKContainer.default().privateCloudDatabase
-        
-        testOp = VersionConflict(error: CKError(_nsError: error), instances: [mock!], target: db, completionBlock: nil)
+        testOp = VersionConflict(rec: mockRec,
+                                 error: CKError(_nsError: error),
+                                 target: .privateDB,
+                                 policy: .changedKeys,
+                                 instances: [mock as! MockRecordable],
+                                 completionBlock: nil)
     }
     
     // MARK: - Functions: Unit Tests
@@ -85,13 +92,12 @@ class VersionConflictTests: XCTestCase {
         let firstPause = Pause(seconds: 3)
         firstPause.addDependency(testOp!)
         
-        let cleanUp = Delete([mock!])
+        let cleanUp = Delete([mock as! MockRecordable], from: mockRec, to: .privateDB)
         
         let secondPause = Pause(seconds: 2)
         secondPause.addDependency(cleanUp)
 
-        let mockReciever = MockReciever()
-        let verifyOp = Download(type: mock!.recordType, to: mockReciever, from: mock!.database)
+        let verifyOp = Download(type: mock!.recordType, to: mockRec, from: .privateDB)
         verifyOp.addDependency(firstPause)
         verifyOp.completionBlock = { CloudQueue().addOperation(cleanUp) }
 
@@ -102,7 +108,7 @@ class VersionConflictTests: XCTestCase {
         
         secondPause.waitUntilFinished()
         
-        let result = mockReciever.recordables.filter() { $0.recordID.recordName == "MockIdentifier: 4001-01-01 00:00:00 +0000" } //mock?.recordID.recordName }  <-- RecordName for MockRecordable dependent on date field.
+        let result = mockRec.recordables.filter() { $0.recordID.recordName == "MockIdentifier: 4001-01-01 00:00:00 +0000" } // <- RecordName for MockRecordable dependent on date field.
         if let firstEntry = result.first?.recordFields[TEST_KEY] as? Date, let attempted = attempted?[TEST_KEY] as? Date {
             XCTAssert(firstEntry == attempted)
         } else {
@@ -116,13 +122,12 @@ class VersionConflictTests: XCTestCase {
         let firstPause = Pause(seconds: 3)
         firstPause.addDependency(testOp!)
         
-        let cleanUp = Delete([mock!])
+        let cleanUp = Delete([mock as! MockRecordable], from: mockRec, to: .privateDB)
         
         let secondPause = Pause(seconds: 2)
         secondPause.addDependency(cleanUp)
         
-        let mockReciever = MockReciever()
-        let verifyOp = Download(type: mock!.recordType, to: mockReciever, from: mock!.database)
+        let verifyOp = Download(type: mock!.recordType, to: mockRec, from: .privateDB)
         verifyOp.addDependency(firstPause)
         verifyOp.completionBlock = { CloudQueue().addOperation(cleanUp) }
         
@@ -133,7 +138,7 @@ class VersionConflictTests: XCTestCase {
         
         secondPause.waitUntilFinished()
         
-        let result = mockReciever.recordables.filter() { $0.recordID.recordName == "MockIdentifier: 4001-01-01 00:00:00 +0000" }    // <-- RecordName for MockRecordable dependent on date field.
+        let result = mockRec.recordables.filter() { $0.recordID.recordName == "MockIdentifier: 4001-01-01 00:00:00 +0000" }    // <-- RecordName for MockRecordable dependent on date field.
         if let firstEntry = result.first?.recordFields[TEST_KEY] as? Date, let attempted = attempted?[TEST_KEY] as? Date {
             XCTAssert(firstEntry == attempted)
         } else {
@@ -147,13 +152,12 @@ class VersionConflictTests: XCTestCase {
         let firstPause = Pause(seconds: 3)
         firstPause.addDependency(testOp!)
         
-        let cleanUp = Delete([mock!])
+        let cleanUp = Delete([mock as! MockRecordable], from: mockRec, to: .privateDB)
         
         let secondPause = Pause(seconds: 2)
         secondPause.addDependency(cleanUp)
         
-        let mockReciever = MockReciever()
-        let verifyOp = Download(type: mock!.recordType, to: mockReciever, from: mock!.database)
+        let verifyOp = Download(type: mock!.recordType, to: mockRec, from: .privateDB)
         verifyOp.addDependency(firstPause)
         verifyOp.completionBlock = { CloudQueue().addOperation(cleanUp) }
         
@@ -165,7 +169,7 @@ class VersionConflictTests: XCTestCase {
         secondPause.waitUntilFinished()
         
         // With no changes to make, no record should be in the database to download.
-        XCTAssert(mockReciever.recordables.count == 0)
+        XCTAssert(mockRec.recordables.count == 0)
     }
     
     // MARK: - Functions: XCTestCase

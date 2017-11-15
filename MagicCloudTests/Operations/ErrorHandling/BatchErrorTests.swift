@@ -17,9 +17,11 @@ class BatchErrorTests: XCTestCase {
     
     var mockOp: MockOperation?
     
+    var mockRec = MockReceiver()
+    
     var errorDetected = false
     
-    let db = CKContainer.default().privateCloudDatabase
+    let db: DatabaseType = .privateDB
     
     // MARK: - Functions
     
@@ -27,6 +29,8 @@ class BatchErrorTests: XCTestCase {
         mocks = [Recordable]()
         mocks?.append(MockRecordable())
         mocks?.append(MockRecordable(created: Date.distantPast))
+        
+        mockRec = MockReceiver()
     }
     
     func genError(code: Int) -> CKError {
@@ -46,7 +50,7 @@ class BatchErrorTests: XCTestCase {
         let observer = NotificationCenter.default.addObserver(forName: MCNotification.partialFailure, object: nil, queue: nil, using: detectionBlock())
 
         let error = genError(code: CKError.partialFailure.rawValue)
-        let testOp = MockBatchError(error: error, occuredIn: mockOp!, instances: mocks!, target: db)
+        let testOp = BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
         ErrorQueue().addOperation(testOp)
 
         let group = DispatchGroup()
@@ -66,7 +70,7 @@ class BatchErrorTests: XCTestCase {
         let observer = NotificationCenter.default.addObserver(forName: MCNotification.limitExceeded, object: nil, queue: nil, using: detectionBlock())
 
         let error = genError(code: CKError.limitExceeded.rawValue)
-        let testOp = MockBatchError(error: error, occuredIn: mockOp!, instances: mocks!, target: db)
+        let testOp = BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
         ErrorQueue().addOperation(testOp)
         
         let group = DispatchGroup()
@@ -86,7 +90,7 @@ class BatchErrorTests: XCTestCase {
         let observer = NotificationCenter.default.addObserver(forName: MCNotification.batchRequestFailed, object: nil, queue: nil, using: detectionBlock())
 
         let error = genError(code: CKError.batchRequestFailed.rawValue)
-        let testOp = MockBatchError(error: error, occuredIn: mockOp!, instances: mocks!, target: db)
+        let testOp = BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
         ErrorQueue().addOperation(testOp)
         
         let group = DispatchGroup()
@@ -135,30 +139,31 @@ class BatchErrorTests: XCTestCase {
 
 class MockOperation: Operation { }
 
-/// This mock overrides main with the only change to implementation being that
-/// a notification is launched rather than the follow up operation.
-class MockBatchError: BatchError {
-    
-    override func main() {
-        if isCancelled { return }
-        
-        var notifier: Notification?
-        
-        switch error.code {
-        case .partialFailure:
-            notifier = Notification(name: MCNotification.partialFailure)
-        case .limitExceeded:
-            notifier = Notification(name: MCNotification.limitExceeded)
-        case .batchRequestFailed:
-            notifier = Notification(name: MCNotification.batchRequestFailed)
-        default:
-            notifier = Notification(name: MCNotification.cloudError)
-        }
-        
-        if isCancelled { return }
+///// This mock overrides main with the only change to implementation being that
+///// a notification is launched rather than the follow up operation.
+//class MockBatchError: BatchError {
+//
+//    override func main() {
+//        if isCancelled { return }
+//
+//        var notifier: Notification?
+//
+//        switch error.code {
+//        case .partialFailure:
+//            notifier = Notification(name: MCNotification.partialFailure)
+//        case .limitExceeded:
+//            notifier = Notification(name: MCNotification.limitExceeded)
+//        case .batchRequestFailed:
+//            notifier = Notification(name: MCNotification.batchRequestFailed)
+//        default:
+//            notifier = Notification(name: MCNotification.cloudError)
+//        }
+//
+//        if isCancelled { return }
+//
+//        if let note = notifier {
+//            NotificationCenter.default.post(name: note.name, object: nil)
+//        }
+//    }
+//}
 
-        if let note = notifier {
-            NotificationCenter.default.post(name: note.name, object: nil)
-        }
-    }
-}

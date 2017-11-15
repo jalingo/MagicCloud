@@ -54,9 +54,7 @@ public protocol Recordable {
 class MockRecordable: Recordable {
     
     // MARK: - Properties
-    
-    var database = CKContainer.default().privateCloudDatabase
-    
+        
     var created = Date()
     
     // MARK: - Properties: Static Values

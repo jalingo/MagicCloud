@@ -13,13 +13,13 @@ class DeleteTests: XCTestCase {
     
     // MARK: - Properties
     
-    var testOp: Delete?
+    var testOp: Delete<MockReceiver>?
 
-    var mock: Recordable?
+    var mock: MockRecordable?
+    
+    var mockRec = MockReceiver()
     
     var recordDeleted = false
-    
-    var auxRecDeleted = false
     
     // MARK: - Functions
     
@@ -40,8 +40,9 @@ class DeleteTests: XCTestCase {
                                     } else {
                                         let errorHandler = MCErrorHandler(error: cError,
                                                                           originating: op,
+                                                                          target: .privateDB,
                                                                           instances: [self.mock!],
-                                                                          target: self.mock!.database)
+                                                                          receiver: self.mockRec)
                                         errorHandler.ignoreUnknownItem = true
                                         ErrorQueue().addOperation(errorHandler)
                                     }
@@ -51,8 +52,9 @@ class DeleteTests: XCTestCase {
                     } else {
                         let errorHandler = MCErrorHandler(error: cloudError,
                                                           originating: op,
+                                                          target: .privateDB,
                                                           instances: [self.mock!],
-                                                          target: self.mock!.database)
+                                                          receiver: self.mockRec)
                         errorHandler.ignoreUnknownItem = true
                         ErrorQueue().addOperation(errorHandler)
                     }
@@ -62,7 +64,6 @@ class DeleteTests: XCTestCase {
                 
                 return
             }
-            
 print("!! Records FOUND: \(String(describing: results?.count))")
             if let dictionary = results {
                 for entry in dictionary {
@@ -70,67 +71,17 @@ print("!! Records FOUND: \(String(describing: results?.count))")
                     print("value: \(entry.value)")
 
                     let cleanUpAfterFailure = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [entry.key])
-                    cleanUpAfterFailure.isLongLived = true
+                    if #available(iOS 11.0, *) {
+                        cleanUpAfterFailure.configuration.isLongLived = true
+                    } else {
+                        cleanUpAfterFailure.isLongLived = true
+                    }
                     CloudQueue().addOperation(cleanUpAfterFailure)
                 }
             }
             
             if failWhenFound { XCTFail() }
             
-        }
-        
-        return op
-    }
-    
-    fileprivate func auxVerifyOperation(ids: [CKRecordID]) -> CKFetchRecordsOperation {
-        let op = CKFetchRecordsOperation(recordIDs: ids)
-        
-        op.fetchRecordsCompletionBlock = { results, error in
-            guard error == nil else {
-                if let cloudError = error as? CKError {
-                    if cloudError.code == .unknownItem {
-                        self.auxRecDeleted = true   // <-- This is what test expects to happen (if op wasn't a batch).
-                    } else if cloudError.code == .partialFailure {
-                        if let dictionary = cloudError.userInfo[CKPartialErrorsByItemIDKey] as? NSDictionary {
-                            for entry in dictionary {
-                                if let cError = entry.value as? CKError {
-                                    if cError.code == .unknownItem {
-                                        self.auxRecDeleted = true          // <-- This is what test expects to happen.
-                                    } else {
-                                        let errorHandler = MCErrorHandler(error: cError,
-                                                                          originating: op,
-                                                                          instances: [self.mock!],
-                                                                          target: self.mock!.database)
-                                        errorHandler.ignoreUnknownItem = true
-                                        ErrorQueue().addOperation(errorHandler)
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        let errorHandler = MCErrorHandler(error: cloudError,
-                                                          originating: op,
-                                                          instances: [self.mock!],
-                                                          target: self.mock!.database)
-                        errorHandler.ignoreUnknownItem = true
-                        ErrorQueue().addOperation(errorHandler)
-                    }
-                } else {
-                    print("NSError: \(error!) @ DeleteTests.1")
-                }
-                
-                return
-            }
-            
-print("!! Records FOUND: \(String(describing: results?.count))")
-            if let dictionary = results {
-                for entry in dictionary {
-                    print("key: \(entry.key)")
-                    print("value: \(entry.value)")
-                }
-            }
-            
-            XCTFail()
         }
         
         return op
@@ -148,7 +99,7 @@ print("!! Records FOUND: \(String(describing: results?.count))")
         let delay: UInt64 = 5
         testOp?.delayInSeconds = delay
     
-        let prepOp = Upload([mock!])
+        let prepOp = Upload([mock!], from: mockRec, to: .privateDB)
         let prepCompleted = expectation(description: "record uploaded")
         prepOp.completionBlock = { prepCompleted.fulfill() }
         CloudQueue().addOperation(prepOp)
@@ -177,11 +128,8 @@ print("!! Records FOUND: \(String(describing: results?.count))")
     }
     
     func testDeleteOnPrivate() {
-        
-        mock?.database = CKContainer.default().privateCloudDatabase
-        
         let uploaded = expectation(description: "Mock Object Uploaded")
-        let prepOp = Upload([mock!])
+        let prepOp = Upload([mock!], from: mockRec, to: .privateDB)
         prepOp.completionBlock = { uploaded.fulfill() }
 
         CloudQueue().addOperation(prepOp)
@@ -209,14 +157,14 @@ print("!! Records FOUND: \(String(describing: results?.count))")
     }
     
     func testDeleteOnPublic() {
-        mock?.database = CKContainer.default().publicCloudDatabase
-        
         let uploaded = expectation(description: "Mock Object Uploaded")
-        let prepOp = Upload([mock!])
+        let prepOp = Upload([mock!], from: mockRec, to: .publicDB)
         prepOp.completionBlock = { uploaded.fulfill() }
         
         CloudQueue().addOperation(prepOp)
         wait(for: [uploaded], timeout: 3)
+        
+        testOp = Delete([mock!], from: mockRec, to: .publicDB)
         
         let firstPause = Pause(seconds: 5)
         testOp?.addDependency(firstPause)
@@ -235,43 +183,6 @@ print("!! Records FOUND: \(String(describing: results?.count))")
         XCTAssert(recordDeleted)
     }
 
-    func testDeleteOnBoth() {
-        var aux = MockRecordable()
-        aux.database = CKContainer.default().privateCloudDatabase
-        mock?.database = CKContainer.default().publicCloudDatabase
-        
-        let mocks = [mock!, aux]
-        let prepOp = Upload(mocks)
-
-        let prep = DispatchGroup()
-        prep.enter()
-        prepOp.completionBlock = { prep.leave() }
-
-        CloudQueue().addOperation(prepOp)
-        prep.wait()
-        
-        testOp = Delete(mocks)
-
-        let testing = DispatchGroup()
-        testing.enter()
-        testOp?.completionBlock = { testing.leave() }
-
-        CloudQueue().addOperation(testOp!)
-        testing.wait()
-        
-        let verifyPrivate = verifyOperation(ids: [aux.recordID])
-        let verifyPublic = auxVerifyOperation(ids: [mock!.recordID])
-        
-        CloudQueue().addOperation(verifyPrivate)
-        CloudQueue().addOperation(verifyPublic)
-        
-        verifyPrivate.waitUntilFinished()
-        XCTAssert(recordDeleted)
-        
-        verifyPublic.waitUntilFinished()
-        XCTAssert(auxRecDeleted)
-    }
-    
 //    func testPerformance() {
 //        self.measure {
 //            self.testOp = Delete([self.mock!])
@@ -290,9 +201,9 @@ print("!! Records FOUND: \(String(describing: results?.count))")
         super.setUp()
 
         mock = MockRecordable()
-        testOp = Delete([mock!])
+        mockRec = MockReceiver()
+        testOp = Delete([mock!], from: mockRec, to: .privateDB)
         recordDeleted = false
-        auxRecDeleted = false
     }
     
     override func tearDown() {

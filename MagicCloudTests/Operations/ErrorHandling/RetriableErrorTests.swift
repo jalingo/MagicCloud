@@ -13,7 +13,11 @@ class RetriableErrorTests: XCTestCase {
     
     // MARK: - Properties
 
-    var testOp: RetriableError?
+    let notifier = Notification(name: Notification.Name(rawValue: "RetriableTestNotification"))
+
+    var testOp: RetriableError<MockReceiver>?
+    
+    var mockRec = MockReceiver()
     
     var error: CKError? {
         if let interval = TimeInterval(exactly: 0.2) {
@@ -23,16 +27,14 @@ class RetriableErrorTests: XCTestCase {
         } else {
             return nil
         }
-    }
-    
-    let notifier = Notification(name: Notification.Name(rawValue: "RetriableTestNotification"))
+    }    
     
     // MARK: - Functions
     
     func loadTestOp() {
         let mockOp = FailedOp(notify: notifier)
         if let error = error {
-            testOp = RetriableError(error: error, originating: mockOp, target: CKContainer.default().privateCloudDatabase)
+            testOp = RetriableError(error: error, originating: mockOp, target: .privateDB, receiver: mockRec)
         } else {
             print("!! RetriableErrorTests.loadTestOp FAILED")
         }
@@ -69,6 +71,7 @@ class RetriableErrorTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
+        mockRec = MockReceiver()
         loadTestOp()
     }
     

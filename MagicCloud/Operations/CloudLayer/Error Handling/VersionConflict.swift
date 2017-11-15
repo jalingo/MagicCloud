@@ -20,7 +20,7 @@ class VersionConflict<R: ReceivesRecordable>: Operation {
         - .allKeys: Ignores record tags and overwrites all fields from newer record.
         - .ifServerUnchanged: Respects record tags and rejects all values from newer record.
      */
-    let policy: CKRecordSavePolicy
+    var policy: CKRecordSavePolicy
     
     let receiver: R
     

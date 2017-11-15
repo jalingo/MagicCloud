@@ -35,9 +35,7 @@ class RecordableTests: XCTestCase {
     func testRecordableHasRecordID() { XCTAssertNotNil(mock?.recordID) }
     
     func testRecordableHasDictionaryOfRecordFields() { XCTAssertNotNil(mock?.recordFields) }
-    
-    func testRecordableHasDatabase() { XCTAssertNotNil(mock?.database) }
-    
+        
     func testRecordableRecordFieldsCanBeSet() {
         let altDate = Date(timeIntervalSince1970: 5)
         let altMock = MockRecordable(created: altDate)
