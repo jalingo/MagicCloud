@@ -18,13 +18,17 @@ public protocol ReceivesRecordable: AnyObject {
     associatedtype type: Recordable
     
     /**
-     * This boolean property allows / prevents changes to `recordables` being reflected in
-     * the cloud.
+        This boolean property allows / prevents changes to `recordables` being reflected in
+        the cloud.
+     
+        - Refactor.Rename: allowUpdateToTriggerUpload
      */
     var allowRecordablesDidSetToUploadDataModel: Bool { get set }
     
     /**
-     * This protected property is an array of recordables used by reciever.
+        This protected property is an array of recordables used by reciever.
+     
+        It's didSet is a good place to upload changes, after guarding allowRecordablesDidSet...
      */
     var recordables: [type] { get set }
 }
