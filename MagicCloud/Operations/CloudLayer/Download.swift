@@ -131,7 +131,7 @@ public class Download<R: ReceivesRecordable>: Operation {
      *
      * - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    init(type: String, queryField: String, queryValues: [CKRecordValue], to rec: R, from db: DatabaseType) {
+    public init(type: String, queryField: String, queryValues: [CKRecordValue], to rec: R, from db: DatabaseType) {
         let predicate = NSPredicate(format: "%K IN %@", queryField, queryValues)
         query = CKQuery(recordType: type, predicate: predicate)
         receiver = rec
@@ -151,7 +151,7 @@ public class Download<R: ReceivesRecordable>: Operation {
      *
      * - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    init(type: String, ownedBy: Recordable, to rec: R, from db: DatabaseType) {
+    public init(type: String, ownedBy: Recordable, to rec: R, from db: DatabaseType) {
         let ref = CKReference(recordID: ownedBy.recordID, action: .deleteSelf)
         let predicate = NSPredicate(format: "%K CONTAINS %@", OWNER_KEY, ref)
         query = CKQuery(recordType: type, predicate: predicate)
@@ -170,7 +170,7 @@ public class Download<R: ReceivesRecordable>: Operation {
      *
      * - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    init(type: String, to rec: R, from db: DatabaseType) {
+    public init(type: String, to rec: R, from db: DatabaseType) {
         let predicate = NSPredicate(format: "TRUEPREDICATE")
         query = CKQuery(recordType: type, predicate: predicate)
         receiver = rec
