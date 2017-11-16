@@ -13,8 +13,8 @@
 		A1268EDF1FBA80BC00ADAA74 /* Referable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDC1FBA80BB00ADAA74 /* Referable.swift */; };
 		A1268EE01FBA80BC00ADAA74 /* Referable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDC1FBA80BB00ADAA74 /* Referable.swift */; };
 		A1268EE11FBA80BC00ADAA74 /* Receiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDD1FBA80BC00ADAA74 /* Receiver.swift */; };
-		A1268EE31FBA80BC00ADAA74 /* Recordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* Recordable.swift */; };
-		A1268EE41FBA80BC00ADAA74 /* Recordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* Recordable.swift */; };
+		A1268EE31FBA80BC00ADAA74 /* *Recordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* *Recordable.swift */; };
+		A1268EE41FBA80BC00ADAA74 /* *Recordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* *Recordable.swift */; };
 		A1268EE71FBA821400ADAA74 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE61FBA821400ADAA74 /* TypeAliases.swift */; };
 		A1268EEA1FBA821C00ADAA74 /* Queues & Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE91FBA821C00ADAA74 /* Queues & Enums.swift */; };
 		A1CB77151FBA8535008ADF09 /* PrepareFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77131FBA8535008ADF09 /* PrepareFrom.swift */; };
@@ -112,7 +112,7 @@
 		A1268ED91FBA807D00ADAA74 /* MCNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCNotification.swift; sourceTree = "<group>"; };
 		A1268EDC1FBA80BB00ADAA74 /* Referable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Referable.swift; sourceTree = "<group>"; };
 		A1268EDD1FBA80BC00ADAA74 /* Receiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Receiver.swift; sourceTree = "<group>"; };
-		A1268EDE1FBA80BC00ADAA74 /* Recordable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recordable.swift; sourceTree = "<group>"; };
+		A1268EDE1FBA80BC00ADAA74 /* *Recordable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "*Recordable.swift"; sourceTree = "<group>"; };
 		A1268EE61FBA821400ADAA74 /* TypeAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
 		A1268EE91FBA821C00ADAA74 /* Queues & Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Queues & Enums.swift"; sourceTree = "<group>"; };
 		A1CB77131FBA8535008ADF09 /* PrepareFrom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrepareFrom.swift; sourceTree = "<group>"; };
@@ -252,7 +252,7 @@
 		A1268EE51FBA811F00ADAA74 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				A1268EDE1FBA80BC00ADAA74 /* Recordable.swift */,
+				A1268EDE1FBA80BC00ADAA74 /* *Recordable.swift */,
 				A1268EDC1FBA80BB00ADAA74 /* Referable.swift */,
 				A1268EDD1FBA80BC00ADAA74 /* Receiver.swift */,
 			);
@@ -617,7 +617,7 @@
 				A1CB77281FBA8683008ADF09 /* FailedOp.swift in Sources */,
 				A1CB773C1FBA86CB008ADF09 /* MCErrorHandler.swift in Sources */,
 				A1CB77291FBA8683008ADF09 /* Pause.swift in Sources */,
-				A1268EE31FBA80BC00ADAA74 /* Recordable.swift in Sources */,
+				A1268EE31FBA80BC00ADAA74 /* *Recordable.swift in Sources */,
 				A1CB77171FBA8535008ADF09 /* Duplicate.swift in Sources */,
 				A1CB77371FBA86AF008ADF09 /* Download.swift in Sources */,
 				A1268EE71FBA821400ADAA74 /* TypeAliases.swift in Sources */,
@@ -642,7 +642,7 @@
 				A1268EE01FBA80BC00ADAA74 /* Referable.swift in Sources */,
 				A1CB77CC1FBC3326008ADF09 /* Receiver.swift in Sources */,
 				A1CB77CB1FBC3241008ADF09 /* LimitExceededTests.swift in Sources */,
-				A1268EE41FBA80BC00ADAA74 /* Recordable.swift in Sources */,
+				A1268EE41FBA80BC00ADAA74 /* *Recordable.swift in Sources */,
 				A1CB77501FBA874F008ADF09 /* ReferableTests.swift in Sources */,
 				A1CB77871FBB9CB7008ADF09 /* FailedOp.swift in Sources */,
 				A1CB77831FBB9874008ADF09 /* Delete.swift in Sources */,
