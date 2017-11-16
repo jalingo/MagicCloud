@@ -32,7 +32,7 @@ func duplicate<R: ReceivesRecordable>(_ op: Operation, with receiver: R) -> Oper
     }
     
     if let deleter = op as? Delete<R> {
-        let new = Delete<R>(deleter.recordables, from: receiver, to: deleter.database)
+        let new = Delete<R>(deleter.recordables, of: receiver, from: deleter.database)
         
         new.delayInSeconds = deleter.delayInSeconds
         new.completionBlock = deleter.completionBlock
