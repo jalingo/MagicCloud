@@ -35,7 +35,7 @@ class MCErrorHandler<R: ReceivesRecordable>: Operation {
     fileprivate var recordables = [R.type]()
     
     /// This is the database cloud activity generated an error in.
-    fileprivate var database: DatabaseType// = CKContainer.default().privateCloudDatabase
+    fileprivate var database: DatabaseType
     
     // MARK: - Properties: Accessors
     
@@ -57,10 +57,10 @@ class MCErrorHandler<R: ReceivesRecordable>: Operation {
     
     override func main() {
         if isCancelled { return }
-        
+print("** running error handling")
         // This console message reports instances when error shouldn't be ignored or isn't partial failure.
         if !(error.code == .unknownItem && ignoreUnknownItem) || !(error.code == .partialFailure) {                 // <-- !! Remove after tests all passing !!
-            print("!! CKError: \(error.code.rawValue) / \(error.localizedDescription) @ \(String(describing: originatingOp.name))")
+print("!! CKError: \(error.code.rawValue) / \(error.localizedDescription) @ \(String(describing: originatingOp.name))")
         }
         
         if isCancelled { return }

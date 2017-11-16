@@ -33,9 +33,8 @@ public class Download<R: ReceivesRecordable>: Operation {
      */
     var query: CKQuery
     
-    ///
+    /// This is the receiver that downloaded records will be sent to as instances conforming to Recordable.
     let receiver: R
-    //    var anyReciever: AnyReceiver<R.type, R>
     
     /**
      * A conduit for accessing and for performing operations on the public and private data of an app container.
@@ -60,7 +59,6 @@ public class Download<R: ReceivesRecordable>: Operation {
     
     fileprivate func recordFetched() -> FetchBlock {
         return { record in
-print("* \(record.recordID.recordName) fetched from: \(self.database)")
             let fetched = prepare(type: R.type.self, from: record)
             
             self.receiver.allowComponentsDidSetToUploadDataModel = false
@@ -75,7 +73,6 @@ print("* \(record.recordID.recordName) fetched from: \(self.database)")
             } else {
                 guard error == nil else {
                     if let cloudError = error as? CKError {
-print("handling error @ Download.queryCompletion")
                         let errorHandler = MCErrorHandler(error: cloudError,
                                                           originating: op,
                                                           target: self.database, instances: [],

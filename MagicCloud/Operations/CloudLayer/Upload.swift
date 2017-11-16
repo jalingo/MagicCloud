@@ -21,16 +21,9 @@ public class Upload<R: ReceivesRecordable>: Operation {
     let receiver: R
     
     let recordables: [R.type] 
-
-    var savedForAsyncCompletion: OptionalClosure
     
     // MARK: - Properties: Computed
-    
-    public override var completionBlock: (() -> Void)? {
-        get { return nil }                              // <-- This ensures completionBlock doesn't execute prematurely...
-        set { savedForAsyncCompletion = newValue }
-    }
-    
+
     var records: [CKRecord] {
         var recs = [CKRecord]()
         
@@ -46,14 +39,7 @@ public class Upload<R: ReceivesRecordable>: Operation {
     
     var modifyCompletion: ModifyBlock {
         return { _, _, error in
-            guard error == nil else {
-                self.completionBlock = self.savedForAsyncCompletion
-                self.handle(error, from: self, whileIgnoringUnknownItem: false)
-                return
-            }
-            
-            // This transfers `Modify.completionBlock` to the end of modify operation...
-            if let closure = self.savedForAsyncCompletion { closure() }
+            guard error == nil else { self.handle(error, from: self, whileIgnoringUnknownItem: false); return }
         }
     }
     
@@ -88,7 +74,6 @@ public class Upload<R: ReceivesRecordable>: Operation {
         if isCancelled { return }
         
         if let cloudError = error as? CKError {
-print("handling error @ Upload")
             let errorHandler = MCErrorHandler(error: cloudError,
                                               originating: op,
                                               target: database, instances: recordables,

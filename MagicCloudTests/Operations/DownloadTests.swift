@@ -171,7 +171,7 @@ class DownloadTests: XCTestCase {
         wait(for: [expect], timeout: 10)
 
         // Evaluates results.
-        if let result = mockRec.recordables.first as? MockReferable {
+        if let result = mockRec.recordables.first {
             XCTAssert(ownedMock.recordID == result.recordID)
         } else {
             XCTFail()
@@ -235,7 +235,7 @@ class DownloadTests: XCTestCase {
         pause0.completionBlock = { prepped.fulfill() }
         
         CloudQueue().addOperation(prepOp)
-        wait(for: [prepped], timeout: 10)
+        wait(for: [prepped], timeout: 30)
 
         testOp = Download(type: mock.recordType, to: mockRec, from: .privateDB)
         
@@ -253,10 +253,10 @@ class DownloadTests: XCTestCase {
         
         CloudQueue().addOperation(testOp!)
         wait(for: [expect], timeout: 10)
-print("mocks: \(mocks.count) :: \(mocks.map { $0.created })")
-print("results: \(mockRec.recordables.count)")
-        // Evaluates results.
-        XCTAssert(mocks == mockRec.recordables)
+//print("** mocks: \(mocks.count) :: \(mocks.map { $0.created })")
+//print("** results: \(mockRec.recordables.count) :: \(mockRec.recordables.first!.created)")
+        // Evaluates results
+        XCTAssertEqual(mocks, mockRec.recordables)
     }
     
     func testDownloadByTypeWorksWithPublic() {

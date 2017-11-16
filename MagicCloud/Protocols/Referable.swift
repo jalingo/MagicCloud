@@ -57,9 +57,7 @@ class MockReferable: MockRecordable, Referable {
     
     let REC_TYPE = "MockReferable"
     let REFS_KEY = OWNER_KEY
-    
-//    var created = Date().description
-    
+        
     // MARK: - Properties: Referrable
     
     fileprivate var owners: [CKReference]?
@@ -69,42 +67,9 @@ class MockReferable: MockRecordable, Referable {
     // MARK: - Properties: Recordable
     
     /**
-     * This database is used to determine whether conforming instance is stored in the
-     * public or private cloud database.
-     */
-//    var database: CKDatabase = CKContainer.default().privateCloudDatabase
-    
-    /**
      * This is a token used with cloudkit to build CKRecordID for this object's CKRecord.
      */
     override var recordType: String { return REC_TYPE }
-    
-    /**
-     * This dictionary has to match all of the keys used in CKRecord in order for version
-     * conflicts and retry attempts to succeed. Its values should match the associated
-     * fields in CKRecord.
-     */
-//    var recordFields: Dictionary<String, CKRecordValue> {
-//        get {
-//            return [REFS_KEY: references as CKRecordValue]
-//        }
-//
-//        set {
-//            owners = newValue[REFS_KEY] as? [CKReference]
-//        }
-//    }
-    
-    /**
-     * A record identifier used to store and recover conforming instance's record. This ID is
-     * used to construct records and references, as well as query and fetch from the cloud
-     * database.
-     *
-     * - Warning: Must be unique in the database.
-     */
-//    var recordID: CKRecordID {//= CKRecordID(recordName: "Mock Referable")
-//        get { return CKRecordID(recordName: created) }
-//        set { created = newValue.recordName }
-//    }
     
     // MARK: - Functions: Referrable
     
@@ -118,10 +83,4 @@ class MockReferable: MockRecordable, Referable {
         if let index = owners?.index(of: reference) { owners?.remove(at: index) }
     }
 }
-
-//extension MockReferable: Equatable { }
-//
-//func ==(left: MockReferable, right: MockReferable) -> Bool {
-//    return left.recordID == right.recordID
-//}
 

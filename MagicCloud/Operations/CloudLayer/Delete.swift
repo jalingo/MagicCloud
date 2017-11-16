@@ -20,14 +20,7 @@ public class Delete<R: ReceivesRecordable>: Operation {
 
     let database: DatabaseType
     
-    var savedForAsyncCompletion: OptionalClosure
-    
     // MARK: - Properties: Computed
-    
-    public override var completionBlock: (() -> Void)? {
-        get { return nil }                              // <-- This ensures completionBlock doesn't execute prematurely...
-        set { savedForAsyncCompletion = newValue }
-    }
     
     fileprivate var recordIDs: [CKRecordID] { return recordables.map({ $0.recordID }) }
     
@@ -57,7 +50,6 @@ public class Delete<R: ReceivesRecordable>: Operation {
         return { records, ids, error in
             guard error == nil else {
                 if let cloudError = error as? CKError {
-                    print("handling error @ Delete")
                     let errorHandler = MCErrorHandler(error: cloudError,
                                                       originating: self,
                                                       target: self.database, instances: self.recordables,
@@ -85,7 +77,8 @@ public class Delete<R: ReceivesRecordable>: Operation {
         }
         
         // This passes the completion block down to the last operation...
-        op.completionBlock = self.savedForAsyncCompletion
+        op.completionBlock = self.completionBlock
+        self.completionBlock = nil
         
         return op
     }
