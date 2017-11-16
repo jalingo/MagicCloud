@@ -45,16 +45,6 @@ public class Upload<R: ReceivesRecordable>: Operation {
     
     // MARK: - Functions
     
-    public override func main() {
-        if isCancelled { return }
-        
-        let op = decorate()
-
-        if isCancelled { return }
-        
-        database.db.add(op)
-    }
-    
     fileprivate func decorate() -> CKModifyRecordsOperation {
         let op = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: nil)
         op.name = "Upload: \(database.db.description)"
@@ -85,11 +75,23 @@ public class Upload<R: ReceivesRecordable>: Operation {
         }
     }
     
+    // MARK: - Functions: Operation
+    
+    public override func main() {
+        if isCancelled { return }
+        
+        let op = decorate()
+        
+        if isCancelled { return }
+        
+        database.db.add(op)
+    }
+    
     // MARK: - Functions: Constructors
     
-    init(_ recs: [R.type]? = nil, from rec: R, to db: DatabaseType) {
+    public init(_ recs: [R.type]? = nil, from rec: R, to db: CKDatabaseScope) {
         receiver = rec
-        database = db
+        database = DatabaseType.from(scope: db)
         recordables = recs ?? rec.recordables
         
         super.init()
