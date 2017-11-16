@@ -18,12 +18,6 @@ import CloudKit
 public protocol Recordable {
     
     /**
-     * This database is used to determine whether conforming instance is stored in the
-     * public or private cloud database.
-     */
-//    var database: CKDatabase { get set }    // <-- Deprecated ??
-    
-    /**
      * This is a token used with cloudkit to build CKRecordID for this object's CKRecord.
      */
     var recordType: String { get }
