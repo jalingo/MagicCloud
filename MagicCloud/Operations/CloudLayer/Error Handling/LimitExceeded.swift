@@ -39,8 +39,8 @@ class LimitExceeded<R: ReceivesRecordable>: Operation {
             let first = Array(firstHalf)
             let second = Array(secondHalf)
 
-            resolver0 = Delete(first, from: receiver, to: database)
-            resolver1 = Delete(second, from: receiver, to: database)
+            resolver0 = Delete(first, of: receiver, from: database)
+            resolver1 = Delete(second, of: receiver, from: database)
         }
         
         if let op = erringOperation as? Download<R> {   // <- Is this even possible? Downloads shouldn't get error...
