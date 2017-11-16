@@ -20,7 +20,7 @@ class CloudQueue: OperationQueue {
 
 import CloudKit
 
-enum DatabaseType {
+public enum DatabaseType {
     case publicDB, privateDB, sharedDB
     
     static func from(scope: CKDatabaseScope) -> DatabaseType {
