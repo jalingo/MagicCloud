@@ -230,11 +230,11 @@
 			isa = PBXGroup;
 			children = (
 				A1268EB91FBA806200ADAA74 /* MagicCloud.h */,
+				A1268EBA1FBA806200ADAA74 /* Info.plist */,
 				A1CB771A1FBA8563008ADF09 /* Resources */,
 				A1CB77191FBA853C008ADF09 /* Strategies */,
 				A1268EE51FBA811F00ADAA74 /* Protocols */,
 				A1CB77331FBA869D008ADF09 /* Operations */,
-				A1268EBA1FBA806200ADAA74 /* Info.plist */,
 			);
 			path = MagicCloud;
 			sourceTree = "<group>";
