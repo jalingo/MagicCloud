@@ -45,7 +45,7 @@ public class Pause: Operation {
     
     fileprivate override init() { duration = -1 }
     
-    init(seconds: TimeInterval) {
+    public init(seconds: TimeInterval) {
         duration = seconds
         super.init()
     }
