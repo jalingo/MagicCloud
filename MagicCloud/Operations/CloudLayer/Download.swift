@@ -61,7 +61,7 @@ public class Download<R: ReceivesRecordable>: Operation {
         return { record in
             let fetched = prepare(type: R.type.self, from: record)
             
-            self.receiver.allowComponentsDidSetToUploadDataModel = false
+            self.receiver.allowRecordablesDidSetToUploadDataModel = false
             if let new = fetched as? R.type { self.receiver.recordables.append(new) }
         }
     }

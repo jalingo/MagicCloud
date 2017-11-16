@@ -21,7 +21,7 @@ public protocol ReceivesRecordable: AnyObject {
      * This boolean property allows / prevents changes to `recordables` being reflected in
      * the cloud.
      */
-    var allowComponentsDidSetToUploadDataModel: Bool { get set }
+    var allowRecordablesDidSetToUploadDataModel: Bool { get set }
     
     /**
      * This protected property is an array of recordables used by reciever.
@@ -35,8 +35,8 @@ class AnyReceiver<T: Recordable, R: ReceivesRecordable> {
     var receiver: R
     
     var allowComponentsDidSetToUploadDataModel: Bool {
-        get { return receiver.allowComponentsDidSetToUploadDataModel }
-        set { receiver.allowComponentsDidSetToUploadDataModel = newValue }
+        get { return receiver.allowRecordablesDidSetToUploadDataModel }
+        set { receiver.allowRecordablesDidSetToUploadDataModel = newValue }
     }
     
     var recordables: [T] {
