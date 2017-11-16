@@ -85,7 +85,7 @@ public class Delete<R: ReceivesRecordable>: Operation {
     
     // MARK: - Functions: Constructors
     
-    init(_ array: [R.type]? = nil, from rec: R, to type: DatabaseType) {
+    init(_ array: [R.type]? = nil, of rec: R, from type: DatabaseType) {
         recordables = array ?? rec.recordables
         receiver = rec
         database = type
