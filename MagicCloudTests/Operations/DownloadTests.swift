@@ -252,10 +252,8 @@ class DownloadTests: XCTestCase {
         cleanUp.completionBlock = { expect.fulfill() }
         
         CloudQueue().addOperation(testOp!)
+
         wait(for: [expect], timeout: 10)
-//print("** mocks: \(mocks.count) :: \(mocks.map { $0.created })")
-//print("** results: \(mockRec.recordables.count) :: \(mockRec.recordables.first!.created)")
-        // Evaluates results
         XCTAssertEqual(mocks, mockRec.recordables)
     }
     
@@ -288,9 +286,8 @@ class DownloadTests: XCTestCase {
         cleanUp.completionBlock = { expect.fulfill() }
         
         CloudQueue().addOperation(testOp!)
-        wait(for: [expect], timeout: 10)
         
-        // Evaluates results.
+        wait(for: [expect], timeout: 10)
         XCTAssert(mocks == mockRec.recordables)
     }
     
