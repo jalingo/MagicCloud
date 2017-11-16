@@ -50,9 +50,9 @@ class LimitExceededTests: XCTestCase {
         testOp = LimitExceeded(error: error, occuredIn: mock!, rec: mockRec, instances: mocks!, target: .privateDB)
         
         // These operations are used in test sequence.
-        let prepOp = Delete(mocks, from: mockRec, to: .privateDB)
+        let prepOp = Delete(mocks, of: mockRec, from: .privateDB)
         let pause   = Pause(seconds: 3)
-        let cleanUp = Delete(mocks, from: mockRec, to: .privateDB)
+        let cleanUp = Delete(mocks, of: mockRec, from: .privateDB)
 
         // This operation will verify that mock was uploaded, and record it's findings in `recordInDatabase`.
         let mockIDs = mocks!.map({ $0.recordID })

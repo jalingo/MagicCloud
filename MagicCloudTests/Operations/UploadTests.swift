@@ -50,11 +50,11 @@ class UploadTests: XCTestCase {
         testOp = Upload(mocks, from: mockRec, to: .publicDB)
 
         // This operation will be used to ensure cloud database is sanitized of test mock.
-        let prepOp = Delete(mocks, from: mockRec, to: .publicDB)
+        let prepOp = Delete(mocks, of: mockRec, from: .publicDB)
         prepOp.name = "UploadTests.prepOp: Public"
 
         // This operation will be used to clean up the database after the test finishes.
-        let cleanUp = Delete(mocks, from: mockRec, to: .publicDB)
+        let cleanUp = Delete(mocks, of: mockRec, from: .publicDB)
         cleanUp.name = "UploadTests.cleanUp: Public"
 
         // These pauses give the cloud database a reasonable amount of time to update between interactions.
@@ -138,10 +138,10 @@ class UploadTests: XCTestCase {
         }
         
         // This operation will be used to ensure cloud database is sanitized of test mock.
-        let prepOp = Delete(mocks!, from: mockRec, to: .privateDB)
+        let prepOp = Delete(mocks!, of: mockRec, from: .privateDB)
         
         // This operation will be used to clean up the database after the test finishes.
-        let cleanUp = Delete(mocks!, from: mockRec, to: .privateDB)
+        let cleanUp = Delete(mocks!, of: mockRec, from: .privateDB)
         
         // These pauses give the cloud database a reasonable amount of time to update between interactions.
         let firstPause = Pause(seconds: 3)

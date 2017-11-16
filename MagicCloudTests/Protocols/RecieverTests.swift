@@ -21,7 +21,7 @@ class RecievesRecTests: XCTestCase {
     
     func testRecieverHasRecordables() { XCTAssertNotNil(mock?.recordables) }
     
-    func testRecieverHasAllowDidSet() { XCTAssertNotNil(mock?.allowComponentsDidSetToUploadDataModel) }
+    func testRecieverHasAllowDidSet() { XCTAssertNotNil(mock?.allowRecordablesDidSetToUploadDataModel) }
     
     // MARK: - Functions: XCTestCase
     
@@ -55,5 +55,5 @@ class MockReceiver: ReceivesRecordable {
      * This boolean property allows / prevents changes to `recordables` being reflected in
      * the cloud.
      */
-    var allowComponentsDidSetToUploadDataModel: Bool = false
+    var allowRecordablesDidSetToUploadDataModel: Bool = false
 }

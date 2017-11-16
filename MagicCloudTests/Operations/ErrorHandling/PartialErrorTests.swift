@@ -64,9 +64,9 @@ class PartialErrorTests: XCTestCase {
         }
     
         // These operations are used in test sequence.
-        let prepOp = Delete(mocks as? [MockRecordable], from: mockRec, to: database)
+        let prepOp = Delete(mocks as? [MockRecordable], of: mockRec, from: database)
         let pause   = Pause(seconds: 3)
-        let cleanUp = Delete(mocks as? [MockRecordable], from: mockRec, to: database)
+        let cleanUp = Delete(mocks as? [MockRecordable], of: mockRec, from: database)
         
         // This operation will verify that mock was uploaded, and record it's findings in `recordInDatabase`.
         let mockIDs = mocks!.map({ $0.recordID })

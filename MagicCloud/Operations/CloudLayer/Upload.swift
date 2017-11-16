@@ -89,9 +89,9 @@ public class Upload<R: ReceivesRecordable>: Operation {
     
     // MARK: - Functions: Constructors
     
-    public init(_ recs: [R.type]? = nil, from rec: R, to db: CKDatabaseScope) {
+    public init(_ recs: [R.type]? = nil, from rec: R, to db: DatabaseType) {
         receiver = rec
-        database = DatabaseType.from(scope: db)
+        database = db   //DatabaseType.from(scope: db)
         recordables = recs ?? rec.recordables
         
         super.init()

@@ -92,7 +92,7 @@ class VersionConflictTests: XCTestCase {
         let firstPause = Pause(seconds: 3)
         firstPause.addDependency(testOp!)
         
-        let cleanUp = Delete([mock as! MockRecordable], from: mockRec, to: .privateDB)
+        let cleanUp = Delete([mock as! MockRecordable], of: mockRec, from: .privateDB)
         
         let secondPause = Pause(seconds: 2)
         secondPause.addDependency(cleanUp)
@@ -122,7 +122,7 @@ class VersionConflictTests: XCTestCase {
         let firstPause = Pause(seconds: 3)
         firstPause.addDependency(testOp!)
         
-        let cleanUp = Delete([mock as! MockRecordable], from: mockRec, to: .privateDB)
+        let cleanUp = Delete([mock as! MockRecordable], of: mockRec, from: .privateDB)
         
         let secondPause = Pause(seconds: 2)
         secondPause.addDependency(cleanUp)
@@ -152,7 +152,7 @@ class VersionConflictTests: XCTestCase {
         let firstPause = Pause(seconds: 3)
         firstPause.addDependency(testOp!)
         
-        let cleanUp = Delete([mock as! MockRecordable], from: mockRec, to: .privateDB)
+        let cleanUp = Delete([mock as! MockRecordable], of: mockRec, from: .privateDB)
         
         let secondPause = Pause(seconds: 2)
         secondPause.addDependency(cleanUp)
