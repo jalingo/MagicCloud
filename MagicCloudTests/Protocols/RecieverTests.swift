@@ -56,10 +56,4 @@ class MockReceiver: ReceivesRecordable {
      * the cloud.
      */
     var allowComponentsDidSetToUploadDataModel: Bool = false
-    
-    /**
-     * This property registers whether cloud features should be enabled / disabled. Use its
-     * didSet method to implement changes to interface.
-     */
-    var cloudFeaturesEnabled: Bool = true
 }
