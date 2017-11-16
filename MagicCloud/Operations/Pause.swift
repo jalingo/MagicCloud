@@ -42,9 +42,7 @@ public class Pause: Operation {
     }
     
     // MARK: - Functions: Initializers
-    
-    fileprivate override init() { duration = -1 }
-    
+        
     public init(seconds: TimeInterval) {
         duration = seconds
         super.init()
