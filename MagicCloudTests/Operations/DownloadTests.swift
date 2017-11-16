@@ -61,7 +61,7 @@ class DownloadTests: XCTestCase {
                               from: .privateDB)
 
             // This operation will be used to clean up the database after the test finishes.
-            let cleanUp = Delete([mock], from: mockRec, to: .privateDB)
+            let cleanUp = Delete([mock], of: mockRec, from: .privateDB)
             let pause1 = Pause(seconds: 2)
             testOp?.completionBlock = { CloudQueue().addOperation(pause1) }
             
@@ -108,7 +108,7 @@ class DownloadTests: XCTestCase {
                               from: .publicDB)
             
             // This operation will be used to clean up the database after the test finishes.
-            let cleanUp = Delete(mocks, from: mockRec, to: .publicDB)
+            let cleanUp = Delete(mocks, of: mockRec, from: .publicDB)
             let pause1 = Pause(seconds: 2)
             testOp?.completionBlock = { CloudQueue().addOperation(pause1) }
             
@@ -156,7 +156,7 @@ class DownloadTests: XCTestCase {
         testOp = Download(type: ownedMock.recordType, to: mockRec, from: database)
         
         // This operation will be used to clean up the database after the test finishes.
-        let cleanUp = Delete(mocks, from: mockRec, to: database)
+        let cleanUp = Delete(mocks, of: mockRec, from: database)
         let pause1 = Pause(seconds: 2)
         testOp?.completionBlock = { CloudQueue().addOperation(pause1) }
         
@@ -201,7 +201,7 @@ class DownloadTests: XCTestCase {
         testOp = Download(type: ownedMock.recordType, to: mockRec, from: database)
         
         // This operation will be used to clean up the database after the test finishes.
-        let cleanUp = Delete(mocks, from: mockRec, to: database)
+        let cleanUp = Delete(mocks, of: mockRec, from: database)
         let pause1 = Pause(seconds: 2)
         testOp?.completionBlock = { CloudQueue().addOperation(pause1) }
         
@@ -240,7 +240,7 @@ class DownloadTests: XCTestCase {
         testOp = Download(type: mock.recordType, to: mockRec, from: .privateDB)
         
         // This operation will be used to clean up the database after the test finishes.
-        let cleanUp = Delete(mocks, from: mockRec, to: .privateDB)
+        let cleanUp = Delete(mocks, of: mockRec, from: .privateDB)
         let pause1 = Pause(seconds: 2)
         testOp?.completionBlock = { CloudQueue().addOperation(pause1) }
         
@@ -274,7 +274,7 @@ class DownloadTests: XCTestCase {
         testOp = Download(type: mock.recordType, to: mockRec, from: .publicDB)
         
         // This operation will be used to clean up the database after the test finishes.
-        let cleanUp = Delete(mocks, from: mockRec, to: .publicDB)
+        let cleanUp = Delete(mocks, of: mockRec, from: .publicDB)
         let pause1 = Pause(seconds: 2)
         testOp?.completionBlock = { CloudQueue().addOperation(pause1) }
         

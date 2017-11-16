@@ -164,7 +164,7 @@ print("!! Records FOUND: \(String(describing: results?.count))")
         CloudQueue().addOperation(prepOp)
         wait(for: [uploaded], timeout: 3)
         
-        testOp = Delete([mock!], from: mockRec, to: .publicDB)
+        testOp = Delete([mock!], of: mockRec, from: .publicDB)
         
         let firstPause = Pause(seconds: 5)
         testOp?.addDependency(firstPause)
@@ -202,7 +202,7 @@ print("!! Records FOUND: \(String(describing: results?.count))")
 
         mock = MockRecordable()
         mockRec = MockReceiver()
-        testOp = Delete([mock!], from: mockRec, to: .privateDB)
+        testOp = Delete([mock!], of: mockRec, from: .privateDB)
         recordDeleted = false
     }
     
