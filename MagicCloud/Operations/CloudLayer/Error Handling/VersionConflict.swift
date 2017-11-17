@@ -25,8 +25,8 @@ class VersionConflict<R: ReceivesRecordable>: Operation {
     let receiver: R
     
     /**
-     * This is the CKError that has already been identified as a version conflict (guard statement
-     * will cause function to return nil if it is a different error type).
+        This is the CKError that has already been identified as a version conflict (guard statement
+        will cause function to return nil if it is a different error type).
      */
     fileprivate var error: CKError?
     
