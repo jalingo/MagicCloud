@@ -23,8 +23,6 @@ class RecievesRecTests: XCTestCase {
     
     func testReceiverHasAssociatedTypeRecordable() { XCTAssert(mock?.recordables is [Recordable]) }
     
-//    func testRecieverHasAllowDidSet() { XCTAssertNotNil(mock?.allowRecordablesDidSetToUploadDataModel) }
-    
     // MARK: - Functions: XCTestCase
     
     override func setUp() {
@@ -52,10 +50,4 @@ class MockReceiver: ReceivesRecordable {
     var recordables = [type]() {
         didSet { print("MockReciever.recordables didSet: \(recordables.count)") }
     }
-
-//    /**
-//     * This boolean property allows / prevents changes to `recordables` being reflected in
-//     * the cloud.
-//     */
-//    var allowRecordablesDidSetToUploadDataModel: Bool = false
 }
