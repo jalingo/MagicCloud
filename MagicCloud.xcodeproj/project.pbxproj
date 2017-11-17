@@ -17,6 +17,8 @@
 		A1268EE41FBA80BC00ADAA74 /* Recordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* Recordable.swift */; };
 		A1268EE71FBA821400ADAA74 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE61FBA821400ADAA74 /* TypeAliases.swift */; };
 		A1268EEA1FBA821C00ADAA74 /* Queues & Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE91FBA821C00ADAA74 /* Queues & Enums.swift */; };
+		A17DE9E51FBE56D900D2EB4F /* ListenFor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17DE9E41FBE56D900D2EB4F /* ListenFor.swift */; };
+		A17DE9E61FBE56D900D2EB4F /* ListenFor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17DE9E41FBE56D900D2EB4F /* ListenFor.swift */; };
 		A1CB77151FBA8535008ADF09 /* PrepareFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77131FBA8535008ADF09 /* PrepareFrom.swift */; };
 		A1CB77161FBA8535008ADF09 /* PrepareFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77131FBA8535008ADF09 /* PrepareFrom.swift */; };
 		A1CB77171FBA8535008ADF09 /* Duplicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77141FBA8535008ADF09 /* Duplicate.swift */; };
@@ -115,6 +117,7 @@
 		A1268EDE1FBA80BC00ADAA74 /* Recordable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recordable.swift; sourceTree = "<group>"; };
 		A1268EE61FBA821400ADAA74 /* TypeAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
 		A1268EE91FBA821C00ADAA74 /* Queues & Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Queues & Enums.swift"; sourceTree = "<group>"; };
+		A17DE9E41FBE56D900D2EB4F /* ListenFor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenFor.swift; sourceTree = "<group>"; };
 		A1CB77131FBA8535008ADF09 /* PrepareFrom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrepareFrom.swift; sourceTree = "<group>"; };
 		A1CB77141FBA8535008ADF09 /* Duplicate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Duplicate.swift; sourceTree = "<group>"; };
 		A1CB77241FBA8682008ADF09 /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
@@ -262,6 +265,7 @@
 		A1CB77191FBA853C008ADF09 /* Strategies */ = {
 			isa = PBXGroup;
 			children = (
+				A17DE9E41FBE56D900D2EB4F /* ListenFor.swift */,
 				A1CB77141FBA8535008ADF09 /* Duplicate.swift */,
 				A1CB77131FBA8535008ADF09 /* PrepareFrom.swift */,
 			);
@@ -607,6 +611,7 @@
 				A1CB77CE1FBCB1C1008ADF09 /* PartialError.swift in Sources */,
 				A1CB77CF1FBCB1C1008ADF09 /* BatchError.swift in Sources */,
 				A1CB77391FBA86AF008ADF09 /* Upload.swift in Sources */,
+				A17DE9E51FBE56D900D2EB4F /* ListenFor.swift in Sources */,
 				A1CB77D21FBCBF4B008ADF09 /* VersionConflict.swift in Sources */,
 				A1CB77151FBA8535008ADF09 /* PrepareFrom.swift in Sources */,
 				A1CB77451FBA86E7008ADF09 /* RetriableError.swift in Sources */,
@@ -652,6 +657,7 @@
 				A1CB77841FBB9879008ADF09 /* Upload.swift in Sources */,
 				A1CB77CA1FBC3241008ADF09 /* RetriableErrorTests.swift in Sources */,
 				A1CB77851FBB9881008ADF09 /* Pause.swift in Sources */,
+				A17DE9E61FBE56D900D2EB4F /* ListenFor.swift in Sources */,
 				A1CB77D41FBCBF59008ADF09 /* RetriableError.swift in Sources */,
 				A1CB77181FBA8535008ADF09 /* Duplicate.swift in Sources */,
 				A1CB77821FBB986F008ADF09 /* Download.swift in Sources */,
