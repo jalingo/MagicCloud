@@ -19,9 +19,11 @@ class RecievesRecTests: XCTestCase {
     
     // MARK: - Functions: Unit Tests
     
-    func testRecieverHasRecordables() { XCTAssertNotNil(mock?.recordables) }
+    func testReceiverHasRecordables() { XCTAssertNotNil(mock?.recordables) }
     
-    func testRecieverHasAllowDidSet() { XCTAssertNotNil(mock?.allowRecordablesDidSetToUploadDataModel) }
+    func testReceiverHasAssociatedTypeRecordable() { XCTAssert(mock?.recordables is [Recordable]) }
+    
+//    func testRecieverHasAllowDidSet() { XCTAssertNotNil(mock?.allowRecordablesDidSetToUploadDataModel) }
     
     // MARK: - Functions: XCTestCase
     
@@ -51,9 +53,9 @@ class MockReceiver: ReceivesRecordable {
         didSet { print("MockReciever.recordables didSet: \(recordables.count)") }
     }
 
-    /**
-     * This boolean property allows / prevents changes to `recordables` being reflected in
-     * the cloud.
-     */
-    var allowRecordablesDidSetToUploadDataModel: Bool = false
+//    /**
+//     * This boolean property allows / prevents changes to `recordables` being reflected in
+//     * the cloud.
+//     */
+//    var allowRecordablesDidSetToUploadDataModel: Bool = false
 }

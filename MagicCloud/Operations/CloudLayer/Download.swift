@@ -59,9 +59,7 @@ public class Download<R: ReceivesRecordable>: Operation {
     
     fileprivate func recordFetched() -> FetchBlock {
         return { record in
-            let fetched = prepare(type: R.type.self, from: record)
-            
-            self.receiver.allowRecordablesDidSetToUploadDataModel = false
+            let fetched = prepare(type: R.type.self, from: record)            
             if let new = fetched as? R.type { self.receiver.recordables.append(new) }
         }
     }
