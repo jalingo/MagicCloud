@@ -39,6 +39,7 @@ public func setupListener(for type: String,
         if let error = possibleError {
             // TODO: Handle errors...
 print("CKQuerySubscription \(subsciption.subscriptionID) had error \(error.localizedDescription)")
+//            notifyUser("Error", message: "\(error)")
 
             // Prevents infinite retries...
             guard left > 0 else { return }
