@@ -14,45 +14,45 @@ public struct MCNotification {
     // MARK: - Properties: Static Constants
     
     /// Notification.Name for an error registering a CKQuerySubscription.
-    static let subscription = Notification.Name("CLOUD_ERROR_SUBSCRIPTION")
+    public static let subscription = Notification.Name("CLOUD_ERROR_SUBSCRIPTION")
     
     /**
         Notification.Name for an error recovering USER's unique iCloud identity token.
      
         - Note: User should be notified and instructed to login to their iCloud account.
      */
-    static let cloudIdentity = Notification.Name("CLOUD_ERROR_IDENTITY")
+    public static let cloudIdentity = Notification.Name("CLOUD_ERROR_IDENTITY")
     
     /// Notification.Name for any CKError detected
-    static let cloudError = Notification.Name("CLOUD_ERROR_OCCURED")    // <-- Deprecate?
+    public static let cloudError = Notification.Name("CLOUD_ERROR_OCCURED")    // <-- Deprecate?
     
     /// Notification.Name for CKError.notAuthenticated
-    static let notAuthenticated = Notification.Name("CLOUD_ERROR_NOT_AUTHENTICATED")
+    public static let notAuthenticated = Notification.Name("CLOUD_ERROR_NOT_AUTHENTICATED")
     
     /// Notification.Name for CKError.serverRecordChanged
-    static let serverRecordChanged = Notification.Name("CLOUD_ERROR_CHANGED_RECORD")
+    public static let serverRecordChanged = Notification.Name("CLOUD_ERROR_CHANGED_RECORD")
     
     /**
         Notification.Name for CKError.limitExceeded, CKError.batchRequestFailed,
         CKError.partialFailure...
      */
-    static let batchIssue = Notification.Name("CLOUD_ERROR_BATCH_ISSUE")
+    public static let batchIssue = Notification.Name("CLOUD_ERROR_BATCH_ISSUE")
     
         /// Notification.Name for CKError.limitExceeded
-        static let limitExceeded = Notification.Name("CLOUD_ERROR_LIMIT_EXCEEDED")
+        public static let limitExceeded = Notification.Name("CLOUD_ERROR_LIMIT_EXCEEDED")
 
         /// Notification.Name for CKError.batchRequestFailed
-        static let batchRequestFailed = Notification.Name("CLOUD_ERROR_BATCH_REQUEST")
+        public static let batchRequestFailed = Notification.Name("CLOUD_ERROR_BATCH_REQUEST")
     
         /// Notification.Name for CKError.partialFailure
-        static let partialFailure = Notification.Name("CLOUD_ERROR_PARTIAL_FAILURE")
+        public static let partialFailure = Notification.Name("CLOUD_ERROR_PARTIAL_FAILURE")
     
     /**
         Notification.Name for CKError.networkUnavailable, CKError.networkFailure,
         CKError.serviceUnavailable, CKError.requestRateLimited, CKError.zoneBusy,
         CKError.resultsTruncated...
      */
-    static let retriable = Notification.Name("CLOUD_ERROR_RETRIABLE")
+    public static let retriable = Notification.Name("CLOUD_ERROR_RETRIABLE")
     
     /**
         Notification.Name for CKError.assetFileModified, CKError.serverRejectedRequest,
@@ -64,10 +64,10 @@ public struct MCNotification {
         CKError.permissionFailure, CKError.referenceViolation, CKError.unknownItem,
         CKError.userDeletedZone, CKError.zoneNotFound...
      */
-    static let fatalError = NSNotification.Name("CLOUD_ERROR_FATAL")
+    public static let fatalError = NSNotification.Name("CLOUD_ERROR_FATAL")
 
     /**
         Notification.Name for CKError.alreadyShared, CKError.tooManyParticipants,
      */
-    static let sharingError = NSNotification.Name("CLOUD_ERROR_SHARING")
+    public static let sharingError = NSNotification.Name("CLOUD_ERROR_SHARING")
 }
