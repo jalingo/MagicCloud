@@ -13,13 +13,23 @@ public struct MCNotification {
     
     // MARK: - Properties: Static Constants
     
-    /// Notification.Name for any CKError detected...
+    /// Notification.Name for an error registering a CKQuerySubscription.
+    static let subscription = Notification.Name("CLOUD_ERROR_SUBSCRIPTION")
+    
+    /**
+        Notification.Name for an error recovering USER's unique iCloud identity token.
+     
+        - Note: User should be notified and instructed to login to their iCloud account.
+     */
+    static let cloudIdentity = Notification.Name("CLOUD_ERROR_IDENTITY")
+    
+    /// Notification.Name for any CKError detected
     static let cloudError = Notification.Name("CLOUD_ERROR_OCCURED")    // <-- Deprecate?
     
-    /// Notification.Name for CKError.notAuthenticated...
+    /// Notification.Name for CKError.notAuthenticated
     static let notAuthenticated = Notification.Name("CLOUD_ERROR_NOT_AUTHENTICATED")
     
-    /// Notification.Name for CKError.serverRecordChanged...
+    /// Notification.Name for CKError.serverRecordChanged
     static let serverRecordChanged = Notification.Name("CLOUD_ERROR_CHANGED_RECORD")
     
     /**
