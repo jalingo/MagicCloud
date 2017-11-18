@@ -28,12 +28,10 @@ public func setupListener(for type: String,
     let left: Int
     count < 3 ? (left = count) : (left = 3)
     
-    //
+    // Create subscription
     let predicate = NSPredicate(value: true)
     let subsciption = CKQuerySubscription(recordType: type, predicate: predicate, options: trigger)
-    
-    // Notification told to contain CKRecordID
-    
+        
     // Saves the subscription to database
     database.db.save(subsciption) { _, possibleError in
         if let error = possibleError {
