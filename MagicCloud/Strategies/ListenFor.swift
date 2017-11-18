@@ -37,10 +37,8 @@ public func setupListener(for type: String,
     // Saves the subscription to database
     database.db.save(subsciption) { _, possibleError in
         if let error = possibleError {
-            // TODO: Handle errors...
-print("CKQuerySubscription \(subsciption.subscriptionID) had error \(error.localizedDescription)")
-//            notifyUser("Error", message: "\(error)")
-
+            NotificationCenter.default.post(name: MCNotification.subscription, object: error)
+            
             // Prevents infinite retries...
             guard left > 0 else { return }
             
