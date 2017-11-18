@@ -9,7 +9,7 @@
 import CloudKit
 
 /// Builds an appropriate recordable based on type.
-func prepare<T: Recordable>(type: T.Type, from record: CKRecord) -> Recordable {
+public func prepare<T: Recordable>(type: T.Type, from record: CKRecord) -> Recordable {
     var recordable: Recordable = T()
     
     // Overwrites default recordable with data from recovered record.
