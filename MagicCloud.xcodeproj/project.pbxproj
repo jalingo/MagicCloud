@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		90C4E8721FC0EAE300A8D329 /* GetUserRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C4E8711FC0EAE300A8D329 /* GetUserRecord.swift */; };
+		90C4E8731FC0EAE300A8D329 /* GetUserRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C4E8711FC0EAE300A8D329 /* GetUserRecord.swift */; };
 		A1268EC01FBA806200ADAA74 /* MagicCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1268EB61FBA806200ADAA74 /* MagicCloud.framework */; };
 		A1268EC71FBA806300ADAA74 /* MagicCloud.h in Headers */ = {isa = PBXBuildFile; fileRef = A1268EB91FBA806200ADAA74 /* MagicCloud.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A1268EDA1FBA807D00ADAA74 /* MCNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268ED91FBA807D00ADAA74 /* MCNotification.swift */; };
@@ -106,6 +108,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		90C4E8711FC0EAE300A8D329 /* GetUserRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUserRecord.swift; sourceTree = "<group>"; };
 		A1268EB61FBA806200ADAA74 /* MagicCloud.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MagicCloud.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1268EB91FBA806200ADAA74 /* MagicCloud.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MagicCloud.h; sourceTree = "<group>"; };
 		A1268EBA1FBA806200ADAA74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -268,6 +271,7 @@
 				A17DE9E41FBE56D900D2EB4F /* ListenFor.swift */,
 				A1CB77141FBA8535008ADF09 /* Duplicate.swift */,
 				A1CB77131FBA8535008ADF09 /* PrepareFrom.swift */,
+				90C4E8711FC0EAE300A8D329 /* GetUserRecord.swift */,
 			);
 			path = Strategies;
 			sourceTree = "<group>";
@@ -613,6 +617,7 @@
 				A1CB77391FBA86AF008ADF09 /* Upload.swift in Sources */,
 				A17DE9E51FBE56D900D2EB4F /* ListenFor.swift in Sources */,
 				A1CB77D21FBCBF4B008ADF09 /* VersionConflict.swift in Sources */,
+				90C4E8721FC0EAE300A8D329 /* GetUserRecord.swift in Sources */,
 				A1CB77151FBA8535008ADF09 /* PrepareFrom.swift in Sources */,
 				A1CB77451FBA86E7008ADF09 /* RetriableError.swift in Sources */,
 				A1268EE11FBA80BC00ADAA74 /* Receiver.swift in Sources */,
@@ -661,6 +666,7 @@
 				A1CB77D41FBCBF59008ADF09 /* RetriableError.swift in Sources */,
 				A1CB77181FBA8535008ADF09 /* Duplicate.swift in Sources */,
 				A1CB77821FBB986F008ADF09 /* Download.swift in Sources */,
+				90C4E8731FC0EAE300A8D329 /* GetUserRecord.swift in Sources */,
 				A1CB77D31FBCBF52008ADF09 /* BatchError.swift in Sources */,
 				A1CB77D51FBCBF5E008ADF09 /* PartialError.swift in Sources */,
 				A1CB77571FBA8793008ADF09 /* DownloadTests.swift in Sources */,
