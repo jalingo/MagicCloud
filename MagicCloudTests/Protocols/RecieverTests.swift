@@ -15,7 +15,40 @@ class RecievesRecTests: XCTestCase {
 
     var mock: MockReceiver?
     
+    var mockRecordables: [MockRecordable] {
+        var array = [MockRecordable]()
+
+        array.append(MockRecordable(created: Date.distantPast))
+        array.append(MockRecordable(created: Date.distantFuture))
+        
+        return array
+    }
+    
     // MARK: - Functions
+    
+    func prepareDatabase() -> Int {
+        let op = Upload(mockRecordables, from: mock!, to: .publicDB)
+        let pause = Pause(seconds: 2)
+        pause.addDependency(op)
+
+        OperationQueue().addOperation(pause)
+        OperationQueue().addOperation(op)
+        
+        pause.waitUntilFinished()
+        return 0
+    }
+    
+    func cleanUpDatabase() -> Int {
+        let op = Delete(mockRecordables, of: mock!, from: .publicDB)
+        let pause = Pause(seconds: 2)
+        pause.addDependency(op)
+        
+        OperationQueue().addOperation(pause)
+        OperationQueue().addOperation(op)
+        
+        pause.waitUntilFinished()
+        return 0
+    }
     
     // MARK: - Functions: Unit Tests
     
@@ -27,7 +60,7 @@ class RecievesRecTests: XCTestCase {
         let expect = expectation(description: "Receiver Heard Notification")
         var passed = false
         
-        mock?.startListening() {
+        mock?.startListening(on: .publicDB) {
             passed = true
             expect.fulfill()
         }
@@ -41,8 +74,8 @@ class RecievesRecTests: XCTestCase {
     func testVoteReceiverCanStopListening() {
         var passed = true
         
-        mock?.startListening() { passed = false }
-        mock?.stopListening()
+        mock?.startListening(on: .publicDB) { passed = false }
+        mock?.stopListening(on: .publicDB)
         
         NotificationCenter.default.post(name: Notification.Name(mock!.notifyUpdated), object: nil)
         XCTAssert(passed)
@@ -51,13 +84,12 @@ class RecievesRecTests: XCTestCase {
     func testVoteReceiverCanDownloadAll() {
         let _ = prepareDatabase()
         
-        let expect = expectation(description: "All Votes Downloaded")
-        mock?.download() { expect.fulfill() }
+        let expect = expectation(description: "All Recordables Downloaded")
+        mock?.download(from: .publicDB) { expect.fulfill() }
         wait(for: [expect], timeout: 3)
         
-        let allVotes = testVotes()
-        if let votes = mock?.recordables {
-            XCTAssertEqual(allVotes, votes)
+        if let recordables = mock?.recordables {
+            XCTAssertEqual(recordables, mockRecordables)
         } else {
             XCTFail()
         }
@@ -68,7 +100,7 @@ class RecievesRecTests: XCTestCase {
     func testVoteReceiverDownloadsFromListening() {
         let _ = prepareDatabase()
         
-        mock?.startListening()  // <-- At this point empty
+        mock?.startListening(on: .publicDB)  // <-- At this point empty
         NotificationCenter.default.post(name: Notification.Name(mock!.notifyUpdated), object: nil)
         
         XCTAssert(mock?.recordables.count != 0)
@@ -92,13 +124,23 @@ class RecievesRecTests: XCTestCase {
 // MARK: - Mocks
 
 class MockReceiver: ReceivesRecordable {
-    
+
     typealias type = MockRecordable
+
+    var notifyCreated: String { return "Mock Added To Database" }
+    
+    var notifyUpdated: String { return "Mock Updated in Database" }
+    
+    var notifyDeleted: String { return "Mock Removed from Database" }
+    
+    var createdID: String?
+    
+    var updatedID: String?
+    
+    var deletedID: String?
     
     /**
      * This protected property is an array of recordables used by reciever.
      */
-    var recordables = [type]() {
-        didSet { print("MockReciever.recordables didSet: \(recordables.count)") }
-    }
+    var recordables = [type]()
 }
