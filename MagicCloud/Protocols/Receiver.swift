@@ -23,6 +23,57 @@ public protocol ReceivesRecordable: AnyObject {
         It's didSet is a good place to upload changes, after guarding allowRecordablesDidSet...
      */
     var recordables: [type] { get set }
+    
+    // Need to grab / make tests from SBA
+    var notifyCreated: String { get }
+    
+    var notifyUpdated: String { get }
+    
+    var notifyDeleted: String { get }
+    
+    var createdID: String? { get set }
+    
+    var updatedID: String? { get set }
+    
+    var deletedID: String? { get set }
+    
+    func startListening(on: DatabaseType, consequence: OptionalClosure)
+    
+    func stopListening(on: DatabaseType, completion: OptionalClosure)
+    
+    func download(from: DatabaseType, completion: OptionalClosure) 
+}
+
+extension ReceivesRecordable {
+    
+    // !! Automatically triggers download when heard
+    func startListening(on type: DatabaseType, consequence: OptionalClosure = nil) {
+        createdID = setupListener(for: notifyCreated, change: .firesOnRecordCreation, at: type) {
+            self.download(from: type, completion: consequence)
+        }
+        
+        deletedID = setupListener(for: notifyDeleted, change: .firesOnRecordDeletion, at: type) {
+            self.download(from: type, completion: consequence)
+        }
+        
+        updatedID = setupListener(for: notifyUpdated, change: .firesOnRecordUpdate, at: type) {
+            self.download(from: type, completion: consequence)
+        }
+    }
+    
+    // !!
+    func stopListening(on type: DatabaseType, completion: OptionalClosure = nil) { // <-- Remove completion??
+        if let str = createdID { disableListener(subscriptionID: str, at: type) }
+        if let str = deletedID { disableListener(subscriptionID: str, at: type) }
+        if let str = updatedID { disableListener(subscriptionID: str, at: type) }
+    }
+    
+    func download(from db: DatabaseType, completion: OptionalClosure) {
+        let empty = type()
+        let op = Download(type: empty.recordType, to: self, from: db)
+        op.completionBlock = completion
+        OperationQueue().addOperation(op)
+    }
 }
 
 /// Wrapper class for ReceivesRecordable
