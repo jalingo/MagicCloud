@@ -20,8 +20,7 @@ import CloudKit
         - count: Number of retries left for error handling (cannot be set higher than 3).
         - followUp: Completion Block that can be triggered when subscription is triggered.
  */
-public func setupListener(notificationName: Notification.Name,
-                          for type: String,
+public func setupListener(for type: String,
                           change trigger: CKQuerySubscriptionOptions,
                           at database: DatabaseType = .publicDB,
                           withTries count: Int = 3,
@@ -36,14 +35,13 @@ public func setupListener(notificationName: Notification.Name,
     // Saves the subscription to database
     database.db.save(subsciption) { _, possibleError in
         if let error = possibleError {
-            NotificationCenter.default.post(name: notificationName, object: error)
+            NotificationCenter.default.post(name: MCNotification.subscription, object: error)
             
             // Prevents infinite retries...
             guard left > 0 else { return }
             
             // TODO: depending on error type and count retry
-            setupListener(notificationName: notificationName,
-                          for: type,
+            setupListener(for: type,
                           change: trigger,
                           at: database,
                           withTries: left,
