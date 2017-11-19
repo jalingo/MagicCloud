@@ -24,7 +24,7 @@ public func setupListener(for type: String,
                           change trigger: CKQuerySubscriptionOptions,
                           at database: DatabaseType = .publicDB,
                           withTries count: Int = 3,
-                          consequence followUp: OptionalClosure = nil) {
+                          consequence followUp: OptionalClosure = nil) -> String {
     let left: Int
     count < 3 ? (left = count) : (left = 3)
     
@@ -41,13 +41,34 @@ public func setupListener(for type: String,
             guard left > 0 else { return }
             
             // TODO: depending on error type and count retry
-            setupListener(for: type,
-                          change: trigger,
-                          at: database,
-                          withTries: left,
-                          consequence: followUp)
+            let _ = setupListener(for: type,
+                                  change: trigger,
+                                  at: database,
+                                  withTries: left,
+                                  consequence: followUp)
         } else {
             if let action = followUp { action() }
+        }
+    }
+    
+    return subsciption.subscriptionID
+}
+
+// !!
+public func disableListener(subscriptionID id: String,
+                            withTries count: Int = 3,
+                            at database: DatabaseType = .publicDB) {
+    let left: Int
+    count < 3 ? (left = count) : (left = 3)
+
+    database.db.delete(withSubscriptionID: id) { possibleID, possibleError in
+        if let error = possibleError {
+            NotificationCenter.default.post(name: MCNotification.subscription, object: error)
+            
+            // Prevents infinite retries...
+            guard left > 0 else { return }
+            
+            disableListener(subscriptionID: id, withTries: left, at: database)
         }
     }
 }
