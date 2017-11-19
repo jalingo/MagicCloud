@@ -25,12 +25,15 @@ public protocol ReceivesRecordable: AnyObject {
     var recordables: [type] { get set }
     
     // Need to grab / make tests from SBA
+    
+    // these specified by receiver type
     var notifyCreated: String { get }
     
     var notifyUpdated: String { get }
     
     var notifyDeleted: String { get }
     
+    // these are used by listeners
     var createdID: String? { get set }
     
     var updatedID: String? { get set }
@@ -41,7 +44,7 @@ public protocol ReceivesRecordable: AnyObject {
     
     func stopListening(on: DatabaseType, completion: OptionalClosure)
     
-    func download(from: DatabaseType, completion: OptionalClosure) 
+    func download(from: DatabaseType, completion: OptionalClosure)
 }
 
 extension ReceivesRecordable {
