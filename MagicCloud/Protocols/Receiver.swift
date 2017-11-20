@@ -33,7 +33,7 @@ public protocol ReceivesRecordable: AnyObject {
     
     var notifyDeleted: String { get }
     
-    // these are used by listeners
+    // these are used by listeners. Required in conforming instance as storage, but should not be intefered
     var createdID: String? { get set }
     
     var updatedID: String? { get set }
@@ -48,6 +48,21 @@ public protocol ReceivesRecordable: AnyObject {
 }
 
 extension ReceivesRecordable {
+    
+    var notifyCreated: String {
+        let empty = type()
+        return "\(empty.recordType) created"
+    }
+
+    var notifyUpdated: String {
+        let empty = type()
+        return "\(empty.recordType) updated"
+    }
+
+    var notifyDeleted: String {
+        let empty = type()
+        return "\(empty.recordType) deleted"
+    }
     
     // !! Automatically triggers download when heard
     func startListening(on type: DatabaseType, consequence: OptionalClosure = nil) {
