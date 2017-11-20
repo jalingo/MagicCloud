@@ -86,7 +86,7 @@ extension ReceivesRecordable {
         if let str = updatedID { disableListener(subscriptionID: str, at: type) }
     }
     
-    func download(from db: DatabaseType, completion: OptionalClosure) {
+    func download(from db: DatabaseType, completion: OptionalClosure = nil) {
         let empty = type()
         let op = Download(type: empty.recordType, to: self, from: db)
         op.completionBlock = completion
