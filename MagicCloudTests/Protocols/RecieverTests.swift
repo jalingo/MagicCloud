@@ -9,6 +9,9 @@
 import XCTest
 import CloudKit
 
+
+// !! CAUTION: These tests require a NotificationReader in host app for local / remote notifications to work.
+
 class RecievesRecTests: XCTestCase {
     
     // MARK: - Properties
@@ -28,9 +31,9 @@ class RecievesRecTests: XCTestCase {
     
     func prepareDatabase() -> Int {
         let op = Upload(mockRecordables, from: mock!, to: .publicDB)
-        let pause = Pause(seconds: 2)
+        let pause = Pause(seconds: 3)
         pause.addDependency(op)
-
+pause.completionBlock = { print("finished prep pause") }
         OperationQueue().addOperation(pause)
         OperationQueue().addOperation(op)
         
@@ -42,7 +45,7 @@ class RecievesRecTests: XCTestCase {
         let op = Delete(mockRecordables, of: mock!, from: .publicDB)
         let pause = Pause(seconds: 2)
         pause.addDependency(op)
-        
+pause.completionBlock = { print("finished cleanUp pause") }
         OperationQueue().addOperation(pause)
         OperationQueue().addOperation(op)
         
@@ -53,61 +56,65 @@ class RecievesRecTests: XCTestCase {
     // MARK: - Functions: Unit Tests
     
     func testReceiverHasRecordables() { XCTAssertNotNil(mock?.recordables) }
-    
+
     func testReceiverHasAssociatedTypeRecordable() { XCTAssert(mock?.recordables is [Recordable]) }
     
-    func testVoteReceiverCanStartListening() {
-        let expect = expectation(description: "Receiver Heard Notification")
-        var passed = false
-        
-        mock?.startListening(on: .publicDB) {
-            passed = true
-            expect.fulfill()
-        }
-        
-        NotificationCenter.default.post(name: Notification.Name(mock!.notifyCreated), object: nil)
-        
-        wait(for: [expect], timeout: 2)
-        XCTAssert(passed)
-    }
+    func testReceiverHasSubscriber() { XCTAssertNotNil(mock?.subscription) }
     
-    func testVoteReceiverCanStopListening() {
-        var passed = true
-        
-        mock?.startListening(on: .publicDB) { passed = false }
-        mock?.stopListening(on: .publicDB)
-        
-        NotificationCenter.default.post(name: Notification.Name(mock!.notifyUpdated), object: nil)
-        XCTAssert(passed)
-    }
-    
-    func testVoteReceiverCanDownloadAll() {
+    func testReceiverCanDownloadAll() {
         let _ = prepareDatabase()
         
-        let expect = expectation(description: "All Recordables Downloaded")
-        mock?.download(from: .publicDB) { expect.fulfill() }
-        wait(for: [expect], timeout: 3)
+        let pause = Pause(seconds: 2)
+        mock?.download(from: .publicDB) { pause.start() }
+        pause.waitUntilFinished()
         
         if let recordables = mock?.recordables {
             XCTAssertEqual(recordables, mockRecordables)
         } else {
             XCTFail()
         }
-        
-        let _ = cleanUpDatabase()
     }
     
-    func testVoteReceiverDownloadsFromListening() {
+    func testReceiverCanListenForLocalNotification() {
+        mock?.listenForDatabaseChanges()
+        
         let _ = prepareDatabase()
         
-        mock?.startListening(on: .publicDB)  // <-- At this point empty
-        NotificationCenter.default.post(name: Notification.Name(mock!.notifyUpdated), object: nil)
+        let name = Notification.Name(MCNotification.changeNotice.toString())
+        NotificationCenter.default.post(name: name, object: MCNotification.changeAt(.publicDB))
         
+        let pause = Pause(seconds: 2)
+        OperationQueue().addOperation(pause)
+        
+        pause.waitUntilFinished()
         XCTAssert(mock?.recordables.count != 0)
-        
-        let _ = cleanUpDatabase()
     }
     
+    func testReceiverCanStartSubscriptionAndListen() {
+        mock?.subscribeToChanges(for: MockRecordable().recordType, on: .publicDB)
+        
+        let pause = Pause(seconds: 5)
+        OperationQueue().addOperation(pause)
+
+        pause.waitUntilFinished()
+        let _ = prepareDatabase()
+        
+        XCTAssert(mock?.recordables.count != 0)
+    }
+    
+    func testReceiverCanStopSubscription() {
+        mock?.subscribeToChanges(for: MockRecordable().recordType, on: .publicDB)
+        mock?.unsubscribeToChanges(from: .publicDB)
+        
+        let pause = Pause(seconds: 2)
+        OperationQueue().addOperation(pause)
+        pause.waitUntilFinished()
+
+        let _ = prepareDatabase()   // <-- If still subscribed, then this will trigger download
+        
+        XCTAssert(mock?.recordables.count == 0)
+    }
+  
     // MARK: - Functions: XCTestCase
     
     override func setUp() {
@@ -116,7 +123,9 @@ class RecievesRecTests: XCTestCase {
     }
     
     override func tearDown() {
+        let _ = cleanUpDatabase()
         mock = nil
+
         super.tearDown()
     }
 }
@@ -125,22 +134,25 @@ class RecievesRecTests: XCTestCase {
 
 class MockReceiver: ReceivesRecordable {
 
+    var subscription = Subscriber()
+    
     typealias type = MockRecordable
-
-    var notifyCreated: String { return "Mock Added To Database" }
-    
-    var notifyUpdated: String { return "Mock Updated in Database" }
-    
-    var notifyDeleted: String { return "Mock Removed from Database" }
-    
-    var createdID: String?
-    
-    var updatedID: String?
-    
-    var deletedID: String?
     
     /**
      * This protected property is an array of recordables used by reciever.
      */
-    var recordables = [type]()
+    var recordables = [type]() {
+        didSet { print("** recordables = \(recordables.count)") }
+    }
+    
+    deinit {
+        unsubscribe(from: .publicDB)
+        
+        let pause = Pause(seconds: 3)
+        OperationQueue().addOperation(pause)
+pause.completionBlock = { print("finished deinit pause") }
+        pause.waitUntilFinished()
+        
+        print("** deinit MockReceiver")
+    }
 }
