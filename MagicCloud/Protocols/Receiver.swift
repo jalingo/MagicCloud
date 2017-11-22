@@ -26,25 +26,54 @@ public protocol ReceivesRecordable: AnyObject {
     
     var subscription: Subscriber { get }
     
-    func startListening(for: String, on: DatabaseType, consequence: OptionalClosure)
+    // !!
+    // Calls listenForDatabaseChanges() automatically.
+    func subscribeToChanges(for: String, on: DatabaseType, consequence: OptionalClosure)
     
-    func stopListening(on: DatabaseType, completion: OptionalClosure)
+    func unsubscribeToChanges(from: DatabaseType)
+    
+    /// This method sets trigger to download of all type associated recordables after local notification.
+    func listenForDatabaseChanges()
     
     func download(from: DatabaseType, completion: OptionalClosure)
 }
 
 extension ReceivesRecordable {
     
+    // MARK: - Properties
+    
+    var databaseChanged: NotifyBlock {
+        return { notification in
+            guard let object = notification.object as? MCNotification else { return }
+            
+            switch object {
+            case .changeAt(let db): self.download(from: db)
+            default: print("** ignoring notification")
+            }
+        }
+    }
+    
+    // MARK: - Functions
+    
     // !! Automatically triggers download when heard
-    func startListening(for type: String, on db: DatabaseType, consequence: OptionalClosure = nil) {
+    func subscribeToChanges(for type: String, on db: DatabaseType, consequence: OptionalClosure = nil) {
 print("** start listening")
         let triggers: CKQuerySubscriptionOptions = [.firesOnRecordCreation, .firesOnRecordUpdate, .firesOnRecordDeletion]
         subscription.start(for: type, change: triggers, at: db)
+        
+        listenForDatabaseChanges()
     }
     
     // !!
-    func stopListening(on type: DatabaseType) { subscription.end(at: type) }
+    func unsubscribeToChanges(from type: DatabaseType) { subscription.end(at: type) }
     
+    // !!
+    func listenForDatabaseChanges() {
+        let name = Notification.Name(MCNotification.changeNotice.toString())
+        NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: databaseChanged)
+    }
+    
+    // !!
     func download(from db: DatabaseType, completion: OptionalClosure = nil) {
         let empty = type()
 print("** downloading")
@@ -55,6 +84,8 @@ print("** download concluding...")
         }
         OperationQueue().addOperation(op)
     }
+    
+    
 }
 
 /// Wrapper class for ReceivesRecordable
