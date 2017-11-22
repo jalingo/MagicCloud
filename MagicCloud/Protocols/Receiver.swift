@@ -28,8 +28,9 @@ public protocol ReceivesRecordable: AnyObject {
     
     // !!
     // Calls listenForDatabaseChanges() automatically.
-    func subscribeToChanges(for: String, on: DatabaseType)
+    func subscribeToChanges(on: DatabaseType)
     
+    // !!
     func unsubscribeToChanges(from: DatabaseType)
     
     /// This method sets trigger to download of all type associated recordables after local notification.
@@ -56,10 +57,11 @@ extension ReceivesRecordable {
     // MARK: - Functions
     
     // !! Automatically triggers download when heard
-    func subscribeToChanges(for type: String, on db: DatabaseType) {
+    func subscribeToChanges(on db: DatabaseType) {
 print("** start listening")
+        let empty = type()
         let triggers: CKQuerySubscriptionOptions = [.firesOnRecordCreation, .firesOnRecordUpdate, .firesOnRecordDeletion]
-        subscription.start(for: type, change: triggers, at: db)
+        subscription.start(for: empty.recordType, change: triggers, at: db)
         
         listenForDatabaseChanges()
     }

@@ -92,7 +92,7 @@ pause.completionBlock = { print("finished cleanUp pause") }
     }
     
     func testReceiverCanStartSubscriptionAndListen() {
-        mock?.subscribeToChanges(for: MockRecordable().recordType, on: .publicDB)
+        mock?.subscribeToChanges(on: .publicDB)
         
         let pause = Pause(seconds: 5)
         OperationQueue().addOperation(pause)
@@ -104,7 +104,7 @@ pause.completionBlock = { print("finished cleanUp pause") }
     }
     
     func testReceiverCanStopSubscription() {
-        mock?.subscribeToChanges(for: MockRecordable().recordType, on: .publicDB)
+        mock?.subscribeToChanges(on: .publicDB)
         mock?.unsubscribeToChanges(from: .publicDB)
         
         let pause = Pause(seconds: 2)
