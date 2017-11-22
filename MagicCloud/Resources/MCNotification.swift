@@ -6,10 +6,22 @@
 //  Copyright © 2017 Promethatech. All rights reserved.
 //
 
-import Foundation
+import CloudKit
+
+public enum MCNotification {
+    case error(CKError), changeAt(DatabaseType)
+    
+    public func toString() -> String {
+        switch self {
+        case .error(let error): return "CLOUD_ERROR_\(error.errorCode)"
+        case .changeAt(let db): return "\(db.db.databaseScope)_CHANGED"
+        }
+    }
+}
+
 
 /// These notifications are launched at various stages of error handling, and allow for additional implementation.
-public struct MCNotification {
+public struct _MCNotification {
     
     // MARK: - Properties: Static Constants
     
