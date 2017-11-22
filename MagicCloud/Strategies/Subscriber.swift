@@ -29,7 +29,7 @@ public class Subscriber {
      - count: Number of retries left for error handling (cannot be set higher than 3).
      - followUp: Completion Block that executes after subscription saved to the database.
      */
-    func start(for type: String, change trigger: CKQuerySubscriptionOptions, at database: DatabaseType = .publicDB, consequence followUp: OptionalClosure = nil) {
+    func start(for type: String, change trigger: CKQuerySubscriptionOptions, at database: DatabaseType = .publicDB) {
         
         // Create subscription
         let predicate = NSPredicate(value: true)
@@ -52,9 +52,7 @@ print("** not successful \(error.code.rawValue) - \(error)")
                 }
                 
                 // if not handled...
-                NotificationCenter.default.post(name: MCNotification.subscription, object: error)
-            } else {
-                if let action = followUp { action() }
+                NotificationCenter.default.post(name: MCNotification.error(error).toString(), object: error)
             }
         }
         
