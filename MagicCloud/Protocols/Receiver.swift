@@ -69,7 +69,8 @@ print("** start listening")
     
     // !!
     func listenForDatabaseChanges() {
-        let name = Notification.Name(MCNotification.changeNotice.toString())
+        let empty = type()
+        let name = Notification.Name(MCNotification.changeNotice(forType: empty.recordType).toString())
         NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: databaseChanged)
     }
     
