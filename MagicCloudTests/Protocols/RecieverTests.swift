@@ -80,8 +80,9 @@ pause.completionBlock = { print("finished cleanUp pause") }
         
         let _ = prepareDatabase()
         
-        let name = Notification.Name(MCNotification.changeNotice.toString())
-        NotificationCenter.default.post(name: name, object: MCNotification.changeAt(.publicDB))
+        let type = MockRecordable().recordType
+        let name = Notification.Name(MCNotification.changeNotice(forType: type).toString())
+        NotificationCenter.default.post(name: name, object: MCNotification.changeNoticed(forType: type, at: .publicDB))
         
         let pause = Pause(seconds: 2)
         OperationQueue().addOperation(pause)

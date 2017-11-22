@@ -47,7 +47,7 @@ extension ReceivesRecordable {
             guard let object = notification.object as? MCNotification else { return }
             
             switch object {
-            case .changeAt(let db): self.download(from: db)
+            case .changeNoticed(_, let db): self.download(from: db)
             default: print("** ignoring notification")
             }
         }
@@ -70,7 +70,16 @@ print("** start listening")
     // !!
     func listenForDatabaseChanges() {
         let empty = type()
-        let name = Notification.Name(MCNotification.changeNotice(forType: empty.recordType).toString())
+        
+        let publicName  = Notification.Name(MCNotification.changeNoticed(forType: empty.recordType, at: .publicDB).toString())
+        let privateName = Notification.Name(MCNotification.changeNoticed(forType: empty.recordType, at: .privateDB).toString())
+        let sharedName  = Notification.Name(MCNotification.changeNoticed(forType: empty.recordType, at: .sharedDB).toString())
+
+        for name in [publicName, privateName, sharedName] { post(for: name) }
+    }
+
+    // !!
+    fileprivate func post(for name: Notification.Name) {
         NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: databaseChanged)
     }
     
