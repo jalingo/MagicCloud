@@ -24,23 +24,9 @@ public protocol ReceivesRecordable: AnyObject {
      */
     var recordables: [type] { get set }
     
-    // Need to grab / make tests from SBA
+    var subscription: Subscriber { get }
     
-    // these specified by receiver type
-    var notifyCreated: String { get }
-    
-    var notifyUpdated: String { get }
-    
-    var notifyDeleted: String { get }
-    
-    // these are used by listeners. Required in conforming instance as storage, but should not be intefered
-    var createdID: String? { get set }
-    
-    var updatedID: String? { get set }
-    
-    var deletedID: String? { get set }
-    
-    func startListening(on: DatabaseType, consequence: OptionalClosure)
+    func startListening(for: String, on: DatabaseType, consequence: OptionalClosure)
     
     func stopListening(on: DatabaseType, completion: OptionalClosure)
     
@@ -49,47 +35,24 @@ public protocol ReceivesRecordable: AnyObject {
 
 extension ReceivesRecordable {
     
-    var notifyCreated: String {
-        let empty = type()
-        return "\(empty.recordType) created"
-    }
-
-    var notifyUpdated: String {
-        let empty = type()
-        return "\(empty.recordType) updated"
-    }
-
-    var notifyDeleted: String {
-        let empty = type()
-        return "\(empty.recordType) deleted"
-    }
-    
     // !! Automatically triggers download when heard
-    func startListening(on type: DatabaseType, consequence: OptionalClosure = nil) {
-        createdID = setupListener(for: notifyCreated, change: .firesOnRecordCreation, at: type) {
-            self.download(from: type, completion: consequence)
-        }
-        
-        deletedID = setupListener(for: notifyDeleted, change: .firesOnRecordDeletion, at: type) {
-            self.download(from: type, completion: consequence)
-        }
-        
-        updatedID = setupListener(for: notifyUpdated, change: .firesOnRecordUpdate, at: type) {
-            self.download(from: type, completion: consequence)
-        }
+    func startListening(for type: String, on db: DatabaseType, consequence: OptionalClosure = nil) {
+print("** start listening")
+        let triggers: CKQuerySubscriptionOptions = [.firesOnRecordCreation, .firesOnRecordUpdate, .firesOnRecordDeletion]
+        subscription.start(for: type, change: triggers, at: db)
     }
     
     // !!
-    func stopListening(on type: DatabaseType, completion: OptionalClosure = nil) { // <-- Remove completion??
-        if let str = createdID { disableListener(subscriptionID: str, at: type) }
-        if let str = deletedID { disableListener(subscriptionID: str, at: type) }
-        if let str = updatedID { disableListener(subscriptionID: str, at: type) }
-    }
+    func stopListening(on type: DatabaseType) { subscription.end(at: type) }
     
     func download(from db: DatabaseType, completion: OptionalClosure = nil) {
         let empty = type()
+print("** downloading")
         let op = Download(type: empty.recordType, to: self, from: db)
-        op.completionBlock = completion
+        op.completionBlock = {
+print("** download concluding...")
+            if let block = completion { block() }
+        }
         OperationQueue().addOperation(op)
     }
 }
