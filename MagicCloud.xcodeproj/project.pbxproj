@@ -21,6 +21,8 @@
 		A1268EEA1FBA821C00ADAA74 /* Queues & Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE91FBA821C00ADAA74 /* Queues & Enums.swift */; };
 		A16EA5031FC666DF001E57F8 /* NotificationReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16EA5021FC666DF001E57F8 /* NotificationReader.swift */; };
 		A16EA5041FC666DF001E57F8 /* NotificationReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16EA5021FC666DF001E57F8 /* NotificationReader.swift */; };
+		A16EA50B1FC66980001E57F8 /* MagicCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1268EB61FBA806200ADAA74 /* MagicCloud.framework */; };
+		A16EA50C1FC66980001E57F8 /* MagicCloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A1268EB61FBA806200ADAA74 /* MagicCloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A17DE9E51FBE56D900D2EB4F /* Subscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17DE9E41FBE56D900D2EB4F /* Subscriber.swift */; };
 		A17DE9E61FBE56D900D2EB4F /* Subscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17DE9E41FBE56D900D2EB4F /* Subscriber.swift */; };
 		A1B0CF171FC51FBE009474EE /* NotificationReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B0CF161FC51FBE009474EE /* NotificationReaderTests.swift */; };
@@ -87,6 +89,13 @@
 			remoteGlobalIDString = A1268EB51FBA806200ADAA74;
 			remoteInfo = MagicCloud;
 		};
+		A16EA50D1FC66980001E57F8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1268EAD1FBA806200ADAA74 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A1268EB51FBA806200ADAA74;
+			remoteInfo = MagicCloud;
+		};
 		A1CB77F31FBCF132008ADF09 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A1268EAD1FBA806200ADAA74 /* Project object */;
@@ -109,6 +118,20 @@
 			remoteInfo = TestApp;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A16EA50F1FC66981001E57F8 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A16EA50C1FC66980001E57F8 /* MagicCloud.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		90C4E8711FC0EAE300A8D329 /* GetUserRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUserRecord.swift; sourceTree = "<group>"; };
@@ -191,6 +214,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A16EA50B1FC66980001E57F8 /* MagicCloud.framework in Frameworks */,
 				A1CB78101FBCF16B008ADF09 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -461,10 +485,12 @@
 				A1CB77DB1FBCF131008ADF09 /* Sources */,
 				A1CB77DC1FBCF131008ADF09 /* Frameworks */,
 				A1CB77DD1FBCF131008ADF09 /* Resources */,
+				A16EA50F1FC66981001E57F8 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A16EA50E1FC66980001E57F8 /* PBXTargetDependency */,
 			);
 			name = TestApp;
 			productName = TestApp;
@@ -720,6 +746,11 @@
 			target = A1268EB51FBA806200ADAA74 /* MagicCloud */;
 			targetProxy = A1268EC11FBA806200ADAA74 /* PBXContainerItemProxy */;
 		};
+		A16EA50E1FC66980001E57F8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A1268EB51FBA806200ADAA74 /* MagicCloud */;
+			targetProxy = A16EA50D1FC66980001E57F8 /* PBXContainerItemProxy */;
+		};
 		A1CB77F41FBCF132008ADF09 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A1CB77DE1FBCF131008ADF09 /* TestApp */;
@@ -949,6 +980,7 @@
 		A1CB78051FBCF132008ADF09 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TestApp/TestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -965,6 +997,7 @@
 		A1CB78061FBCF132008ADF09 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TestApp/TestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;

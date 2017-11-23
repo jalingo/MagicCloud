@@ -18,7 +18,7 @@ public struct NotificationReader {
              .resultsTruncated,   .zoneBusy:
             if let retryAfterValue = error.userInfo[CKErrorRetryAfterKey] as? TimeInterval {
                 let pause = Pause(seconds: retryAfterValue)
-                pause.completionBlock = { MCNotificationReader.createLocal(from: info) }
+                pause.completionBlock = { NotificationReader.createLocal(from: info) }
                 pause.start()
             }
         case .unknownItem: break
@@ -44,7 +44,7 @@ public struct NotificationReader {
         
         let op = CKFetchRecordsOperation(recordIDs: [id])
         op.fetchRecordsCompletionBlock = { possibleResults, possibleError in
-            if let error = possibleError as? CKError { MCNotificationReader.handle(error, for: info) }
+            if let error = possibleError as? CKError { NotificationReader.handle(error, for: info) }
             
             guard let results = possibleResults else { return }
             

@@ -11,12 +11,6 @@ import UIKit
 import CloudKit
 import MagicCloud
 
-extension MCNotification {
-    static let createAlpha = Notification.Name("adsfja")
-    static let removeAlpha = Notification.Name("sdflkjs")
-    static let updateAlpha = Notification.Name("sdfs")
-}
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -36,7 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
-        // Notification Reader...
+        
+        NotificationReader.createLocal(from: userInfo)
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
