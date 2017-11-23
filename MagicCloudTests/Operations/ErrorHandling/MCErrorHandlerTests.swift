@@ -38,7 +38,8 @@ class MCErrorHandlerTests: XCTestCase {
             authenticationErrorDetected = true
         }
         
-        let observer = NotificationCenter.default.addObserver(forName: MCNotification.notAuthenticated, object: nil, queue: nil, using: block)
+        let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
+        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
         
         ErrorQueue().addOperation(testOp!)
         
@@ -64,7 +65,8 @@ class MCErrorHandlerTests: XCTestCase {
             versionConflictDetected = true
         }
         
-        let observer = NotificationCenter.default.addObserver(forName: MCNotification.serverRecordChanged, object: nil, queue: nil, using: block)
+        let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
+        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
         
         ErrorQueue().addOperation(testOp!)
 
