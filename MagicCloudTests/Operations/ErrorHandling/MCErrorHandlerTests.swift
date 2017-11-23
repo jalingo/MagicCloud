@@ -92,7 +92,8 @@ class MCErrorHandlerTests: XCTestCase {
             batchFailureDetected = true
         }
         
-        let observer = NotificationCenter.default.addObserver(forName: MCNotification.batchIssue, object: nil, queue: nil, using: block)
+        let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
+        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
         
         ErrorQueue().addOperation(testOp!)
 
@@ -118,7 +119,8 @@ class MCErrorHandlerTests: XCTestCase {
             retriableErrorDetected = true
         }
         
-        let observer = NotificationCenter.default.addObserver(forName: MCNotification.retriable, object: nil, queue: nil, using: block)
+        let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
+        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
         
         ErrorQueue().addOperation(testOp!)
         
@@ -144,7 +146,8 @@ class MCErrorHandlerTests: XCTestCase {
             fatalErrorDetected = true
         }
         
-        let observer = NotificationCenter.default.addObserver(forName: MCNotification.fatalError, object: nil, queue: nil, using: block)
+        let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
+        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
         
         ErrorQueue().addOperation(testOp!)
 
@@ -170,7 +173,8 @@ class MCErrorHandlerTests: XCTestCase {
             sharingErrorDetected = true
         }
         
-        let observer = NotificationCenter.default.addObserver(forName: MCNotification.sharingError, object: nil, queue: nil, using: block)
+        let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
+        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
         
         ErrorQueue().addOperation(testOp!)
         
@@ -218,49 +222,4 @@ class MCErrorHandlerTests: XCTestCase {
         super.tearDown()
     }
 }
-
-/// This mock overrides main with the only change to implementation being that
-/// a notification is launched rather than the follow up operation.
-//class MockErrorHandler: MCErrorHandler {
-//
-//    override func main() {
-//        if ignoreUnknownItem && error.code == .unknownItem {
-//print("** unknownItem detected")
-//            if let action = ignoreUnknownItemCustomAction { action() }
-//            return
-//        }
-//
-//        if isCancelled { return }
-//
-//        var name: Notification.Name
-//        switch error.code {
-//
-//        // This error occurs when USER is not logged in to an iCloud account on their device.
-//        case .notAuthenticated: name = MCNotification.notAuthenticated
-//
-//        // This error occurs when record's change tag indicates a version conflict.
-//        case .serverRecordChanged: name = MCNotification.serverRecordChanged
-//
-//        // These errors occur when a batch of requests fails or partially fails.
-//        case .limitExceeded, .batchRequestFailed, .partialFailure:
-//            name = MCNotification.batchIssue
-//
-//        // These errors occur as a result of environmental factors, and originating operation should
-//        // be retried after a set amount of time.
-//        case .networkUnavailable, .networkFailure,
-//             .serviceUnavailable, .requestRateLimited,
-//             .resultsTruncated,   .zoneBusy:
-//            name = MCNotification.retriable
-//
-//        // These errors are related to the use of CKSharedDatabase, and have to be handled uniquely.
-//        case .alreadyShared, .tooManyParticipants: name = MCNotification.sharingError
-//
-//        // These fatal errors do not require any further handling, except for a USER notification.
-//        default:
-//            name = MCNotification.fatalError
-//        }
-//
-//        NotificationCenter.default.post(name: name, object: nil, userInfo: nil)
-//    }
-//}
 

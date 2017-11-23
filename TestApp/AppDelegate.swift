@@ -7,6 +7,15 @@
 //
 
 import UIKit
+//import UserNotifications
+import CloudKit
+import MagicCloud
+
+extension MCNotification {
+    static let createAlpha = Notification.Name("adsfja")
+    static let removeAlpha = Notification.Name("sdflkjs")
+    static let updateAlpha = Notification.Name("sdfs")
+}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,10 +24,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+
+//        UNUserNotificationCenter.current().requestAuthorization { possibleBool, possibleError in
+//            // !! If no push notifications are going to the user, do they still need to authorize?
+//        }
+        UIApplication.shared.registerForRemoteNotifications()
+        
         return true
     }
 
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+
+        // Notification Reader...
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+print("!! Error @ UIApp.didFailToRegister")
+print("\(error.localizedDescription)")
+        
+        // TODO !! graceful disable &or error handling...
+    }
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

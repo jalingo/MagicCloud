@@ -9,13 +9,13 @@
 import CloudKit
 
 public enum MCNotification {
-    case error(CKError), changeNoticed(forType: String, at: DatabaseType), changeNotice(forType: String)
+    case error(CKError), changeNoticed(forType: String, at: DatabaseType)//, changeNotice(forType: String)
     
     public func toString() -> String {
         switch self {
         case .error(let error):                 return "CLOUD_ERROR_\(error.errorCode)"
         case .changeNoticed(let type, let db):  return "\(type)_CHANGED_IN_\(db)"
-        case .changeNotice(let type):           return "\(type)_CHANGED"
+//        case .changeNotice(let type):           return "\(type)_CHANGED"
         }
     }
 }

@@ -46,13 +46,13 @@ print("** not successful \(error.code.rawValue) - \(error)")
                     self.end(subscriptionID: subsciption.subscriptionID, at: database)
                     self.start(for: type,
                                            change: trigger,
-                                           at: database,
-                                           consequence: followUp)
+                                           at: database)
                     return
                 }
                 
                 // if not handled...
-                NotificationCenter.default.post(name: MCNotification.error(error).toString(), object: error)
+                let name = Notification.Name(MCNotification.error(error).toString())
+                NotificationCenter.default.post(name: name, object: error)
             }
         }
         
@@ -67,9 +67,10 @@ print("** not successful \(error.code.rawValue) - \(error)")
         
         database.db.delete(withSubscriptionID: id) { possibleID, possibleError in
 print("** disabling subscription")
-            if let error = possibleError {
+            if let error = possibleError as? CKError {
 print("** error disabling: \(error)")
-                NotificationCenter.default.post(name: MCNotification.subscription, object: error)
+                let name = Notification.Name(MCNotification.error(error).toString())
+                NotificationCenter.default.post(name: name, object: error)
             }
         }
     }

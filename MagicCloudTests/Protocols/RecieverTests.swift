@@ -81,8 +81,9 @@ pause.completionBlock = { print("finished cleanUp pause") }
         let _ = prepareDatabase()
         
         let type = MockRecordable().recordType
-        let name = Notification.Name(MCNotification.changeNotice(forType: type).toString())
-        NotificationCenter.default.post(name: name, object: MCNotification.changeNoticed(forType: type, at: .publicDB))
+        let notice = MCNotification.changeNoticed(forType: type, at: .publicDB).toString()
+        let name = Notification.Name(notice)
+        NotificationCenter.default.post(name: name, object: notice)
         
         let pause = Pause(seconds: 2)
         OperationQueue().addOperation(pause)
@@ -147,7 +148,7 @@ class MockReceiver: ReceivesRecordable {
     }
     
     deinit {
-        unsubscribe(from: .publicDB)
+        unsubscribeToChanges(from: .publicDB)
         
         let pause = Pause(seconds: 3)
         OperationQueue().addOperation(pause)

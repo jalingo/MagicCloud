@@ -47,9 +47,11 @@ class BatchErrorTests: XCTestCase {
     // MARK: - Functions: Unit Tests
     
     func testBatchErrorHandlesPartialError() {
-        let observer = NotificationCenter.default.addObserver(forName: MCNotification.partialFailure, object: nil, queue: nil, using: detectionBlock())
-
         let error = genError(code: CKError.partialFailure.rawValue)
+
+        let name = Notification.Name(MCNotification.error(error).toString())
+        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
+
         let testOp = BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
         ErrorQueue().addOperation(testOp)
 
@@ -67,9 +69,11 @@ class BatchErrorTests: XCTestCase {
     }
     
     func testBatchErrorHandlesLimitExceeded() {
-        let observer = NotificationCenter.default.addObserver(forName: MCNotification.limitExceeded, object: nil, queue: nil, using: detectionBlock())
-
         let error = genError(code: CKError.limitExceeded.rawValue)
+
+        let name = Notification.Name(MCNotification.error(error).toString())
+        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
+
         let testOp = BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
         ErrorQueue().addOperation(testOp)
         
@@ -87,9 +91,11 @@ class BatchErrorTests: XCTestCase {
     }
     
     func testBatchErrorHandlesBatchRequestFail() {
-        let observer = NotificationCenter.default.addObserver(forName: MCNotification.batchRequestFailed, object: nil, queue: nil, using: detectionBlock())
-
         let error = genError(code: CKError.batchRequestFailed.rawValue)
+
+        let name = Notification.Name(MCNotification.error(error).toString())
+        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
+
         let testOp = BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
         ErrorQueue().addOperation(testOp)
         

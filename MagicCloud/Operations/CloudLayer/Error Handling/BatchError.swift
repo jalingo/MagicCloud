@@ -38,10 +38,17 @@ class BatchError<R: ReceivesRecordable>: Operation {
         if isCancelled { return }
         
         var resolution: Operation?
+
+        // !!
+        ///#######/// vvvvvvvv FOR TESTING PURPOSES vvvvvvvv ///#######///
+        
+        let name = Notification.Name(MCNotification.error(error).toString())
+        NotificationCenter.default.post(name: name, object: error)
+        
+        ///#######/// ^^^^^^^^ REMOVE BEFORE SUBMIT ^^^^^^^^ ///#######///
         
         switch error.code {
         case .partialFailure:
-            NotificationCenter.default.post(name: MCNotification.partialFailure, object: error)
             resolution = PartialError(error: error,
                                       occuredIn: operation, at: receiver,
                                       instances: recordables,
@@ -51,14 +58,11 @@ class BatchError<R: ReceivesRecordable>: Operation {
                 resolverOp.ignoreUnknownItemCustomAction = self.ignoreUnknownItemCustomAction
             }
         case .limitExceeded:
-            NotificationCenter.default.post(name: MCNotification.limitExceeded, object: error)
             resolution = LimitExceeded<R>(error: error,
                                           occuredIn: operation,
                                           rec: receiver, instances: recordables, target: database)
-        case .batchRequestFailed:
-            NotificationCenter.default.post(name: MCNotification.batchRequestFailed, object: error)
-        default:
-            print("undefined failure @ BatchError: \(error.localizedDescription)")
+        case .batchRequestFailed: break
+        default: break
         }
         
         if isCancelled { return }

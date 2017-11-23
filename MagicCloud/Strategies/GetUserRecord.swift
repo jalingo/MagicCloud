@@ -15,8 +15,9 @@ public func getCurrentUserRecord() -> CKRecordID? {
     group.enter()
     
     CKContainer.default().fetchUserRecordID { possibleID, possibleError in
-        if let error = possibleError {
-            NotificationCenter.default.post(name: MCNotification.cloudIdentity, object: error)
+        if let error = possibleError as? CKError {
+            let name = Notification.Name(MCNotification.error(error).toString())
+            NotificationCenter.default.post(name: name, object: error)
         }
         
         if let id = possibleID { result = id }
