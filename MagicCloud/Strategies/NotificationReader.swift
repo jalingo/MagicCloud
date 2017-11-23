@@ -8,7 +8,7 @@
 
 import CloudKit
 
-struct NotificationReader {
+public struct NotificationReader {
     
     // !!
     fileprivate static func handle(_ error: CKError, for info: [AnyHashable: Any]) {
@@ -35,7 +35,7 @@ struct NotificationReader {
     }
     
     // !!
-    static func createLocal(from info: [AnyHashable: Any]) {
+    public static func createLocal(from info: [AnyHashable: Any]) {
         // Pull a CKNotification from userInfo, containing triggers and ckrecordID
         let remote = CKQueryNotification(fromRemoteNotificationDictionary: info)
         let database = DatabaseType.from(scope: remote.databaseScope)
