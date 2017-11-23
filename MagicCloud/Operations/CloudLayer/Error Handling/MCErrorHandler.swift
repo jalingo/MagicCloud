@@ -59,8 +59,10 @@ class MCErrorHandler<R: ReceivesRecordable>: Operation {
         if isCancelled { return }
 print("** running error handling")
         // This console message reports instances when error shouldn't be ignored or isn't partial failure.
-        if !(error.code == .unknownItem && ignoreUnknownItem) || !(error.code == .partialFailure) {                 // <-- !! Remove after tests all passing !!
+        if !(error.code == .unknownItem && ignoreUnknownItem) || !(error.code == .partialFailure) {
 print("!! CKError: \(error.code.rawValue) / \(error.localizedDescription) @ \(String(describing: originatingOp.name))")
+            let name = Notification.Name(MCNotification.error(error).toString())
+            NotificationCenter.default.post(name: name, object: error)
         }
         
         if isCancelled { return }
@@ -70,13 +72,8 @@ print("!! CKError: \(error.code.rawValue) / \(error.localizedDescription) @ \(St
         
         switch error.code {
             
-        // This error occurs when USER is not logged in to an iCloud account on their device.
-        case .notAuthenticated:
-            NotificationCenter.default.post(name: MCNotification.notAuthenticated, object: error)
-            
         // This error occurs when record's change tag indicates a version conflict.
         case .serverRecordChanged:
-            NotificationCenter.default.post(name: MCNotification.serverRecordChanged, object: error)
             resolvingOperation = VersionConflict(rec: receiver,
                                                  error: error,
                                                  target: database,
@@ -87,7 +84,6 @@ print("!! CKError: \(error.code.rawValue) / \(error.localizedDescription) @ \(St
      
         // These errors occur when a batch of requests fails or partially fails.
         case .limitExceeded, .batchRequestFailed, .partialFailure:
-            NotificationCenter.default.post(name: MCNotification.batchIssue, object: error)
             resolvingOperation = BatchError(error: error,
                                             occuredIn: originatingOp,
                                             target: database, receiver: receiver, instances: recordables)
@@ -102,7 +98,6 @@ print("!! CKError: \(error.code.rawValue) / \(error.localizedDescription) @ \(St
         case .networkUnavailable, .networkFailure,
              .serviceUnavailable, .requestRateLimited,
              .resultsTruncated,   .zoneBusy:
-            NotificationCenter.default.post(name: MCNotification.retriable, object: error)
             resolvingOperation = RetriableError(error: error,
                                                 originating: originatingOp,
                                                 target: database,
@@ -111,17 +106,15 @@ print("!! CKError: \(error.code.rawValue) / \(error.localizedDescription) @ \(St
             completionBlock = nil
         
         // These errors occur when CloudKit has a problem with a CKSharedDatabase operation.
-        case .alreadyShared, .tooManyParticipants:
-            NotificationCenter.default.post(name: MCNotification.sharingError, object: error)
+//        case .alreadyShared, .tooManyParticipants:
         
         // This case allows .unknownItem to be ignored.
         case .unknownItem where ignoreUnknownItem:
             print("** ignoring unknownItem.")
             if let block = ignoreUnknownItemCustomAction { block() }
             
-        // These fatal errors do not require any further handling, except for a USER notification.
-        default:
-            NotificationCenter.default.post(name: MCNotification.fatalError, object: error)
+        // These fatal errors do not require any further handling.
+        default: break
         }
         
         if isCancelled { return }
