@@ -81,8 +81,9 @@ pause.completionBlock = { print("finished cleanUp pause") }
         let _ = prepareDatabase()
         
         let type = MockRecordable().recordType
-        let notice = MCNotification.changeNoticed(forType: type, at: .publicDB).toString()
-        let name = Notification.Name(notice)
+        let notice = MCNotification.changeNoticed(forType: type, at: .publicDB)
+       
+        let name = Notification.Name(notice.toString())
         NotificationCenter.default.post(name: name, object: notice)
         
         let pause = Pause(seconds: 2)
@@ -95,12 +96,12 @@ pause.completionBlock = { print("finished cleanUp pause") }
     func testReceiverCanStartSubscriptionAndListen() {
         mock?.subscribeToChanges(on: .publicDB)
         
-        let pause = Pause(seconds: 5)
-        OperationQueue().addOperation(pause)
-
-        pause.waitUntilFinished()
         let _ = prepareDatabase()
         
+        let pause = Pause(seconds: 2)
+        OperationQueue().addOperation(pause)
+        
+        pause.waitUntilFinished()
         XCTAssert(mock?.recordables.count != 0)
     }
     
