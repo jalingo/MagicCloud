@@ -33,7 +33,7 @@ class RecievesRecTests: XCTestCase {
         let op = Upload(mockRecordables, from: mock!, to: .publicDB)
         let pause = Pause(seconds: 3)
         pause.addDependency(op)
-pause.completionBlock = { print("finished prep pause") }
+pause.completionBlock = { print("** finished prep pause") }
         OperationQueue().addOperation(pause)
         OperationQueue().addOperation(op)
         
@@ -45,7 +45,7 @@ pause.completionBlock = { print("finished prep pause") }
         let op = Delete(mockRecordables, of: mock!, from: .publicDB)
         let pause = Pause(seconds: 2)
         pause.addDependency(op)
-pause.completionBlock = { print("finished cleanUp pause") }
+pause.completionBlock = { print("** finished cleanUp pause") }
         OperationQueue().addOperation(pause)
         OperationQueue().addOperation(op)
         
@@ -94,7 +94,7 @@ pause.completionBlock = { print("finished cleanUp pause") }
     }
     
     func testReceiverCanStartSubscriptionAndListen() {
-        mock?.subscribeToChanges(on: .publicDB)
+//        mock?.subscribeToChanges(on: .publicDB)
         
         let _ = prepareDatabase()
         

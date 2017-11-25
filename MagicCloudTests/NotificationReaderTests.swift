@@ -41,7 +41,7 @@ class NotificationReaderTests: XCTestCase {
         let op = Upload(mockRecordables, from: mockRec!, to: .publicDB)
         let pause = Pause(seconds: 3)
         pause.addDependency(op)
-        pause.completionBlock = { print("finished prep pause") }
+        pause.completionBlock = { print("** finished prep pause") }
         OperationQueue().addOperation(pause)
         OperationQueue().addOperation(op)
         
@@ -53,7 +53,7 @@ class NotificationReaderTests: XCTestCase {
         let op = Delete(mockRecordables, of: mockRec!, from: .publicDB)
         let pause = Pause(seconds: 2)
         pause.addDependency(op)
-        pause.completionBlock = { print("finished cleanUp pause") }
+        pause.completionBlock = { print("** finished cleanUp pause") }
         OperationQueue().addOperation(pause)
         OperationQueue().addOperation(op)
         
