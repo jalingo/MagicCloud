@@ -7,7 +7,6 @@
 //
 
 import UIKit
-//import UserNotifications
 import CloudKit
 import MagicCloud
 
@@ -18,11 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-
-//        UNUserNotificationCenter.current().requestAuthorization { possibleBool, possibleError in
-//            // !! If no push notifications are going to the user, do they still need to authorize?
-//        }
-        UIApplication.shared.registerForRemoteNotifications()
+print("** didFinishLaunchingWithOptions")
+        application.registerForRemoteNotifications()
         
         return true
     }
@@ -40,7 +36,7 @@ print("** registered with token")
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
 print("!! Error @ UIApp.didFailToRegister")
-print("\(error.localizedDescription)")
+print("!! \(error.localizedDescription)")
         
         // TODO !! graceful disable &or error handling...
     }
