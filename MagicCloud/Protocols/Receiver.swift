@@ -39,11 +39,11 @@ public protocol ReceivesRecordable: AnyObject {
     func download(from: DatabaseType, completion: OptionalClosure)
 }
 
-extension ReceivesRecordable {
+public extension ReceivesRecordable {
     
     // MARK: - Properties
     
-    var databaseChanged: NotifyBlock {
+    fileprivate var databaseChanged: NotifyBlock {
         return { notification in
             guard let object = notification.object as? MCNotification else { return }
             
@@ -57,8 +57,8 @@ extension ReceivesRecordable {
     // MARK: - Functions
     
     // !! Automatically triggers download when heard
-    func subscribeToChanges(on db: DatabaseType) {
-print("** start listening")
+    public func subscribeToChanges(on db: DatabaseType) {
+print("** start listening for remote notifications")
         let empty = type()
         let triggers: CKQuerySubscriptionOptions = [.firesOnRecordCreation, .firesOnRecordUpdate, .firesOnRecordDeletion]
         subscription.start(for: empty.recordType, change: triggers, at: db)
@@ -67,12 +67,12 @@ print("** start listening")
     }
     
     // !!
-    func unsubscribeToChanges(from type: DatabaseType) { subscription.end(at: type) }
+    public func unsubscribeToChanges(from type: DatabaseType) { subscription.end(at: type) }
     
     // !!
-    func listenForDatabaseChanges() {
+    public func listenForDatabaseChanges() {
         let empty = type()
-        
+print("** listening for local notifications")
         let publicName  = Notification.Name(MCNotification.changeNoticed(forType: empty.recordType, at: .publicDB).toString())
         let privateName = Notification.Name(MCNotification.changeNoticed(forType: empty.recordType, at: .privateDB).toString())
         let sharedName  = Notification.Name(MCNotification.changeNoticed(forType: empty.recordType, at: .sharedDB).toString())
@@ -86,7 +86,7 @@ print("** start listening")
     }
     
     // !!
-    func download(from db: DatabaseType, completion: OptionalClosure = nil) {
+    public func download(from db: DatabaseType, completion: OptionalClosure = nil) {
         let empty = type()
 print("** downloading")
         let op = Download(type: empty.recordType, to: self, from: db)
