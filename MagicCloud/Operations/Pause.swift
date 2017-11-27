@@ -29,7 +29,7 @@ public class Pause: Operation {
         
         if isCancelled { return }
         
-        print("pausing")
+        print("** pause starting")
 
         CFRunLoopRun()
         
