@@ -56,6 +56,6 @@ class RecordableTests: XCTestCase {
 
 extension MockRecordable: Equatable { }
 
-func ==(left: MockRecordable, right: MockRecordable) -> Bool {
+public func ==(left: MockRecordable, right: MockRecordable) -> Bool {
     return left.created == right.created
 }
