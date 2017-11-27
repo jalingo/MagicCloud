@@ -45,7 +45,7 @@ public protocol Recordable {
 // MARK: - Mock
 
 /// Mock instance that only conforms to `Recordable` for testing and prototype development.
-class MockRecordable: Recordable {
+public class MockRecordable: Recordable {   // <-- remove publix (below, too) after testing remote subscriptions
     
     // MARK: - Properties
         
@@ -58,16 +58,16 @@ class MockRecordable: Recordable {
     
     // MARK: - Properties: Recordable
     
-    var recordType: String { return MockRecordable.mockType }
+    public var recordType: String { return MockRecordable.mockType }
     
-    var recordFields: Dictionary<String, CKRecordValue> {
+    public var recordFields: Dictionary<String, CKRecordValue> {
         get { return [MockRecordable.key: created as CKRecordValue] }
         set {
             if let date = newValue[MockRecordable.key] as? Date { created = date }
         }
     }
     
-    var recordID: CKRecordID {
+    public var recordID: CKRecordID {
         get {
             return CKRecordID(recordName: "MockIdentifier: \(String(describing: created))")
         }
@@ -83,7 +83,7 @@ class MockRecordable: Recordable {
     
     // MARK: - Functions: Constructor
     
-    required init() { }
+    public required init() { }
     
     init(created: Date? = nil) {
         if let date = created { self.created = date }
