@@ -47,7 +47,7 @@ public class Upload<R: ReceivesRecordable>: Operation {
     
     fileprivate func decorate() -> CKModifyRecordsOperation {
         let op = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: nil)
-        op.name = "Upload: \(database.db.description)"
+        op.name = "Upload: \(database)"
         
         op.savePolicy = .changedKeys
         if #available(iOS 11.0, *) {

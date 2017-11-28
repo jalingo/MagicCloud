@@ -54,7 +54,7 @@ public class Download<R: ReceivesRecordable>: Operation {
         if let integer = limit { op.resultsLimit = integer }
         op.recordFetchedBlock = recordFetched()
         op.queryCompletionBlock = queryCompletion(op: op)
-        op.name = "Download @ \(database.db.databaseScope)"
+        op.name = "Download @ \(database)"
     }
     
     fileprivate func recordFetched() -> FetchBlock {
