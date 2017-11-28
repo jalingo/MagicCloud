@@ -25,9 +25,9 @@ public enum DatabaseType {
     
     static func from(scope: CKDatabaseScope) -> DatabaseType {
         switch scope {
-        case .private: return .publicDB
-        case .public: return .privateDB
-        case .shared: return .sharedDB
+        case .private:  return .privateDB
+        case .public:   return .publicDB
+        case .shared:   return .sharedDB
         }
     }
     
