@@ -8,7 +8,9 @@
 
 import CloudKit
 
-//public class Download<R: ReceivesRecordable>: Operation {
+/**
+    Downloads records from specified databse, converts them back to recordables and then loads them into associated receiver. Destination is the receiver's `recordables` property, an array of receiver's associated type, but array is not emptied or otherwise prepared before appending results.
+ */
 public class Download<R: ReceivesRecordable>: Operation {
 
     // MARK: - Properties
@@ -123,7 +125,7 @@ public class Download<R: ReceivesRecordable>: Operation {
      *
      * - parameter queryField: 'K' in "%K = %@" predicate, where K represents CKRecord Field.
      *
-     * - parameter queryValues: '@' in "%k = %@" predicate, where @ represents an array of possible matching CKRecordValue's.
+     * - parameter queryValues: '@' in "%K = %@" predicate, where @ represents an array of possible matching CKRecordValue's.
      *
      * - parameter to: Instance conforming to 'RecievesRecordable' that will ultimately recieve the results of the query.
      *
