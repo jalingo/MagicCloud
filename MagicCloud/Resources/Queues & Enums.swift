@@ -6,19 +6,9 @@
 //  Copyright © 2017 Promethatech. All rights reserved.
 //
 
-import Foundation
-
-class ErrorQueue: OperationQueue {
-    
-}
-
-class CloudQueue: OperationQueue {
-    
-}
+import CloudKit
 
 // MARK: - Enum
-
-import CloudKit
 
 public enum DatabaseType: String {
     case publicDB, privateDB, sharedDB
