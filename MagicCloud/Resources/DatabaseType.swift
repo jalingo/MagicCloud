@@ -1,6 +1,6 @@
 //
-//  Queues.swift
-//  slBackend
+//  DatabaseType.swift
+//  MagicCloud
 //
 //  Created by Jimmy Lingo on 5/16/17.
 //  Copyright © 2017 Promethatech. All rights reserved.

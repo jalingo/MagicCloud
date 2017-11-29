@@ -18,7 +18,7 @@
 		A1268EE31FBA80BC00ADAA74 /* Recordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* Recordable.swift */; };
 		A1268EE41FBA80BC00ADAA74 /* Recordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* Recordable.swift */; };
 		A1268EE71FBA821400ADAA74 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE61FBA821400ADAA74 /* TypeAliases.swift */; };
-		A1268EEA1FBA821C00ADAA74 /* Queues & Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE91FBA821C00ADAA74 /* Queues & Enums.swift */; };
+		A1268EEA1FBA821C00ADAA74 /* DatabaseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE91FBA821C00ADAA74 /* DatabaseType.swift */; };
 		A16EA5031FC666DF001E57F8 /* NotificationReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16EA5021FC666DF001E57F8 /* NotificationReader.swift */; };
 		A16EA5041FC666DF001E57F8 /* NotificationReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16EA5021FC666DF001E57F8 /* NotificationReader.swift */; };
 		A16EA50B1FC66980001E57F8 /* MagicCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1268EB61FBA806200ADAA74 /* MagicCloud.framework */; };
@@ -46,7 +46,7 @@
 		A1CB77581FBA8793008ADF09 /* DeleteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77551FBA8792008ADF09 /* DeleteTests.swift */; };
 		A1CB77591FBA8793008ADF09 /* UploadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77561FBA8792008ADF09 /* UploadTests.swift */; };
 		A1CB775D1FBA87DB008ADF09 /* MCErrorHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB775C1FBA87DB008ADF09 /* MCErrorHandlerTests.swift */; };
-		A1CB77681FBAAE9A008ADF09 /* Queues & Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE91FBA821C00ADAA74 /* Queues & Enums.swift */; };
+		A1CB77681FBAAE9A008ADF09 /* DatabaseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE91FBA821C00ADAA74 /* DatabaseType.swift */; };
 		A1CB77691FBAAE9D008ADF09 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE61FBA821400ADAA74 /* TypeAliases.swift */; };
 		A1CB776A1FBAAEA1008ADF09 /* MCNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268ED91FBA807D00ADAA74 /* MCNotification.swift */; };
 		A1CB77821FBB986F008ADF09 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77341FBA86AC008ADF09 /* Download.swift */; };
@@ -145,7 +145,7 @@
 		A1268EDD1FBA80BC00ADAA74 /* Receiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Receiver.swift; sourceTree = "<group>"; };
 		A1268EDE1FBA80BC00ADAA74 /* Recordable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recordable.swift; sourceTree = "<group>"; };
 		A1268EE61FBA821400ADAA74 /* TypeAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
-		A1268EE91FBA821C00ADAA74 /* Queues & Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Queues & Enums.swift"; sourceTree = "<group>"; };
+		A1268EE91FBA821C00ADAA74 /* DatabaseType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseType.swift; sourceTree = "<group>"; };
 		A16EA5021FC666DF001E57F8 /* NotificationReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationReader.swift; sourceTree = "<group>"; };
 		A17DE9E41FBE56D900D2EB4F /* Subscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscriber.swift; sourceTree = "<group>"; };
 		A1B0CF161FC51FBE009474EE /* NotificationReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationReaderTests.swift; sourceTree = "<group>"; };
@@ -312,7 +312,7 @@
 			children = (
 				A1268ED91FBA807D00ADAA74 /* MCNotification.swift */,
 				A1268EE61FBA821400ADAA74 /* TypeAliases.swift */,
-				A1268EE91FBA821C00ADAA74 /* Queues & Enums.swift */,
+				A1268EE91FBA821C00ADAA74 /* DatabaseType.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -658,7 +658,7 @@
 				A1CB77151FBA8535008ADF09 /* PrepareFrom.swift in Sources */,
 				A1CB77451FBA86E7008ADF09 /* RetriableError.swift in Sources */,
 				A1268EE11FBA80BC00ADAA74 /* Receiver.swift in Sources */,
-				A1268EEA1FBA821C00ADAA74 /* Queues & Enums.swift in Sources */,
+				A1268EEA1FBA821C00ADAA74 /* DatabaseType.swift in Sources */,
 				A1268EDF1FBA80BC00ADAA74 /* Referable.swift in Sources */,
 				A1CB77271FBA8683008ADF09 /* *Alert.swift in Sources */,
 				A1CB77281FBA8683008ADF09 /* FailedOp.swift in Sources */,
@@ -697,7 +697,7 @@
 				A1CB77831FBB9874008ADF09 /* Delete.swift in Sources */,
 				A1CB77691FBAAE9D008ADF09 /* TypeAliases.swift in Sources */,
 				A1CB77D11FBCBF47008ADF09 /* VersionConflict.swift in Sources */,
-				A1CB77681FBAAE9A008ADF09 /* Queues & Enums.swift in Sources */,
+				A1CB77681FBAAE9A008ADF09 /* DatabaseType.swift in Sources */,
 				A1CB77841FBB9879008ADF09 /* Upload.swift in Sources */,
 				A1CB77CA1FBC3241008ADF09 /* RetriableErrorTests.swift in Sources */,
 				A1CB77851FBB9881008ADF09 /* Pause.swift in Sources */,
