@@ -12,7 +12,8 @@ public struct NotificationReader {
     
     // !!
     fileprivate static func handle(_ error: CKError, for info: [AnyHashable: Any]) {
-        switch error.code {
+print("** error @ NotificationReader \(error)")
+       switch error.code {
         case .networkUnavailable, .networkFailure,
              .serviceUnavailable, .requestRateLimited,
              .resultsTruncated,   .zoneBusy:
@@ -36,26 +37,61 @@ public struct NotificationReader {
     
     // !!
     public static func createLocal(from info: [AnyHashable: Any]) {
+//        let converter = MockNotificationConverter()
+//        converter.toLocal(from: info)
+        
         // Pull a CKNotification from userInfo, containing triggers and ckrecordID
         let remote = CKQueryNotification(fromRemoteNotificationDictionary: info)
+        
+        // recover record type from remote?
+//        remote.subscriptionID
+        
         let database = DatabaseType.from(scope: remote.databaseScope)
-        
+print("** creating local notification")
         guard let id = remote.recordID else { return }
-        
+print("** recordID found \(id.recordName)")
         let op = CKFetchRecordsOperation(recordIDs: [id])
+        op.qualityOfService = .userInteractive
         op.fetchRecordsCompletionBlock = { possibleResults, possibleError in
+print("** completing fetch")
             if let error = possibleError as? CKError { NotificationReader.handle(error, for: info) }
-            
+
             guard let results = possibleResults else { return }
-            
-            if let type = results[id]?.recordType {
+print("** results found \(results.count)")
+            if let type = results[id]?.recordType {     // <-- Will not fetch if change was deletion...
+print("** type \(type) found")
                 let change = MCNotification.changeNoticed(forType: type, at: database)
                 let local = Notification.Name(change.toString())
-                
+print("** name: \(local)")
                 NotificationCenter.default.post(name: local, object: change)
             }
         }
-        
+
         database.db.add(op)
     }
+}
+
+public protocol NotificationConverter {
+    associatedtype type: Recordable
+    func toLocal(from info: [AnyHashable: Any])
+}
+
+public extension NotificationConverter {
+    
+    public func toLocal(from info: [AnyHashable: Any]) {
+        // Pull a CKNotification from userInfo, containing triggers and ckrecordID
+        let remote = CKQueryNotification(fromRemoteNotificationDictionary: info)
+        let database = DatabaseType.from(scope: remote.databaseScope)
+print("** creating local notification = \(DatabaseType.from(scope: remote.databaseScope))")
+//        guard let id = remote.recordID else { return }
+        
+        let change = MCNotification.changeNoticed(forType: type().recordType, at: database)
+        let local = Notification.Name(change.toString())
+print("** name: \(local)")
+        NotificationCenter.default.post(name: local, object: change)
+    }
+}
+
+struct MockNotificationConverter: NotificationConverter {
+    typealias type = MockRecordable
 }

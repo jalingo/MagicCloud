@@ -94,14 +94,16 @@ pause.completionBlock = { print("** finished cleanUp pause") }
     }
     
     func testReceiverCanStartSubscriptionAndListen() {
-//        mock?.subscribeToChanges(on: .publicDB)
-        
-        let _ = prepareDatabase()
+        mock?.subscribeToChanges(on: .publicDB)
         
         let pause = Pause(seconds: 2)
+        pause.completionBlock = { print("** done waiting for subscription") }
         OperationQueue().addOperation(pause)
         
         pause.waitUntilFinished()
+print("** uploading mocks to trigger remote notification")
+        let _ = prepareDatabase()
+        
         XCTAssert(mock?.recordables.count != 0)
     }
     
@@ -118,6 +120,12 @@ pause.completionBlock = { print("** finished cleanUp pause") }
         XCTAssert(mock?.recordables.count == 0)
     }
   
+    func testReceiverCanSyncForRecordCreation() { XCTFail() }
+    
+    func testReceiverCanSyncForRecordUpdate() { XCTFail() }
+    
+    func testReceiverCanSyncForRecordDeletion() { XCTFail() }
+    
     // MARK: - Functions: XCTestCase
     
     override func setUp() {
@@ -135,6 +143,14 @@ pause.completionBlock = { print("** finished cleanUp pause") }
 
 // MARK: - Mocks
 
+extension ReceivesRecordable {
+    
+    func syncToCloud() {
+        
+    }
+    
+}
+
 class MockReceiver: ReceivesRecordable {
 
     var subscription = Subscriber()
@@ -145,7 +161,7 @@ class MockReceiver: ReceivesRecordable {
      * This protected property is an array of recordables used by reciever.
      */
     var recordables = [type]() {
-        didSet { print("** recordables = \(recordables.count)") }
+        didSet { print("** recordables didSet = \(recordables.count)") }
     }
     
     deinit {
@@ -153,7 +169,7 @@ class MockReceiver: ReceivesRecordable {
         
         let pause = Pause(seconds: 3)
         OperationQueue().addOperation(pause)
-pause.completionBlock = { print("finished deinit pause") }
+pause.completionBlock = { print("** finished deinit pause") }
         pause.waitUntilFinished()
         
         print("** deinit MockReceiver")
