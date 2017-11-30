@@ -9,7 +9,7 @@
 import CloudKit
 
 /// This key should be used for storing references in a CKRecord, to allow 'Download' by reference to work.
-let OWNER_KEY = "Owners"
+let OWNER_KEY = "Owners"    // <-- Repalced in TypeAliases? Coupled to Referable and Download
 
 /**
  * The Referable protocol ensures that any conforming instances have what is necessary
@@ -18,7 +18,7 @@ let OWNER_KEY = "Owners"
  * Recordable protocol and it's 'Recordable.recordFields' dictionary must be amended to
  * store collected CKReferences.
  */
-public protocol Referable: MCRecordable {
+public protocol MCReferable: MCRecordable {
     
     // MARK: - Properties
     
@@ -51,7 +51,7 @@ public protocol Referable: MCRecordable {
 
 // MARK: - Mocks
 
-class MockReferable: MockRecordable, Referable {
+class MockReferable: MockRecordable, MCReferable {
     
     // MARK: - Properties
     
