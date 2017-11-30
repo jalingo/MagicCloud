@@ -12,7 +12,7 @@ import CloudKit
  * This class takes partial errors (resulting from batch attempt) and isolates to the failed transactions.
  * After isolation, they can be passed back to through the error handling system individually.
  */
-class PartialError<R: ReceivesRecordable>: Operation {
+class PartialError<R: MCReceiver>: Operation {
     
     // MARK: - Properties
     

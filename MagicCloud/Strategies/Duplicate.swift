@@ -11,7 +11,7 @@ import CloudKit
 
 /// This function takes the originatingOp (which has already been spent) and creates a
 /// a new version with the same property values and completion blocks.
-func duplicate<R: ReceivesRecordable>(_ op: Operation, with receiver: R) -> Operation? {
+func duplicate<R: MCReceiver>(_ op: Operation, with receiver: R) -> Operation? {
     print("resetting: \(String(describing: op.name))")
     
     // Custom Operations

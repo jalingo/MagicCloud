@@ -14,7 +14,7 @@ import CloudKit
  * Certain cloud errors require a retry attempt (e.g. ZoneBusy), so this operation recovers retry time from
  * userInfo dictionary and then schedules another attempt.
  */
-class RetriableError<R: ReceivesRecordable>: Operation {
+class RetriableError<R: MCReceiver>: Operation {
     
     // MARK: - Properties
     

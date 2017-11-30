@@ -19,7 +19,7 @@ import CloudKit
  *
  * Operation requires local cache to conform to `Recordable` protocol for version conflict resolution.
  */
-class MCErrorHandler<R: ReceivesRecordable>: Operation {
+class MCErrorHandler<R: MCReceiver>: Operation {
     
     // MARK: - Properties
     

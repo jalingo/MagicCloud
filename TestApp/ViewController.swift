@@ -11,7 +11,7 @@ import MagicCloud
 
 // MARK: Class: ViewController
 
-class ViewController: UIViewController, ReceivesRecordable {
+class ViewController: UIViewController, MCReceiver {
     
     // MARK: - Properties
 

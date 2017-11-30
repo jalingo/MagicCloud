@@ -8,7 +8,7 @@
 
 import CloudKit
 
-class BatchError<R: ReceivesRecordable>: Operation {
+class BatchError<R: MCReceiver>: Operation {
     
     // MARK: - Properties
     

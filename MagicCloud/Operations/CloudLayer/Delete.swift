@@ -8,7 +8,7 @@
 
 import CloudKit
 
-public class Delete<R: ReceivesRecordable>: Operation {
+public class Delete<R: MCReceiver>: Operation {
     
     // MARK: - Properties
     

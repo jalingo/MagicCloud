@@ -9,7 +9,7 @@
 import CloudKit
 
 /// Deals with serverRecordChanged CKErrors based on specified policy.
-class VersionConflict<R: ReceivesRecordable>: Operation {
+class VersionConflict<R: MCReceiver>: Operation {
     
     // MARK: - Properties
 

@@ -11,7 +11,7 @@ import CloudKit
 /**
     Downloads records from specified database, converts them back to recordables and then loads them into associated receiver. Destination is the receiver's 'recordables' property, an array of receiver's associated type, but array is NOT emptied or otherwise prepared before appending results.
  */
-public class Download<R: ReceivesRecordable>: Operation {
+public class Download<R: MCReceiver>: Operation {
 
     // MARK: - Properties
     

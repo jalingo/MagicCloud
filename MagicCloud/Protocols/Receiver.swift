@@ -12,7 +12,7 @@ import CloudKit
     This protocol enables conforming types to give access to an array of Recordable, and
     to prevent / allow that array's didSet to upload said array's changes to the cloud.
  */
-public protocol ReceivesRecordable: AnyObject {
+public protocol MCReceiver: AnyObject {
     
     /// Receivers can only work with one type (for error handling).
     associatedtype type: MCRecordable
@@ -40,7 +40,7 @@ public protocol ReceivesRecordable: AnyObject {
     func downloadAll(from: MCDatabaseType, completion: OptionalClosure)
 }
 
-public extension ReceivesRecordable {
+public extension MCReceiver {
     
     // MARK: - Properties
     
