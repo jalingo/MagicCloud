@@ -76,7 +76,6 @@ class ViewController: UIViewController, ReceivesRecordable {
         // Switches state.
         isSubscribed = !isSubscribed
 
-        // Label title is changed based on the assumption of successful change to subscription.
         // Title change does not indicate success, but does report expected state.
         isSubscribed ?
             sender.setTitle("Unsubscribe", for: .normal) : sender.setTitle("Subscribe", for: .normal)
