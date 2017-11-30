@@ -48,7 +48,7 @@ public class Download<R: ReceivesRecordable>: Operation {
      * The public database is always available, regardless of whether the device has an an active iCloud account. When no iCloud account is available, your app may fetch records and perform queries on the public database, but it may not save changes. (Saving records to the public database requires an active iCloud account to identify the owner of those records.) Access to the private database always requires an active iCloud account on the device.
      * - Note: Interactions with CKDatabase objects occur at a quality of service level of NSQualityOfServiceUserInitiated by default. For information about quality of service, see Prioritize Work with Quality of Service Classes in Energy Efficiency Guide for iOS Apps and Prioritize Work at the Task Level in Energy Efficiency Guide for Mac Apps.
      */
-    let database: DatabaseType
+    let database: MCDatabaseType
     
     // MARK: - Functions
     
@@ -131,7 +131,7 @@ public class Download<R: ReceivesRecordable>: Operation {
      *
      * - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    public init(type: String, queryField: String, queryValues: [CKRecordValue], to rec: R, from db: DatabaseType) {
+    public init(type: String, queryField: String, queryValues: [CKRecordValue], to rec: R, from db: MCDatabaseType) {
         let predicate = NSPredicate(format: "%K IN %@", queryField, queryValues)
         query = CKQuery(recordType: type, predicate: predicate)
         receiver = rec
@@ -151,7 +151,7 @@ public class Download<R: ReceivesRecordable>: Operation {
      *
      * - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    public init(type: String, ownedBy: Recordable, to rec: R, from db: DatabaseType) {
+    public init(type: String, ownedBy: Recordable, to rec: R, from db: MCDatabaseType) {
         let ref = CKReference(recordID: ownedBy.recordID, action: .deleteSelf)
         let predicate = NSPredicate(format: "%K CONTAINS %@", OWNER_KEY, ref)
         query = CKQuery(recordType: type, predicate: predicate)
@@ -170,7 +170,7 @@ public class Download<R: ReceivesRecordable>: Operation {
      *
      * - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    public init(type: String, to rec: R, from db: DatabaseType) {
+    public init(type: String, to rec: R, from db: MCDatabaseType) {
         let predicate = NSPredicate(format: "TRUEPREDICATE")
         query = CKQuery(recordType: type, predicate: predicate)
         receiver = rec

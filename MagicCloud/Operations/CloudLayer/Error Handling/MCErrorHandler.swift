@@ -35,7 +35,7 @@ class MCErrorHandler<R: ReceivesRecordable>: Operation {
     fileprivate var recordables = [R.type]()
     
     /// This is the database cloud activity generated an error in.
-    fileprivate var database: DatabaseType
+    fileprivate var database: MCDatabaseType
     
     // MARK: - Properties: Accessors
     
@@ -142,7 +142,7 @@ print("!! CKError: \(error.code.rawValue) / \(error.localizedDescription) @ \(St
      * - parameter target: Cloud Database in which error was generated, and in which resolution will
      *      occur.
      */
-    init(error: CKError, originating: Operation, target: DatabaseType, instances: [R.type], receiver: R) {
+    init(error: CKError, originating: Operation, target: MCDatabaseType, instances: [R.type], receiver: R) {
         self.error = error
         self.receiver = receiver
         

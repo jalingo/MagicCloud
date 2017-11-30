@@ -33,15 +33,15 @@ public protocol ReceivesRecordable: AnyObject {
      
         Implementation for this method should not be overwritten.
      */
-    func subscribeToChanges(on: DatabaseType)
+    func subscribeToChanges(on: MCDatabaseType)
     
     /// This method unsubscribes from changes to the specified database.
     /// Implementation for this method should not be overwritten.
-    func unsubscribeToChanges(from: DatabaseType)
+    func unsubscribeToChanges(from: MCDatabaseType)
     
     /// This method empties recordables, and refills it from the specified database.
     /// Implementation for this method should not be overwritten.
-    func downloadAll(from: DatabaseType, completion: OptionalClosure)
+    func downloadAll(from: MCDatabaseType, completion: OptionalClosure)
 }
 
 public extension ReceivesRecordable {
@@ -54,7 +54,7 @@ public extension ReceivesRecordable {
             if let info = notification.userInfo {
                 let notice = CKQueryNotification(fromRemoteNotificationDictionary: info)
                 let trigger = notice.queryNotificationReason
-                let db = DatabaseType.from(scope: notice.databaseScope)
+                let db = MCDatabaseType.from(scope: notice.databaseScope)
                 
                 guard let id = notice.recordID else { return }
 
@@ -76,7 +76,7 @@ public extension ReceivesRecordable {
             - id: The id for the record that was changed.
             - db: The database that was changed.
      */
-    fileprivate func respondTo(_ trigger: CKQueryNotificationReason, for id: CKRecordID, on db: DatabaseType) {
+    fileprivate func respondTo(_ trigger: CKQueryNotificationReason, for id: CKRecordID, on db: MCDatabaseType) {
         switch trigger {
         case .recordDeleted:
             if let index = self.recordables.index(where: { $0.recordID.isEqual(id) }) { self.recordables.remove(at: index) }
@@ -111,7 +111,7 @@ public extension ReceivesRecordable {
     
     /// This method subscribes to changes from the specified database, and prepares handling of events.
     /// Any changes that are detected will be reflected in recordables array.
-    public func subscribeToChanges(on db: DatabaseType) {
+    public func subscribeToChanges(on db: MCDatabaseType) {
         let empty = type()
         let triggers: CKQuerySubscriptionOptions = [.firesOnRecordCreation, .firesOnRecordUpdate, .firesOnRecordDeletion]
         subscription.start(for: empty.recordType, change: triggers, at: db)
@@ -120,10 +120,10 @@ public extension ReceivesRecordable {
     }
     
     /// This method unsubscribes from changes to the specified database.
-    public func unsubscribeToChanges(from db: DatabaseType) { subscription.end(at: db) }
+    public func unsubscribeToChanges(from db: MCDatabaseType) { subscription.end(at: db) }
     
     // !!
-    public func downloadAll(from db: DatabaseType, completion: OptionalClosure = nil) {
+    public func downloadAll(from db: MCDatabaseType, completion: OptionalClosure = nil) {
         let empty = type()
 
         let op = Download(type: empty.recordType, to: self, from: db)

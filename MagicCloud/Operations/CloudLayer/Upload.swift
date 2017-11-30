@@ -16,7 +16,7 @@ public class Upload<R: ReceivesRecordable>: Operation {
     
     // MARK: - Properties
 
-    let database: DatabaseType
+    let database: MCDatabaseType
     
     let receiver: R
     
@@ -89,7 +89,7 @@ public class Upload<R: ReceivesRecordable>: Operation {
     
     // MARK: - Functions: Constructors
     
-    public init(_ recs: [R.type]? = nil, from rec: R, to db: DatabaseType) {
+    public init(_ recs: [R.type]? = nil, from rec: R, to db: MCDatabaseType) {
         receiver = rec
         database = db   //DatabaseType.from(scope: db)
         recordables = recs ?? rec.recordables

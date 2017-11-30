@@ -18,7 +18,7 @@ public class Delete<R: ReceivesRecordable>: Operation {
     
     let receiver: R
 
-    let database: DatabaseType
+    let database: MCDatabaseType
     
     // MARK: - Properties: Computed
     
@@ -85,7 +85,7 @@ public class Delete<R: ReceivesRecordable>: Operation {
     
     // MARK: - Functions: Constructors
     
-    public init(_ array: [R.type]? = nil, of rec: R, from type: DatabaseType) {
+    public init(_ array: [R.type]? = nil, of rec: R, from type: MCDatabaseType) {
         recordables = array ?? rec.recordables
         receiver = rec
         database = type

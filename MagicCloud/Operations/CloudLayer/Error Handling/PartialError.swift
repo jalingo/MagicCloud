@@ -26,7 +26,7 @@ class PartialError<R: ReceivesRecordable>: Operation {
     
     var recordables = [R.type]()
     
-    var database: DatabaseType
+    var database: MCDatabaseType
     
     /// Skips over any error handling for `.unknownItem` errors.
     var ignoreUnknownItem = false
@@ -61,7 +61,7 @@ class PartialError<R: ReceivesRecordable>: Operation {
         }
     }
         
-    init(error: CKError, occuredIn: Operation, at rec: R, instances: [R.type], target: DatabaseType) {
+    init(error: CKError, occuredIn: Operation, at rec: R, instances: [R.type], target: MCDatabaseType) {
         receiver = rec
         self.error = error
         operation = occuredIn

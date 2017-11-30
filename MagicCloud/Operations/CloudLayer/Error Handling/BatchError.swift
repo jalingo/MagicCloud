@@ -22,7 +22,7 @@ class BatchError<R: ReceivesRecordable>: Operation {
     
     fileprivate var recordables = [R.type]()
     
-    fileprivate var database: DatabaseType
+    fileprivate var database: MCDatabaseType
     
     /// Skips over any error handling for `.unknownItem` errors.
     var ignoreUnknownItem = false
@@ -72,7 +72,7 @@ class BatchError<R: ReceivesRecordable>: Operation {
     
     // MARK: - Functions: Constructors
     
-    init(error: CKError, occuredIn: Operation, target: DatabaseType, receiver: R, instances: [R.type]) {
+    init(error: CKError, occuredIn: Operation, target: MCDatabaseType, receiver: R, instances: [R.type]) {
         self.error = error
         operation = occuredIn
         recordables = instances
