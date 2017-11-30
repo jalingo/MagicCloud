@@ -15,7 +15,7 @@ class DownloadTests: XCTestCase {
 
     let start = Date()
 
-    var testOp: Download<MockReceiver>?
+    var testOp: MCDownload<MockReceiver>?
     
     var mock = MockRecordable()
     
@@ -43,36 +43,36 @@ class DownloadTests: XCTestCase {
     func testDownloadByQueryWorksWithPrivate() {
 
         // This operation will be used to ensure mocks are already present in cloud database.
-        let prepOp = Upload([mock], from: mockRec, to: .privateDB)
+        let prepOp = MCUpload([mock], from: mockRec, to: .privateDB)
         let pause0 = Pause(seconds: 4)
-        prepOp.completionBlock = { CloudQueue().addOperation(pause0) }
+        prepOp.completionBlock = { OperationQueue().addOperation(pause0) }
         
         let prepped = expectation(description: "records uploaded to database.")
         pause0.completionBlock = { prepped.fulfill() }
         
-        CloudQueue().addOperation(prepOp)
+        OperationQueue().addOperation(prepOp)
         wait(for: [prepped], timeout: 10)
         
         if let key = mock.recordFields.first?.key, let value = mock.recordFields[key] {
-            testOp = Download(type: mock.recordType,
-                              queryField: key,
-                              queryValues: [value],
-                              to: mockRec,
-                              from: .privateDB)
+            testOp = MCDownload(type: mock.recordType,
+                                queryField: key,
+                                queryValues: [value],
+                                to: mockRec,
+                                from: .privateDB)
 
             // This operation will be used to clean up the database after the test finishes.
-            let cleanUp = Delete([mock], of: mockRec, from: .privateDB)
+            let cleanUp = MCDelete([mock], of: mockRec, from: .privateDB)
             let pause1 = Pause(seconds: 2)
-            testOp?.completionBlock = { CloudQueue().addOperation(pause1) }
+            testOp?.completionBlock = { OperationQueue().addOperation(pause1) }
             
             cleanUp.addDependency(pause1)
 
-            CloudQueue().addOperation(cleanUp)
+            OperationQueue().addOperation(cleanUp)
             
             let expect = expectation(description: "reciever.recordables updated")
             cleanUp.completionBlock = { expect.fulfill() }
 
-            CloudQueue().addOperation(testOp!)
+            OperationQueue().addOperation(testOp!)
             wait(for: [expect], timeout: 10)
 
             // Evaluates results.
@@ -90,36 +90,36 @@ class DownloadTests: XCTestCase {
         let mocks = [mock]
         
         // This operation will be used to ensure mocks are already present in cloud database.
-        let prepOp = Upload(mocks, from: mockRec, to: .publicDB)
+        let prepOp = MCUpload(mocks, from: mockRec, to: .publicDB)
         let pause0 = Pause(seconds: 3)
-        prepOp.completionBlock = { CloudQueue().addOperation(pause0) }
+        prepOp.completionBlock = { OperationQueue().addOperation(pause0) }
         
         let prepped = expectation(description: "records uploaded to database.")
         pause0.completionBlock = { prepped.fulfill() }
         
-        CloudQueue().addOperation(prepOp)
+        OperationQueue().addOperation(prepOp)
         wait(for: [prepped], timeout: 10)
         
         if let key = mock.recordFields.first?.key, let value = mock.recordFields[key] {
-            testOp = Download(type: mock.recordType,
-                              queryField: key,
-                              queryValues: [value],
-                              to: mockRec,
-                              from: .publicDB)
+            testOp = MCDownload(type: mock.recordType,
+                                queryField: key,
+                                queryValues: [value],
+                                to: mockRec,
+                                from: .publicDB)
             
             // This operation will be used to clean up the database after the test finishes.
-            let cleanUp = Delete(mocks, of: mockRec, from: .publicDB)
+            let cleanUp = MCDelete(mocks, of: mockRec, from: .publicDB)
             let pause1 = Pause(seconds: 2)
-            testOp?.completionBlock = { CloudQueue().addOperation(pause1) }
+            testOp?.completionBlock = { OperationQueue().addOperation(pause1) }
             
             cleanUp.addDependency(pause1)
             
-            CloudQueue().addOperation(cleanUp)
+            OperationQueue().addOperation(cleanUp)
             
             let expect = expectation(description: "reciever.recordables updated")
             cleanUp.completionBlock = { expect.fulfill() }
             
-            CloudQueue().addOperation(testOp!)
+            OperationQueue().addOperation(testOp!)
             wait(for: [expect], timeout: 10)
             
             // Evaluates results.
@@ -134,7 +134,7 @@ class DownloadTests: XCTestCase {
     }
     
     func testDownloadByRefWorksWithPrivate() {
-        let database = DatabaseType.privateDB
+        let database = MCDatabaseType.privateDB
 
         let reference = CKReference(recordID: mock.recordID, action: .deleteSelf)
         let ownedMock = MockReferable()
@@ -143,31 +143,31 @@ class DownloadTests: XCTestCase {
         let mocks = [ownedMock]
         
         // This operation will be used to ensure mocks are already present in cloud database.
-        let prepOp = Upload(mocks, from: mockRec, to: database)
+        let prepOp = MCUpload(mocks, from: mockRec, to: database)
         let pause0 = Pause(seconds: 5)
-        prepOp.completionBlock = { CloudQueue().addOperation(pause0) }
+        prepOp.completionBlock = { OperationQueue().addOperation(pause0) }
         
         let prepped = expectation(description: "records uploaded to database.")
         pause0.completionBlock = { prepped.fulfill() }
         
-        CloudQueue().addOperation(prepOp)
+        OperationQueue().addOperation(prepOp)
         wait(for: [prepped], timeout: 10)
         
-        testOp = Download(type: ownedMock.recordType, to: mockRec, from: database)
+        testOp = MCDownload(type: ownedMock.recordType, to: mockRec, from: database)
         
         // This operation will be used to clean up the database after the test finishes.
-        let cleanUp = Delete(mocks, of: mockRec, from: database)
+        let cleanUp = MCDelete(mocks, of: mockRec, from: database)
         let pause1 = Pause(seconds: 2)
-        testOp?.completionBlock = { CloudQueue().addOperation(pause1) }
+        testOp?.completionBlock = { OperationQueue().addOperation(pause1) }
         
         cleanUp.addDependency(pause1)
         
-        CloudQueue().addOperation(cleanUp)
+        OperationQueue().addOperation(cleanUp)
         
         let expect = expectation(description: "reciever.recordables updated")
         cleanUp.completionBlock = { expect.fulfill() }
         
-        CloudQueue().addOperation(testOp!)
+        OperationQueue().addOperation(testOp!)
         wait(for: [expect], timeout: 10)
 
         // Evaluates results.
@@ -179,7 +179,7 @@ class DownloadTests: XCTestCase {
     }
     
     func testDownloadByRefWorksWithPublic() {
-        let database = DatabaseType.publicDB
+        let database = MCDatabaseType.publicDB
         
         let reference = CKReference(recordID: mock.recordID, action: .deleteSelf)
         let ownedMock = MockReferable()
@@ -188,31 +188,31 @@ class DownloadTests: XCTestCase {
         let mocks = [ownedMock]
         
         // This operation will be used to ensure mocks are already present in cloud database.
-        let prepOp = Upload(mocks, from: mockRec, to: database)
+        let prepOp = MCUpload(mocks, from: mockRec, to: database)
         let pause0 = Pause(seconds: 5)
-        prepOp.completionBlock = { CloudQueue().addOperation(pause0) }
+        prepOp.completionBlock = { OperationQueue().addOperation(pause0) }
         
         let prepped = expectation(description: "records uploaded to database.")
         pause0.completionBlock = { prepped.fulfill() }
         
-        CloudQueue().addOperation(prepOp)
+        OperationQueue().addOperation(prepOp)
         wait(for: [prepped], timeout: 10)
         
-        testOp = Download(type: ownedMock.recordType, to: mockRec, from: database)
+        testOp = MCDownload(type: ownedMock.recordType, to: mockRec, from: database)
         
         // This operation will be used to clean up the database after the test finishes.
-        let cleanUp = Delete(mocks, of: mockRec, from: database)
+        let cleanUp = MCDelete(mocks, of: mockRec, from: database)
         let pause1 = Pause(seconds: 2)
-        testOp?.completionBlock = { CloudQueue().addOperation(pause1) }
+        testOp?.completionBlock = { OperationQueue().addOperation(pause1) }
         
         cleanUp.addDependency(pause1)
         
-        CloudQueue().addOperation(cleanUp)
+        OperationQueue().addOperation(cleanUp)
         
         let expect = expectation(description: "reciever.recordables updated")
         cleanUp.completionBlock = { expect.fulfill() }
         
-        CloudQueue().addOperation(testOp!)
+        OperationQueue().addOperation(testOp!)
         wait(for: [expect], timeout: 10)
         
         // Evaluates results.
@@ -227,31 +227,31 @@ class DownloadTests: XCTestCase {
         let mocks = [mock]
         
         // This operation will be used to ensure mocks are already present in cloud database.
-        let prepOp = Upload(mocks, from: mockRec, to: .privateDB)
+        let prepOp = MCUpload(mocks, from: mockRec, to: .privateDB)
         let pause0 = Pause(seconds: 5)
-        prepOp.completionBlock = { CloudQueue().addOperation(pause0) }
+        prepOp.completionBlock = { OperationQueue().addOperation(pause0) }
         
         let prepped = expectation(description: "records uploaded to database.")
         pause0.completionBlock = { prepped.fulfill() }
         
-        CloudQueue().addOperation(prepOp)
+        OperationQueue().addOperation(prepOp)
         wait(for: [prepped], timeout: 30)
 
-        testOp = Download(type: mock.recordType, to: mockRec, from: .privateDB)
+        testOp = MCDownload(type: mock.recordType, to: mockRec, from: .privateDB)
         
         // This operation will be used to clean up the database after the test finishes.
-        let cleanUp = Delete(mocks, of: mockRec, from: .privateDB)
+        let cleanUp = MCDelete(mocks, of: mockRec, from: .privateDB)
         let pause1 = Pause(seconds: 2)
-        testOp?.completionBlock = { CloudQueue().addOperation(pause1) }
+        testOp?.completionBlock = { OperationQueue().addOperation(pause1) }
         
         cleanUp.addDependency(pause1)
         
-        CloudQueue().addOperation(cleanUp)
+        OperationQueue().addOperation(cleanUp)
         
         let expect = expectation(description: "reciever.recordables updated")
         cleanUp.completionBlock = { expect.fulfill() }
         
-        CloudQueue().addOperation(testOp!)
+        OperationQueue().addOperation(testOp!)
 
         wait(for: [expect], timeout: 10)
         XCTAssertEqual(mocks, mockRec.recordables)
@@ -261,31 +261,31 @@ class DownloadTests: XCTestCase {
         let mocks = [mock]
         
         // This operation will be used to ensure mocks are already present in cloud database.
-        let prepOp = Upload(mocks, from: mockRec, to: .publicDB)
+        let prepOp = MCUpload(mocks, from: mockRec, to: .publicDB)
         let pause0 = Pause(seconds: 5)
-        prepOp.completionBlock = { CloudQueue().addOperation(pause0) }
+        prepOp.completionBlock = { OperationQueue().addOperation(pause0) }
         
         let prepped = expectation(description: "records uploaded to database.")
         pause0.completionBlock = { prepped.fulfill() }
         
-        CloudQueue().addOperation(prepOp)
+        OperationQueue().addOperation(prepOp)
         wait(for: [prepped], timeout: 10)
         
-        testOp = Download(type: mock.recordType, to: mockRec, from: .publicDB)
+        testOp = MCDownload(type: mock.recordType, to: mockRec, from: .publicDB)
         
         // This operation will be used to clean up the database after the test finishes.
-        let cleanUp = Delete(mocks, of: mockRec, from: .publicDB)
+        let cleanUp = MCDelete(mocks, of: mockRec, from: .publicDB)
         let pause1 = Pause(seconds: 2)
-        testOp?.completionBlock = { CloudQueue().addOperation(pause1) }
+        testOp?.completionBlock = { OperationQueue().addOperation(pause1) }
         
         cleanUp.addDependency(pause1)
         
-        CloudQueue().addOperation(cleanUp)
+        OperationQueue().addOperation(cleanUp)
         
         let expect = expectation(description: "reciever.recordables updated")
         cleanUp.completionBlock = { expect.fulfill() }
         
-        CloudQueue().addOperation(testOp!)
+        OperationQueue().addOperation(testOp!)
         
         wait(for: [expect], timeout: 10)
         XCTAssert(mocks == mockRec.recordables)
@@ -299,7 +299,7 @@ class DownloadTests: XCTestCase {
         mock = MockRecordable()
         mockRec = MockReceiver()
         
-        testOp = Download(type: mock.recordType, to: mockRec, from: .publicDB)
+        testOp = MCDownload(type: mock.recordType, to: mockRec, from: .publicDB)
     }
     
     override func tearDown() {

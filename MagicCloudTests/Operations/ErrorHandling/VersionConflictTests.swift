@@ -17,7 +17,7 @@ class VersionConflictTests: XCTestCase {
     
     var testOp: VersionConflict<MockReceiver>?
     
-    var mock: Recordable?
+    var mock: MCRecordable?
 
     var mockRec = MockReceiver()
     
@@ -92,19 +92,19 @@ class VersionConflictTests: XCTestCase {
         let firstPause = Pause(seconds: 3)
         firstPause.addDependency(testOp!)
         
-        let cleanUp = Delete([mock as! MockRecordable], of: mockRec, from: .privateDB)
+        let cleanUp = MCDelete([mock as! MockRecordable], of: mockRec, from: .privateDB)
         
         let secondPause = Pause(seconds: 2)
         secondPause.addDependency(cleanUp)
 
-        let verifyOp = Download(type: mock!.recordType, to: mockRec, from: .privateDB)
+        let verifyOp = MCDownload(type: mock!.recordType, to: mockRec, from: .privateDB)
         verifyOp.addDependency(firstPause)
-        verifyOp.completionBlock = { CloudQueue().addOperation(cleanUp) }
+        verifyOp.completionBlock = { OperationQueue().addOperation(cleanUp) }
 
-        ErrorQueue().addOperation(secondPause)
-        ErrorQueue().addOperation(firstPause)
-        CloudQueue().addOperation(verifyOp)
-        ErrorQueue().addOperation(testOp!)
+        OperationQueue().addOperation(secondPause)
+        OperationQueue().addOperation(firstPause)
+        OperationQueue().addOperation(verifyOp)
+        OperationQueue().addOperation(testOp!)
         
         secondPause.waitUntilFinished()
         
@@ -122,19 +122,19 @@ class VersionConflictTests: XCTestCase {
         let firstPause = Pause(seconds: 3)
         firstPause.addDependency(testOp!)
         
-        let cleanUp = Delete([mock as! MockRecordable], of: mockRec, from: .privateDB)
+        let cleanUp = MCDelete([mock as! MockRecordable], of: mockRec, from: .privateDB)
         
         let secondPause = Pause(seconds: 2)
         secondPause.addDependency(cleanUp)
         
-        let verifyOp = Download(type: mock!.recordType, to: mockRec, from: .privateDB)
+        let verifyOp = MCDownload(type: mock!.recordType, to: mockRec, from: .privateDB)
         verifyOp.addDependency(firstPause)
-        verifyOp.completionBlock = { CloudQueue().addOperation(cleanUp) }
+        verifyOp.completionBlock = { OperationQueue().addOperation(cleanUp) }
         
-        ErrorQueue().addOperation(secondPause)
-        ErrorQueue().addOperation(firstPause)
-        CloudQueue().addOperation(verifyOp)
-        ErrorQueue().addOperation(testOp!)
+        OperationQueue().addOperation(secondPause)
+        OperationQueue().addOperation(firstPause)
+        OperationQueue().addOperation(verifyOp)
+        OperationQueue().addOperation(testOp!)
         
         secondPause.waitUntilFinished()
         
@@ -152,19 +152,19 @@ class VersionConflictTests: XCTestCase {
         let firstPause = Pause(seconds: 3)
         firstPause.addDependency(testOp!)
         
-        let cleanUp = Delete([mock as! MockRecordable], of: mockRec, from: .privateDB)
+        let cleanUp = MCDelete([mock as! MockRecordable], of: mockRec, from: .privateDB)
         
         let secondPause = Pause(seconds: 2)
         secondPause.addDependency(cleanUp)
         
-        let verifyOp = Download(type: mock!.recordType, to: mockRec, from: .privateDB)
+        let verifyOp = MCDownload(type: mock!.recordType, to: mockRec, from: .privateDB)
         verifyOp.addDependency(firstPause)
-        verifyOp.completionBlock = { CloudQueue().addOperation(cleanUp) }
+        verifyOp.completionBlock = { OperationQueue().addOperation(cleanUp) }
         
-        ErrorQueue().addOperation(secondPause)
-        ErrorQueue().addOperation(firstPause)
-        CloudQueue().addOperation(verifyOp)
-        ErrorQueue().addOperation(testOp!)
+        OperationQueue().addOperation(secondPause)
+        OperationQueue().addOperation(firstPause)
+        OperationQueue().addOperation(verifyOp)
+        OperationQueue().addOperation(testOp!)
         
         secondPause.waitUntilFinished()
         

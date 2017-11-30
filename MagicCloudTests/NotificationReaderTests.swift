@@ -38,7 +38,7 @@ class NotificationReaderTests: XCTestCase {
     }
 
     func prepareDatabase() -> Int {
-        let op = Upload(mockRecordables, from: mockRec!, to: .publicDB)
+        let op = MCUpload(mockRecordables, from: mockRec!, to: .publicDB)
         let pause = Pause(seconds: 3)
         pause.addDependency(op)
         pause.completionBlock = { print("** finished prep pause") }
@@ -50,7 +50,7 @@ class NotificationReaderTests: XCTestCase {
     }
     
     func cleanUpDatabase() -> Int {
-        let op = Delete(mockRecordables, of: mockRec!, from: .publicDB)
+        let op = MCDelete(mockRecordables, of: mockRec!, from: .publicDB)
         let pause = Pause(seconds: 2)
         pause.addDependency(op)
         pause.completionBlock = { print("** finished cleanUp pause") }

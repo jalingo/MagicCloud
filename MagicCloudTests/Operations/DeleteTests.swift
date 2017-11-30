@@ -13,7 +13,7 @@ class DeleteTests: XCTestCase {
     
     // MARK: - Properties
     
-    var testOp: Delete<MockReceiver>?
+    var testOp: MCDelete<MockReceiver>?
 
     var mock: MockRecordable?
     
@@ -44,7 +44,7 @@ class DeleteTests: XCTestCase {
                                                                           instances: [self.mock!],
                                                                           receiver: self.mockRec)
                                         errorHandler.ignoreUnknownItem = true
-                                        ErrorQueue().addOperation(errorHandler)
+                                        OperationQueue().addOperation(errorHandler)
                                     }
                                 }
                             }
@@ -56,7 +56,7 @@ class DeleteTests: XCTestCase {
                                                           instances: [self.mock!],
                                                           receiver: self.mockRec)
                         errorHandler.ignoreUnknownItem = true
-                        ErrorQueue().addOperation(errorHandler)
+                        OperationQueue().addOperation(errorHandler)
                     }
                 } else {
                     print("NSError: \(error!) @ DeleteTests.0")
@@ -76,7 +76,7 @@ print("!! Records FOUND: \(String(describing: results?.count))")
                     } else {
                         cleanUpAfterFailure.isLongLived = true
                     }
-                    CloudQueue().addOperation(cleanUpAfterFailure)
+                    OperationQueue().addOperation(cleanUpAfterFailure)
                 }
             }
             
@@ -99,10 +99,10 @@ print("!! Records FOUND: \(String(describing: results?.count))")
         let delay: UInt64 = 5
         testOp?.delayInSeconds = delay
     
-        let prepOp = Upload([mock!], from: mockRec, to: .privateDB)
+        let prepOp = MCUpload([mock!], from: mockRec, to: .privateDB)
         let prepCompleted = expectation(description: "record uploaded")
         prepOp.completionBlock = { prepCompleted.fulfill() }
-        CloudQueue().addOperation(prepOp)
+        OperationQueue().addOperation(prepOp)
         
         wait(for: [prepCompleted], timeout: 3)
         let priPause = Pause(seconds: TimeInterval(delay - 1))
@@ -114,11 +114,11 @@ print("!! Records FOUND: \(String(describing: results?.count))")
         let verifyDone = verifyOperation(ids: [mock!.recordID])
         verifyDone.addDependency(altPause)
         
-        CloudQueue().addOperation(verifyDone)
-        CloudQueue().addOperation(verifyWait)
-        CloudQueue().addOperation(testOp!)
-        CloudQueue().addOperation(altPause)
-        CloudQueue().addOperation(priPause)
+        OperationQueue().addOperation(verifyDone)
+        OperationQueue().addOperation(verifyWait)
+        OperationQueue().addOperation(testOp!)
+        OperationQueue().addOperation(altPause)
+        OperationQueue().addOperation(priPause)
         
         verifyWait.waitUntilFinished()
         XCTAssertFalse(recordDeleted)
@@ -129,10 +129,10 @@ print("!! Records FOUND: \(String(describing: results?.count))")
     
     func testDeleteOnPrivate() {
         let uploaded = expectation(description: "Mock Object Uploaded")
-        let prepOp = Upload([mock!], from: mockRec, to: .privateDB)
+        let prepOp = MCUpload([mock!], from: mockRec, to: .privateDB)
         prepOp.completionBlock = { uploaded.fulfill() }
 
-        CloudQueue().addOperation(prepOp)
+        OperationQueue().addOperation(prepOp)
         wait(for: [uploaded], timeout: 2)
 
         let firstPause = Pause(seconds: 2)
@@ -141,16 +141,16 @@ print("!! Records FOUND: \(String(describing: results?.count))")
         let deleted = expectation(description: "Mock Object Deleted")
         testOp?.completionBlock = { deleted.fulfill() }
 
-        CloudQueue().addOperation(testOp!)
-        CloudQueue().addOperation(firstPause)
+        OperationQueue().addOperation(testOp!)
+        OperationQueue().addOperation(firstPause)
         wait(for: [deleted], timeout: 4)
         
         let secondPause = Pause(seconds: 2)
         let verifyOp = verifyOperation(ids: [mock!.recordID])
         verifyOp.addDependency(secondPause)
         
-        CloudQueue().addOperation(verifyOp)
-        CloudQueue().addOperation(secondPause)
+        OperationQueue().addOperation(verifyOp)
+        OperationQueue().addOperation(secondPause)
         
         verifyOp.waitUntilFinished()
         XCTAssert(recordDeleted)
@@ -158,13 +158,13 @@ print("!! Records FOUND: \(String(describing: results?.count))")
     
     func testDeleteOnPublic() {
         let uploaded = expectation(description: "Mock Object Uploaded")
-        let prepOp = Upload([mock!], from: mockRec, to: .publicDB)
+        let prepOp = MCUpload([mock!], from: mockRec, to: .publicDB)
         prepOp.completionBlock = { uploaded.fulfill() }
         
-        CloudQueue().addOperation(prepOp)
+        OperationQueue().addOperation(prepOp)
         wait(for: [uploaded], timeout: 3)
         
-        testOp = Delete([mock!], of: mockRec, from: .publicDB)
+        testOp = MCDelete([mock!], of: mockRec, from: .publicDB)
         
         let firstPause = Pause(seconds: 5)
         testOp?.addDependency(firstPause)
@@ -172,12 +172,12 @@ print("!! Records FOUND: \(String(describing: results?.count))")
         let deleted = expectation(description: "Mock Object Deleted")
         testOp?.completionBlock = { deleted.fulfill() }
         
-        CloudQueue().addOperation(testOp!)
-        CloudQueue().addOperation(firstPause)
+        OperationQueue().addOperation(testOp!)
+        OperationQueue().addOperation(firstPause)
         wait(for: [deleted], timeout: 7)
         
         let verifyOp = verifyOperation(ids: [mock!.recordID])
-        CloudQueue().addOperation(verifyOp)
+        OperationQueue().addOperation(verifyOp)
         
         verifyOp.waitUntilFinished()
         XCTAssert(recordDeleted)
@@ -202,7 +202,7 @@ print("!! Records FOUND: \(String(describing: results?.count))")
 
         mock = MockRecordable()
         mockRec = MockReceiver()
-        testOp = Delete([mock!], of: mockRec, from: .privateDB)
+        testOp = MCDelete([mock!], of: mockRec, from: .privateDB)
         recordDeleted = false
     }
     

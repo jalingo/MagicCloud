@@ -49,7 +49,7 @@ class RetriableErrorTests: XCTestCase {
             opWasRetried = true
         }
         
-        ErrorQueue().addOperation(testOp!)
+        OperationQueue().addOperation(testOp!)
         
         let expect = expectation(forNotification: NSNotification.Name(rawValue: notifier.name.rawValue), object: nil, handler: nil)
         wait(for: [expect], timeout: 3)

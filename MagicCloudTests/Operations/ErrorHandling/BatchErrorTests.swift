@@ -13,7 +13,7 @@ class BatchErrorTests: XCTestCase {
     
     // MARK: - Properties
     
-    var mocks: [Recordable]?
+    var mocks: [MCRecordable]?
     
     var mockOp: MockOperation?
     
@@ -21,12 +21,12 @@ class BatchErrorTests: XCTestCase {
     
     var errorDetected = false
     
-    let db: DatabaseType = .privateDB
+    let db: MCDatabaseType = .privateDB
     
     // MARK: - Functions
     
     func loadMocks() {
-        mocks = [Recordable]()
+        mocks = [MCRecordable]()
         mocks?.append(MockRecordable())
         mocks?.append(MockRecordable(created: Date.distantPast))
         
@@ -53,7 +53,7 @@ class BatchErrorTests: XCTestCase {
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
 
         let testOp = BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
-        ErrorQueue().addOperation(testOp)
+        OperationQueue().addOperation(testOp)
 
         let group = DispatchGroup()
         group.enter()
@@ -75,7 +75,7 @@ class BatchErrorTests: XCTestCase {
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
 
         let testOp = BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
-        ErrorQueue().addOperation(testOp)
+        OperationQueue().addOperation(testOp)
         
         let group = DispatchGroup()
         group.enter()
@@ -97,7 +97,7 @@ class BatchErrorTests: XCTestCase {
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
 
         let testOp = BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
-        ErrorQueue().addOperation(testOp)
+        OperationQueue().addOperation(testOp)
         
         let group = DispatchGroup()
         group.enter()

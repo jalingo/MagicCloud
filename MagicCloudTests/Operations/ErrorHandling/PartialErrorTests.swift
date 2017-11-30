@@ -33,18 +33,18 @@ class PartialErrorTests: XCTestCase {
         return CKError(_nsError: error)
     }
     
-    var failedOp: Upload<MockReceiver>?
+    var failedOp: MCUpload<MockReceiver>?
     
-    var mocks: [Recordable]?
+    var mocks: [MCRecordable]?
     
     var mockRec = MockReceiver()
     
-    var database: DatabaseType { return .privateDB }
+    var database: MCDatabaseType { return .privateDB }
     
     // MARK: - Functions
     
     func loadMocks() {
-        mocks = [Recordable]()
+        mocks = [MCRecordable]()
         mocks?.append(MockRecordable())
         mocks?.append(MockRecordable(created: Date.distantPast))
         
@@ -64,9 +64,9 @@ class PartialErrorTests: XCTestCase {
         }
     
         // These operations are used in test sequence.
-        let prepOp = Delete(mocks as? [MockRecordable], of: mockRec, from: database)
+        let prepOp = MCDelete(mocks as? [MockRecordable], of: mockRec, from: database)
         let pause   = Pause(seconds: 3)
-        let cleanUp = Delete(mocks as? [MockRecordable], of: mockRec, from: database)
+        let cleanUp = MCDelete(mocks as? [MockRecordable], of: mockRec, from: database)
         
         // This operation will verify that mock was uploaded, and record it's findings in `recordInDatabase`.
         let mockIDs = mocks!.map({ $0.recordID })
@@ -79,7 +79,7 @@ class PartialErrorTests: XCTestCase {
                                                       target: self.database,
                                                       instances: self.mocks as! [MockRecordable],
                                                       receiver: self.mockRec)
-                    ErrorQueue().addOperation(errorHandler)
+                    OperationQueue().addOperation(errorHandler)
                 } else {
                     print("NSError: \(error!) @ testPartialErrorHandles.0")
                 }
@@ -88,7 +88,7 @@ class PartialErrorTests: XCTestCase {
             }
             
             // This cleans up the database, and removes test record.
-            CloudQueue().addOperation(cleanUp)
+            OperationQueue().addOperation(cleanUp)
         }
 
         verifyOp.perRecordCompletionBlock = { record, id, error in
@@ -100,7 +100,7 @@ class PartialErrorTests: XCTestCase {
                                                       instances: self.mocks as! [MockRecordable],
                                                       receiver: self.mockRec)
                     errorHandler.ignoreUnknownItem = true
-                    ErrorQueue().addOperation(errorHandler)
+                    OperationQueue().addOperation(errorHandler)
                 } else {
                     print("NSError: \(error!) @ testPartialErrorHandles.1")
                 }
@@ -127,10 +127,10 @@ class PartialErrorTests: XCTestCase {
         pause.addDependency(testOp!)
         verifyOp.addDependency(pause)
         
-        ErrorQueue().addOperation(testOp!)
-        ErrorQueue().addOperation(pause)
-        CloudQueue().addOperation(verifyOp)
-        CloudQueue().addOperation(prepOp)
+        OperationQueue().addOperation(testOp!)
+        OperationQueue().addOperation(pause)
+        OperationQueue().addOperation(verifyOp)
+        OperationQueue().addOperation(prepOp)
         
         verifyOp.waitUntilFinished()
         XCTAssert(recordsInDatabase)
@@ -142,7 +142,7 @@ class PartialErrorTests: XCTestCase {
         super.setUp()
 
         loadMocks()
-        failedOp = Upload(mocks as? [MockRecordable], from: mockRec, to: database)
+        failedOp = MCUpload(mocks as? [MockRecordable], from: mockRec, to: database)
         testOp = PartialError(error: error, occuredIn: failedOp!, at: mockRec, instances: mocks as! [MockRecordable], target: database)
     }
     

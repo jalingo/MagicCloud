@@ -13,7 +13,7 @@ class ReferableTests: XCTestCase {
     
     // MARK: - Properties
 
-    var mock: Referable?
+    var mock: MCReferable?
     
     // MARK: - Functions
     
@@ -21,7 +21,7 @@ class ReferableTests: XCTestCase {
     
     func testReferableIsProtocol() { XCTAssertNotNil(mock) }
 
-    func testReferableIsRecordable() { XCTAssert(mock is Recordable) }
+    func testReferableIsRecordable() { XCTAssert(mock is MCRecordable) }
     
     func testReferableHasRefs() { XCTAssertNotNil(mock?.references) }
     
@@ -60,5 +60,40 @@ class ReferableTests: XCTestCase {
         mock = nil
         
         super.tearDown()
+    }
+}
+
+// MARK: - Mocks
+
+class MockReferable: MockRecordable, MCReferable {
+    
+    // MARK: - Properties
+    
+    let REC_TYPE = "MockReferable"
+    let REFS_KEY = OWNER_KEY
+    
+    // MARK: - Properties: Referrable
+    
+    fileprivate var owners: [CKReference]?
+    
+    var references: [CKReference] { return owners ?? [CKReference]() }
+    
+    // MARK: - Properties: Recordable
+    
+    /**
+     * This is a token used with cloudkit to build CKRecordID for this object's CKRecord.
+     */
+    override var recordType: String { return REC_TYPE }
+    
+    // MARK: - Functions: Referrable
+    
+    func attachReference(reference: CKReference) {
+        guard owners != nil else { owners = [reference]; return }
+        
+        owners?.append(reference)
+    }
+    
+    func detachReference(reference: CKReference) {
+        if let index = owners?.index(of: reference) { owners?.remove(at: index) }
     }
 }

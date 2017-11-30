@@ -17,7 +17,7 @@ class UploadTests: XCTestCase {
     
     let time = TimeInterval(exactly: 3)
     
-    var testOp: Upload<MockReceiver>?
+    var testOp: MCUpload<MockReceiver>?
     
     var mocks: [MockRecordable]?
     
@@ -47,14 +47,14 @@ class UploadTests: XCTestCase {
             }
         }
 
-        testOp = Upload(mocks, from: mockRec, to: .publicDB)
+        testOp = MCUpload(mocks, from: mockRec, to: .publicDB)
 
         // This operation will be used to ensure cloud database is sanitized of test mock.
-        let prepOp = Delete(mocks, of: mockRec, from: .publicDB)
+        let prepOp = MCDelete(mocks, of: mockRec, from: .publicDB)
         prepOp.name = "UploadTests.prepOp: Public"
 
         // This operation will be used to clean up the database after the test finishes.
-        let cleanUp = Delete(mocks, of: mockRec, from: .publicDB)
+        let cleanUp = MCDelete(mocks, of: mockRec, from: .publicDB)
         cleanUp.name = "UploadTests.cleanUp: Public"
 
         // These pauses give the cloud database a reasonable amount of time to update between interactions.
@@ -75,7 +75,7 @@ class UploadTests: XCTestCase {
                                                       receiver: self.mockRec)
                     errorHandler.ignoreUnknownItem = true
                     errorHandler.ignoreUnknownItemCustomAction = { recordInDatabase = false }
-                    ErrorQueue().addOperation(errorHandler)
+                    OperationQueue().addOperation(errorHandler)
                 } else {
                     print("NSError: \(error!) @ testUploadWorksWithPublic.0")
                 }
@@ -84,7 +84,7 @@ class UploadTests: XCTestCase {
             }
             
             // This cleans up the database, and removes test record.
-            CloudQueue().addOperation(cleanUp)
+            OperationQueue().addOperation(cleanUp)
         }
 
         verifyOp.perRecordCompletionBlock = { record, id, error in
@@ -100,7 +100,7 @@ class UploadTests: XCTestCase {
                                                           receiver: self.mockRec)
                         errorHandler.ignoreUnknownItem = true
                         errorHandler.ignoreUnknownItemCustomAction = { recordInDatabase = false }
-                        ErrorQueue().addOperation(errorHandler)
+                        OperationQueue().addOperation(errorHandler)
                     }
                 } else {
                     print("NSError: \(error!) @ testUploadWorksWithPublic.1")
@@ -116,11 +116,11 @@ class UploadTests: XCTestCase {
         secondPause.addDependency(testOp!)
         verifyOp.addDependency(secondPause)
         
-        CloudQueue().addOperation(firstPause)
-        CloudQueue().addOperation(testOp!)
-        CloudQueue().addOperation(secondPause)
-        DatabaseType.publicDB.db.add(verifyOp)
-        CloudQueue().addOperation(prepOp)   // <-- Starts operation chain.
+        OperationQueue().addOperation(firstPause)
+        OperationQueue().addOperation(testOp!)
+        OperationQueue().addOperation(secondPause)
+        MCDatabaseType.publicDB.db.add(verifyOp)
+        OperationQueue().addOperation(prepOp)   // <-- Starts operation chain.
         
         // Waits for operations to complete and then evaluates test.
         verifyOp.waitUntilFinished()
@@ -138,10 +138,10 @@ class UploadTests: XCTestCase {
         }
         
         // This operation will be used to ensure cloud database is sanitized of test mock.
-        let prepOp = Delete(mocks!, of: mockRec, from: .privateDB)
+        let prepOp = MCDelete(mocks!, of: mockRec, from: .privateDB)
         
         // This operation will be used to clean up the database after the test finishes.
-        let cleanUp = Delete(mocks!, of: mockRec, from: .privateDB)
+        let cleanUp = MCDelete(mocks!, of: mockRec, from: .privateDB)
         
         // These pauses give the cloud database a reasonable amount of time to update between interactions.
         let firstPause = Pause(seconds: 3)
@@ -160,7 +160,7 @@ class UploadTests: XCTestCase {
                                                       receiver: self.mockRec)
                     errorHandler.ignoreUnknownItem = true
                     errorHandler.ignoreUnknownItemCustomAction = { recordInDatabase = false }
-                    ErrorQueue().addOperation(errorHandler)
+                    OperationQueue().addOperation(errorHandler)
                 } else {
                     print("NSError: \(error!) @ testUploadWorksWithPrivate.0")
                 }
@@ -169,7 +169,7 @@ class UploadTests: XCTestCase {
             }
             
             // This cleans up the database, and removes test record.
-            CloudQueue().addOperation(cleanUp)
+            OperationQueue().addOperation(cleanUp)
         }
         
         verifyOp.perRecordCompletionBlock = { record, id, error in
@@ -185,7 +185,7 @@ class UploadTests: XCTestCase {
                                                           receiver: self.mockRec)
                         errorHandler.ignoreUnknownItem = true
                         errorHandler.ignoreUnknownItemCustomAction = { recordInDatabase = false }
-                        ErrorQueue().addOperation(errorHandler)
+                        OperationQueue().addOperation(errorHandler)
                     }
                 } else {
                     print("NSError: \(error!) @ testUploadWorksWithPrivate.1")
@@ -201,11 +201,11 @@ class UploadTests: XCTestCase {
         secondPause.addDependency(testOp!)
         verifyOp.addDependency(secondPause)
         
-        CloudQueue().addOperation(firstPause)
-        CloudQueue().addOperation(testOp!)
-        CloudQueue().addOperation(secondPause)
+        OperationQueue().addOperation(firstPause)
+        OperationQueue().addOperation(testOp!)
+        OperationQueue().addOperation(secondPause)
         database.add(verifyOp)
-        CloudQueue().addOperation(prepOp)   // <-- Starts operation chain.
+        OperationQueue().addOperation(prepOp)   // <-- Starts operation chain.
         
         // Waits for operations to complete and then evaluates test.
         verifyOp.waitUntilFinished()
@@ -236,7 +236,7 @@ class UploadTests: XCTestCase {
         super.setUp()
 
         loadMockRecordables()
-        testOp = Upload(mocks!, from: mockRec, to: .privateDB)
+        testOp = MCUpload(mocks!, from: mockRec, to: .privateDB)
     }
     
     override func tearDown() {

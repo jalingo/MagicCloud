@@ -96,7 +96,7 @@ public extension MCReceiver {
     }
     
     /// This method is triggered by the remote notification subscribeToChanges(on:) setup.
-    fileprivate func listenForDatabaseChanges() {
+    func listenForDatabaseChanges() {
         NotificationCenter.default.addObserver(forName: Notification.Name(type().recordType),
                                                object: nil,
                                                queue: nil,

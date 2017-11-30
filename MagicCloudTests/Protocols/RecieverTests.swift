@@ -30,7 +30,7 @@ class RecievesRecTests: XCTestCase {
     // MARK: - Functions
     
     func prepareDatabase() -> Int {
-        let op = Upload(mockRecordables, from: mock!, to: .publicDB)
+        let op = MCUpload(mockRecordables, from: mock!, to: .publicDB)
         let pause = Pause(seconds: 3)
         pause.addDependency(op)
 pause.completionBlock = { print("** finished prep pause") }
@@ -42,7 +42,7 @@ pause.completionBlock = { print("** finished prep pause") }
     }
     
     func cleanUpDatabase() -> Int {
-        let op = Delete(mockRecordables, of: mock!, from: .publicDB)
+        let op = MCDelete(mockRecordables, of: mock!, from: .publicDB)
         let pause = Pause(seconds: 2)
         pause.addDependency(op)
 pause.completionBlock = { print("** finished cleanUp pause") }
@@ -57,7 +57,7 @@ pause.completionBlock = { print("** finished cleanUp pause") }
     
     func testReceiverHasRecordables() { XCTAssertNotNil(mock?.recordables) }
 
-    func testReceiverHasAssociatedTypeRecordable() { XCTAssert(mock?.recordables is [Recordable]) }
+    func testReceiverHasAssociatedTypeRecordable() { XCTAssert(mock?.recordables is [MCRecordable]) }
     
     func testReceiverHasSubscriber() { XCTAssertNotNil(mock?.subscription) }
     
@@ -65,7 +65,7 @@ pause.completionBlock = { print("** finished cleanUp pause") }
         let _ = prepareDatabase()
         
         let pause = Pause(seconds: 2)
-        mock?.download(from: .publicDB) { pause.start() }
+        mock?.downloadAll(from: .publicDB) { pause.start() }
         pause.waitUntilFinished()
         
         if let recordables = mock?.recordables {
@@ -143,17 +143,9 @@ print("** uploading mocks to trigger remote notification")
 
 // MARK: - Mocks
 
-extension ReceivesRecordable {
-    
-    func syncToCloud() {
-        
-    }
-    
-}
+class MockReceiver: MCReceiver {
 
-class MockReceiver: ReceivesRecordable {
-
-    var subscription = Subscriber()
+    var subscription = MCSubscriber()
     
     typealias type = MockRecordable
     

@@ -8,8 +8,9 @@
 
 import UIKit
 import MagicCloud
+import CloudKit     // <-- Still Needed, in most cases.
 
-// MARK: Class: ViewController
+// MARK: - Class: ViewController
 
 class ViewController: UIViewController, MCReceiver {
     
@@ -91,5 +92,54 @@ class ViewController: UIViewController, MCReceiver {
         
         // This method subscribes to changes from the specified database, and prepares handling of events.
         subscribeToChanges(on: .publicDB)
+    }
+}
+
+
+// MARK: - Mock
+
+/// Mock instance that only conforms to `Recordable` for testing and prototype development.
+ class MockRecordable: MCRecordable {
+    
+    // MARK: - Properties
+    
+    var created = Date()
+    
+    // MARK: - Properties: Static Values
+    
+    static let key = "MockValue"
+    static let mockType = "MockRecordable"
+    
+    // MARK: - Properties: Recordable
+    
+    var recordType: String { return MockRecordable.mockType }
+    
+    var recordFields: Dictionary<String, CKRecordValue> {
+        get { return [MockRecordable.key: created as CKRecordValue] }
+        set {
+            if let date = newValue[MockRecordable.key] as? Date { created = date }
+        }
+    }
+    
+    var recordID: CKRecordID {
+        get {
+            return CKRecordID(recordName: "MockIdentifier: \(String(describing: created))")
+        }
+        
+        set {
+            var str = newValue.recordName
+            if let range = str.range(of: "MockIdentifier: ") {
+                str.removeSubrange(range)
+                if let date = DateFormatter().date(from: str) { created = date }
+            }
+        }
+    }
+    
+    // MARK: - Functions: Constructor
+    
+    public required init() { }
+    
+    init(created: Date? = nil) {
+        if let date = created { self.created = date }
     }
 }

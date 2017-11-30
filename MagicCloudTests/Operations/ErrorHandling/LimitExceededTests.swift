@@ -15,7 +15,7 @@ class LimitExceededTests: XCTestCase {
     
     var testOp: LimitExceeded<MockReceiver>?
     
-    var mock: Upload<MockReceiver>?
+    var mock: MCUpload<MockReceiver>?
     
     var mockRec = MockReceiver()
     
@@ -50,9 +50,9 @@ class LimitExceededTests: XCTestCase {
         testOp = LimitExceeded(error: error, occuredIn: mock!, rec: mockRec, instances: mocks!, target: .privateDB)
         
         // These operations are used in test sequence.
-        let prepOp = Delete(mocks, of: mockRec, from: .privateDB)
+        let prepOp = MCDelete(mocks, of: mockRec, from: .privateDB)
         let pause   = Pause(seconds: 3)
-        let cleanUp = Delete(mocks, of: mockRec, from: .privateDB)
+        let cleanUp = MCDelete(mocks, of: mockRec, from: .privateDB)
 
         // This operation will verify that mock was uploaded, and record it's findings in `recordInDatabase`.
         let mockIDs = mocks!.map({ $0.recordID })
@@ -65,7 +65,7 @@ class LimitExceededTests: XCTestCase {
                                                       target: .privateDB,
                                                       instances: self.mocks!,
                                                       receiver: self.mockRec)
-                    ErrorQueue().addOperation(errorHandler)
+                    OperationQueue().addOperation(errorHandler)
                 } else {
                     print("NSError: \(error!) @ testLimitExceededHandles.0")
                 }
@@ -74,7 +74,7 @@ class LimitExceededTests: XCTestCase {
             }
             
             // This cleans up the database, and removes test record.
-            CloudQueue().addOperation(cleanUp)
+            OperationQueue().addOperation(cleanUp)
         }
         
         verifyOp.perRecordCompletionBlock = { record, id, error in
@@ -86,7 +86,7 @@ class LimitExceededTests: XCTestCase {
                                                       instances: self.mocks!,
                                                       receiver: self.mockRec)
                     errorHandler.ignoreUnknownItem = true
-                    ErrorQueue().addOperation(errorHandler)
+                    OperationQueue().addOperation(errorHandler)
                 } else {
                     print("NSError: \(error!) @ testLimitExceededHandles.1")
                 }
@@ -113,10 +113,10 @@ class LimitExceededTests: XCTestCase {
         pause.addDependency(testOp!)
         verifyOp.addDependency(pause)
 
-        ErrorQueue().addOperation(testOp!)
-        ErrorQueue().addOperation(pause)
-        CloudQueue().addOperation(verifyOp)
-        CloudQueue().addOperation(prepOp)
+        OperationQueue().addOperation(testOp!)
+        OperationQueue().addOperation(pause)
+        OperationQueue().addOperation(verifyOp)
+        OperationQueue().addOperation(prepOp)
         
         verifyOp.waitUntilFinished()
         XCTAssert(recordsInDatabase)
@@ -128,7 +128,7 @@ class LimitExceededTests: XCTestCase {
         super.setUp()
      
         loadMocks()
-        mock = Upload(mocks!, from: mockRec, to: .privateDB)
+        mock = MCUpload(mocks!, from: mockRec, to: .privateDB)
     }
     
     override func tearDown() {

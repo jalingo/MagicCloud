@@ -9,7 +9,7 @@
 import CloudKit
 
 /// This key should be used for storing references in a CKRecord, to allow 'Download' by reference to work.
-let OWNER_KEY = "Owners"    // <-- Repalced in TypeAliases? Coupled to Referable and Download
+let OWNER_KEY = "Owners"
 
 /**
  * The Referable protocol ensures that any conforming instances have what is necessary
@@ -37,50 +37,14 @@ public protocol MCReferable: MCRecordable {
      * that owned instance has only a single reference in its list of references.
      *
      * - CAUTION: 'OWNER_KEY' must be used for references' field for compatibility with
-     *            'Download' operation.
+     *            'MCDownload' operation.
      */
     mutating func attachReference(reference: CKReference)
     
     /**
      * This method is used to store new ownership relationship in references array,
      * and to ensure that cloud data model reflects such changes. If object has no
-     * references, it may need to be deleted from database (which would happen here).
+     * references, it may need to be deleted from database (that should happen here).
      */
     mutating func detachReference(reference: CKReference)
 }
-
-// MARK: - Mocks
-
-class MockReferable: MockRecordable, MCReferable {
-    
-    // MARK: - Properties
-    
-    let REC_TYPE = "MockReferable"
-    let REFS_KEY = OWNER_KEY
-        
-    // MARK: - Properties: Referrable
-    
-    fileprivate var owners: [CKReference]?
-    
-    var references: [CKReference] { return owners ?? [CKReference]() }
-    
-    // MARK: - Properties: Recordable
-    
-    /**
-     * This is a token used with cloudkit to build CKRecordID for this object's CKRecord.
-     */
-    override var recordType: String { return REC_TYPE }
-    
-    // MARK: - Functions: Referrable
-    
-    func attachReference(reference: CKReference) {
-        guard owners != nil else { owners = [reference]; return }
-        
-        owners?.append(reference)
-    }
-    
-    func detachReference(reference: CKReference) {
-        if let index = owners?.index(of: reference) { owners?.remove(at: index) }
-    }
-}
-

@@ -15,7 +15,7 @@ class MCErrorHandlerTests: XCTestCase {
     
     let mockOp = Operation()
     
-    let mocks = [Recordable]()
+    let mocks = [MCRecordable]()
         
     let mockRec = MockReceiver()
     
@@ -41,7 +41,7 @@ class MCErrorHandlerTests: XCTestCase {
         let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
         
-        ErrorQueue().addOperation(testOp!)
+        OperationQueue().addOperation(testOp!)
         
         let group = DispatchGroup()
         group.enter()
@@ -68,7 +68,7 @@ class MCErrorHandlerTests: XCTestCase {
         let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
         
-        ErrorQueue().addOperation(testOp!)
+        OperationQueue().addOperation(testOp!)
 
         let group = DispatchGroup()
         group.enter()
@@ -95,7 +95,7 @@ class MCErrorHandlerTests: XCTestCase {
         let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
         
-        ErrorQueue().addOperation(testOp!)
+        OperationQueue().addOperation(testOp!)
 
         let group = DispatchGroup()
         group.enter()
@@ -122,7 +122,7 @@ class MCErrorHandlerTests: XCTestCase {
         let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
         
-        ErrorQueue().addOperation(testOp!)
+        OperationQueue().addOperation(testOp!)
         
         let group = DispatchGroup()
         group.enter()
@@ -149,7 +149,7 @@ class MCErrorHandlerTests: XCTestCase {
         let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
         
-        ErrorQueue().addOperation(testOp!)
+        OperationQueue().addOperation(testOp!)
 
         let group = DispatchGroup()
         group.enter()
@@ -176,7 +176,7 @@ class MCErrorHandlerTests: XCTestCase {
         let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
         
-        ErrorQueue().addOperation(testOp!)
+        OperationQueue().addOperation(testOp!)
         
         let group = DispatchGroup()
         group.enter()
@@ -201,7 +201,7 @@ class MCErrorHandlerTests: XCTestCase {
         var unknownIgnored = false
         testOp?.ignoreUnknownItemCustomAction = { unknownIgnored = true }
         
-        ErrorQueue().addOperation(testOp!)
+        OperationQueue().addOperation(testOp!)
         
         testOp?.waitUntilFinished()
         XCTAssert(unknownIgnored)
