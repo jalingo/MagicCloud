@@ -25,7 +25,7 @@ public protocol ReceivesRecordable: AnyObject {
     var recordables: [type] { get set }
     
     /// This property stores the subscriptionID used by the receiver and should not be modified.
-    var subscription: Subscriber { get }
+    var subscription: MCSubscriber { get }
     
     /**
         This method subscribes to changes from the specified database, and prepares handling of events.

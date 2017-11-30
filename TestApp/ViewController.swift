@@ -27,7 +27,7 @@ class ViewController: UIViewController, ReceivesRecordable {
     }
     
     /// This property stores the subscriptionID used by the receiver and should not be modified.
-    var subscription = Subscriber() {
+    var subscription = MCSubscriber() {
         didSet { print("** subscriptionID: \(subscription)")}
     }
 

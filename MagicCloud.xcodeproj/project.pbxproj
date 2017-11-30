@@ -23,8 +23,8 @@
 		A16EA5041FC666DF001E57F8 /* MCNotificationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16EA5021FC666DF001E57F8 /* MCNotificationConverter.swift */; };
 		A16EA50B1FC66980001E57F8 /* MagicCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1268EB61FBA806200ADAA74 /* MagicCloud.framework */; };
 		A16EA50C1FC66980001E57F8 /* MagicCloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A1268EB61FBA806200ADAA74 /* MagicCloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A17DE9E51FBE56D900D2EB4F /* Subscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17DE9E41FBE56D900D2EB4F /* Subscriber.swift */; };
-		A17DE9E61FBE56D900D2EB4F /* Subscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17DE9E41FBE56D900D2EB4F /* Subscriber.swift */; };
+		A17DE9E51FBE56D900D2EB4F /* MCSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17DE9E41FBE56D900D2EB4F /* MCSubscriber.swift */; };
+		A17DE9E61FBE56D900D2EB4F /* MCSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17DE9E41FBE56D900D2EB4F /* MCSubscriber.swift */; };
 		A1B0CF171FC51FBE009474EE /* NotificationReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B0CF161FC51FBE009474EE /* NotificationReaderTests.swift */; };
 		A1CB77151FBA8535008ADF09 /* PrepareFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77131FBA8535008ADF09 /* PrepareFrom.swift */; };
 		A1CB77161FBA8535008ADF09 /* PrepareFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77131FBA8535008ADF09 /* PrepareFrom.swift */; };
@@ -147,7 +147,7 @@
 		A1268EE61FBA821400ADAA74 /* TypeAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
 		A1268EE91FBA821C00ADAA74 /* MCDatabaseType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCDatabaseType.swift; sourceTree = "<group>"; };
 		A16EA5021FC666DF001E57F8 /* MCNotificationConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCNotificationConverter.swift; sourceTree = "<group>"; };
-		A17DE9E41FBE56D900D2EB4F /* Subscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscriber.swift; sourceTree = "<group>"; };
+		A17DE9E41FBE56D900D2EB4F /* MCSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCSubscriber.swift; sourceTree = "<group>"; };
 		A1B0CF161FC51FBE009474EE /* NotificationReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationReaderTests.swift; sourceTree = "<group>"; };
 		A1CB77131FBA8535008ADF09 /* PrepareFrom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrepareFrom.swift; sourceTree = "<group>"; };
 		A1CB77141FBA8535008ADF09 /* Duplicate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Duplicate.swift; sourceTree = "<group>"; };
@@ -298,7 +298,7 @@
 		A1CB77191FBA853C008ADF09 /* Strategies */ = {
 			isa = PBXGroup;
 			children = (
-				A17DE9E41FBE56D900D2EB4F /* Subscriber.swift */,
+				A17DE9E41FBE56D900D2EB4F /* MCSubscriber.swift */,
 				A1CB77141FBA8535008ADF09 /* Duplicate.swift */,
 				A1CB77131FBA8535008ADF09 /* PrepareFrom.swift */,
 				90C4E8711FC0EAE300A8D329 /* GetUserRecord.swift */,
@@ -652,7 +652,7 @@
 				A1CB77CE1FBCB1C1008ADF09 /* PartialError.swift in Sources */,
 				A1CB77CF1FBCB1C1008ADF09 /* BatchError.swift in Sources */,
 				A1CB77391FBA86AF008ADF09 /* Upload.swift in Sources */,
-				A17DE9E51FBE56D900D2EB4F /* Subscriber.swift in Sources */,
+				A17DE9E51FBE56D900D2EB4F /* MCSubscriber.swift in Sources */,
 				A1CB77D21FBCBF4B008ADF09 /* VersionConflict.swift in Sources */,
 				90C4E8721FC0EAE300A8D329 /* GetUserRecord.swift in Sources */,
 				A1CB77151FBA8535008ADF09 /* PrepareFrom.swift in Sources */,
@@ -701,7 +701,7 @@
 				A1CB77841FBB9879008ADF09 /* Upload.swift in Sources */,
 				A1CB77CA1FBC3241008ADF09 /* RetriableErrorTests.swift in Sources */,
 				A1CB77851FBB9881008ADF09 /* Pause.swift in Sources */,
-				A17DE9E61FBE56D900D2EB4F /* Subscriber.swift in Sources */,
+				A17DE9E61FBE56D900D2EB4F /* MCSubscriber.swift in Sources */,
 				A1CB77D41FBCBF59008ADF09 /* RetriableError.swift in Sources */,
 				A1CB77181FBA8535008ADF09 /* Duplicate.swift in Sources */,
 				A1CB77821FBB986F008ADF09 /* Download.swift in Sources */,
