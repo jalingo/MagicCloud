@@ -27,7 +27,9 @@ class ViewController: UIViewController, ReceivesRecordable {
     }
     
     /// This property stores the subscriptionID used by the receiver and should not be modified.
-    var subscription = Subscriber()
+    var subscription = Subscriber() {
+        didSet { print("** subscriptionID: \(subscription)")}
+    }
 
     // MARK: - Properties: IBOutlets
     
@@ -40,12 +42,23 @@ class ViewController: UIViewController, ReceivesRecordable {
     @IBAction func newMockTapped(_ sender: UIButton) {
         let mock = MockRecordable()
 
-        // This operation will save an instance conforming to recordable as a record in the specified cloud database.
+        // This operation will save an instance conforming to recordable as a record in the specified database.
         let op = Upload([mock], from: self, to: .publicDB)
         op.start()
 
-        // The Upload operation will not effect local cache; recordables will need to be appended separately.
+        // The Upload operation will not effect local cache; recordables needs to be appended separately.
         recordables.append(mock)
+    }
+    
+    @IBAction func removeMockTapped(_ sender: UIButton) {
+
+        // The Delete operation will not effect lcoal cache; recordables needs to be modified separately.
+        if let mock = recordables.popLast() {
+ 
+            // This operation will remove these instances if present in the specified database.
+            let op = Delete([mock], of: self, from: .publicDB)
+            op.start()
+        }
     }
     
     @IBAction func subscribeTapped(_ sender: UIButton) {
@@ -60,12 +73,14 @@ class ViewController: UIViewController, ReceivesRecordable {
         // This method subscribes to changes from the specified database, and prepares handling of events.
         subscribeToChanges(on: .publicDB)
         
+        // Switches state.
         isSubscribed = !isSubscribed
 
         // Label title is changed based on the assumption of successful change to subscription.
         // Title change does not indicate success, but does report expected state.
         isSubscribed ?
-            (sender.titleLabel?.text = "Unsubscribe") : (sender.titleLabel?.text = "Sunscribe")
+            sender.setTitle("Unsubscribe", for: .normal) : sender.setTitle("Subscribe", for: .normal)
+//        sender.setNeedsDisplay()
     }
     
     // MARK: - Functions: UIViewController
