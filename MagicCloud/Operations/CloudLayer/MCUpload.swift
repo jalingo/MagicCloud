@@ -12,7 +12,7 @@ import UIKit
 
 // MARK: - Class
 
-public class Upload<R: MCReceiver>: Operation {
+public class MCUpload<R: MCReceiver>: Operation {
     
     // MARK: - Properties
 

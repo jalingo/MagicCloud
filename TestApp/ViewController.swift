@@ -43,7 +43,7 @@ class ViewController: UIViewController, MCReceiver {
         let mock = MockRecordable()
 
         // This operation will save an instance conforming to recordable as a record in the specified database.
-        let op = Upload([mock], from: self, to: .publicDB)
+        let op = MCUpload([mock], from: self, to: .publicDB)
         op.start()
 
         // The Upload operation will not effect local cache; recordables needs to be appended separately.
@@ -56,7 +56,7 @@ class ViewController: UIViewController, MCReceiver {
         if let mock = recordables.popLast() {
  
             // This operation will remove these instances if present in the specified database.
-            let op = Delete([mock], of: self, from: .publicDB)
+            let op = MCDelete([mock], of: self, from: .publicDB)
             op.start()
         }
     }

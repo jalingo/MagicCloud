@@ -33,9 +33,9 @@
 		A1CB77271FBA8683008ADF09 /* *Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77241FBA8682008ADF09 /* *Alert.swift */; };
 		A1CB77281FBA8683008ADF09 /* FailedOp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77251FBA8682008ADF09 /* FailedOp.swift */; };
 		A1CB77291FBA8683008ADF09 /* Pause.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77261FBA8682008ADF09 /* Pause.swift */; };
-		A1CB77371FBA86AF008ADF09 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77341FBA86AC008ADF09 /* Download.swift */; };
-		A1CB77381FBA86AF008ADF09 /* Delete.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77351FBA86AD008ADF09 /* Delete.swift */; };
-		A1CB77391FBA86AF008ADF09 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77361FBA86AE008ADF09 /* Upload.swift */; };
+		A1CB77371FBA86AF008ADF09 /* MCDownload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77341FBA86AC008ADF09 /* MCDownload.swift */; };
+		A1CB77381FBA86AF008ADF09 /* MCDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77351FBA86AD008ADF09 /* MCDelete.swift */; };
+		A1CB77391FBA86AF008ADF09 /* MCUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77361FBA86AE008ADF09 /* MCUpload.swift */; };
 		A1CB773C1FBA86CB008ADF09 /* MCErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB773B1FBA86CB008ADF09 /* MCErrorHandler.swift */; };
 		A1CB77451FBA86E7008ADF09 /* RetriableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77411FBA86E6008ADF09 /* RetriableError.swift */; };
 		A1CB774C1FBA874F008ADF09 /* RecieverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77481FBA874F008ADF09 /* RecieverTests.swift */; };
@@ -49,9 +49,9 @@
 		A1CB77681FBAAE9A008ADF09 /* MCDatabaseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE91FBA821C00ADAA74 /* MCDatabaseType.swift */; };
 		A1CB77691FBAAE9D008ADF09 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE61FBA821400ADAA74 /* TypeAliases.swift */; };
 		A1CB776A1FBAAEA1008ADF09 /* MCNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268ED91FBA807D00ADAA74 /* MCNotification.swift */; };
-		A1CB77821FBB986F008ADF09 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77341FBA86AC008ADF09 /* Download.swift */; };
-		A1CB77831FBB9874008ADF09 /* Delete.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77351FBA86AD008ADF09 /* Delete.swift */; };
-		A1CB77841FBB9879008ADF09 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77361FBA86AE008ADF09 /* Upload.swift */; };
+		A1CB77821FBB986F008ADF09 /* MCDownload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77341FBA86AC008ADF09 /* MCDownload.swift */; };
+		A1CB77831FBB9874008ADF09 /* MCDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77351FBA86AD008ADF09 /* MCDelete.swift */; };
+		A1CB77841FBB9879008ADF09 /* MCUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77361FBA86AE008ADF09 /* MCUpload.swift */; };
 		A1CB77851FBB9881008ADF09 /* Pause.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77261FBA8682008ADF09 /* Pause.swift */; };
 		A1CB77861FBB9B94008ADF09 /* MCErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB773B1FBA86CB008ADF09 /* MCErrorHandler.swift */; };
 		A1CB77871FBB9CB7008ADF09 /* FailedOp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77251FBA8682008ADF09 /* FailedOp.swift */; };
@@ -154,9 +154,9 @@
 		A1CB77241FBA8682008ADF09 /* *Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "*Alert.swift"; sourceTree = "<group>"; };
 		A1CB77251FBA8682008ADF09 /* FailedOp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FailedOp.swift; sourceTree = "<group>"; };
 		A1CB77261FBA8682008ADF09 /* Pause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pause.swift; sourceTree = "<group>"; };
-		A1CB77341FBA86AC008ADF09 /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
-		A1CB77351FBA86AD008ADF09 /* Delete.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delete.swift; sourceTree = "<group>"; };
-		A1CB77361FBA86AE008ADF09 /* Upload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Upload.swift; sourceTree = "<group>"; };
+		A1CB77341FBA86AC008ADF09 /* MCDownload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCDownload.swift; sourceTree = "<group>"; };
+		A1CB77351FBA86AD008ADF09 /* MCDelete.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCDelete.swift; sourceTree = "<group>"; };
+		A1CB77361FBA86AE008ADF09 /* MCUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCUpload.swift; sourceTree = "<group>"; };
 		A1CB773B1FBA86CB008ADF09 /* MCErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCErrorHandler.swift; sourceTree = "<group>"; };
 		A1CB773E1FBA86E4008ADF09 /* BatchError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchError.swift; sourceTree = "<group>"; };
 		A1CB773F1FBA86E5008ADF09 /* PartialError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartialError.swift; sourceTree = "<group>"; };
@@ -331,9 +331,9 @@
 		A1CB773A1FBA86B5008ADF09 /* CloudLayer */ = {
 			isa = PBXGroup;
 			children = (
-				A1CB77361FBA86AE008ADF09 /* Upload.swift */,
-				A1CB77351FBA86AD008ADF09 /* Delete.swift */,
-				A1CB77341FBA86AC008ADF09 /* Download.swift */,
+				A1CB77361FBA86AE008ADF09 /* MCUpload.swift */,
+				A1CB77351FBA86AD008ADF09 /* MCDelete.swift */,
+				A1CB77341FBA86AC008ADF09 /* MCDownload.swift */,
 				A1CB773D1FBA86D2008ADF09 /* Error Handling */,
 			);
 			path = CloudLayer;
@@ -651,7 +651,7 @@
 				A1CB77CD1FBCB1C1008ADF09 /* LimitExceeded.swift in Sources */,
 				A1CB77CE1FBCB1C1008ADF09 /* PartialError.swift in Sources */,
 				A1CB77CF1FBCB1C1008ADF09 /* BatchError.swift in Sources */,
-				A1CB77391FBA86AF008ADF09 /* Upload.swift in Sources */,
+				A1CB77391FBA86AF008ADF09 /* MCUpload.swift in Sources */,
 				A17DE9E51FBE56D900D2EB4F /* MCSubscriber.swift in Sources */,
 				A1CB77D21FBCBF4B008ADF09 /* VersionConflict.swift in Sources */,
 				90C4E8721FC0EAE300A8D329 /* GetUserRecord.swift in Sources */,
@@ -666,10 +666,10 @@
 				A1CB77291FBA8683008ADF09 /* Pause.swift in Sources */,
 				A1268EE31FBA80BC00ADAA74 /* MCRecordable.swift in Sources */,
 				A1CB77171FBA8535008ADF09 /* Duplicate.swift in Sources */,
-				A1CB77371FBA86AF008ADF09 /* Download.swift in Sources */,
+				A1CB77371FBA86AF008ADF09 /* MCDownload.swift in Sources */,
 				A1268EE71FBA821400ADAA74 /* TypeAliases.swift in Sources */,
 				A1268EDA1FBA807D00ADAA74 /* MCNotification.swift in Sources */,
-				A1CB77381FBA86AF008ADF09 /* Delete.swift in Sources */,
+				A1CB77381FBA86AF008ADF09 /* MCDelete.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -694,17 +694,17 @@
 				A1268EE41FBA80BC00ADAA74 /* MCRecordable.swift in Sources */,
 				A1CB77501FBA874F008ADF09 /* ReferableTests.swift in Sources */,
 				A1CB77871FBB9CB7008ADF09 /* FailedOp.swift in Sources */,
-				A1CB77831FBB9874008ADF09 /* Delete.swift in Sources */,
+				A1CB77831FBB9874008ADF09 /* MCDelete.swift in Sources */,
 				A1CB77691FBAAE9D008ADF09 /* TypeAliases.swift in Sources */,
 				A1CB77D11FBCBF47008ADF09 /* VersionConflict.swift in Sources */,
 				A1CB77681FBAAE9A008ADF09 /* MCDatabaseType.swift in Sources */,
-				A1CB77841FBB9879008ADF09 /* Upload.swift in Sources */,
+				A1CB77841FBB9879008ADF09 /* MCUpload.swift in Sources */,
 				A1CB77CA1FBC3241008ADF09 /* RetriableErrorTests.swift in Sources */,
 				A1CB77851FBB9881008ADF09 /* Pause.swift in Sources */,
 				A17DE9E61FBE56D900D2EB4F /* MCSubscriber.swift in Sources */,
 				A1CB77D41FBCBF59008ADF09 /* RetriableError.swift in Sources */,
 				A1CB77181FBA8535008ADF09 /* Duplicate.swift in Sources */,
-				A1CB77821FBB986F008ADF09 /* Download.swift in Sources */,
+				A1CB77821FBB986F008ADF09 /* MCDownload.swift in Sources */,
 				90C4E8731FC0EAE300A8D329 /* GetUserRecord.swift in Sources */,
 				A1CB77D31FBCBF52008ADF09 /* BatchError.swift in Sources */,
 				A1CB77D51FBCBF5E008ADF09 /* PartialError.swift in Sources */,

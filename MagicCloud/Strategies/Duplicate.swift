@@ -22,8 +22,8 @@ func duplicate<R: MCReceiver>(_ op: Operation, with receiver: R) -> Operation? {
     
     // Custom Recordable Operations
     
-    if let uploader = op as? Upload<R> {
-        let new = Upload<R>(uploader.recordables, from: receiver, to: uploader.database)//.db.databaseScope)
+    if let uploader = op as? MCUpload<R> {
+        let new = MCUpload<R>(uploader.recordables, from: receiver, to: uploader.database)//.db.databaseScope)
         
         new.completionBlock = uploader.completionBlock
         new.name = "\(String(describing: uploader.name))+"
@@ -31,8 +31,8 @@ func duplicate<R: MCReceiver>(_ op: Operation, with receiver: R) -> Operation? {
         return new
     }
     
-    if let deleter = op as? Delete<R> {
-        let new = Delete<R>(deleter.recordables, of: receiver, from: deleter.database)
+    if let deleter = op as? MCDelete<R> {
+        let new = MCDelete<R>(deleter.recordables, of: receiver, from: deleter.database)
         
         new.delayInSeconds = deleter.delayInSeconds
         new.completionBlock = deleter.completionBlock
@@ -41,8 +41,8 @@ func duplicate<R: MCReceiver>(_ op: Operation, with receiver: R) -> Operation? {
         return new
     }
     
-    if let downloader = op as? Download<R> {
-        let new = Download<R>(type: downloader.query.recordType, to: downloader.receiver, from: downloader.database)
+    if let downloader = op as? MCDownload<R> {
+        let new = MCDownload<R>(type: downloader.query.recordType, to: downloader.receiver, from: downloader.database)
         
         new.query = downloader.query
         new.ignoreUnknownItemCustomAction = downloader.ignoreUnknownItemCustomAction

@@ -35,22 +35,22 @@ class LimitExceeded<R: MCReceiver>: Operation {
         var resolver0: Operation?
         var resolver1: Operation?
         
-        if let _ = erringOperation as? Delete<R> {
+        if let _ = erringOperation as? MCDelete<R> {
             let first = Array(firstHalf)
             let second = Array(secondHalf)
 
-            resolver0 = Delete(first, of: receiver, from: database)
-            resolver1 = Delete(second, of: receiver, from: database)
+            resolver0 = MCDelete(first, of: receiver, from: database)
+            resolver1 = MCDelete(second, of: receiver, from: database)
         }
         
-        if let op = erringOperation as? Download<R> {   // <- Is this even possible? Downloads shouldn't get error...
+        if let op = erringOperation as? MCDownload<R> {   // <- Is this even possible? Downloads shouldn't get error...
             resolver0 = duplicate(op, with: receiver)
             resolver1 = Operation()
             
             if let limit = op.limit {
-                (resolver0 as? Download<R>)?.limit = Int(round(Double(limit / 2)))
+                (resolver0 as? MCDownload<R>)?.limit = Int(round(Double(limit / 2)))
             } else {
-                (resolver0 as? Download<R>)?.limit = 20
+                (resolver0 as? MCDownload<R>)?.limit = 20
             }
         }
         
