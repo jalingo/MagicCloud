@@ -80,7 +80,6 @@ class ViewController: UIViewController, ReceivesRecordable {
         // Title change does not indicate success, but does report expected state.
         isSubscribed ?
             sender.setTitle("Unsubscribe", for: .normal) : sender.setTitle("Subscribe", for: .normal)
-//        sender.setNeedsDisplay()
     }
     
     // MARK: - Functions: UIViewController
