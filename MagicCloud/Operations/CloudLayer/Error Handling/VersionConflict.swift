@@ -73,7 +73,7 @@ class VersionConflict<R: ReceivesRecordable>: Operation {
                 return nil
         }
         
-        var recordable: Recordable?
+        var recordable: MCRecordable?
         for instance in recordables {
 print("insance: \(instance.recordID) vs current: \(current.recordID)")
             if instance.recordID.recordName == current.recordID.recordName {

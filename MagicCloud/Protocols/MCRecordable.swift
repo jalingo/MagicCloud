@@ -15,7 +15,7 @@ import CloudKit
  * to be recorded in the cloud database. Conformance to this protocol is also necessary
  * to interact with the generic cloud functionality in this workspace.
  */
-public protocol Recordable {
+public protocol MCRecordable {
     
     /**
      * This is a token used with cloudkit to build CKRecordID for this object's CKRecord.
@@ -45,7 +45,7 @@ public protocol Recordable {
 // MARK: - Mock
 
 /// Mock instance that only conforms to `Recordable` for testing and prototype development.
-public class MockRecordable: Recordable {   // <-- remove publix (below, too) after testing remote subscriptions
+public class MockRecordable: MCRecordable {   // <-- remove publix (below, too) after testing remote subscriptions
     
     // MARK: - Properties
         

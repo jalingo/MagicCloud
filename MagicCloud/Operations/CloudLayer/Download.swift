@@ -151,7 +151,7 @@ public class Download<R: ReceivesRecordable>: Operation {
      *
      * - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    public init(type: String, ownedBy: Recordable, to rec: R, from db: MCDatabaseType) {
+    public init(type: String, ownedBy: MCRecordable, to rec: R, from db: MCDatabaseType) {
         let ref = CKReference(recordID: ownedBy.recordID, action: .deleteSelf)
         let predicate = NSPredicate(format: "%K CONTAINS %@", OWNER_KEY, ref)
         query = CKQuery(recordType: type, predicate: predicate)

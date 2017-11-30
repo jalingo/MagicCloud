@@ -18,7 +18,7 @@ let OWNER_KEY = "Owners"
  * Recordable protocol and it's 'Recordable.recordFields' dictionary must be amended to
  * store collected CKReferences.
  */
-public protocol Referable: Recordable {
+public protocol Referable: MCRecordable {
     
     // MARK: - Properties
     

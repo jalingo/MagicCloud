@@ -15,7 +15,7 @@ import CloudKit
 public protocol ReceivesRecordable: AnyObject {
     
     /// Receivers can only work with one type (for error handling).
-    associatedtype type: Recordable
+    associatedtype type: MCRecordable
     
     /**
         This protected property is an array of recordables used by reciever.
