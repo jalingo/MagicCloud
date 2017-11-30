@@ -145,7 +145,7 @@ print("recordables: \(recordables.count)")
             
             self.completionOperation.addDependency(errorHandler)
             
-            let queue = ErrorQueue()    // <-- Required until queues adopt singleton pattern...
+            let queue = OperationQueue()    // <-- Required until queues adopt singleton pattern...
             queue.addOperation(self.completionOperation)
             queue.addOperation(errorHandler)
         } else {
@@ -171,7 +171,7 @@ print("conflict resolved")
             // Tags completion block from original operation onto the end of the conflict resolution.
             if completionOperation.completionBlock != nil {
                 completionOperation.addDependency(op)
-                CloudQueue().addOperation(completionOperation)
+                OperationQueue().addOperation(completionOperation)
             }
             
             database.db.add(op)

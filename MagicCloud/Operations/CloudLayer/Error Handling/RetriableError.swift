@@ -50,7 +50,7 @@ class RetriableError<R: MCReceiver>: Operation {
                     if let cloudOp = op as? CKDatabaseOperation {
                         self.database.db.add(cloudOp)
                     } else {
-                        ErrorQueue().addOperation(op)
+                        OperationQueue().addOperation(op)
                     }
                 }
                 

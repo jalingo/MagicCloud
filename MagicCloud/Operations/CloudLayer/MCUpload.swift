@@ -69,7 +69,7 @@ public class MCUpload<R: MCReceiver>: Operation {
                                               target: database, instances: recordables,
                                               receiver: receiver)
             errorHandler.ignoreUnknownItem = whileIgnoringUnknownItem
-            ErrorQueue().addOperation(errorHandler)
+            OperationQueue().addOperation(errorHandler)
         } else {
             print("NSError: \(String(describing: error?.localizedDescription)) @ Upload::\(op)")
         }

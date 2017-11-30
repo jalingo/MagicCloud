@@ -80,17 +80,17 @@ public extension MCReceiver {
             if let index = self.recordables.index(where: { $0.recordID.recordName == id.recordName }) {
                 self.recordables.remove(at: index)
                 
-                let op = Download(type: type().recordType,
-                                  queryField: "recordID",
-                                  queryValues: [CKReference(recordID: id, action: .none)],
-                                  to: self, from: db)
+                let op = MCDownload(type: type().recordType,
+                                    queryField: "recordID",
+                                    queryValues: [CKReference(recordID: id, action: .none)],
+                                    to: self, from: db)
                 OperationQueue().addOperation(op)
             }
         case .recordCreated:
-            let op = Download(type: type().recordType,
-                              queryField: "recordID",
-                              queryValues: [CKReference(recordID: id, action: .none)],
-                              to: self, from: db)
+            let op = MCDownload(type: type().recordType,
+                                queryField: "recordID",
+                                queryValues: [CKReference(recordID: id, action: .none)],
+                                to: self, from: db)
             OperationQueue().addOperation(op)
         }
     }
@@ -122,7 +122,7 @@ public extension MCReceiver {
     public func downloadAll(from db: MCDatabaseType, completion: OptionalClosure = nil) {
         let empty = type()
 
-        let op = Download(type: empty.recordType, to: self, from: db)
+        let op = MCDownload(type: empty.recordType, to: self, from: db)
         op.completionBlock = {
             if let block = completion { block() }
         }

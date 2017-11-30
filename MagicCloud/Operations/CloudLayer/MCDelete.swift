@@ -54,7 +54,7 @@ public class MCDelete<R: MCReceiver>: Operation {
                                                       originating: self,
                                                       target: self.database, instances: self.recordables,
                                                       receiver: self.receiver)
-                    ErrorQueue().addOperation(errorHandler)
+                    OperationQueue().addOperation(errorHandler)
                 } else {
                     print("NSError: \(String(describing: error)) @ Delete")
                 }

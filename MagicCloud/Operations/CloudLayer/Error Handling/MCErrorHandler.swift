@@ -120,7 +120,7 @@ print("!! CKError: \(error.code.rawValue) / \(error.localizedDescription) @ \(St
         if isCancelled { return }
         
         // After resolution determined in previous switch statement, resolution is initiated here.
-        if let op = resolvingOperation { ErrorQueue().addOperation(op) }
+        if let op = resolvingOperation { OperationQueue().addOperation(op) }
     }
     
     /// This override hides no argument initializer to ensure dependencies get injected.

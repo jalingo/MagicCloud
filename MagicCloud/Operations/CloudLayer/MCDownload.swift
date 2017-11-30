@@ -80,7 +80,7 @@ public class MCDownload<R: MCReceiver>: Operation {
                                                           receiver: self.receiver)
                         errorHandler.ignoreUnknownItem = true
                         errorHandler.ignoreUnknownItemCustomAction = self.ignoreUnknownItemCustomAction
-                        ErrorQueue().addOperation(errorHandler)
+                        OperationQueue().addOperation(errorHandler)
                     } else {
                         print("NSError \(String(describing: error?.localizedDescription)) @ Download.queryCompletion")
                     }

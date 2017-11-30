@@ -56,8 +56,8 @@ class LimitExceeded<R: MCReceiver>: Operation {
         
         if let op0 = resolver0, let op1 = resolver1 {
             op1.addDependency(op0)          // <-- This may not be necessary, but feels nice...
-            CloudQueue().addOperation(op1)
-            CloudQueue().addOperation(op0)
+            OperationQueue().addOperation(op1)
+            OperationQueue().addOperation(op0)
         } else {
             print("Limit Exceeded Error occured and went unhandled: \(cloudError)")
         }

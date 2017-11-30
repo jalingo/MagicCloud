@@ -67,7 +67,7 @@ class BatchError<R: MCReceiver>: Operation {
         
         if isCancelled { return }
         
-        if let operation = resolution { ErrorQueue().addOperation(operation) }
+        if let operation = resolution { OperationQueue().addOperation(operation) }
     }
     
     // MARK: - Functions: Constructors

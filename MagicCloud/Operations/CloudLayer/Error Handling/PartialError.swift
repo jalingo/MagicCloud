@@ -20,7 +20,7 @@ class PartialError<R: MCReceiver>: Operation {
     
     fileprivate let operation: Operation
     
-    fileprivate let queue = ErrorQueue()
+    fileprivate let queue = OperationQueue()
     
     fileprivate let receiver: R
     
