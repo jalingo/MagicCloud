@@ -11,34 +11,26 @@ import CloudKit
 import MagicCloud
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, NotificationConverter {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-print("** didFinishLaunchingWithOptions @ TestApp delegate")
         application.registerForRemoteNotifications()
-        
         return true
     }
 
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-
-print("** didReceiveRemoteNotification @ TestApp delegate")
-        NotificationReader.createLocal(from: userInfo)
+        
+        // This method creates a local notification from remote's userInfo, if it was intended for MagicCloud.
+        convertToLocal(from: userInfo)
     }
     
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-print("** registered with token")
-    }
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) { }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-print("!! Error @ UIApp.didFailToRegister")
-print("!! \(error.localizedDescription)")
-        
-        // TODO !! graceful disable &or error handling...
+        /* NEED TO GRACEFULLY DISABLE ANY CLOUD DEPENDENT BEHAVIOR HERE */
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
@@ -62,7 +54,5 @@ print("!! \(error.localizedDescription)")
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
 }
 

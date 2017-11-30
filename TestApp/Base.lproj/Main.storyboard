@@ -1,24 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" systemVersion="17A277" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="AmericanTypewriter.ttc">
+            <string>AmericanTypewriter</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="TestApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tIC-7I-I69">
+                                <rect key="frame" x="16" y="309" width="161" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="hfK-AK-yhT"/>
+                                    <constraint firstAttribute="width" constant="161" id="nQd-8n-IAG"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="50"/>
+                                <state key="normal" title="-"/>
+                                <connections>
+                                    <action selector="newMockTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="N6Z-Ed-rSH"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S3c-ua-qa9">
+                                <rect key="frame" x="323" y="20" width="36" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="36" id="t0f-g6-rvG"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number of records in the database:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tvj-On-5CJ">
+                                <rect key="frame" x="16" y="20" width="271" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Magic Cloud Test Interface" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0KK-hl-HEv">
+                                <rect key="frame" x="16" y="49" width="343" height="252"/>
+                                <fontDescription key="fontDescription" name="AmericanTypewriter" family="American Typewriter" pointSize="31"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O4L-T0-A4b">
+                                <rect key="frame" x="185" y="309" width="174" height="48"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="50"/>
+                                <state key="normal" title="+"/>
+                                <connections>
+                                    <action selector="newMockTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="12N-hC-qG3"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fCx-8D-co1">
+                                <rect key="frame" x="144" y="617" width="87" height="30"/>
+                                <state key="normal" title="Unsubscribe"/>
+                                <connections>
+                                    <action selector="subscribeTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="P8k-61-SIC"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="fCx-8D-co1" secondAttribute="bottom" constant="20" symbolic="YES" id="6aU-E8-Zsq"/>
+                            <constraint firstItem="tIC-7I-I69" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="CWS-3g-T3b"/>
+                            <constraint firstItem="Tvj-On-5CJ" firstAttribute="top" secondItem="S3c-ua-qa9" secondAttribute="top" id="GL5-DQ-dKu"/>
+                            <constraint firstItem="S3c-ua-qa9" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="Gjx-n1-d4Z"/>
+                            <constraint firstItem="O4L-T0-A4b" firstAttribute="baseline" secondItem="tIC-7I-I69" secondAttribute="firstBaseline" id="ISr-LN-Qsi"/>
+                            <constraint firstItem="0KK-hl-HEv" firstAttribute="trailing" secondItem="O4L-T0-A4b" secondAttribute="trailing" id="Kqk-SE-WEW"/>
+                            <constraint firstItem="Tvj-On-5CJ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="KyN-Gd-k56"/>
+                            <constraint firstItem="Tvj-On-5CJ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="MGd-dI-wqj"/>
+                            <constraint firstItem="tIC-7I-I69" firstAttribute="baseline" secondItem="O4L-T0-A4b" secondAttribute="firstBaseline" id="cOC-UU-qUs"/>
+                            <constraint firstItem="tIC-7I-I69" firstAttribute="top" secondItem="O4L-T0-A4b" secondAttribute="top" id="da5-9l-3qz"/>
+                            <constraint firstItem="S3c-ua-qa9" firstAttribute="trailing" secondItem="0KK-hl-HEv" secondAttribute="trailing" id="jxv-t4-eyF"/>
+                            <constraint firstItem="Tvj-On-5CJ" firstAttribute="leading" secondItem="0KK-hl-HEv" secondAttribute="leading" id="kPa-ea-mbn"/>
+                            <constraint firstItem="O4L-T0-A4b" firstAttribute="leading" secondItem="tIC-7I-I69" secondAttribute="trailing" constant="8" symbolic="YES" id="meu-vi-wsq"/>
+                            <constraint firstItem="Tvj-On-5CJ" firstAttribute="baseline" secondItem="S3c-ua-qa9" secondAttribute="baseline" id="rge-k4-DJ8"/>
+                            <constraint firstItem="0KK-hl-HEv" firstAttribute="leading" secondItem="tIC-7I-I69" secondAttribute="leading" id="tb7-qL-5aZ"/>
+                            <constraint firstItem="0KK-hl-HEv" firstAttribute="centerX" secondItem="fCx-8D-co1" secondAttribute="centerX" id="ttQ-dp-QDz"/>
+                            <constraint firstItem="tIC-7I-I69" firstAttribute="top" secondItem="0KK-hl-HEv" secondAttribute="bottom" constant="8" symbolic="YES" id="tyM-0c-2i5"/>
+                            <constraint firstItem="0KK-hl-HEv" firstAttribute="top" secondItem="Tvj-On-5CJ" secondAttribute="bottom" constant="8" symbolic="YES" id="zV1-VO-DfK"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="countDisplay" destination="S3c-ua-qa9" id="wq4-TR-HU8"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="141.59999999999999" y="133.5832083958021"/>
         </scene>
     </scenes>
 </document>
