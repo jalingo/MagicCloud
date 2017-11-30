@@ -17,11 +17,7 @@ public protocol ReceivesRecordable: AnyObject {
     /// Receivers can only work with one type (for error handling).
     associatedtype type: MCRecordable
     
-    /**
-        This protected property is an array of recordables used by reciever.
-     
-        It's didSet is a good place to upload changes, after guarding allowRecordablesDidSet...
-     */
+    /// This protected property is an array of recordables used by reciever.
     var recordables: [type] { get set }
     
     /// This property stores the subscriptionID used by the receiver and should not be modified.
