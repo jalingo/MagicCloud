@@ -9,8 +9,8 @@
 import CloudKit
 
 /**
- * This protocol enables conforming types to give access to an array of Recordable, and
- * to prevent / allow that array's didSet to upload said array's changes to the cloud.
+    This protocol enables conforming types to give access to an array of Recordable, and
+    to prevent / allow that array's didSet to upload said array's changes to the cloud.
  */
 public protocol ReceivesRecordable: AnyObject {
     
@@ -24,85 +24,94 @@ public protocol ReceivesRecordable: AnyObject {
      */
     var recordables: [type] { get set }
     
+    /// This property stores the subscriptionID used by the receiver and should not be modified.
     var subscription: Subscriber { get }
     
-    // !!
-    // Calls listenForDatabaseChanges() automatically.
+    /**
+        This method subscribes to changes from the specified database, and prepares handling of events.
+        Any changes that are detected will be reflected in recordables array.
+     
+        Implementation for this method should not be overwritten.
+     */
     func subscribeToChanges(on: DatabaseType)
     
-    // !!
+    /// This method unsubscribes from changes to the specified database.
+    /// Implementation for this method should not be overwritten.
     func unsubscribeToChanges(from: DatabaseType)
     
-    /// This method sets trigger to download of all type associated recordables after local notification.
-    func listenForDatabaseChanges()
-    
-    func download(from: DatabaseType, completion: OptionalClosure)
+    /// This method empties recordables, and refills it from the specified database.
+    /// Implementation for this method should not be overwritten.
+    func downloadAll(from: DatabaseType, completion: OptionalClosure)
 }
 
 public extension ReceivesRecordable {
     
     // MARK: - Properties
     
+    /// This closure contains behavior responding to database change notification.
     fileprivate var databaseChanged: NotifyBlock {
         return { notification in
-            // TODO: Switch over to object being a recordID for a specific change
             if let info = notification.userInfo {
                 let notice = CKQueryNotification(fromRemoteNotificationDictionary: info)
                 let trigger = notice.queryNotificationReason
                 let db = DatabaseType.from(scope: notice.databaseScope)
                 
-                guard let id = notice.recordID as? CKRecordValue else { return }
+                guard let id = notice.recordID else { return }
 
-                /*
-                    !! CAUTION: System currently relies on index variable (deletion + update) and type
-                                dependency (creation) to prevent notifications from recordables of the
-                                wrong type completing a download.
-                 
-                                Should also not be possible, as receiver's 'recordables' property has a
-                                type and should not be able to be appended. This may cause an error, or
-                                dummy types may get loaded if type cannot be recovered from remote
-                                notification (might happen with 'case .recordCreation').
-                 
-                                Clarify this through testing (unit tests incapable of testing remote
-                                notifications; be sure to use another device).
-                 */
-                switch trigger {
-                case .recordDeleted:
-                    if let index = self.recordables.index(where: { $0.recordID.isEqual(id) }) { self.recordables.remove(at: index) }
-                case .recordUpdated:
-                    if let index = self.recordables.index(where: { $0.recordID.isEqual(id) }) {
-                        self.recordables.remove(at: index)
-                        
-                        let op = Download(type: type().recordType,
-                                          queryField: "recordID",
-                                          queryValues: [id],
-                                          to: self, from: db)
-                        
-                        OperationQueue().addOperation(op)
-                    }
-                case .recordCreated:
-                    let op = Download(type: type().recordType,
-                                      queryField: "recordID",
-                                      queryValues: [id],
-                                      to: self, from: db)
-                    OperationQueue().addOperation(op)
-                }
+                self.respondTo(trigger, for: id, on: db)
             }
-            
-//            guard let object = notification.object as? MCNotification else { return }
-//
-//            switch object {
-//            case .changeNoticed(_, let db): self.download(from: db)
-//            default: print("** ignoring notification")
-//            }
         }
     }
     
     // MARK: - Functions
     
-    // !! Automatically triggers download when heard
+    /**
+        This method responds to the various types of changes to the specified database. In the event of a record
+        deletion, associated recordable is removed from recordables. If a record is updated, the local copy is
+        removed from recordables and replaced by a fresh download. If a record is created, a new recordable is
+        made from a downloaded record.
+    
+        - Parameters:
+            - trigger: The type of change reported by the database.
+            - id: The id for the record that was changed.
+            - db: The database that was changed.
+     */
+    fileprivate func respondTo(_ trigger: CKQueryNotificationReason, for id: CKRecordID, on db: DatabaseType) {
+        switch trigger {
+        case .recordDeleted:
+            if let index = self.recordables.index(where: { $0.recordID.isEqual(id) }) { self.recordables.remove(at: index) }
+        case .recordUpdated:
+            if let index = self.recordables.index(where: { $0.recordID.recordName == id.recordName }) {
+                self.recordables.remove(at: index)
+                
+                let op = Download(type: type().recordType,
+                                  queryField: "recordID",
+                                  queryValues: [CKReference(recordID: id, action: .none)],
+                                  to: self, from: db)
+                OperationQueue().addOperation(op)
+            }
+        case .recordCreated:
+            let op = Download(type: type().recordType,
+                              queryField: "recordID",
+                              queryValues: [CKReference(recordID: id, action: .none)],
+                              to: self, from: db)
+            OperationQueue().addOperation(op)
+        }
+    }
+    
+    /// This method is triggered by the remote notification subscribeToChanges(on:) setup.
+    fileprivate func listenForDatabaseChanges() {
+        NotificationCenter.default.addObserver(forName: Notification.Name(type().recordType),
+                                               object: nil,
+                                               queue: nil,
+                                               using: databaseChanged)
+    }
+    
+    // MARK: - Functions: ReceivesRecordable
+    
+    /// This method subscribes to changes from the specified database, and prepares handling of events.
+    /// Any changes that are detected will be reflected in recordables array.
     public func subscribeToChanges(on db: DatabaseType) {
-print("** start listening for remote notifications")
         let empty = type()
         let triggers: CKQuerySubscriptionOptions = [.firesOnRecordCreation, .firesOnRecordUpdate, .firesOnRecordDeletion]
         subscription.start(for: empty.recordType, change: triggers, at: db)
@@ -110,54 +119,20 @@ print("** start listening for remote notifications")
         listenForDatabaseChanges()
     }
     
-    // !!
-    public func unsubscribeToChanges(from type: DatabaseType) { subscription.end(at: type) }
+    /// This method unsubscribes from changes to the specified database.
+    public func unsubscribeToChanges(from db: DatabaseType) { subscription.end(at: db) }
     
     // !!
-    public func listenForDatabaseChanges() {
-        let empty = type()
-print("** listening for local notifications")
-        let publicName  = Notification.Name(MCNotification.changeNoticed(forType: empty.recordType, at: .publicDB).toString())
-        let privateName = Notification.Name(MCNotification.changeNoticed(forType: empty.recordType, at: .privateDB).toString())
-        let sharedName  = Notification.Name(MCNotification.changeNoticed(forType: empty.recordType, at: .sharedDB).toString())
-print("** publicName = \(publicName.rawValue)")
-        for name in [publicName, privateName, sharedName] { observe(for: name) }
-    }
-
-    // !!
-    fileprivate func observe(for name: Notification.Name) {
-        NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: databaseChanged)
-    }
-    
-    // !!
-    public func download(from db: DatabaseType, completion: OptionalClosure = nil) {
+    public func downloadAll(from db: DatabaseType, completion: OptionalClosure = nil) {
         let empty = type()
 
         let op = Download(type: empty.recordType, to: self, from: db)
         op.completionBlock = {
-print("** download concluding...")
             if let block = completion { block() }
         }
-print("** emptying recordables")
-        recordables = []
-print("** downloading")
-        OperationQueue().addOperation(op)
-    }
-}
 
-/// Wrapper class for ReceivesRecordable
-class AnyReceiver<T: Recordable, R: ReceivesRecordable> {
-    
-    var receiver: R
-    
-    var recordables: [T] {
-        get { return receiver.recordables as? [T] ?? [T]() }      // <-- Returns empty if failed
-        set {
-            if let recs = newValue as? [R.type] { receiver.recordables = recs }
-        }
-    }
-    
-    init(recordable: T.Type, rec: R) {
-        receiver = rec
+        // empties recordables, before downloading
+        recordables = []
+        OperationQueue().addOperation(op)
     }
 }
