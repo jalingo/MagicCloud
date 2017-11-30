@@ -1,5 +1,5 @@
 //
-//  DatabaseType.swift
+//  MCDatabaseType.swift
 //  MagicCloud
 //
 //  Created by Jimmy Lingo on 5/16/17.
@@ -10,10 +10,10 @@ import CloudKit
 
 // MARK: - Enum
 
-public enum DatabaseType: String {
+public enum MCDatabaseType: String {
     case publicDB, privateDB, sharedDB
     
-    static func from(scope: CKDatabaseScope) -> DatabaseType {
+    static func from(scope: CKDatabaseScope) -> MCDatabaseType {
         switch scope {
         case .private:  return .privateDB
         case .public:   return .publicDB
