@@ -11,7 +11,7 @@ import CloudKit
 import UIKit
 
 // MARK: - Class
-
+ 
 /**
     This wrapper class for CKModifyRecordsOperation saves records for the injected recordables in the specified database.
  */

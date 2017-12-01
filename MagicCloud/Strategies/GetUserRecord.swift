@@ -8,6 +8,7 @@
 
 import CloudKit
 
+/// This globally available MagicCloud method returns the CKRecordID associated with the current user.
 public func getCurrentUserRecord() -> CKRecordID? {
     var result: CKRecordID?
     

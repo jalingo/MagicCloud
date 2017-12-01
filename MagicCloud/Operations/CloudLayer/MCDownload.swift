@@ -49,7 +49,7 @@ public class MCDownload<R: MCReceiver>: Operation {
     let database: MCDatabaseType
     
     // MARK: - Functions
-    
+     
     /// This method configures a CKQueryOperation with settings, appropriate completion blocks and name.
     fileprivate func decorate(op: CKQueryOperation) {
         if let integer = limit { op.resultsLimit = integer }
