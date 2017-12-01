@@ -23,8 +23,7 @@ public protocol MCReceiver: AnyObject {
     var subscription: MCSubscriber { get }
     
     /**
-        This method subscribes to changes from the specified database, and prepares handling of events.
-        Any changes that are detected will be reflected in recordables array.
+        This method subscribes to changes from the specified database, and prepares handling of events. Any changes that are detected will be reflected in recordables array.
      
         Implementation for this method should not be overwritten.
      */
@@ -104,8 +103,9 @@ public extension MCReceiver {
     
     // MARK: - Functions: ReceivesRecordable
     
-    /// This method subscribes to changes from the specified database, and prepares handling of events.
-    /// Any changes that are detected will be reflected in recordables array.
+    /**
+        This method subscribes to changes from the specified database, and prepares handling of events. Any changes that are detected will be reflected in recordables array.
+     */
     public func subscribeToChanges(on db: MCDatabaseType) {
         let empty = type()
         let triggers: CKQuerySubscriptionOptions = [.firesOnRecordCreation, .firesOnRecordUpdate, .firesOnRecordDeletion]
@@ -118,8 +118,10 @@ public extension MCReceiver {
     /// This method unsubscribes from changes to the specified database.
     public func unsubscribeToChanges(from db: MCDatabaseType) { subscription.end(at: db) }
     
-    /// This method empties recordables, and refills it from the specified database.
-    /// Implementation for this method should not be overwritten.
+    /**
+        This method empties recordables, and refills it from the specified database.
+        Implementation for this method should not be overwritten.
+     */
     public func downloadAll(from db: MCDatabaseType, completion: OptionalClosure = nil) {
         let empty = type()
 
