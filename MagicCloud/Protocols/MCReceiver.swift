@@ -9,8 +9,7 @@
 import CloudKit
 
 /**
-    This protocol enables conforming types to give access to an array of Recordable, and
-    to prevent / allow that array's didSet to upload said array's changes to the cloud.
+    This protocol enables conforming types to give access to an array of Recordable, and to prevent / allow that array's didSet to upload said array's changes to the cloud.
  */
 public protocol MCReceiver: AnyObject {
     
@@ -31,8 +30,9 @@ public protocol MCReceiver: AnyObject {
      */
     func subscribeToChanges(on: MCDatabaseType)
     
-    /// This method unsubscribes from changes to the specified database.
-    /// Implementation for this method should not be overwritten.
+    /**
+        This method unsubscribes from changes to the specified database. Implementation for this method should not be overwritten.
+     */
     func unsubscribeToChanges(from: MCDatabaseType)
     
     /// This method empties recordables, and refills it from the specified database.
