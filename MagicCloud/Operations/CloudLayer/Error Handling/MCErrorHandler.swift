@@ -57,11 +57,10 @@ class MCErrorHandler<R: MCReceiver>: Operation {
     
     override func main() {
         if isCancelled { return }
-
+        
         // This console message reports instances when error shouldn't be ignored or isn't partial failure.
         if !(error.code == .unknownItem && ignoreUnknownItem) || !(error.code == .partialFailure) {
-print("!! CKError: \(error.code.rawValue) / \(error.localizedDescription) @ \(String(describing: originatingOp.name))")
-            let name = Notification.Name(MCNotification.error(error).toString())
+            let name = Notification.Name(MCNotification.error.toString())
             NotificationCenter.default.post(name: name, object: error)
         }
         
@@ -110,7 +109,6 @@ print("!! CKError: \(error.code.rawValue) / \(error.localizedDescription) @ \(St
         
         // This case allows .unknownItem to be ignored.
         case .unknownItem where ignoreUnknownItem:
-            print("** ignoring unknownItem.")
             if let block = ignoreUnknownItemCustomAction { block() }
             
         // These fatal errors do not require any further handling.
