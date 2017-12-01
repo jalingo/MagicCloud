@@ -22,8 +22,7 @@ public class MCDownload<R: MCReceiver>: Operation {
      */
     var limit: Int?
     
-    /// Allows user to set a customized completion block for `.ignoreUnknownItem` situations.
-    /// - Caution: Setting this property does not effect `ignoreUnknownItem` property.
+    /// This property stores a customized completion block triggered by `Unknown Item` errors.
     var ignoreUnknownItemCustomAction: OptionalClosure
     
     /**
@@ -46,20 +45,22 @@ public class MCDownload<R: MCReceiver>: Operation {
         You do not create database objects yourself, nor should you subclass CKDatabase. Your app’s CKContainer objects provide the CKDatabase objects you use to access the associated data. Use database objects as-is to perform operations on data.
      
         The public database is always available, regardless of whether the device has an an active iCloud account. When no iCloud account is available, your app may fetch records and perform queries on the public database, but it may not save changes. (Saving records to the public database requires an active iCloud account to identify the owner of those records.) Access to the private database always requires an active iCloud account on the device.
-     
-        - Note: Interactions with CKDatabase objects occur at a quality of service level of NSQualityOfServiceUserInitiated by default. For information about quality of service, see Prioritize Work with Quality of Service Classes in Energy Efficiency Guide for iOS Apps and Prioritize Work at the Task Level in Energy Efficiency Guide for Mac Apps.
      */
     let database: MCDatabaseType
     
     // MARK: - Functions
     
+    /// This method configures a CKQueryOperation with settings, appropriate completion blocks and name.
     fileprivate func decorate(op: CKQueryOperation) {
         if let integer = limit { op.resultsLimit = integer }
+    
         op.recordFetchedBlock = recordFetched()
         op.queryCompletionBlock = queryCompletion(op: op)
+        
         op.name = "Download @ \(database)"
     }
     
+    /// This method supplies a completion block for CKQueryOperation.recordFetchedBlock.
     fileprivate func recordFetched() -> FetchBlock {
         return { record in
             let fetched = prepare(type: R.type.self, from: record)            
@@ -67,6 +68,7 @@ public class MCDownload<R: MCReceiver>: Operation {
         }
     }
     
+    /// This method supplies a completion block for CKQueryOperation.queryCompletionBlock.
     fileprivate func queryCompletion(op: CKQueryOperation) -> QueryBlock {
         return { cursor, error in
             if let queryCursor = cursor {
@@ -91,6 +93,7 @@ public class MCDownload<R: MCReceiver>: Operation {
         }
     }
     
+    /// This method creates an operation that can finish an incomplete query from a CKQueryCursor.
     fileprivate func followUp(cursor: CKQueryCursor, op: CKQueryOperation) -> CKQueryOperation {
         let newOp = CKQueryOperation(cursor: cursor)
    
@@ -120,9 +123,9 @@ public class MCDownload<R: MCReceiver>: Operation {
     // MARK: - Functions: Constructors
     
     /**
-        This init constructs a 'Download' operation with a predicate that attempts to match a specified field's value.
+        This init constructs a 'MCDownload' operation with a predicate that attempts to match a specified field's value.
      
-        - parameter type: Every 'Download' op targets a specifc recordType and this parameter is how it's injected.
+        - parameter type: Every 'MCDownload' op targets a specifc recordType and this parameter is how it's injected.
         - parameter queryField: 'K' in "%K = %@" predicate, where K represents CKRecord Field.
         - parameter queryValues: '@' in "%K = %@" predicate, where @ represents an array of possible matching CKRecordValue's.
         - parameter to: Instance conforming to 'RecievesRecordable' that will ultimately recieve the results of the query.
@@ -138,9 +141,9 @@ public class MCDownload<R: MCReceiver>: Operation {
     }
     
     /**
-        This init constructs a 'Download' operation with a predicate that attempts to collect records associated with owner.
+        This init constructs a 'MCDownload' operation with a predicate that attempts to collect records associated with owner.
      
-        - parameter type: Every 'Download' op targets a specifc recordType and this parameter is how it's injected.
+        - parameter type: Every 'MCDownload' op targets a specifc recordType and this parameter is how it's injected.
         - parameter ownedBy: The instance confroming to 'Recordable' that represents the ownerships aspect of the relation database.
         - parameter to: Instance conforming to 'RecievesRecordable' that will ultimately recieve the results of the query.
         - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
@@ -156,9 +159,9 @@ public class MCDownload<R: MCReceiver>: Operation {
     }
     
     /**
-        This init constructs a 'Download' operation with a predicate that collects all records of the specified type.
+        This init constructs a 'MCDownload' operation with a predicate that collects all records of the specified type.
      
-        - parameter type: Every 'Download' op targets a specifc recordType and this parameter is how it's injected.
+        - parameter type: Every 'MCDownload' op targets a specifc recordType and this parameter is how it's injected.
         - parameter to: Instance conforming to 'RecievesRecordable' that will ultimately recieve the results of the query.
         - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */

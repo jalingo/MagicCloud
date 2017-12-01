@@ -38,6 +38,9 @@ public protocol MCRecordable {
      */
     var recordID: CKRecordID { get set }
     
-    /// This init w/out parameters creates an empty recordable that can be overwritten by `prepare(from:)`.
+    /**
+        This init w/out parameters creates an empty recordable that can be overwritten by
+        `prepare(from:)` global method.
+     */
     init()
 }

@@ -8,20 +8,36 @@
 
 import CloudKit
 
+/**
+    This wrapper class for CKModifyRecordsOperations deletes records associated with the recordables inserted, from the specified database.
+ */
 public class MCDelete<R: MCReceiver>: Operation {
     
     // MARK: - Properties
     
+    /// If a delay is required before dispatching, it can be set here in seconds format (defaults to 0).
     var delayInSeconds: UInt64 = 0
-    
+
+    /// This constant property is an array that stores the recordables associated with the records that need to be removed from the specified database.
     let recordables: [R.type]
     
+    /// This constant property stores the MCReceiver associated with MCDelete, that was itself storing the recordables to be deleted from the specified database.
     let receiver: R
 
+    /**
+        A conduit for accessing and for performing operations on the public and private data of an app container.
+     
+        An app container has a public database whose data is accessible to all users and a private database whose data is accessible only to the current user. A database object takes requests for data and applies them to the appropriate part of the container.
+     
+        You do not create database objects yourself, nor should you subclass CKDatabase. Your app’s CKContainer objects provide the CKDatabase objects you use to access the associated data. Use database objects as-is to perform operations on data.
+     
+        The public database is always available, regardless of whether the device has an an active iCloud account. When no iCloud account is available, your app may fetch records and perform queries on the public database, but it may not save changes. (Saving records to the public database requires an active iCloud account to identify the owner of those records.) Access to the private database always requires an active iCloud account on the device.
+     */
     let database: MCDatabaseType
     
     // MARK: - Properties: Computed
     
+    /// This computed property returns an array of CKRecordID's, derived from `recordables`.
     fileprivate var recordIDs: [CKRecordID] { return recordables.map({ $0.recordID }) }
     
     // MARK: - Functions
@@ -85,10 +101,16 @@ public class MCDelete<R: MCReceiver>: Operation {
     
     // MARK: - Functions: Constructors
     
-    public init(_ array: [R.type]? = nil, of rec: R, from type: MCDatabaseType) {
+    /**
+        - Parameters:
+            - array: The recordables associated with the records that need to be removed from the specified database.
+            - rec: The MCReceiver associated with MCDelete, that was itself storing the recordables to be deleted from the specified database.
+            - db: The DatabaseType enumerating the CKDatabase containing the records that need to be deleted.
+     */
+    public init(_ array: [R.type]? = nil, of rec: R, from db: MCDatabaseType) {
         recordables = array ?? rec.recordables
         receiver = rec
-        database = type
+        database = db
         
         super.init()
     }
