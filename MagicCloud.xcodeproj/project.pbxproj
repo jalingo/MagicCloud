@@ -17,10 +17,10 @@
 		A1268EE41FBA80BC00ADAA74 /* MCRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* MCRecordable.swift */; };
 		A1268EE71FBA821400ADAA74 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE61FBA821400ADAA74 /* TypeAliases.swift */; };
 		A1268EEA1FBA821C00ADAA74 /* MCDatabaseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE91FBA821C00ADAA74 /* MCDatabaseType.swift */; };
+		A1298E471FD2008300390C88 /* MagicCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1268EB61FBA806200ADAA74 /* MagicCloud.framework */; };
+		A1298E481FD2008300390C88 /* MagicCloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A1268EB61FBA806200ADAA74 /* MagicCloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A16EA5031FC666DF001E57F8 /* MCNotificationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16EA5021FC666DF001E57F8 /* MCNotificationConverter.swift */; };
 		A16EA5041FC666DF001E57F8 /* MCNotificationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16EA5021FC666DF001E57F8 /* MCNotificationConverter.swift */; };
-		A16EA50B1FC66980001E57F8 /* MagicCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1268EB61FBA806200ADAA74 /* MagicCloud.framework */; };
-		A16EA50C1FC66980001E57F8 /* MagicCloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A1268EB61FBA806200ADAA74 /* MagicCloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A17DE9E51FBE56D900D2EB4F /* MCSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17DE9E41FBE56D900D2EB4F /* MCSubscriber.swift */; };
 		A17DE9E61FBE56D900D2EB4F /* MCSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17DE9E41FBE56D900D2EB4F /* MCSubscriber.swift */; };
 		A1B0CF171FC51FBE009474EE /* NotificationReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B0CF161FC51FBE009474EE /* NotificationReaderTests.swift */; };
@@ -87,7 +87,7 @@
 			remoteGlobalIDString = A1268EB51FBA806200ADAA74;
 			remoteInfo = MagicCloud;
 		};
-		A16EA50D1FC66980001E57F8 /* PBXContainerItemProxy */ = {
+		A1298E491FD2008300390C88 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A1268EAD1FBA806200ADAA74 /* Project object */;
 			proxyType = 1;
@@ -118,13 +118,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		A16EA50F1FC66981001E57F8 /* Embed Frameworks */ = {
+		A1298E4B1FD2008400390C88 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				A16EA50C1FC66980001E57F8 /* MagicCloud.framework in Embed Frameworks */,
+				A1298E481FD2008300390C88 /* MagicCloud.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -211,7 +211,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A16EA50B1FC66980001E57F8 /* MagicCloud.framework in Frameworks */,
+				A1298E471FD2008300390C88 /* MagicCloud.framework in Frameworks */,
 				A1CB78101FBCF16B008ADF09 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -285,6 +285,7 @@
 		A1268EE51FBA811F00ADAA74 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				A16EA5021FC666DF001E57F8 /* MCNotificationConverter.swift */,
 				A1268EDE1FBA80BC00ADAA74 /* MCRecordable.swift */,
 				A1268EDD1FBA80BC00ADAA74 /* MCReceiver.swift */,
 			);
@@ -310,7 +311,6 @@
 				A1CB77141FBA8535008ADF09 /* Duplicate.swift */,
 				A1CB77131FBA8535008ADF09 /* PrepareFrom.swift */,
 				90C4E8711FC0EAE300A8D329 /* GetUserRecord.swift */,
-				A16EA5021FC666DF001E57F8 /* MCNotificationConverter.swift */,
 			);
 			path = Strategies;
 			sourceTree = "<group>";
@@ -489,12 +489,12 @@
 				A1CB77DB1FBCF131008ADF09 /* Sources */,
 				A1CB77DC1FBCF131008ADF09 /* Frameworks */,
 				A1CB77DD1FBCF131008ADF09 /* Resources */,
-				A16EA50F1FC66981001E57F8 /* Embed Frameworks */,
+				A1298E4B1FD2008400390C88 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				A16EA50E1FC66980001E57F8 /* PBXTargetDependency */,
+				A1298E4A1FD2008300390C88 /* PBXTargetDependency */,
 			);
 			name = TestApp;
 			productName = TestApp;
@@ -751,10 +751,10 @@
 			target = A1268EB51FBA806200ADAA74 /* MagicCloud */;
 			targetProxy = A1268EC11FBA806200ADAA74 /* PBXContainerItemProxy */;
 		};
-		A16EA50E1FC66980001E57F8 /* PBXTargetDependency */ = {
+		A1298E4A1FD2008300390C88 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A1268EB51FBA806200ADAA74 /* MagicCloud */;
-			targetProxy = A16EA50D1FC66980001E57F8 /* PBXContainerItemProxy */;
+			targetProxy = A1298E491FD2008300390C88 /* PBXContainerItemProxy */;
 		};
 		A1CB77F41FBCF132008ADF09 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
