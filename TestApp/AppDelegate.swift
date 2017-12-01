@@ -25,12 +25,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MCNotificationConverter {
         
         // This method creates a local notification from remote's userInfo, if it was intended for MagicCloud.
         convertToLocal(from: userInfo)
+        
+        // This observer demonstrates how to access error notifications and their underlying data.
+        let name = Notification.Name(MCNotification.error.toString())
+        NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil) { notification in
+            
+            // Error notifications from MagicCloud should always include the actual CKError as Notification.object.
+            if let error = notification.object as? CKError { print("!! CKError: \(error.code.rawValue) / \(error.localizedDescription)") }
+
+            if let info = notification.userInfo {
+                let cNote = CKQueryNotification(fromRemoteNotificationDictionary: info)
+                let trigger = cNote.notificationType
+                if let id = cNote.recordID { self.doSomethingWith(this: trigger, or: id) }
+            }
+        }
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) { }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         /* NEED TO GRACEFULLY DISABLE ANY CLOUD DEPENDENT BEHAVIOR HERE */
+    }
+    
+    func doSomethingWith(this: CKNotificationType, or: CKRecordID) {
+        
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

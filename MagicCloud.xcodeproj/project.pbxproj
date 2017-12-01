@@ -285,9 +285,9 @@
 		A1268EE51FBA811F00ADAA74 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				A16EA5021FC666DF001E57F8 /* MCNotificationConverter.swift */,
 				A1268EDE1FBA80BC00ADAA74 /* MCRecordable.swift */,
 				A1268EDD1FBA80BC00ADAA74 /* MCReceiver.swift */,
+				A16EA5021FC666DF001E57F8 /* MCNotificationConverter.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
