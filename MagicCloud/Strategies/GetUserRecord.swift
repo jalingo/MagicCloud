@@ -17,7 +17,7 @@ public func getCurrentUserRecord() -> CKRecordID? {
     
     CKContainer.default().fetchUserRecordID { possibleID, possibleError in
         if let error = possibleError as? CKError {
-            let name = Notification.Name(MCNotification.error(error).toString())
+            let name = Notification.Name(MCNotification.error.toString())
             NotificationCenter.default.post(name: name, object: error)
         }
         
@@ -43,7 +43,6 @@ public struct MCUserRecord {
         
         CKContainer.default().fetchUserRecordID { possibleID, possibleError in
             if let error = possibleError as? CKError { MCFetchRecordIDError.handle(error) }
-            
             if let id = possibleID { result = id }
             group.leave()
         }
@@ -58,7 +57,7 @@ public struct MCFetchRecordIDError {
     static func handle(_ error: CKError) {
 
         // If not handled...
-        let name = Notification.Name(MCNotification.error(error).toString())
+        let name = Notification.Name(MCNotification.error.toString())
         NotificationCenter.default.post(name: name, object: error)
     }
 }
