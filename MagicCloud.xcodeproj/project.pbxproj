@@ -295,6 +295,18 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		A189C8171FD105CA00629DF0 /* Error Cases */ = {
+			isa = PBXGroup;
+			children = (
+				A1CB77401FBA86E5008ADF09 /* LimitExceeded.swift */,
+				A1CB773F1FBA86E5008ADF09 /* PartialError.swift */,
+				A1CB773E1FBA86E4008ADF09 /* BatchError.swift */,
+				A1CB77411FBA86E6008ADF09 /* RetriableError.swift */,
+				A1CB77461FBA86EC008ADF09 /* VersionConflict.swift */,
+			);
+			path = "Error Cases";
+			sourceTree = "<group>";
+		};
 		A1CB77191FBA853C008ADF09 /* Strategies */ = {
 			isa = PBXGroup;
 			children = (
@@ -343,11 +355,7 @@
 			isa = PBXGroup;
 			children = (
 				A1CB773B1FBA86CB008ADF09 /* MCErrorHandler.swift */,
-				A1CB77401FBA86E5008ADF09 /* LimitExceeded.swift */,
-				A1CB773F1FBA86E5008ADF09 /* PartialError.swift */,
-				A1CB773E1FBA86E4008ADF09 /* BatchError.swift */,
-				A1CB77411FBA86E6008ADF09 /* RetriableError.swift */,
-				A1CB77461FBA86EC008ADF09 /* VersionConflict.swift */,
+				A189C8171FD105CA00629DF0 /* Error Cases */,
 			);
 			path = "Error Handling";
 			sourceTree = "<group>";
