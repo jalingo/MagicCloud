@@ -1,9 +1,9 @@
 //
-//  Recordable.swift
-//  Voyage
+//  MCRecordable.swift
+//  MagicCloud
 //
 //  Created by Jimmy Lingo on 8/31/16.
-//  Copyright © 2016 lingoTECH Solutions. All rights reserved.
+//  Copyright © 2016 PromethaTech. All rights reserved.
 //
 
 import CloudKit

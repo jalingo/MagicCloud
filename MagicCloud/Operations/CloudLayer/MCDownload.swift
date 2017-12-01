@@ -1,9 +1,9 @@
 //
-//  DownloadByType.swift
-//  slBackend
+//  MCDownload.swift
+//  MagicCloud
 //
 //  Created by Jimmy Lingo on 5/21/17.
-//  Copyright © 2017 Promethatech. All rights reserved.
+//  Copyright © 2017 PromethaTech. All rights reserved.
 //
 
 import CloudKit
@@ -23,7 +23,7 @@ public class MCDownload<R: MCReceiver>: Operation {
     var limit: Int?
     
     /// This property stores a customized completion block triggered by `Unknown Item` errors.
-    var ignoreUnknownItemCustomAction: OptionalClosure
+    var unknownItemCustomAction: OptionalClosure
     
     /**
         A CKQuery object manages the criteria to apply when searching for records in a database. You create a query object as the first step in the search process. The query object stores the search parameters, including the type of records to search, the match criteria (predicate) to apply, and the sort parameters to apply to the results. The second step is to use the query object to initialize a CKQueryOperation object, which you then execute to generate the results.
@@ -81,7 +81,7 @@ public class MCDownload<R: MCReceiver>: Operation {
                                                           target: self.database, instances: [],
                                                           receiver: self.receiver)
                         errorHandler.ignoreUnknownItem = true
-                        errorHandler.ignoreUnknownItemCustomAction = self.ignoreUnknownItemCustomAction
+                        errorHandler.ignoreUnknownItemCustomAction = self.unknownItemCustomAction
                         OperationQueue().addOperation(errorHandler)
                     } else {
                         print("NSError \(String(describing: error?.localizedDescription)) @ Download.queryCompletion")

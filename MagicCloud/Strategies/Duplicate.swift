@@ -9,8 +9,9 @@
 import Foundation
 import CloudKit
 
-/// This function takes the originatingOp (which has already been spent) and creates a
-/// a new version with the same property values and completion blocks.
+/**
+    This function takes the originatingOp (which has already been spent) and creates a new version with the same property values and completion blocks.
+ */
 func duplicate<R: MCReceiver>(_ op: Operation, with receiver: R) -> Operation? {
     print("resetting: \(String(describing: op.name))")
     
@@ -45,7 +46,7 @@ func duplicate<R: MCReceiver>(_ op: Operation, with receiver: R) -> Operation? {
         let new = MCDownload<R>(type: downloader.query.recordType, to: downloader.receiver, from: downloader.database)
         
         new.query = downloader.query
-        new.ignoreUnknownItemCustomAction = downloader.ignoreUnknownItemCustomAction
+        new.unknownItemCustomAction = downloader.unknownItemCustomAction
         new.limit = downloader.limit
         new.completionBlock = downloader.completionBlock
         new.name = "\(String(describing: downloader.name))+"
