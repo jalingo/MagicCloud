@@ -9,7 +9,7 @@
 import XCTest
 import CloudKit
 
-// !! CAUTION: These tests assume MCNotificationReader is implemented in app delegate.
+// CAUTION: These tests assume MCNotificationReader is implemented in app delegate.
 class NotificationReaderTests: XCTestCase {
     
     // MARK: - Properties

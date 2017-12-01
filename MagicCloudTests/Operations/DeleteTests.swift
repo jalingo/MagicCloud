@@ -64,7 +64,7 @@ class DeleteTests: XCTestCase {
                 
                 return
             }
-print("!! Records FOUND: \(String(describing: results?.count))")
+
             if let dictionary = results {
                 for entry in dictionary {
                     print("key: \(entry.key)")

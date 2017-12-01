@@ -33,7 +33,7 @@ public class Pause: Operation {
 
         CFRunLoopRun()
         
-        while timerIncomplete {             // <-- !! Not triggering? / code after CFRunLoopRun() required?
+        while timerIncomplete {
             /* waiting */
             print(".", separator: "", terminator: "")
             

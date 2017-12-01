@@ -62,10 +62,11 @@ public extension MCReceiver {
     // MARK: - Functions
     
     /**
-        This method responds to the various types of changes to the specified database. In the event of a record
-        deletion, associated recordable is removed from recordables. If a record is updated, the local copy is
-        removed from recordables and replaced by a fresh download. If a record is created, a new recordable is
-        made from a downloaded record.
+        This method responds to the various types of changes to the specified database.
+     
+        In the event of a record deletion, associated recordable is removed from recordables. If a record is updated, the
+        local copy is removed from recordables and replaced by a fresh download. If a record is created, a new recordable
+        is made from a downloaded record.
     
         - Parameters:
             - trigger: The type of change reported by the database.
@@ -112,22 +113,25 @@ public extension MCReceiver {
         let triggers: CKQuerySubscriptionOptions = [.firesOnRecordCreation, .firesOnRecordUpdate, .firesOnRecordDeletion]
         subscription.start(for: empty.recordType, change: triggers, at: db)
         
+        // This turns on listeners for local notifications that respond to remote notifications.
         listenForDatabaseChanges()
     }
     
     /// This method unsubscribes from changes to the specified database.
     public func unsubscribeToChanges(from db: MCDatabaseType) { subscription.end(at: db) }
     
-    // !!
+    /// This method empties recordables, and refills it from the specified database.
+    /// Implementation for this method should not be overwritten.
     public func downloadAll(from db: MCDatabaseType, completion: OptionalClosure = nil) {
         let empty = type()
 
+        // This operation will sync database records to recordables array, then runs completion.
         let op = MCDownload(type: empty.recordType, to: self, from: db)
         op.completionBlock = {
             if let block = completion { block() }
         }
 
-        // empties recordables, before downloading
+        // empties recordables, then downloads from database.
         recordables = []
         OperationQueue().addOperation(op)
     }

@@ -1,5 +1,5 @@
 //
-//  Referable.swift
+//  MCReferable.swift
 //  slBackend
 //
 //  Created by Jimmy Lingo on 5/15/17.
@@ -8,11 +8,11 @@
 
 import CloudKit
 
-/// This key should be used for storing references in a CKRecord, to allow 'Download' by reference to work.
+/// This key should be used for storing references in a CKRecord, to allow 'MCDownload' by reference to work.
 let OWNER_KEY = "Owners"
 
 /**
- * The Referable protocol ensures that any conforming instances have what is necessary
+ * The MCReferable protocol ensures that any conforming instances have what is necessary
  * to be referenced by an owner record in the cloud database. For that relationship
  * to be reflected in the cloud database, conforming instances must also conform to the
  * Recordable protocol and it's 'Recordable.recordFields' dictionary must be amended to

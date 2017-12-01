@@ -10,7 +10,7 @@ import XCTest
 import CloudKit
 
 
-// !! CAUTION: These tests require a NotificationReader in host app delegate for local / remote notifications to work.
+// CAUTION: These tests require a NotificationReader in host app delegate for local / remote notifications to work.
 
 class RecievesRecTests: XCTestCase {
     

@@ -36,7 +36,7 @@ class RetriableErrorTests: XCTestCase {
         if let error = error {
             testOp = RetriableError(error: error, originating: mockOp, target: .privateDB, receiver: mockRec)
         } else {
-            print("!! RetriableErrorTests.loadTestOp FAILED")
+            print("** RetriableErrorTests.loadTestOp FAILED")
         }
     }
     

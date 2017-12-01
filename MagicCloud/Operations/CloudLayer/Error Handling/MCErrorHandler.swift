@@ -57,7 +57,7 @@ class MCErrorHandler<R: MCReceiver>: Operation {
     
     override func main() {
         if isCancelled { return }
-print("** running error handling")
+
         // This console message reports instances when error shouldn't be ignored or isn't partial failure.
         if !(error.code == .unknownItem && ignoreUnknownItem) || !(error.code == .partialFailure) {
 print("!! CKError: \(error.code.rawValue) / \(error.localizedDescription) @ \(String(describing: originatingOp.name))")
@@ -105,7 +105,7 @@ print("!! CKError: \(error.code.rawValue) / \(error.localizedDescription) @ \(St
                                                 completion: completionBlock)
             completionBlock = nil
         
-        // These errors occur when CloudKit has a problem with a CKSharedDatabase operation.
+        // These errors occur when CloudKit has a problem with a CKSharedDatabase operation.    // <-- Not currently supported but left here for future versions.
 //        case .alreadyShared, .tooManyParticipants:
         
         // This case allows .unknownItem to be ignored.
@@ -122,12 +122,6 @@ print("!! CKError: \(error.code.rawValue) / \(error.localizedDescription) @ \(St
         // After resolution determined in previous switch statement, resolution is initiated here.
         if let op = resolvingOperation { OperationQueue().addOperation(op) }
     }
-    
-    /// This override hides no argument initializer to ensure dependencies get injected.
-//    fileprivate override init() {
-//        error = CKError(_nsError: NSError())
-//        originatingOp = Operation()
-//    }
     
     /**
      * - parameter error: CKError that was generated. Not optional to force check for nil / check for

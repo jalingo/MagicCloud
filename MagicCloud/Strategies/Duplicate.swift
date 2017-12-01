@@ -23,7 +23,7 @@ func duplicate<R: MCReceiver>(_ op: Operation, with receiver: R) -> Operation? {
     // Custom Recordable Operations
     
     if let uploader = op as? MCUpload<R> {
-        let new = MCUpload<R>(uploader.recordables, from: receiver, to: uploader.database)//.db.databaseScope)
+        let new = MCUpload<R>(uploader.recordables, from: receiver, to: uploader.database)
         
         new.completionBlock = uploader.completionBlock
         new.name = "\(String(describing: uploader.name))+"

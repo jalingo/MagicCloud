@@ -8,6 +8,7 @@
 
 import CloudKit
 
+/// This operation identifies the type of error thrown by batch and handles it.
 class BatchError<R: MCReceiver>: Operation {
     
     // MARK: - Properties
@@ -39,13 +40,12 @@ class BatchError<R: MCReceiver>: Operation {
         
         var resolution: Operation?
 
-        // !!
-        ///#######/// vvvvvvvv FOR TESTING PURPOSES vvvvvvvv ///#######///
-        
-        let name = Notification.Name(MCNotification.error(error).toString())
-        NotificationCenter.default.post(name: name, object: error)
-        
-        ///#######/// ^^^^^^^^ REMOVE BEFORE SUBMIT ^^^^^^^^ ///#######///
+// TODO: !! Needs to be removed before release, to prevent double notifications (here and @ MCErrorHandler).
+
+///#######/// vvvvvvvv FOR TESTING PURPOSES vvvvvvvv ///#######///
+let name = Notification.Name(MCNotification.error(error).toString())
+NotificationCenter.default.post(name: name, object: error)
+///#######/// ^^^^^^^^ REMOVE BEFORE SUBMIT ^^^^^^^^ ///#######///
         
         switch error.code {
         case .partialFailure:
