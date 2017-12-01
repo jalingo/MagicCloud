@@ -71,7 +71,7 @@ class MCErrorHandler<R: MCReceiver>: Operation {
         
         switch error.code {
             
-        // This error occurs when record's change tag indicates a version conflict.
+        // This error occurs when record's change tag indicates a version conflict (modify operations).
         case .serverRecordChanged:
             resolvingOperation = VersionConflict(rec: receiver,
                                                  error: error,
@@ -81,7 +81,7 @@ class MCErrorHandler<R: MCReceiver>: Operation {
                                                  completionBlock: completionBlock)
             completionBlock = nil
      
-        // These errors occur when a batch of requests fails or partially fails.
+        // These errors occur when a batch of requests fails or partially fails (batch operations).
         case .limitExceeded, .batchRequestFailed, .partialFailure:
             resolvingOperation = BatchError(error: error,
                                             occuredIn: originatingOp,
@@ -94,9 +94,7 @@ class MCErrorHandler<R: MCReceiver>: Operation {
     
         // These errors occur as a result of environmental factors, and originating operation should
         // be retried after a set amount of time.
-        case .networkUnavailable, .networkFailure,
-             .serviceUnavailable, .requestRateLimited,
-             .resultsTruncated,   .zoneBusy:
+        case .networkUnavailable, .networkFailure, .serviceUnavailable, .requestRateLimited, .zoneBusy:
             resolvingOperation = RetriableError(error: error,
                                                 originating: originatingOp,
                                                 target: database,
@@ -107,7 +105,7 @@ class MCErrorHandler<R: MCReceiver>: Operation {
         // These errors occur when CloudKit has a problem with a CKSharedDatabase operation.    // <-- Not currently supported but left here for future versions.
 //        case .alreadyShared, .tooManyParticipants:
         
-        // This case allows .unknownItem to be ignored.
+        // This case allows .unknownItem to be ignored (query / fetch / modify operations).
         case .unknownItem where ignoreUnknownItem:
             if let block = ignoreUnknownItemCustomAction { block() }
             
