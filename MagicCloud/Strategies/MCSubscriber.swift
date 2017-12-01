@@ -36,7 +36,7 @@ print("** DING!")
         }
 print("** not successful \(error.code.rawValue) - \(error)")
         // if not handled...
-        let name = Notification.Name(MCNotification.error(error).toString())
+        let name = Notification.Name(MCNotification.error.toString())
         NotificationCenter.default.post(name: name, object: error)
     }
     
@@ -78,7 +78,7 @@ print("** ending subscription")
 print("** disabling subscription \(String(describing: possibleID))")
             if let error = possibleError as? CKError {
 print("** error disabling: \(error)")
-                let name = Notification.Name(MCNotification.error(error).toString())
+                let name = Notification.Name(MCNotification.error.toString())
                 NotificationCenter.default.post(name: name, object: error)
             } else {
 print("** no errors disabling")
