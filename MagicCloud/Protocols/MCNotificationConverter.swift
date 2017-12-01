@@ -8,6 +8,8 @@
 
 import CloudKit
 
+// MARK: Protocol
+
 /// Conforming to this protocol allows remote notifications to be converted to local notifications and triggers behavior.
 public protocol MCNotificationConverter {
     
@@ -16,6 +18,9 @@ public protocol MCNotificationConverter {
     func convertToLocal(from info: [AnyHashable: Any])
 }
 
+// MARK: - Extension
+
+// This extension contains default implementation for abstraction.
 public extension MCNotificationConverter {
     
     /// This method creates a local notification from remote notifiation's userInfo, if intended for MagicCloud.
