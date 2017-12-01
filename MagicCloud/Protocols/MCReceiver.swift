@@ -64,9 +64,7 @@ public extension MCReceiver {
     /**
         This method responds to the various types of changes to the specified database.
      
-        In the event of a record deletion, associated recordable is removed from recordables. If a record is updated, the
-        local copy is removed from recordables and replaced by a fresh download. If a record is created, a new recordable
-        is made from a downloaded record.
+        In the event of a record deletion, associated recordable is removed from recordables. If a record is updated, the local copy is removed from recordables and replaced by a fresh download. If a record is created, a new recordable is made from a downloaded record.
     
         - Parameters:
             - trigger: The type of change reported by the database.
