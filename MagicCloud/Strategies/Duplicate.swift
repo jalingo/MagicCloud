@@ -13,13 +13,10 @@ import CloudKit
     This function takes the originatingOp (which has already been spent) and creates a new version with the same property values and completion blocks.
  */
 func duplicate<R: MCReceiver>(_ op: Operation, with receiver: R) -> Operation? {
-    print("resetting: \(String(describing: op.name))")
     
     // Custom Operations
     
-    if let failure = op as? FailedOp {
-        return FailedOp(notify: failure.notification)
-    }
+    if let failure = op as? FailedOp { return FailedOp(notify: failure.notification) }
     
     // Custom Recordable Operations
     
