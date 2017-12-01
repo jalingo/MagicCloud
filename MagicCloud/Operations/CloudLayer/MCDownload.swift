@@ -126,8 +126,8 @@ public class MCDownload<R: MCReceiver>: Operation {
         This init constructs a 'MCDownload' operation with a predicate that attempts to match a specified field's value.
      
         - parameter type: Every 'MCDownload' op targets a specifc recordType and this parameter is how it's injected.
-        - parameter queryField: 'K' in "%K = %@" predicate, where K represents CKRecord Field.
-        - parameter queryValues: '@' in "%K = %@" predicate, where @ represents an array of possible matching CKRecordValue's.
+        - parameter queryField: 'K' in "%K IN %@" predicate, where K represents CKRecord Field.
+        - parameter queryValues: '@' in "%K IN %@" predicate, where @ represents an array of possible matching CKRecordValue's.
         - parameter to: Instance conforming to 'RecievesRecordable' that will ultimately recieve the results of the query.
         - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
@@ -141,16 +141,14 @@ public class MCDownload<R: MCReceiver>: Operation {
     }
     
     /**
-        This init constructs a 'MCDownload' operation with a predicate that attempts to collect records associated with owner.
+        This init constructs a 'MCDownload' operation with a custom predicate.
      
         - parameter type: Every 'MCDownload' op targets a specifc recordType and this parameter is how it's injected.
-        - parameter ownedBy: The instance confroming to 'Recordable' that represents the ownerships aspect of the relation database.
+        - parameter predicate: The predicate for CKQuery to test against.
         - parameter to: Instance conforming to 'RecievesRecordable' that will ultimately recieve the results of the query.
         - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    public init(type: String, ownedBy: MCRecordable, to rec: R, from db: MCDatabaseType) {
-        let ref = CKReference(recordID: ownedBy.recordID, action: .deleteSelf)
-        let predicate = NSPredicate(format: "%K CONTAINS %@", OWNER_KEY, ref)
+    public init(type: String, matching predicate: NSPredicate, to rec: R, from db: MCDatabaseType) {
         query = CKQuery(recordType: type, predicate: predicate)
         receiver = rec
         database = db
