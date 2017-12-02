@@ -8,56 +8,58 @@
 
 import CloudKit
 
-/// This globally available MagicCloud method returns the CKRecordID associated with the current user.
-public func getCurrentUserRecord() -> CKRecordID? {
-    var result: CKRecordID?
-    
-    let group = DispatchGroup()
-    group.enter()
-    
-    CKContainer.default().fetchUserRecordID { possibleID, possibleError in
-        if let error = possibleError as? CKError {
-            let name = Notification.Name(MCNotification.error.toString())
-            NotificationCenter.default.post(name: name, object: error)
-        }
-        
-        if let id = possibleID { result = id }
-        group.leave()
-    }
-    
-    group.wait()
-    return result
-}
-
 /// This struct contains a static var (singleton) which accesses USER's iCloud CKRecordID.
-public struct MCUserRecord {
+public class MCUserRecord {
+    
+    // MARK: - Properties
+    
+    /// This property is used to hold singleton delivery until recordID is fetched.
+    fileprivate let group = DispatchGroup()
+
+    /// This optional property stores USER recordID after it is recovered.
+    fileprivate var id: CKRecordID?
     
     /**
         This read-only, computed property should be called async from main thread because it calls to remote database before returning value. If successful returns the User's CloudKit CKRecordID, otherwise returns nil.
      */
-    static var singleton: CKRecordID? {
-        var result: CKRecordID?
-
-        let group = DispatchGroup()
+    var singleton: CKRecordID? {
         group.enter()
-        
-        CKContainer.default().fetchUserRecordID { possibleID, possibleError in
-            if let error = possibleError as? CKError { MCFetchRecordIDError.handle(error) }
-            if let id = possibleID { result = id }
-            group.leave()
-        }
+
+        retrieveUserRecord()
         
         group.wait()
-        return result
+        return id
     }
-}
-
-public struct MCFetchRecordIDError {
     
-    static func handle(_ error: CKError) {
-
-        // If not handled...
-        let name = Notification.Name(MCNotification.error.toString())
-        NotificationCenter.default.post(name: name, object: error)
+    // MARK: - Functions
+    
+    /// This method handles any errors during the record fetch operation.
+    fileprivate func handle(_ error: CKError) {
+        
+        // These errors occur as a result of environmental factors, and originating operation should be retried after a set amount of time.
+        let retriableErrors: [CKError.Code] = [.networkUnavailable, .networkFailure, .serviceUnavailable, .requestRateLimited, .zoneBusy]
+        if retriableErrors.contains(error.code), let retryAfterValue = error.userInfo[CKErrorRetryAfterKey] as? TimeInterval {
+            let queue = DispatchQueue(label: "RetryAttemptQueue")
+            queue.asyncAfter(deadline: .now() + retryAfterValue) { self.retrieveUserRecord() }
+        } else {
+            
+            // Fatal Errors...
+            let name = Notification.Name(MCNotification.error.toString())
+            NotificationCenter.default.post(name: name, object: error)
+            
+            self.group.leave()
+        }
+    }
+    
+    /// This method fetches the current USER recordID and stores it in 'id' property.
+    fileprivate func retrieveUserRecord() {
+        CKContainer.default().fetchUserRecordID { possibleID, possibleError in
+            if let error = possibleError as? CKError {
+                self.handle(error)
+            } else {
+                if let id = possibleID { self.id = id }
+                self.group.leave()
+            }
+        }
     }
 }
