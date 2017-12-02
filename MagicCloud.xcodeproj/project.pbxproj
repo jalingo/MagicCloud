@@ -308,9 +308,9 @@
 			isa = PBXGroup;
 			children = (
 				A17DE9E41FBE56D900D2EB4F /* MCSubscriber.swift */,
+				90C4E8711FC0EAE300A8D329 /* MCUserRecord.swift */,
 				A1CB77141FBA8535008ADF09 /* Duplicate.swift */,
 				A1CB77131FBA8535008ADF09 /* PrepareFrom.swift */,
-				90C4E8711FC0EAE300A8D329 /* MCUserRecord.swift */,
 			);
 			path = Strategies;
 			sourceTree = "<group>";

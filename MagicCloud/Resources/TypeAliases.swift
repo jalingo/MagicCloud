@@ -21,3 +21,8 @@ public typealias FetchBlock = (CKRecord) -> Void
 public typealias ModifyBlock = ([CKRecord]?, [CKRecordID]?, Error?) -> Void
 
 public typealias NotifyBlock = (Notification) -> Void
+
+// MARK: - Constants
+
+// These errors occur as a result of environmental factors, and originating operation should be retried after a set amount of time.
+let retriableErrors: [CKError.Code] = [.networkUnavailable, .networkFailure, .serviceUnavailable, .requestRateLimited, .zoneBusy]
