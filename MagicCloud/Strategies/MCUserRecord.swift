@@ -8,6 +8,8 @@
 
 import CloudKit
 
+// MARK: - Class
+
 /// This struct contains a static var (singleton) which accesses USER's iCloud CKRecordID.
 public class MCUserRecord {
     
@@ -35,7 +37,7 @@ public class MCUserRecord {
     
     /// This method handles any errors during the record fetch operation.
     fileprivate func handle(_ error: CKError) {
-        
+
         // These errors occur as a result of environmental factors, and originating operation should be retried after a set amount of time.
         let retriableErrors: [CKError.Code] = [.networkUnavailable, .networkFailure, .serviceUnavailable, .requestRateLimited, .zoneBusy]
         if retriableErrors.contains(error.code), let retryAfterValue = error.userInfo[CKErrorRetryAfterKey] as? TimeInterval {
