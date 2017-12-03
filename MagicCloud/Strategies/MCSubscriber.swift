@@ -13,81 +13,125 @@ public class MCSubscriber {
 
     // MARK: - Properties
     
-    var id: String?
+    let subscription: CKQuerySubscription
+    
+    let database: MCDatabaseType
+    
+    var subscriptionError: MCSubscriberError { return MCSubscriberError(delegate: self) }
     
     // MARK: - Functions
-    
-    /// This function handles CKErrors resulting from failed subscription attempts.
-    func handle(_ error: CKError, for type: String, during trigger: CKQuerySubscriptionOptions, at database: MCDatabaseType) {
-        
-        // Subscription already exists...   (remove and replace?)
-        guard error.code != CKError.Code.serverRejectedRequest else { return }
-        
-        // Server side failure...
-        guard error.code != CKError.Code.networkFailure else {
-print("** DING!")
-            guard let duration = error.userInfo[CKErrorRetryAfterKey] as? TimeInterval else { return }
-            let timer = Timer.scheduledTimer(withTimeInterval: duration, repeats: false, block: { _ in
-                self.start(for: type, change: trigger, at: database)
-            })
-            
-            timer.fire()
-            return
-        }
-print("** not successful \(error.code.rawValue) - \(error)")
-        // if not handled...
-        let name = Notification.Name(MCNotification.error.toString())
-        NotificationCenter.default.post(name: name, object: error)
-    }
     
     /**
      This strategy creates a subscription that listens for injected change of record type at database and allows consequence.
      
-     - Note: CKNotificationInfo is standardized, but includes a CKRecordID with push notification.
+     - Note: Each MCSubscriber manages a single subscription. For multiple subscriptions use different MCSubscribers.
      
      - Parameters:
      - for: CKRecord.recordType that subscription listens for changes with.
      - change: CKQuerySubscriptionOptions for subscription.
      - database: DatabaseType for subscription to be saved to.
      */
-    func start(for type: String, change trigger: CKQuerySubscriptionOptions, at database: MCDatabaseType = .publicDB) {
-        
-        // Create subscription
-        let predicate = NSPredicate(value: true)
-        let subscription = CKQuerySubscription(recordType: type, predicate: predicate, options: trigger)
-
-        let info = CKNotificationInfo()
-        info.alertLocalizationKey = type         // <-- Needs some form alert to be constructed or doesn't trigger. Avoid alertBody, soundName or shouldBadge
-        subscription.notificationInfo = info         // This also passes record type for local notification.
+    func start() {
         
         // Saves the subscription to database
-        database.db.save(subscription) { possibleSubscription, possibleError in
-            if let error = possibleError as? CKError { self.handle(error, for: type, during: trigger, at: database) }
+        database.db.save(self.subscription) { possibleSubscription, possibleError in
+            if let error = possibleError as? CKError {
+                self.subscriptionError.handle(error, whileSubscribing: true)
+            }
         }
-        
-        id = subscription.subscriptionID
     }
     
     // !!
-    func end(subscriptionID: String? = nil, at database: MCDatabaseType = .publicDB) {
+    func end(subscriptionID: String? = nil) {
+        // This loads id with either parameter or self.subscription's id
+        let id = subscriptionID ?? subscription.subscriptionID
 print("** ending subscription")
-        // This loads id with either subscriptionID, self.id, or exits if both are nil.
-        guard let id = subscriptionID ?? id else { return }
-
         database.db.delete(withSubscriptionID: id) { possibleID, possibleError in
 print("** disabling subscription \(String(describing: possibleID))")
             if let error = possibleError as? CKError {
 print("** error disabling: \(error)")
-                let name = Notification.Name(MCNotification.error.toString())
-                NotificationCenter.default.post(name: name, object: error)
-            } else {
-print("** no errors disabling")
-                self.id = nil
+                self.subscriptionError.handle(error, whileSubscribing: false, to: subscriptionID)
             }
         }
     }
     
     // MARK: - Functions: Constructors
     
-    public init() { }   // <-- Makes initializer accessible to public
+    // !!
+    public init(forRecordType type: String, withConditions triggers: CKQuerySubscriptionOptions, on db: MCDatabaseType = .publicDB) {
+        let predicate = NSPredicate(value: true)
+        self.subscription = CKQuerySubscription(recordType: type, predicate: predicate, options: triggers)
+        
+        let info = CKNotificationInfo()
+        info.alertLocalizationKey = type       // <-- Needs some form alert to be constructed or doesn't trigger. Avoid alertBody, soundName or shouldBadge
+        subscription.notificationInfo = info       // This also passes record type for local notification.
+        
+        database = db
+    }
+}
+
+// !! First test w/out
+//func ==(left: CKQuerySubscription, right: CKQuerySubscription) -> Bool {
+//    return left.recordType == right.recordType && left.querySubscriptionOptions == right.querySubscriptionOptions
+//}
+
+struct MCSubscriberError {
+    
+    var delegate: MCSubscriber?
+    
+    var database: MCDatabaseType { return delegate?.database ?? .publicDB }
+    
+    var recordType: String { return delegate?.subscription.recordType ?? "MockRecordable" }
+    
+    /// This function handles CKErrors resulting from failed subscription attempts.
+    /// - Parameters: !!
+    func handle(_ error: CKError, whileSubscribing isSubscribing: Bool, to id: String? = nil) {
+        
+        // Subscription already exists.
+        guard error.code != CKError.Code.serverRejectedRequest else {
+            database.db.fetchAllSubscriptions { possibleSubscriptions, possibleError in
+
+                // identify existing subscription...
+                if let subs = possibleSubscriptions {
+                    var conflictingSubscriptionFound = false
+                    
+                    for sub in subs {
+                        if let subscription = sub as? CKQuerySubscription, subscription == self.delegate?.subscription {
+
+                            // delete the subscription...
+                            self.delegate?.end(subscriptionID: sub.subscriptionID)
+                            conflictingSubscriptionFound = true
+                        }
+                    }
+                    
+                    // try new subscription again...
+                    if conflictingSubscriptionFound {
+                        let delay = error.retryAfterSeconds ?? 1
+                        let q = DispatchQueue(label: "RetryAttemptQueue")
+                        q.asyncAfter(deadline: .now() + delay) { self.delegate?.start() }
+                    }
+                }
+            }
+            
+            return
+        }
+        
+        if retriableErrors.contains(error.code), let duration = error.userInfo[CKErrorRetryAfterKey] as? TimeInterval {
+print("** retrying subscription attempt")
+            let q = DispatchQueue(label: "RetryAttemptQueue")
+            q.asyncAfter(deadline: .now() + duration) {
+                isSubscribing ? self.delegate?.start() : self.delegate?.end(subscriptionID: id)
+            }
+        } else {
+print("** not successful \(error.code.rawValue) - \(error)")
+            // if not handled...
+            let name = Notification.Name(MCNotification.error.toString())
+            NotificationCenter.default.post(name: name, object: error)
+        }
+        
+    }
+    
+    func subscriptionAlreadyExists() {
+        
+    }
 }
