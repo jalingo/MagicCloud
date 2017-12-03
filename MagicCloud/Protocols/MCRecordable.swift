@@ -44,3 +44,18 @@ public protocol MCRecordable {
      */
     init()
 }
+
+extension MCRecordable {
+    
+    /// Builds an appropriate recordable based on type.
+    func prepare(from record: CKRecord) -> Self {
+        var newFromRecord = Self()
+        
+        // Overwrites default recordable with data from recovered record.
+        // Order of these two lines is important.
+        newFromRecord.recordID = record.recordID
+        for (key, _) in newFromRecord.recordFields { newFromRecord.recordFields[key] = record[key] }
+        
+        return newFromRecord
+    }
+}

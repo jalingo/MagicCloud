@@ -62,9 +62,9 @@ public class MCDownload<R: MCReceiver>: Operation {
     
     /// This method supplies a completion block for CKQueryOperation.recordFetchedBlock.
     fileprivate func recordFetched() -> FetchBlock {
-        return { record in
-            let fetched = prepare(type: R.type.self, from: record)            
-            if let new = fetched as? R.type { self.receiver.recordables.append(new) }
+        return { record in            
+            let recordable = R.type().prepare(from: record)
+            self.receiver.recordables.append(recordable)
         }
     }
     
