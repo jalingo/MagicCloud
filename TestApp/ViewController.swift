@@ -28,7 +28,7 @@ class ViewController: UIViewController, MCReceiver {
     }
     
     /// This property stores the subscriptionID used by the receiver and should not be modified.
-    var subscription = MCSubscriber() {
+    var subscription = MCSubscriber(forRecordType: type().recordType, on: .publicDB) {
         didSet { print("** subscriptionID: \(subscription)")}
     }
 

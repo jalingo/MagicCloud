@@ -58,7 +58,7 @@ print("** error disabling: \(error)")
     // MARK: - Functions: Constructors
     
     // !!
-    public init(forRecordType type: String, withConditions triggers: CKQuerySubscriptionOptions, on db: MCDatabaseType = .publicDB) {
+    public init(forRecordType type: String, withConditions triggers: CKQuerySubscriptionOptions = [.firesOnRecordUpdate, .firesOnRecordDeletion, .firesOnRecordCreation], on db: MCDatabaseType = .publicDB) {
         let predicate = NSPredicate(value: true)
         self.subscription = CKQuerySubscription(recordType: type, predicate: predicate, options: triggers)
         
