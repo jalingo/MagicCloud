@@ -17,15 +17,6 @@ class RemoteNotificationTests: XCTestCase {
     
     var mockRec: MockReceiver?
     
-    var mockRecordables: [MockRecordable] {
-        var array = [MockRecordable]()
-        
-        array.append(MockRecordable(created: Date.distantPast))
-        array.append(MockRecordable(created: Date.distantFuture))
-        
-        return array
-    }
-    
     // MARK: - Functions
     
     override func setUp() {
@@ -38,39 +29,28 @@ class RemoteNotificationTests: XCTestCase {
         super.tearDown()
     }
 
-    func prepareDatabase() -> Int {
-        let op = MCUpload(mockRecordables, from: mockRec!, to: .publicDB)
-        let pause = Pause(seconds: 3)
-        pause.addDependency(op)
-        pause.completionBlock = { print("** finished prep pause") }
-        OperationQueue().addOperation(pause)
-        OperationQueue().addOperation(op)
-        
-        pause.waitUntilFinished()
-        return 0
-    }
-    
-    func cleanUpDatabase() -> Int {
-        let op = MCDelete(mockRecordables, of: mockRec!, from: .publicDB)
-        let pause = Pause(seconds: 2)
-        pause.addDependency(op)
-        pause.completionBlock = { print("** finished cleanUp pause") }
-        OperationQueue().addOperation(pause)
-        OperationQueue().addOperation(op)
-        
-        pause.waitUntilFinished()
-        return 0
-    }
-    
     // MARK: - Functions: Tests
     
     func testNotificationReceiverCanConvertRemoteNotificationToLocal() {
         mockRec?.subscribeToChanges(on: .publicDB)
         
-        let _ = prepareDatabase()
+        let name = MCNotification.changeNoticed(forType: MockRecordable().recordType, at: .publicDB))
+        let mockAddedToDatabase = expectation(forNotification: Notification.Name(name), object: nil, handler: nil)
+        
+        print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY ADDED TO DATABASE")
+        wait(for: [mockAddedToDatabase], timeout: 30)
         XCTAssert(mockRec?.recordables.count != 0)
         
-        let _ = cleanUpDatabase()
+        let mockRemovedFromDatabase = expectation(forNotification: Notification.Name(name), object: nil, handler: nil)
+        
+        print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY REMOVED FROM DATABASE")
+        wait(for: [mockRemovedFromDatabase], timeout: 30)
         XCTAssert(mockRec?.recordables.count == 0)
+        
+        mockRec?.unsubscribeToChanges(from: .publicDB)
+
+        let pause = Pause(seconds: 2)
+        pause.start()
+        pause.waitUntilFinished()
     }
 }
