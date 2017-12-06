@@ -134,7 +134,7 @@ class DownloadTests: XCTestCase {
     }
     
     func testDownloadByRefWorksWithPrivate() {
-        let database = MCDatabaseType.privateDB
+        let database = MCDatabase.privateDB
 
         let reference = CKReference(recordID: mock.recordID, action: .deleteSelf)
         let ownedMock = MockReferable()
@@ -179,7 +179,7 @@ class DownloadTests: XCTestCase {
     }
     
     func testDownloadByRefWorksWithPublic() {
-        let database = MCDatabaseType.publicDB
+        let database = MCDatabase.publicDB
         
         let reference = CKReference(recordID: mock.recordID, action: .deleteSelf)
         let ownedMock = MockReferable()
