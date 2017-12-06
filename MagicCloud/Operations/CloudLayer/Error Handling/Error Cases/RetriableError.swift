@@ -14,7 +14,7 @@ import CloudKit
  * Certain cloud errors require a retry attempt (e.g. ZoneBusy), so this operation recovers retry time from
  * userInfo dictionary and then schedules another attempt.
  */
-class RetriableError<R: MCReceiver>: Operation {
+class RetriableError<R: MCReceiver>: Operation, MCOperationReplicator {
     
     // MARK: - Properties
     
@@ -42,7 +42,7 @@ class RetriableError<R: MCReceiver>: Operation {
         
         if isCancelled { return }
 
-        if let op = duplicate(originatingOp, with: receiver) {
+        if let op = replicate(originatingOp, with: receiver) {
             queue.async {
                 let timer = Timer.scheduledTimer(withTimeInterval: retryAfterValue, repeats: false) { timer in
                     if self.isCancelled { return }

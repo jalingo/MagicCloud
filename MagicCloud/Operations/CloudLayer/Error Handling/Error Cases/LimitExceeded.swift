@@ -9,7 +9,7 @@
 import Foundation
 import CloudKit
 
-class LimitExceeded<R: MCReceiver>: Operation {
+class LimitExceeded<R: MCReceiver>: Operation, MCOperationReplicator {
     
     // MARK: - Properties
     
@@ -44,7 +44,7 @@ class LimitExceeded<R: MCReceiver>: Operation {
         }
         
         if let op = erringOperation as? MCDownload<R> {   // <- Is this even possible? Downloads shouldn't get error...
-            resolver0 = duplicate(op, with: receiver)
+            resolver0 = replicate(op, with: receiver)
             resolver1 = Operation()
             
             if let limit = op.limit {
