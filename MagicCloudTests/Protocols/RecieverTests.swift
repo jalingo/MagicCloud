@@ -9,9 +9,6 @@
 import XCTest
 import CloudKit
 
-
-// CAUTION: These tests require a NotificationReader in host app delegate for local / remote notifications to work.
-
 class RecievesRecTests: XCTestCase {
     
     // MARK: - Properties
@@ -93,38 +90,69 @@ pause.completionBlock = { print("** finished cleanUp pause") }
         XCTAssert(mock?.recordables.count != 0)
     }
     
-    func testReceiverCanStartSubscriptionAndListen() {
+    func testReceiverCanStartAndEndSubscriptions() {
+        var originalNumberOfSubscriptions: Int?
+        var modifiedNumberOfSubscriptions: Int?
+        var finalNumberOfSubscriptions: Int?
+        
+        let firstFetch = expectation(description: "All Subscriptions Fetched")
+        MCDatabase.publicDB.db.fetchAllSubscriptions { possibleSubscriptions, possibleError in
+            if let subscriptions = possibleSubscriptions {
+                originalNumberOfSubscriptions = subscriptions.count
+            } else {
+                originalNumberOfSubscriptions = 0
+            }
+            
+            if let error = possibleError as? CKError {
+                print("** error @ Subscription Start tests \(error.code.rawValue): \(error.localizedDescription)")
+            }
+            
+            firstFetch.fulfill()
+        }
+        
+        wait(for: [firstFetch], timeout: 5)
         mock?.subscribeToChanges(on: .publicDB)
         
-        let pause = Pause(seconds: 2)
-        pause.completionBlock = { print("** done waiting for subscription") }
-        OperationQueue().addOperation(pause)
+        let firstPause = Pause(seconds: 2)
+        firstPause.completionBlock = { print("** done waiting for subscription to start") }
+        OperationQueue().addOperation(firstPause)
         
-        pause.waitUntilFinished()
-print("** uploading mocks to trigger remote notification")
-        let _ = prepareDatabase()
+        firstPause.waitUntilFinished()
+        let secondFetch = expectation(description: "All Subscriptions Fetched, again")
+        MCDatabase.publicDB.db.fetchAllSubscriptions
         
-        XCTAssert(mock?.recordables.count != 0)
-    }
-    
-    func testReceiverCanStopSubscription() {
-        mock?.subscribeToChanges(on: .publicDB)
+        wait(for: [secondFetch], timeout: 5)
+        guard originalNumberOfSubscriptions != nil, modifiedNumberOfSubscriptions != nil else { XCTFail(); return }
+        XCTAssertNotEqual(originalNumberOfSubscriptions, modifiedNumberOfSubscriptions)
+        
         mock?.unsubscribeToChanges(from: .publicDB)
         
-        let pause = Pause(seconds: 2)
-        OperationQueue().addOperation(pause)
-        pause.waitUntilFinished()
-
-        let _ = prepareDatabase()   // <-- If still subscribed, then this will trigger download
+        let secondPause = Pause(seconds: 2)
+        secondPause.completionBlock = { print("** done waiting for subscription to end") }
+        OperationQueue().addOperation(secondPause)
         
-        XCTAssert(mock?.recordables.count == 0)
+        secondPause.waitUntilFinished()
+        let thirdFetch = exception(description: "All Subscriptions Fetched, for a final time")
+        MCDatabase.publicDB.db.fetchAllSubscriptions{ possibleSubscriptions, possibleError in
+            if let subscriptions = possibleSubscriptions {
+                modifiedNumberOfSubscriptions = subscriptions.count
+            } else {
+                modifiedNumberOfSubscriptions = 0
+            }
+            
+            if let error = possibleError as? CKError {
+                print("** error @ Subscription End tests \(error.code.rawValue): \(error.localizedDescription)")
+            } else {
+                mock?.unsubscribeToChanges(from: .publicDB)
+            }
+            
+            thirdFetch.fulfill()
+        }
+        
+        wait(for: [thirdFetch], timeout: 5)
+        guard finalNumberOfSubscriptions != nil else { XCTFail(); return }
+        XCTAssertEqual(originalNumberOfSubscriptions, finalNumberOfSubscriptions)
     }
-  
-    func testReceiverCanSyncForRecordCreation() { XCTFail() }
-    
-    func testReceiverCanSyncForRecordUpdate() { XCTFail() }
-    
-    func testReceiverCanSyncForRecordDeletion() { XCTFail() }
     
     // MARK: - Functions: XCTestCase
     
