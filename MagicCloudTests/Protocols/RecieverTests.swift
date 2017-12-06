@@ -146,7 +146,7 @@ pause.completionBlock = { print("** finished cleanUp pause") }
         OperationQueue().addOperation(secondPause)
         
         secondPause.waitUntilFinished()
-        let thirdFetch = exception(description: "All Subscriptions Fetched, for a final time")
+        let thirdFetch = expectation(description: "All Subscriptions Fetched, for a final time")
         MCDatabase.publicDB.db.fetchAllSubscriptions { possibleSubscriptions, possibleError in
             if let subscriptions = possibleSubscriptions {
                 finalNumberOfSubscriptions = subscriptions.count

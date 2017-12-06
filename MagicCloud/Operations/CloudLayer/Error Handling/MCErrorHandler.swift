@@ -121,7 +121,7 @@ class MCErrorHandler<R: MCReceiver>: Operation, MCRetrier {
                 }
             }
             
-            completionBlock = nil
+//            completionBlock = nil !!
         
         // These errors occur when CloudKit has a problem with a CKSharedDatabase operation.    // <-- Not currently supported but left here as a reminder for future versions.
 //        case .alreadyShared, .tooManyParticipants:

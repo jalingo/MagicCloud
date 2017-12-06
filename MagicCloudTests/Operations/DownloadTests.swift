@@ -36,8 +36,8 @@ class DownloadTests: XCTestCase {
     
     func testDownloadByTypeHasIgnoreUnknown() {
         let nullAction: OptionalClosure = { }
-        testOp?.ignoreUnknownItemCustomAction = nullAction
-        XCTAssertNotNil(testOp?.ignoreUnknownItemCustomAction)
+        testOp?.unknownItemCustomAction = nullAction
+        XCTAssertNotNil(testOp?.unknownItemCustomAction)
     }
     
     func testDownloadByQueryWorksWithPrivate() {
@@ -138,7 +138,7 @@ class DownloadTests: XCTestCase {
 
         let reference = CKReference(recordID: mock.recordID, action: .deleteSelf)
         let ownedMock = MockReferable()
-        ownedMock.attachReference(reference: reference)
+        ownedMock.owner = reference
         
         let mocks = [ownedMock]
         
@@ -183,7 +183,7 @@ class DownloadTests: XCTestCase {
         
         let reference = CKReference(recordID: mock.recordID, action: .deleteSelf)
         let ownedMock = MockReferable()
-        ownedMock.attachReference(reference: reference)
+        ownedMock.owner = reference
         
         let mocks = [ownedMock]
         
@@ -314,5 +314,28 @@ class DownloadTests: XCTestCase {
         
         group.wait()
         super.tearDown()
+    }
+}
+
+class MockReferable: MockRecordable {
+    
+    let ownerKey = "MockOwner"
+    
+    var owner: CKReference?
+    
+    override var recordFields: Dictionary<String, CKRecordValue> {
+        get {
+            var dictionary = [String: CKRecordValue]()
+            
+            dictionary[MockRecordable.key] = self.created as CKRecordValue
+            dictionary[ownerKey] = owner
+            
+            return dictionary
+        }
+        
+        set {
+            if let date = newValue[MockRecordable.key] as? Date { created = date }
+            if let ref = newValue[ownerKey] as? CKReference { owner = ref }
+        }
     }
 }

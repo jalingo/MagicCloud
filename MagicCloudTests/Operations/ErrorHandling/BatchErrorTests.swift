@@ -19,6 +19,8 @@ class BatchErrorTests: XCTestCase {
     
     var mockRec = MockReceiver()
     
+    var errorMatch: CKError?
+    
     var errorDetected = false
     
     let db: MCDatabase = .privateDB
@@ -40,7 +42,7 @@ class BatchErrorTests: XCTestCase {
     
     func detectionBlock() -> NotifyBlock {
         return { notification in
-            self.errorDetected = true
+            if let error = notification.object as? CKError { self.errorDetected = (error == self.errorMatch) }
         }
     }
     
@@ -48,6 +50,7 @@ class BatchErrorTests: XCTestCase {
     
     func testBatchErrorHandlesPartialError() {
         let error = genError(code: CKError.partialFailure.rawValue)
+        errorMatch = error
 
         let name = Notification.Name(MCNotification.error.toString())
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
@@ -70,8 +73,9 @@ class BatchErrorTests: XCTestCase {
     
     func testBatchErrorHandlesLimitExceeded() {
         let error = genError(code: CKError.limitExceeded.rawValue)
+        errorMatch = error
 
-        let name = Notification.Name(MCNotification.error(error).toString())
+        let name = Notification.Name(MCNotification.error.toString())
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
 
         let testOp = BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
@@ -92,8 +96,9 @@ class BatchErrorTests: XCTestCase {
     
     func testBatchErrorHandlesBatchRequestFail() {
         let error = genError(code: CKError.batchRequestFailed.rawValue)
+        errorMatch = error
 
-        let name = Notification.Name(MCNotification.error(error).toString())
+        let name = Notification.Name(MCNotification.error.toString())
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
 
         let testOp = BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
@@ -136,7 +141,8 @@ class BatchErrorTests: XCTestCase {
     override func tearDown() {
         mockOp = nil
         mocks = nil
-
+        errorMatch = nil
+        
         super.tearDown()
     }    
 }

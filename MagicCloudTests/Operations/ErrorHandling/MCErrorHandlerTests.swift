@@ -21,25 +21,37 @@ class MCErrorHandlerTests: XCTestCase {
     
     var testOp: MCErrorHandler<MockReceiver>?
     
+    var errorDetected = false
+    
+    var errorMatch: CKError?
+    
     // MARK: - Functions
     
     func loadTestOp(error: CKError) {
         testOp = MCErrorHandler(error: error, originating: mockOp, target: .privateDB, instances: mocks as! [MockReceiver.type], receiver: mockRec)
     }
     
+    func genError(code: Int) -> CKError {
+        let error = NSError(domain: CKErrorDomain, code: code, userInfo: nil)
+        return CKError(_nsError: error)
+    }
+    
+    func detectionBlock() -> NotifyBlock {
+        return { notification in
+            if let error = notification.object as? CKError { self.errorDetected = (error == self.errorMatch) }
+        }
+    }
+    
     // MARK: - Functions: Unit Tests
     
     func testErrorHandlerResolvesAuthentication() {
-        let error = NSError(domain: CKErrorDomain, code: CKError.notAuthenticated.rawValue, userInfo: nil)
-        loadTestOp(error: CKError(_nsError: error))
+        let error = genError(code: CKError.notAuthenticated.rawValue)
+        errorMatch = error
         
-        var authenticationErrorDetected = false
-        let block: NotifyBlock = { _ in
-            authenticationErrorDetected = true
-        }
+        loadTestOp(error: error)
         
-        let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
-        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
+        let name = Notification.Name(MCNotification.error.toString())
+        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
         
         OperationQueue().addOperation(testOp!)
         
@@ -51,23 +63,20 @@ class MCErrorHandlerTests: XCTestCase {
         OperationQueue().addOperation(pause)
         
         group.wait()
-        XCTAssert(authenticationErrorDetected)
+        XCTAssert(errorDetected)
 
         NotificationCenter.default.removeObserver(observer)
     }
     
     func testErrorHandlerResolvesVersionConflict() {
-        let error = NSError(domain: CKErrorDomain, code: CKError.serverRecordChanged.rawValue, userInfo: nil)
-        loadTestOp(error: CKError(_nsError: error))
+        let error = genError(code: CKError.serverRecordChanged.rawValue)
+        errorMatch = error
         
-        var versionConflictDetected = false
-        let block: NotifyBlock = { _ in
-            versionConflictDetected = true
-        }
+        loadTestOp(error: error)
         
-        let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
-        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
-        
+        let name = Notification.Name(MCNotification.error.toString())
+        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
+
         OperationQueue().addOperation(testOp!)
 
         let group = DispatchGroup()
@@ -78,22 +87,30 @@ class MCErrorHandlerTests: XCTestCase {
         OperationQueue().addOperation(pause)
         
         group.wait()
-        XCTAssert(versionConflictDetected)
+        XCTAssert(errorDetected)
         
         NotificationCenter.default.removeObserver(observer)
     }
     
     func testErrorHandlerResolvesBatchErrors() {
-        let error = NSError(domain: CKErrorDomain, code: CKError.batchRequestFailed.rawValue, userInfo: nil)
-        loadTestOp(error: CKError(_nsError: error))
+//        let error = NSError(domain: CKErrorDomain, code: CKError.batchRequestFailed.rawValue, userInfo: nil)
+//        loadTestOp(error: CKError(_nsError: error))
+//
+//        var batchFailureDetected = false
+//        let block: NotifyBlock = { _ in
+//            batchFailureDetected = true
+//        }
+//
+//        let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
+//        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
+
+        let error = genError(code: CKError.batchRequestFailed.rawValue)
+        errorMatch = error
         
-        var batchFailureDetected = false
-        let block: NotifyBlock = { _ in
-            batchFailureDetected = true
-        }
+        loadTestOp(error: error)
         
-        let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
-        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
+        let name = Notification.Name(MCNotification.error.toString())
+        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
         
         OperationQueue().addOperation(testOp!)
 
@@ -105,22 +122,19 @@ class MCErrorHandlerTests: XCTestCase {
         OperationQueue().addOperation(pause)
         
         group.wait()
-        XCTAssert(batchFailureDetected)
+        XCTAssert(errorDetected)
         
         NotificationCenter.default.removeObserver(observer)
     }
     
     func testErrorHandlerResolvesRetriableErrors() {
-        let error = NSError(domain: CKErrorDomain, code: CKError.networkUnavailable.rawValue, userInfo: nil)
-        loadTestOp(error: CKError(_nsError: error))
+        let error = genError(code: CKError.serverRecordChanged.rawValue)
+        errorMatch = error
         
-        var retriableErrorDetected = false
-        let block: NotifyBlock = { _ in
-            retriableErrorDetected = true
-        }
+        loadTestOp(error: error)
         
-        let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
-        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
+        let name = Notification.Name(MCNotification.error.toString())
+        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
         
         OperationQueue().addOperation(testOp!)
         
@@ -132,22 +146,19 @@ class MCErrorHandlerTests: XCTestCase {
         OperationQueue().addOperation(pause)
         
         group.wait()
-        XCTAssert(retriableErrorDetected)
+        XCTAssert(errorDetected)
         
         NotificationCenter.default.removeObserver(observer)
     }
     
     func testErrorHandlerResolvesFatalErrors() {
-        let error = NSError(domain: CKErrorDomain, code: CKError.badContainer.rawValue, userInfo: nil)
-        loadTestOp(error: CKError(_nsError: error))
+        let error = genError(code: CKError.serverRecordChanged.rawValue)
+        errorMatch = error
         
-        var fatalErrorDetected = false
-        let block: NotifyBlock = { _ in
-            fatalErrorDetected = true
-        }
+        loadTestOp(error: error)
         
-        let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
-        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
+        let name = Notification.Name(MCNotification.error.toString())
+        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
         
         OperationQueue().addOperation(testOp!)
 
@@ -159,22 +170,19 @@ class MCErrorHandlerTests: XCTestCase {
         OperationQueue().addOperation(pause)
         
         group.wait()
-        XCTAssert(fatalErrorDetected)
+        XCTAssert(errorDetected)
         
         NotificationCenter.default.removeObserver(observer)
     }
    
     func testErrorHandlerResolvesSharingErrors() {
-        let error = NSError(domain: CKErrorDomain, code: CKError.alreadyShared.rawValue, userInfo: nil)
-        loadTestOp(error: CKError(_nsError: error))
+        let error = genError(code: CKError.serverRecordChanged.rawValue)
+        errorMatch = error
         
-        var sharingErrorDetected = false
-        let block: NotifyBlock = { _ in
-            sharingErrorDetected = true
-        }
+        loadTestOp(error: error)
         
-        let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
-        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
+        let name = Notification.Name(MCNotification.error.toString())
+        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
         
         OperationQueue().addOperation(testOp!)
         
@@ -186,7 +194,7 @@ class MCErrorHandlerTests: XCTestCase {
         OperationQueue().addOperation(pause)
         
         group.wait()
-        XCTAssert(sharingErrorDetected)
+        XCTAssert(errorDetected)
         
         NotificationCenter.default.removeObserver(observer)
     }
@@ -194,8 +202,10 @@ class MCErrorHandlerTests: XCTestCase {
     func testErrorHandlerCanIgnoreUnknowns() {
         XCTAssertNotNil(testOp?.ignoreUnknownItem)
         
-        let error = NSError(domain: CKErrorDomain, code: CKError.unknownItem.rawValue, userInfo: nil)
-        loadTestOp(error: CKError(_nsError: error))
+//        let error = NSError(domain: CKErrorDomain, code: CKError.unknownItem.rawValue, userInfo: nil)
+//        loadTestOp(error: CKError(_nsError: error))
+        let error = genError(code: CKError.unknownItem.rawValue)
+        loadTestOp(error: error)
         
         testOp?.ignoreUnknownItem = true
         var unknownIgnored = false
@@ -218,6 +228,8 @@ class MCErrorHandlerTests: XCTestCase {
     
     override func tearDown() {
         testOp = nil
+        errorDetected = false
+        errorMatch = nil
         
         super.tearDown()
     }
