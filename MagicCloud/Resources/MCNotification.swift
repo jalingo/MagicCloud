@@ -10,7 +10,7 @@ import CloudKit
 
 /// forType = CKRecordType
 public enum MCNotification {
-    case error, changeNoticed(forType: String, at: MCDatabaseType)
+    case error, changeNoticed(forType: String, at: MCDatabase)
     
     static let userInfoKey = "MCNotification_Dictionary_Key"
     

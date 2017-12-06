@@ -30,7 +30,7 @@ class RetriableError<R: MCReceiver>: Operation {
     fileprivate var originatingOp: Operation
     
     /// The CKDatabase in which CKDatabaseOperations should be retried.
-    fileprivate var database: MCDatabaseType
+    fileprivate var database: MCDatabase
     
     // MARK: - Functions
     
@@ -69,7 +69,7 @@ class RetriableError<R: MCReceiver>: Operation {
      *
      * - parameter database: TODO...
      */
-    init(error: CKError, originating: Operation, target: MCDatabaseType, receiver: R, completion: OptionalClosure = nil) {
+    init(error: CKError, originating: Operation, target: MCDatabase, receiver: R, completion: OptionalClosure = nil) {
         self.receiver = receiver
         self.error = error
         originatingOp = originating

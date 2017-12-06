@@ -33,8 +33,8 @@ class NotificationReaderTests: XCTestCase {
     }
     
     override func tearDown() {
-        super.tearDown()        
         mockRec = nil
+        super.tearDown()
     }
 
     func prepareDatabase() -> Int {

@@ -46,7 +46,7 @@ public class MCDownload<R: MCReceiver>: Operation {
      
         The public database is always available, regardless of whether the device has an an active iCloud account. When no iCloud account is available, your app may fetch records and perform queries on the public database, but it may not save changes. (Saving records to the public database requires an active iCloud account to identify the owner of those records.) Access to the private database always requires an active iCloud account on the device.
      */
-    let database: MCDatabaseType
+    let database: MCDatabase
     
     // MARK: - Functions
      
@@ -129,7 +129,7 @@ public class MCDownload<R: MCReceiver>: Operation {
         - parameter to: Instance conforming to 'RecievesRecordable' that will ultimately recieve the results of the query.
         - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    public init(type: String, queryField: String, queryValues: [CKRecordValue], to rec: R, from db: MCDatabaseType) {
+    public init(type: String, queryField: String, queryValues: [CKRecordValue], to rec: R, from db: MCDatabase) {
         let predicate = NSPredicate(format: "%K IN %@", queryField, queryValues)
         query = CKQuery(recordType: type, predicate: predicate)
         receiver = rec
@@ -146,7 +146,7 @@ public class MCDownload<R: MCReceiver>: Operation {
         - parameter to: Instance conforming to 'RecievesRecordable' that will ultimately recieve the results of the query.
         - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    public init(type: String, matching predicate: NSPredicate, to rec: R, from db: MCDatabaseType) {
+    public init(type: String, matching predicate: NSPredicate, to rec: R, from db: MCDatabase) {
         query = CKQuery(recordType: type, predicate: predicate)
         receiver = rec
         database = db
@@ -161,7 +161,7 @@ public class MCDownload<R: MCReceiver>: Operation {
         - parameter to: Instance conforming to 'RecievesRecordable' that will ultimately recieve the results of the query.
         - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    public init(type: String, to rec: R, from db: MCDatabaseType) {
+    public init(type: String, to rec: R, from db: MCDatabase) {
         let predicate = NSPredicate(format: "TRUEPREDICATE")
         query = CKQuery(recordType: type, predicate: predicate)
         receiver = rec

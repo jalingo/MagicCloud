@@ -21,7 +21,7 @@ class LimitExceeded<R: MCReceiver>: Operation {
     
     fileprivate var recordables = [R.type]()
     
-    fileprivate var database: MCDatabaseType
+    fileprivate var database: MCDatabase
     
     // MARK: - Functions
     
@@ -65,7 +65,7 @@ class LimitExceeded<R: MCReceiver>: Operation {
     
     // MARK: - Functions: Constructors
     
-    init(error: CKError, occuredIn: Operation, rec: R, instances: [R.type], target: MCDatabaseType) {
+    init(error: CKError, occuredIn: Operation, rec: R, instances: [R.type], target: MCDatabase) {
         cloudError = error
         erringOperation = occuredIn
         recordables = instances

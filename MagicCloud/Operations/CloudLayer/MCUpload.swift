@@ -28,7 +28,7 @@ public class MCUpload<R: MCReceiver>: Operation {
      
         The public database is always available, regardless of whether the device has an an active iCloud account. When no iCloud account is available, your app may fetch records and perform queries on the public database, but it may not save changes. (Saving records to the public database requires an active iCloud account to identify the owner of those records.) Access to the private database always requires an active iCloud account on the device.
      */
-    let database: MCDatabaseType
+    let database: MCDatabase
     
     /// This is the MCReceiver that contains the recordables that are being uploaded to database.
     let receiver: R
@@ -114,7 +114,7 @@ public class MCUpload<R: MCReceiver>: Operation {
             - rec: The MCReceiver from which records are being derived and uploaded.
             - db: An enumeration of the CKDatabase records are to be uploaded to.
      */
-    public init(_ recs: [R.type]? = nil, from rec: R, to db: MCDatabaseType) {
+    public init(_ recs: [R.type]? = nil, from rec: R, to db: MCDatabase) {
         receiver = rec
         database = db   //DatabaseType.from(scope: db)
         recordables = recs ?? rec.recordables

@@ -11,11 +11,11 @@ import CloudKit
 // MARK: - Enum
 
 /// This enumerates the different cloud databases available.
-public enum MCDatabaseType: String {
+public enum MCDatabase: String {
     case publicDB, privateDB, sharedDB
 
     /// Derives and returns an MCDatabaseType from a CKDatabaseScope.
-    static func from(scope: CKDatabaseScope) -> MCDatabaseType {
+    static func from(scope: CKDatabaseScope) -> MCDatabase {
         switch scope {
         case .private:  return .privateDB
         case .public:   return .publicDB

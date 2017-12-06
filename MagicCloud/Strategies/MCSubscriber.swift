@@ -15,7 +15,7 @@ public class MCSubscriber {
     
     let subscription: CKQuerySubscription
     
-    let database: MCDatabaseType
+    let database: MCDatabase
     
     var subscriptionError: MCSubscriberError { return MCSubscriberError(delegate: self) }
     
@@ -58,7 +58,7 @@ print("** error disabling: \(error)")
     // MARK: - Functions: Constructors
     
     // !!
-    public init(forRecordType type: String, withConditions triggers: CKQuerySubscriptionOptions = [.firesOnRecordUpdate, .firesOnRecordDeletion, .firesOnRecordCreation], on db: MCDatabaseType = .publicDB) {
+    public init(forRecordType type: String, withConditions triggers: CKQuerySubscriptionOptions = [.firesOnRecordUpdate, .firesOnRecordDeletion, .firesOnRecordCreation], on db: MCDatabase = .publicDB) {
         let predicate = NSPredicate(value: true)
         self.subscription = CKQuerySubscription(recordType: type, predicate: predicate, options: triggers)
         
@@ -79,7 +79,7 @@ struct MCSubscriberError {
     
     var delegate: MCSubscriber?
     
-    var database: MCDatabaseType { return delegate?.database ?? .publicDB }
+    var database: MCDatabase { return delegate?.database ?? .publicDB }
     
     var recordType: String { return delegate?.subscription.recordType ?? "MockRecordable" }
     

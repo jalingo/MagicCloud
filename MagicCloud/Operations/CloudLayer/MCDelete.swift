@@ -33,7 +33,7 @@ public class MCDelete<R: MCReceiver>: Operation {
      
         The public database is always available, regardless of whether the device has an an active iCloud account. When no iCloud account is available, your app may fetch records and perform queries on the public database, but it may not save changes. (Saving records to the public database requires an active iCloud account to identify the owner of those records.) Access to the private database always requires an active iCloud account on the device.
      */
-    let database: MCDatabaseType
+    let database: MCDatabase
     
     // MARK: - Properties: Computed
     
@@ -107,7 +107,7 @@ public class MCDelete<R: MCReceiver>: Operation {
             - rec: The MCReceiver associated with MCDelete, that was itself storing the recordables to be deleted from the specified database.
             - db: The DatabaseType enumerating the CKDatabase containing the records that need to be deleted.
      */
-    public init(_ array: [R.type]? = nil, of rec: R, from db: MCDatabaseType) {
+    public init(_ array: [R.type]? = nil, of rec: R, from db: MCDatabase) {
         recordables = array ?? rec.recordables
         receiver = rec
         database = db

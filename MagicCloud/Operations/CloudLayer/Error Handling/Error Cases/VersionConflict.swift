@@ -34,7 +34,7 @@ class VersionConflict<R: MCReceiver>: Operation {
     fileprivate var recordables = [R.type]()
 
     /// This is the database where version conflict was detected.
-    fileprivate var database: MCDatabaseType
+    fileprivate var database: MCDatabase
     
     /// This operation is launched after version conflict resolved.
     fileprivate var completionOperation = Operation()
@@ -183,7 +183,7 @@ print("conflict resolved")
     
     // MARK: - Functions: Constructor
     
-    init(rec: R, error: CKError, target: MCDatabaseType, policy: CKRecordSavePolicy, instances: [R.type], completionBlock: OptionalClosure) {
+    init(rec: R, error: CKError, target: MCDatabase, policy: CKRecordSavePolicy, instances: [R.type], completionBlock: OptionalClosure) {
         receiver = rec
         
         self.error = error

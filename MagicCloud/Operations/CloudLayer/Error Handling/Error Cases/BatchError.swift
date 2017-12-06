@@ -23,7 +23,7 @@ class BatchError<R: MCReceiver>: Operation {
     
     fileprivate var recordables = [R.type]()
     
-    fileprivate var database: MCDatabaseType
+    fileprivate var database: MCDatabase
     
     /// Skips over any error handling for `.unknownItem` errors.
     var ignoreUnknownItem = false
@@ -72,7 +72,7 @@ NotificationCenter.default.post(name: name, object: error)
     
     // MARK: - Functions: Constructors
     
-    init(error: CKError, occuredIn: Operation, target: MCDatabaseType, receiver: R, instances: [R.type]) {
+    init(error: CKError, occuredIn: Operation, target: MCDatabase, receiver: R, instances: [R.type]) {
         self.error = error
         operation = occuredIn
         recordables = instances
