@@ -9,15 +9,15 @@
 import CloudKit
 
 /**
- * This class handles the various possible CKErrors in a uniform and thorough way. Must create a new
- * instance for each error resolution to ensure property 'executableBlock' doesn't get overwritten before
- * func 'executeBlock' is called.
- *
- * If non-standard error handling is required for a given situation, implementation should handle
- * unique aspect of error handling in the completion block first, then all other errors should be passed
- * to this system.
- *
- * Operation requires local cache to conform to `Recordable` protocol for version conflict resolution.
+    This class handles the various possible CKErrors in a uniform and thorough way. Must create a new
+    instance for each error resolution to ensure property 'executableBlock' doesn't get overwritten before
+    func 'executeBlock' is called.
+ 
+    If non-standard error handling is required for a given situation, implementation should handle
+    unique aspect of error handling in the completion block first, then all other errors should be passed
+    to this system.
+ 
+    Operation requires local cache to conform to `Recordable` protocol for version conflict resolution.
  */
 class MCErrorHandler<R: MCReceiver>: Operation, MCRetrier {
     
@@ -49,9 +49,15 @@ class MCErrorHandler<R: MCReceiver>: Operation, MCRetrier {
     /// Skips over any error handling for `.unknownItem` errors, except `ignoreUnknownItemCustomAction`.
     var ignoreUnknownItem = false
     
-    /// Allows user to set a customized completion block for `.ignoreUnknownItem` situations.
-    /// - Caution: Setting this property does not effect `ignoreUnknownItem` property.
-    var ignoreUnknownItemCustomAction: OptionalClosure
+    /**
+        Allows user to set a customized completion block for `.ignoreUnknownItem` situations.
+        Setting this property with a non-nil value sets `ignoreUnknownItem` property to true.
+     */
+    var ignoreUnknownItemCustomAction: OptionalClosure {
+        didSet {
+            if ignoreUnknownItemCustomAction != nil { ignoreUnknownItem = true }
+        }
+    }
     
     // MARK: - Functions
     
@@ -117,7 +123,7 @@ class MCErrorHandler<R: MCReceiver>: Operation, MCRetrier {
             
             completionBlock = nil
         
-        // These errors occur when CloudKit has a problem with a CKSharedDatabase operation.    // <-- Not currently supported but left here for future versions.
+        // These errors occur when CloudKit has a problem with a CKSharedDatabase operation.    // <-- Not currently supported but left here as a reminder for future versions.
 //        case .alreadyShared, .tooManyParticipants:
         
         // This case allows .unknownItem to be ignored (query / fetch / modify operations).
@@ -135,17 +141,10 @@ class MCErrorHandler<R: MCReceiver>: Operation, MCRetrier {
     }
     
     /**
-     * - parameter error: CKError that was generated. Not optional to force check for nil / check for
-     *      success before initializing error handling.
-     *
-     * - parameter instances: This array of instances conforming to Recordable protocol generated the
-     *      record which generated said error(s).
-     *
-     * - parameter originating: Operation that was executing when error was generated in case a retry
-     *      attempt is warranted. If left nil, no retries will be attempted, regardless of error type.
-     *
-     * - parameter target: Cloud Database in which error was generated, and in which resolution will
-     *      occur.
+        - parameter error: CKError that was generated. Not optional to force check for nil / check for success before initializing error handling.
+        - parameter instances: This array of instances conforming to Recordable protocol generated the record which generated said error(s).
+        - parameter originating: Operation that was executing when error was generated in case a retry attempt is warranted. If left nil, no retries will be attempted, regardless of error type.
+        - parameter target: Cloud Database in which error was generated, and in which resolution will occur.
      */
     init(error: CKError, originating: Operation, target: MCDatabase, instances: [R.type], receiver: R) {
         self.error = error
