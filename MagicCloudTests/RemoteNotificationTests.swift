@@ -50,7 +50,7 @@ class RemoteNotificationTests: XCTestCase {
         mockRec?.unsubscribeToChanges(from: .publicDB)
 
         let pause = Pause(seconds: 2)
-        pause.start()
+        OperationQueue().addOperation(pause)
         pause.waitUntilFinished()
     }
 }

@@ -93,17 +93,6 @@ class MCErrorHandlerTests: XCTestCase {
     }
     
     func testErrorHandlerResolvesBatchErrors() {
-//        let error = NSError(domain: CKErrorDomain, code: CKError.batchRequestFailed.rawValue, userInfo: nil)
-//        loadTestOp(error: CKError(_nsError: error))
-//
-//        var batchFailureDetected = false
-//        let block: NotifyBlock = { _ in
-//            batchFailureDetected = true
-//        }
-//
-//        let name = Notification.Name(MCNotification.error(CKError(_nsError: error)).toString())
-//        let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: block)
-
         let error = genError(code: CKError.batchRequestFailed.rawValue)
         errorMatch = error
         
@@ -201,9 +190,7 @@ class MCErrorHandlerTests: XCTestCase {
     
     func testErrorHandlerCanIgnoreUnknowns() {
         XCTAssertNotNil(testOp?.ignoreUnknownItem)
-        
-//        let error = NSError(domain: CKErrorDomain, code: CKError.unknownItem.rawValue, userInfo: nil)
-//        loadTestOp(error: CKError(_nsError: error))
+
         let error = genError(code: CKError.unknownItem.rawValue)
         loadTestOp(error: error)
         
