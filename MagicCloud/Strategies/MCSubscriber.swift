@@ -75,7 +75,7 @@ print("** error disabling: \(error)")
 //    return left.recordType == right.recordType && left.querySubscriptionOptions == right.querySubscriptionOptions
 //}
 
-struct MCSubscriberError {
+struct MCSubscriberError: MCRetrier {
     
     var delegate: MCSubscriber?
     
@@ -107,7 +107,7 @@ struct MCSubscriberError {
                     // try new subscription again...
                     if conflictingSubscriptionFound {
                         let delay = error.retryAfterSeconds ?? 1
-                        let q = DispatchQueue(label: "RetryAttemptQueue")
+                        let q = DispatchQueue(label: self.retriableLabel)
                         q.asyncAfter(deadline: .now() + delay) { self.delegate?.start() }
                     }
                 }
@@ -118,7 +118,7 @@ struct MCSubscriberError {
         
         if retriableErrors.contains(error.code), let duration = error.userInfo[CKErrorRetryAfterKey] as? TimeInterval {
 print("** retrying subscription attempt")
-            let q = DispatchQueue(label: "RetryAttemptQueue")
+            let q = DispatchQueue(label: retriableLabel)
             q.asyncAfter(deadline: .now() + duration) {
                 isSubscribing ? self.delegate?.start() : self.delegate?.end(subscriptionID: id)
             }

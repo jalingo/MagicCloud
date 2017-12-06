@@ -14,12 +14,12 @@ import CloudKit
  * Certain cloud errors require a retry attempt (e.g. ZoneBusy), so this operation recovers retry time from
  * userInfo dictionary and then schedules another attempt.
  */
-class RetriableError<R: MCReceiver>: Operation, MCOperationReplicator {
+class RetriableError<R: MCReceiver>: Operation, MCOperationReplicator, MCRetrier {
     
     // MARK: - Properties
     
     /// This property contains the dispatch queue the timer will use during retry attempt.
-    fileprivate let queue = DispatchQueue(label: "RetryAttemptQueue")
+    fileprivate var queue: DispatchQueue { return DispatchQueue(label: retriableLabel) }
     
     fileprivate let receiver: R
     

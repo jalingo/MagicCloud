@@ -11,7 +11,7 @@ import CloudKit
 // MARK: - Class
 
 /// This struct contains a static var (singleton) which accesses USER's iCloud CKRecordID.
-public class MCUserRecord {
+public class MCUserRecord: MCRetrier {
     
     // MARK: - Properties
     
@@ -38,7 +38,7 @@ public class MCUserRecord {
     /// This method handles any errors during the record fetch operation.
     fileprivate func handle(_ error: CKError) {
         if retriableErrors.contains(error.code), let retryAfterValue = error.userInfo[CKErrorRetryAfterKey] as? TimeInterval {
-            let queue = DispatchQueue(label: "RetryAttemptQueue")
+            let queue = DispatchQueue(label: retriableLabel)
             queue.asyncAfter(deadline: .now() + retryAfterValue) { self.retrieveUserRecord() }
         } else {
             
