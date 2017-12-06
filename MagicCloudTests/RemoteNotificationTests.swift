@@ -10,7 +10,7 @@ import XCTest
 import CloudKit
 
 // CAUTION: These tests assume MCNotificationReader is implemented in app delegate.
-class NotificationReaderTests: XCTestCase {
+class RemoteNotificationTests: XCTestCase {
     
     // MARK: - Properties
     
