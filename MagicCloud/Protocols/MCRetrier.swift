@@ -8,8 +8,10 @@
 
 import CloudKit
 
-protocol MCRetrier {
+//!!
+protocol MCRetrier: MCOperationReplicator {
     
+    // !!
     var retriableErrors: [CKError.Code] { get }
     
     var retriableLabel: String { get }
