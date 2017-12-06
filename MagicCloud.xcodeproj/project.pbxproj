@@ -282,6 +282,7 @@
 			children = (
 				A1268EDE1FBA80BC00ADAA74 /* MCRecordable.swift */,
 				A1268EDD1FBA80BC00ADAA74 /* MCReceiver.swift */,
+				A1CB77141FBA8535008ADF09 /* MCOperationReplicator.swift */,
 				A16EA5021FC666DF001E57F8 /* MCNotificationConverter.swift */,
 			);
 			path = Protocols;
@@ -304,7 +305,6 @@
 			children = (
 				A17DE9E41FBE56D900D2EB4F /* MCSubscriber.swift */,
 				90C4E8711FC0EAE300A8D329 /* MCUserRecord.swift */,
-				A1CB77141FBA8535008ADF09 /* MCOperationReplicator.swift */,
 			);
 			path = Strategies;
 			sourceTree = "<group>";
