@@ -10,6 +10,7 @@ import XCTest
 import CloudKit
 
 // CAUTION: These tests assume MCNotificationReader is implemented in app delegate.
+// CAUTION: These tests require database manipulation from an external device to work.
 class RemoteNotificationTests: XCTestCase {
     
     // MARK: - Properties
