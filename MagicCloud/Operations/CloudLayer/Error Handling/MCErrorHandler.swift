@@ -19,7 +19,7 @@ import CloudKit
  *
  * Operation requires local cache to conform to `Recordable` protocol for version conflict resolution.
  */
-class MCErrorHandler<R: MCReceiver>: Operation {
+class MCErrorHandler<R: MCReceiver>: Operation, MCRetrier {
     
     // MARK: - Properties
     
@@ -95,11 +95,26 @@ class MCErrorHandler<R: MCReceiver>: Operation {
         // These errors occur as a result of environmental factors, and originating operation should
         // be retried after a set amount of time.
         case .networkUnavailable, .networkFailure, .serviceUnavailable, .requestRateLimited, .zoneBusy:
-            resolvingOperation = RetriableError(error: error,
-                                                originating: originatingOp,
-                                                target: database,
-                                                receiver: receiver,
-                                                completion: completionBlock)
+            guard let retryAfterValue = error.userInfo[CKErrorRetryAfterKey] as? TimeInterval else { return }
+
+            if isCancelled { return }
+
+            let q = DispatchQueue(label: retriableLabel)
+            if let op = replicate(originatingOp, with: receiver) {
+                
+                if isCancelled { return }
+
+                q.asyncAfter(deadline: .now() + retryAfterValue) {
+                    if self.isCancelled { return }
+                    
+                    if let cloudOp = op as? CKDatabaseOperation {
+                        self.database.db.add(cloudOp)
+                    } else {
+                        OperationQueue().addOperation(op)
+                    }
+                }
+            }
+            
             completionBlock = nil
         
         // These errors occur when CloudKit has a problem with a CKSharedDatabase operation.    // <-- Not currently supported but left here for future versions.

@@ -32,7 +32,6 @@
 		A1CB77381FBA86AF008ADF09 /* MCDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77351FBA86AD008ADF09 /* MCDelete.swift */; };
 		A1CB77391FBA86AF008ADF09 /* MCUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77361FBA86AE008ADF09 /* MCUpload.swift */; };
 		A1CB773C1FBA86CB008ADF09 /* MCErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB773B1FBA86CB008ADF09 /* MCErrorHandler.swift */; };
-		A1CB77451FBA86E7008ADF09 /* RetriableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77411FBA86E6008ADF09 /* RetriableError.swift */; };
 		A1CB774C1FBA874F008ADF09 /* RecieverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77481FBA874F008ADF09 /* RecieverTests.swift */; };
 		A1CB774E1FBA874F008ADF09 /* RecordableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77491FBA874F008ADF09 /* RecordableTests.swift */; };
 		A1CB77501FBA874F008ADF09 /* ReferableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB774A1FBA874F008ADF09 /* ReferableTests.swift */; };
@@ -53,7 +52,6 @@
 		A1CB77C71FBC3241008ADF09 /* PartialErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77C21FBC3241008ADF09 /* PartialErrorTests.swift */; };
 		A1CB77C81FBC3241008ADF09 /* BatchErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77C31FBC3241008ADF09 /* BatchErrorTests.swift */; };
 		A1CB77C91FBC3241008ADF09 /* VersionConflictTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77C41FBC3241008ADF09 /* VersionConflictTests.swift */; };
-		A1CB77CA1FBC3241008ADF09 /* RetriableErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77C51FBC3241008ADF09 /* RetriableErrorTests.swift */; };
 		A1CB77CB1FBC3241008ADF09 /* LimitExceededTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77C61FBC3241008ADF09 /* LimitExceededTests.swift */; };
 		A1CB77CC1FBC3326008ADF09 /* MCReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDD1FBA80BC00ADAA74 /* MCReceiver.swift */; };
 		A1CB77CD1FBCB1C1008ADF09 /* LimitExceeded.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77401FBA86E5008ADF09 /* LimitExceeded.swift */; };
@@ -62,7 +60,6 @@
 		A1CB77D11FBCBF47008ADF09 /* VersionConflict.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77461FBA86EC008ADF09 /* VersionConflict.swift */; };
 		A1CB77D21FBCBF4B008ADF09 /* VersionConflict.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77461FBA86EC008ADF09 /* VersionConflict.swift */; };
 		A1CB77D31FBCBF52008ADF09 /* BatchError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB773E1FBA86E4008ADF09 /* BatchError.swift */; };
-		A1CB77D41FBCBF59008ADF09 /* RetriableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77411FBA86E6008ADF09 /* RetriableError.swift */; };
 		A1CB77D51FBCBF5E008ADF09 /* PartialError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB773F1FBA86E5008ADF09 /* PartialError.swift */; };
 		A1CB77D61FBCBF62008ADF09 /* LimitExceeded.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77401FBA86E5008ADF09 /* LimitExceeded.swift */; };
 		A1CB77D91FBCE8F0008ADF09 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1CB77D81FBCE8E5008ADF09 /* CloudKit.framework */; };
@@ -155,7 +152,6 @@
 		A1CB773E1FBA86E4008ADF09 /* BatchError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchError.swift; sourceTree = "<group>"; };
 		A1CB773F1FBA86E5008ADF09 /* PartialError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartialError.swift; sourceTree = "<group>"; };
 		A1CB77401FBA86E5008ADF09 /* LimitExceeded.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LimitExceeded.swift; sourceTree = "<group>"; };
-		A1CB77411FBA86E6008ADF09 /* RetriableError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetriableError.swift; sourceTree = "<group>"; };
 		A1CB77461FBA86EC008ADF09 /* VersionConflict.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionConflict.swift; sourceTree = "<group>"; };
 		A1CB77481FBA874F008ADF09 /* RecieverTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecieverTests.swift; sourceTree = "<group>"; };
 		A1CB77491FBA874F008ADF09 /* RecordableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordableTests.swift; sourceTree = "<group>"; };
@@ -168,7 +164,6 @@
 		A1CB77C21FBC3241008ADF09 /* PartialErrorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartialErrorTests.swift; sourceTree = "<group>"; };
 		A1CB77C31FBC3241008ADF09 /* BatchErrorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchErrorTests.swift; sourceTree = "<group>"; };
 		A1CB77C41FBC3241008ADF09 /* VersionConflictTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionConflictTests.swift; sourceTree = "<group>"; };
-		A1CB77C51FBC3241008ADF09 /* RetriableErrorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetriableErrorTests.swift; sourceTree = "<group>"; };
 		A1CB77C61FBC3241008ADF09 /* LimitExceededTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LimitExceededTests.swift; sourceTree = "<group>"; };
 		A1CB77D81FBCE8E5008ADF09 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		A1CB77DF1FBCF131008ADF09 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -298,7 +293,6 @@
 				A1CB77401FBA86E5008ADF09 /* LimitExceeded.swift */,
 				A1CB773F1FBA86E5008ADF09 /* PartialError.swift */,
 				A1CB773E1FBA86E4008ADF09 /* BatchError.swift */,
-				A1CB77411FBA86E6008ADF09 /* RetriableError.swift */,
 				A1CB77461FBA86EC008ADF09 /* VersionConflict.swift */,
 			);
 			path = "Error Cases";
@@ -382,7 +376,6 @@
 				A1CB77C31FBC3241008ADF09 /* BatchErrorTests.swift */,
 				A1CB77C61FBC3241008ADF09 /* LimitExceededTests.swift */,
 				A1CB77C21FBC3241008ADF09 /* PartialErrorTests.swift */,
-				A1CB77C51FBC3241008ADF09 /* RetriableErrorTests.swift */,
 				A1CB77C41FBC3241008ADF09 /* VersionConflictTests.swift */,
 			);
 			path = ErrorHandling;
@@ -657,7 +650,6 @@
 				A1E6263F1FD7A6F00036FD67 /* MCRetrier.swift in Sources */,
 				A1CB77D21FBCBF4B008ADF09 /* VersionConflict.swift in Sources */,
 				90C4E8721FC0EAE300A8D329 /* MCUserRecord.swift in Sources */,
-				A1CB77451FBA86E7008ADF09 /* RetriableError.swift in Sources */,
 				A1268EE11FBA80BC00ADAA74 /* MCReceiver.swift in Sources */,
 				A1268EEA1FBA821C00ADAA74 /* MCDatabase.swift in Sources */,
 				A1CB77281FBA8683008ADF09 /* FailedOp.swift in Sources */,
@@ -697,10 +689,8 @@
 				A1CB77D11FBCBF47008ADF09 /* VersionConflict.swift in Sources */,
 				A1CB77681FBAAE9A008ADF09 /* MCDatabase.swift in Sources */,
 				A1CB77841FBB9879008ADF09 /* MCUpload.swift in Sources */,
-				A1CB77CA1FBC3241008ADF09 /* RetriableErrorTests.swift in Sources */,
 				A1CB77851FBB9881008ADF09 /* Pause.swift in Sources */,
 				A17DE9E61FBE56D900D2EB4F /* MCSubscriber.swift in Sources */,
-				A1CB77D41FBCBF59008ADF09 /* RetriableError.swift in Sources */,
 				A1CB77181FBA8535008ADF09 /* MCOperationReplicator.swift in Sources */,
 				A1CB77821FBB986F008ADF09 /* MCDownload.swift in Sources */,
 				90C4E8731FC0EAE300A8D329 /* MCUserRecord.swift in Sources */,
