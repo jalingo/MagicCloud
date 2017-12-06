@@ -34,7 +34,6 @@
 		A1CB773C1FBA86CB008ADF09 /* MCErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB773B1FBA86CB008ADF09 /* MCErrorHandler.swift */; };
 		A1CB774C1FBA874F008ADF09 /* RecieverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77481FBA874F008ADF09 /* RecieverTests.swift */; };
 		A1CB774E1FBA874F008ADF09 /* RecordableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77491FBA874F008ADF09 /* RecordableTests.swift */; };
-		A1CB77501FBA874F008ADF09 /* ReferableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB774A1FBA874F008ADF09 /* ReferableTests.swift */; };
 		A1CB77521FBA8773008ADF09 /* PauseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77511FBA8773008ADF09 /* PauseTests.swift */; };
 		A1CB77571FBA8793008ADF09 /* DownloadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77541FBA8791008ADF09 /* DownloadTests.swift */; };
 		A1CB77581FBA8793008ADF09 /* DeleteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77551FBA8792008ADF09 /* DeleteTests.swift */; };
@@ -155,7 +154,6 @@
 		A1CB77461FBA86EC008ADF09 /* VersionConflict.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionConflict.swift; sourceTree = "<group>"; };
 		A1CB77481FBA874F008ADF09 /* RecieverTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecieverTests.swift; sourceTree = "<group>"; };
 		A1CB77491FBA874F008ADF09 /* RecordableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordableTests.swift; sourceTree = "<group>"; };
-		A1CB774A1FBA874F008ADF09 /* ReferableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferableTests.swift; sourceTree = "<group>"; };
 		A1CB77511FBA8773008ADF09 /* PauseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PauseTests.swift; sourceTree = "<group>"; };
 		A1CB77541FBA8791008ADF09 /* DownloadTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadTests.swift; sourceTree = "<group>"; };
 		A1CB77551FBA8792008ADF09 /* DeleteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteTests.swift; sourceTree = "<group>"; };
@@ -351,7 +349,6 @@
 			isa = PBXGroup;
 			children = (
 				A1CB77491FBA874F008ADF09 /* RecordableTests.swift */,
-				A1CB774A1FBA874F008ADF09 /* ReferableTests.swift */,
 				A1CB77481FBA874F008ADF09 /* RecieverTests.swift */,
 			);
 			path = Protocols;
@@ -682,7 +679,6 @@
 				A1CB77CB1FBC3241008ADF09 /* LimitExceededTests.swift in Sources */,
 				A1268EE41FBA80BC00ADAA74 /* MCRecordable.swift in Sources */,
 				A1E626401FD7A6F00036FD67 /* MCRetrier.swift in Sources */,
-				A1CB77501FBA874F008ADF09 /* ReferableTests.swift in Sources */,
 				A1CB77871FBB9CB7008ADF09 /* FailedOp.swift in Sources */,
 				A1CB77831FBB9874008ADF09 /* MCDelete.swift in Sources */,
 				A1CB77691FBAAE9D008ADF09 /* TypeAliases.swift in Sources */,

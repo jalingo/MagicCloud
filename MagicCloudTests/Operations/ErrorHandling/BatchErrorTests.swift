@@ -21,7 +21,7 @@ class BatchErrorTests: XCTestCase {
     
     var errorDetected = false
     
-    let db: MCDatabaseType = .privateDB
+    let db: MCDatabase = .privateDB
     
     // MARK: - Functions
     
@@ -49,7 +49,7 @@ class BatchErrorTests: XCTestCase {
     func testBatchErrorHandlesPartialError() {
         let error = genError(code: CKError.partialFailure.rawValue)
 
-        let name = Notification.Name(MCNotification.error(error).toString())
+        let name = Notification.Name(MCNotification.error.toString())
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
 
         let testOp = BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])

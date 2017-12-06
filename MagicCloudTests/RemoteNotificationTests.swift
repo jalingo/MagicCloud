@@ -34,7 +34,7 @@ class RemoteNotificationTests: XCTestCase {
     func testNotificationReceiverCanConvertRemoteNotificationToLocal() {
         mockRec?.subscribeToChanges(on: .publicDB)
         
-        let name = MCNotification.changeNoticed(forType: MockRecordable().recordType, at: .publicDB))
+        let name = MCNotification.changeNoticed(forType: MockRecordable().recordType, at: .publicDB).toString()
         let mockAddedToDatabase = expectation(forNotification: Notification.Name(name), object: nil, handler: nil)
         
         print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY ADDED TO DATABASE")

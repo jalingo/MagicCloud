@@ -119,7 +119,21 @@ pause.completionBlock = { print("** finished cleanUp pause") }
         
         firstPause.waitUntilFinished()
         let secondFetch = expectation(description: "All Subscriptions Fetched, again")
-        MCDatabase.publicDB.db.fetchAllSubscriptions
+        MCDatabase.publicDB.db.fetchAllSubscriptions { possibleSubscriptions, possibleError in
+            if let subscriptions = possibleSubscriptions {
+                modifiedNumberOfSubscriptions = subscriptions.count
+            } else {
+                modifiedNumberOfSubscriptions = 0
+            }
+            
+            if let error = possibleError as? CKError {
+                print("** error @ Subscription End tests \(error.code.rawValue): \(error.localizedDescription)")
+            } else {
+                self.mock?.unsubscribeToChanges(from: .publicDB)
+            }
+            
+            secondFetch.fulfill()
+        }
         
         wait(for: [secondFetch], timeout: 5)
         guard originalNumberOfSubscriptions != nil, modifiedNumberOfSubscriptions != nil else { XCTFail(); return }
@@ -133,17 +147,17 @@ pause.completionBlock = { print("** finished cleanUp pause") }
         
         secondPause.waitUntilFinished()
         let thirdFetch = exception(description: "All Subscriptions Fetched, for a final time")
-        MCDatabase.publicDB.db.fetchAllSubscriptions{ possibleSubscriptions, possibleError in
+        MCDatabase.publicDB.db.fetchAllSubscriptions { possibleSubscriptions, possibleError in
             if let subscriptions = possibleSubscriptions {
-                modifiedNumberOfSubscriptions = subscriptions.count
+                finalNumberOfSubscriptions = subscriptions.count
             } else {
-                modifiedNumberOfSubscriptions = 0
+                finalNumberOfSubscriptions = 0
             }
             
             if let error = possibleError as? CKError {
                 print("** error @ Subscription End tests \(error.code.rawValue): \(error.localizedDescription)")
             } else {
-                mock?.unsubscribeToChanges(from: .publicDB)
+                self.mock?.unsubscribeToChanges(from: .publicDB)
             }
             
             thirdFetch.fulfill()
@@ -173,7 +187,7 @@ pause.completionBlock = { print("** finished cleanUp pause") }
 
 class MockReceiver: MCReceiver {
 
-    var subscription = MCSubscriber()
+    var subscription = MCSubscriber(forRecordType: type().recordType)
     
     typealias type = MockRecordable
     

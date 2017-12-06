@@ -39,7 +39,7 @@ class PartialErrorTests: XCTestCase {
     
     var mockRec = MockReceiver()
     
-    var database: MCDatabaseType { return .privateDB }
+    var database: MCDatabase { return .privateDB }
     
     // MARK: - Functions
     

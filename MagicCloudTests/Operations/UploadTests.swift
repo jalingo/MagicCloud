@@ -119,7 +119,7 @@ class UploadTests: XCTestCase {
         OperationQueue().addOperation(firstPause)
         OperationQueue().addOperation(testOp!)
         OperationQueue().addOperation(secondPause)
-        MCDatabaseType.publicDB.db.add(verifyOp)
+        MCDatabase.publicDB.db.add(verifyOp)
         OperationQueue().addOperation(prepOp)   // <-- Starts operation chain.
         
         // Waits for operations to complete and then evaluates test.
