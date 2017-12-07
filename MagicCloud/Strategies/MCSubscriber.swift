@@ -9,6 +9,7 @@
 import CloudKit
 import UserNotifications
 
+//!!
 public class MCSubscriber {
 
     // MARK: - Properties
@@ -22,14 +23,8 @@ public class MCSubscriber {
     // MARK: - Functions
     
     /**
-     This strategy creates a subscription that listens for injected change of record type at database and allows consequence.
-     
-     - Note: Each MCSubscriber manages a single subscription. For multiple subscriptions use different MCSubscribers.
-     
-     - Parameters:
-     - for: CKRecord.recordType that subscription listens for changes with.
-     - change: CKQuerySubscriptionOptions for subscription.
-     - database: DatabaseType for subscription to be saved to.
+        This method creates a subscription that listens for injected change of record type at database and allows consequence.
+        - Note: Each MCSubscriber manages a single subscription. For multiple subscriptions use different MCSubscribers.
      */
     func start() {
         
@@ -57,8 +52,18 @@ print("** error disabling: \(error)")
     
     // MARK: - Functions: Constructors
     
-    // !!
-    public init(forRecordType type: String, withConditions triggers: CKQuerySubscriptionOptions = [.firesOnRecordUpdate, .firesOnRecordDeletion, .firesOnRecordCreation], on db: MCDatabase = .publicDB) {
+    /**
+        !!
+     
+        - Parameters:
+            - type: CKRecord.recordType that subscription listens for changes with.
+            - triggers: CKQuerySubscriptionOptions for subscription.
+            - db: DatabaseType for subscription to be saved to.
+     */
+    public init(forRecordType type: String,
+                withConditions triggers: CKQuerySubscriptionOptions = [.firesOnRecordUpdate, .firesOnRecordDeletion, .firesOnRecordCreation],
+                on db: MCDatabase = .publicDB) {
+        
         let predicate = NSPredicate(value: true)
         self.subscription = CKQuerySubscription(recordType: type, predicate: predicate, options: triggers)
         
@@ -89,6 +94,7 @@ struct MCSubscriberError: MCRetrier {
         
         // Subscription already exists.
         guard error.code != CKError.Code.serverRejectedRequest else {
+print("** subscription already exists")
             database.db.fetchAllSubscriptions { possibleSubscriptions, possibleError in
 
                 // identify existing subscription...
