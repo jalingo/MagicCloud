@@ -36,6 +36,8 @@ class ViewController: UIViewController, MCReceiver {
     
     // MARK: - Functions
     
+    deinit { unsubscribeToChanges(from: .publicDB) }
+    
     // MARK: - Functions: IBActions
 
     @IBAction func newMockTapped(_ sender: UIButton) {

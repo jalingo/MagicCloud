@@ -32,7 +32,6 @@ class RecievesRecTests: XCTestCase {
         let op = MCUpload(mockRecordables, from: mock!, to: .publicDB)
         let pause = Pause(seconds: 3)
         pause.addDependency(op)
-pause.completionBlock = { print("** finished prep pause") }
         OperationQueue().addOperation(pause)
         OperationQueue().addOperation(op)
         
@@ -44,7 +43,6 @@ pause.completionBlock = { print("** finished prep pause") }
         let op = MCDelete(mockRecordables, of: mock!, from: .publicDB)
         let pause = Pause(seconds: 2)
         pause.addDependency(op)
-pause.completionBlock = { print("** finished cleanUp pause") }
         OperationQueue().addOperation(pause)
         OperationQueue().addOperation(op)
         
@@ -81,11 +79,15 @@ pause.completionBlock = { print("** finished cleanUp pause") }
         
         let firstFetch = expectation(description: "All Subscriptions Fetched")
         MCDatabase.publicDB.db.fetchAllSubscriptions { possibleSubscriptions, possibleError in
-            if let subscriptions = possibleSubscriptions {
-                originalNumberOfSubscriptions = subscriptions.count
-            } else {
-                originalNumberOfSubscriptions = 0
+            if let subscriptions = possibleSubscriptions, subscriptions.count != 0 {
+                let op = CKModifySubscriptionsOperation(subscriptionsToSave: nil,
+                                                        subscriptionIDsToDelete: subscriptions.map({$0.subscriptionID}))
+                op.completionBlock = { print("@________ \(subscriptions.count)") }
+                MCDatabase.publicDB.db.add(op)
+                op.waitUntilFinished()
             }
+
+            originalNumberOfSubscriptions = 0
             
             if let error = possibleError as? CKError {
                 print("** error @ Subscription Start tests \(error.code.rawValue): \(error.localizedDescription)")
@@ -98,7 +100,7 @@ pause.completionBlock = { print("** finished cleanUp pause") }
         mock?.subscribeToChanges(on: .publicDB)
         
         let firstPause = Pause(seconds: 2)
-        firstPause.completionBlock = { print("** done waiting for subscription to start") }
+        firstPause.completionBlock = { print("== done waiting for subscription to start") }
         OperationQueue().addOperation(firstPause)
         
         firstPause.waitUntilFinished()
@@ -126,7 +128,7 @@ pause.completionBlock = { print("** finished cleanUp pause") }
         mock?.unsubscribeToChanges(from: .publicDB)
         
         let secondPause = Pause(seconds: 2)
-        secondPause.completionBlock = { print("** done waiting for subscription to end") }
+        secondPause.completionBlock = { print("== done waiting for subscription to end") }
         OperationQueue().addOperation(secondPause)
         
         secondPause.waitUntilFinished()
@@ -150,6 +152,48 @@ pause.completionBlock = { print("** finished cleanUp pause") }
         wait(for: [thirdFetch], timeout: 5)
         guard finalNumberOfSubscriptions != nil else { XCTFail(); return }
         XCTAssertEqual(originalNumberOfSubscriptions, finalNumberOfSubscriptions)
+    }
+    
+    func testSubscriberErrorCanHandleServerRejectedRequest() {
+        let staleAltSub = MCSubscriber(forRecordType: MockRecordable().recordType, on: .publicDB)
+        staleAltSub.start()
+
+        // gives time for bad id to subscribe
+        let pause0 = Pause(seconds: 5)
+        OperationQueue().addOperation(pause0)
+        
+        // attempts to write subscribe with new id
+        pause0.waitUntilFinished()
+        mock?.subscribeToChanges(on: .publicDB)
+        
+        // gives time for mock to deal with conflict
+        let pause1 = Pause(seconds: 2)
+        OperationQueue().addOperation(pause1)
+        
+        pause1.waitUntilFinished()
+        
+        let fetchFinished = expectation(description: "READY_TO_TEST")
+        var idMatches = false
+        MCDatabase.publicDB.db.fetchAllSubscriptions { possibleSubs, possibleError in
+            if let subs = possibleSubs as? [CKQuerySubscription] {
+                if let sub = self.mock?.subscription.subscription{
+                    XCTAssert(subs.count == 1)
+                    if subs.map({$0.subscriptionID}).contains(sub.subscriptionID) {
+                        idMatches = true
+                    } else {
+                        XCTFail()
+                    }
+                } else {
+                    let id = staleAltSub.subscription.subscriptionID
+                    XCTAssertFalse(subs.map({$0.subscriptionID}).contains(id))
+                }
+            }
+            
+            fetchFinished.fulfill()
+        }
+        
+        wait(for: [fetchFinished], timeout: 5)
+        XCTAssert(idMatches)
     }
     
     // MARK: - Functions: XCTestCase

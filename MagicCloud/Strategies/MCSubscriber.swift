@@ -40,11 +40,9 @@ public class MCSubscriber {
     func end(subscriptionID: String? = nil) {
         // This loads id with either parameter or self.subscription's id
         let id = subscriptionID ?? subscription.subscriptionID
-print("** ending subscription")
+
         database.db.delete(withSubscriptionID: id) { possibleID, possibleError in
-print("** disabling subscription \(String(describing: possibleID))")
             if let error = possibleError as? CKError {
-print("** error disabling: \(error)")
                 self.subscriptionError.handle(error, whileSubscribing: false, to: subscriptionID)
             }
         }
@@ -75,11 +73,6 @@ print("** error disabling: \(error)")
     }
 }
 
-// !! First test w/out
-//func ==(left: CKQuerySubscription, right: CKQuerySubscription) -> Bool {
-//    return left.recordType == right.recordType && left.querySubscriptionOptions == right.querySubscriptionOptions
-//}
-
 struct MCSubscriberError: MCRetrier {
     
     var delegate: MCSubscriber?
@@ -94,42 +87,16 @@ struct MCSubscriberError: MCRetrier {
         
         // Subscription already exists.
         guard error.code != CKError.Code.serverRejectedRequest else {
-print("** subscription already exists")
-            database.db.fetchAllSubscriptions { possibleSubscriptions, possibleError in
-
-                // identify existing subscription...
-                if let subs = possibleSubscriptions {
-                    var conflictingSubscriptionFound = false
-                    
-                    for sub in subs {
-                        if let subscription = sub as? CKQuerySubscription, subscription == self.delegate?.subscription {
-
-                            // delete the subscription...
-                            self.delegate?.end(subscriptionID: sub.subscriptionID)
-                            conflictingSubscriptionFound = true
-                        }
-                    }
-                    
-                    // try new subscription again...
-                    if conflictingSubscriptionFound {
-                        let delay = error.retryAfterSeconds ?? 1
-                        let q = DispatchQueue(label: self.retriableLabel)
-                        q.asyncAfter(deadline: .now() + delay) { self.delegate?.start() }
-                    }
-                }
-            }
-            
+            subscriptionAlreadyExists(retryAfter: error.retryAfterSeconds)
             return
         }
         
         if retriableErrors.contains(error.code), let duration = error.userInfo[CKErrorRetryAfterKey] as? TimeInterval {
-print("** retrying subscription attempt")
             let q = DispatchQueue(label: retriableLabel)
             q.asyncAfter(deadline: .now() + duration) {
                 isSubscribing ? self.delegate?.start() : self.delegate?.end(subscriptionID: id)
             }
         } else {
-print("** not successful \(error.code.rawValue) - \(error)")
             // if not handled...
             let name = Notification.Name(MCNotification.error.toString())
             NotificationCenter.default.post(name: name, object: error)
@@ -137,7 +104,34 @@ print("** not successful \(error.code.rawValue) - \(error)")
         
     }
     
-    func subscriptionAlreadyExists() {
-        
+    func subscriptionAlreadyExists(retryAfter: Double?) {
+        database.db.fetchAllSubscriptions { possibleSubscriptions, possibleError in
+            
+            // identify existing subscription...
+            if let subs = possibleSubscriptions {
+                var conflictingSubscriptionFound = false
+
+                for sub in subs {
+                    if let subscription = sub as? CKQuerySubscription {
+                        //}, subscription == self.delegate?.subscription {
+
+                        if subscription.recordType == self.delegate?.subscription.recordType,
+                            subscription.querySubscriptionOptions == self.delegate?.subscription.querySubscriptionOptions {
+
+                            // delete the subscription...
+                            self.delegate?.end(subscriptionID: sub.subscriptionID)
+                            conflictingSubscriptionFound = true
+                        }
+                    }
+                }
+
+                // try new subscription again...
+                if conflictingSubscriptionFound {
+                    let delay = retryAfter ?? 1
+                    let q = DispatchQueue(label: self.retriableLabel)
+                    q.asyncAfter(deadline: .now() + delay) { self.delegate?.start() }
+                }
+            }
+        }
     }
 }
