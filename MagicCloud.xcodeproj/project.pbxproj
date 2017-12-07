@@ -255,7 +255,7 @@
 				A1268EB91FBA806200ADAA74 /* MagicCloud.h */,
 				A1268EBA1FBA806200ADAA74 /* Info.plist */,
 				A1CB771A1FBA8563008ADF09 /* Resources */,
-				A1CB77191FBA853C008ADF09 /* Strategies */,
+				A1CB77191FBA853C008ADF09 /* Classes */,
 				A1268EE51FBA811F00ADAA74 /* Protocols */,
 				A1CB77331FBA869D008ADF09 /* Operations */,
 			);
@@ -296,13 +296,13 @@
 			path = "Error Cases";
 			sourceTree = "<group>";
 		};
-		A1CB77191FBA853C008ADF09 /* Strategies */ = {
+		A1CB77191FBA853C008ADF09 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
 				A17DE9E41FBE56D900D2EB4F /* MCSubscriber.swift */,
 				90C4E8711FC0EAE300A8D329 /* MCUserRecord.swift */,
 			);
-			path = Strategies;
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		A1CB771A1FBA8563008ADF09 /* Resources */ = {
