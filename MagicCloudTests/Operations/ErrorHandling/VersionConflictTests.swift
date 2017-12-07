@@ -34,7 +34,7 @@ class VersionConflictTests: XCTestCase {
     var previous: CKRecord?
     
     var _previous: CKRecord {
-        let rec = CKRecord(recordType: mock!.recordType, recordID: mock!.recordID)
+        let rec = CKRecord(recordType: mock!.recordType, recordID: CKRecordID(recordName: "Distant-Past"))
         rec[TEST_KEY] = Date.distantPast as CKRecordValue
 
         return rec
@@ -52,7 +52,7 @@ class VersionConflictTests: XCTestCase {
     var attempted: CKRecord?
     
     var _attempted: CKRecord {
-        let rec = CKRecord(recordType: mock!.recordType, recordID: mock!.recordID)
+        let rec = CKRecord(recordType: mock!.recordType, recordID: CKRecordID(recordName: "MockIdentifier: 4001-01-01 00:00:00 +0000"))
         rec[TEST_KEY] = Date.distantFuture as CKRecordValue
 
         return rec
@@ -151,22 +151,15 @@ class VersionConflictTests: XCTestCase {
         
         let firstPause = Pause(seconds: 3)
         firstPause.addDependency(testOp!)
-        
-        let cleanUp = MCDelete([mock as! MockRecordable], of: mockRec, from: .privateDB)
-        
-        let secondPause = Pause(seconds: 2)
-        secondPause.addDependency(cleanUp)
-        
+
         let verifyOp = MCDownload(type: mock!.recordType, to: mockRec, from: .privateDB)
         verifyOp.addDependency(firstPause)
-        verifyOp.completionBlock = { OperationQueue().addOperation(cleanUp) }
         
-        OperationQueue().addOperation(secondPause)
-        OperationQueue().addOperation(firstPause)
         OperationQueue().addOperation(verifyOp)
+        OperationQueue().addOperation(firstPause)
         OperationQueue().addOperation(testOp!)
         
-        secondPause.waitUntilFinished()
+        verifyOp.waitUntilFinished()
         
         // With no changes to make, no record should be in the database to download.
         XCTAssert(mockRec.recordables.count == 0)

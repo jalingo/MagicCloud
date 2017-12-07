@@ -34,17 +34,31 @@ class RemoteNotificationTests: XCTestCase {
     func testNotificationReceiverCanConvertRemoteNotificationToLocal() {
         mockRec?.subscribeToChanges(on: .publicDB)
         
-        let name = MCNotification.changeNoticed(forType: MockRecordable().recordType, at: .publicDB).toString()
-        let mockAddedToDatabase = expectation(forNotification: Notification.Name(name), object: nil, handler: nil)
+        let mockAddedToDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
         
+        // Test pauses here to give external device time to add a mock to the database.
+        // Ensure mock is using the appropriate identifier, or deletion will fail locally.
         print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY ADDED TO DATABASE")
         wait(for: [mockAddedToDatabase], timeout: 30)
+
+        // Test pauses here to give app time to react and download recordable to receiver.
+        let firstPause = Pause(seconds: 2)
+        OperationQueue().addOperation(firstPause)
+        firstPause.waitUntilFinished()
+        
         XCTAssert(mockRec?.recordables.count != 0)
         
-        let mockRemovedFromDatabase = expectation(forNotification: Notification.Name(name), object: nil, handler: nil)
+        let mockRemovedFromDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
         
+        // Test pauses here to give external device time to remove mock from the database.
         print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY REMOVED FROM DATABASE")
         wait(for: [mockRemovedFromDatabase], timeout: 30)
+        
+        // Test pauses here to give app time to react and delete recordable from receiver.
+        let secondPause = Pause(seconds: 2)
+        OperationQueue().addOperation(secondPause)
+        secondPause.waitUntilFinished()
+        
         XCTAssert(mockRec?.recordables.count == 0)
         
         mockRec?.unsubscribeToChanges(from: .publicDB)

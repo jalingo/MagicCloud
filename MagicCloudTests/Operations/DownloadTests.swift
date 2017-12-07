@@ -138,6 +138,7 @@ class DownloadTests: XCTestCase {
 
         let reference = CKReference(recordID: mock.recordID, action: .deleteSelf)
         let ownedMock = MockReferable()
+        ownedMock.recordID = CKRecordID(recordName: "ReferencedMock")
         ownedMock.owner = reference
         
         let mocks = [ownedMock]
@@ -183,6 +184,7 @@ class DownloadTests: XCTestCase {
         
         let reference = CKReference(recordID: mock.recordID, action: .deleteSelf)
         let ownedMock = MockReferable()
+        ownedMock.recordID = CKRecordID(recordName: "ReferencedMock")
         ownedMock.owner = reference
         
         let mocks = [ownedMock]

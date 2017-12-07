@@ -27,9 +27,18 @@ class UploadTests: XCTestCase {
     
     func loadMockRecordables() {
         mocks = [MockRecordable]()
-        mocks?.append(MockRecordable(created: Date.distantPast))
-        mocks?.append(MockRecordable(created: start))
-        mocks?.append(MockRecordable(created: Date.distantFuture))
+        
+        let first = MockRecordable(created: Date.distantPast)
+        first.recordID = CKRecordID(recordName: "Distant-Past")
+        mocks?.append(first)
+
+        let second = MockRecordable(created: start)
+        second.recordID = CKRecordID(recordName: "Present")
+        mocks?.append(second)
+        
+        let third = MockRecordable(created: Date.distantFuture)
+        third.recordID = CKRecordID(recordName: "Distant-Future")
+        mocks?.append(third)
     }
     
     // MARK: - Functions: Unit Tests

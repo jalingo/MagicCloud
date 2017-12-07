@@ -18,7 +18,9 @@ class RecievesRecTests: XCTestCase {
     var mockRecordables: [MockRecordable] {
         var array = [MockRecordable]()
 
-        array.append(MockRecordable(created: Date.distantPast))
+        let distantPast = MockRecordable(created: Date.distantPast)
+        distantPast.recordID = CKRecordID(recordName: "Distant-Past")
+        array.append(distantPast)
         array.append(MockRecordable(created: Date.distantFuture))
         
         return array
@@ -70,24 +72,6 @@ pause.completionBlock = { print("** finished cleanUp pause") }
         } else {
             XCTFail()
         }
-    }
-    
-    func testReceiverCanListenForLocalNotification() {
-        mock?.listenForDatabaseChanges()
-        
-        let _ = prepareDatabase()
-        
-        let type = MockRecordable().recordType
-        let notice = MCNotification.changeNoticed(forType: type, at: .publicDB)
-       
-        let name = Notification.Name(notice.toString())
-        NotificationCenter.default.post(name: name, object: notice)
-        
-        let pause = Pause(seconds: 2)
-        OperationQueue().addOperation(pause)
-        
-        pause.waitUntilFinished()
-        XCTAssert(mock?.recordables.count != 0)
     }
     
     func testReceiverCanStartAndEndSubscriptions() {
@@ -195,7 +179,9 @@ class MockReceiver: MCReceiver {
      * This protected property is an array of recordables used by reciever.
      */
     var recordables = [type]() {
-        didSet { print("** recordables didSet = \(recordables.count)") }
+        didSet {
+            print("** last download: \(recordables[recordables.count - 1].recordID.recordName)")
+            print("** recordables didSet = \(recordables.count)") }
     }
     
     deinit {
@@ -203,7 +189,6 @@ class MockReceiver: MCReceiver {
         
         let pause = Pause(seconds: 3)
         OperationQueue().addOperation(pause)
-pause.completionBlock = { print("** finished deinit pause") }
         pause.waitUntilFinished()
         
         print("** deinit MockReceiver")

@@ -75,12 +75,9 @@ class VersionConflict<R: MCReceiver>: Operation {
         
         var recordable: MCRecordable?
         for instance in recordables {
-print("insance: \(instance.recordID) vs current: \(current.recordID)")
-            if instance.recordID.recordName == current.recordID.recordName {
-print("matched")
-                recordable = instance }  // <-- Not Happening?
+            if instance.recordID.recordName == current.recordID.recordName { recordable = instance }
         }
-print("recordables: \(recordables.count)")
+
         guard recordable != nil else { print("recordableIsNil @ VersionConflict:1"); return nil }
         
         for entry in recordable!.recordFields {
@@ -136,7 +133,6 @@ print("recordables: \(recordables.count)")
         if isCancelled { return }
         
         if let cloudError = error as? CKError {
-            print("handling error @ VersionConflict")
             let errorHandler = MCErrorHandler(error: cloudError,
                                               originating: op,
                                               target: database,
@@ -145,9 +141,9 @@ print("recordables: \(recordables.count)")
             
             self.completionOperation.addDependency(errorHandler)
             
-            let queue = OperationQueue()    // <-- Required until queues adopt singleton pattern...
-            queue.addOperation(self.completionOperation)
-            queue.addOperation(errorHandler)
+            let q = OperationQueue()
+            q.addOperation(self.completionOperation)
+            q.addOperation(errorHandler)
         } else {
             print("Not CKError: \(String(describing: error)) @ VersionConflictOp")
         }
@@ -159,7 +155,7 @@ print("recordables: \(recordables.count)")
         if isCancelled { return }
         
         if let record = conflictResolution() {
-print("conflict resolved")
+
             // Uploads current record with changes made and latest changeTag.
             let op = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
             op.modifyRecordsCompletionBlock = { records, recordIDs, error in
@@ -177,9 +173,6 @@ print("conflict resolved")
             database.db.add(op)
         }
     }
-    
-    // This override's purpose is to make the empty init inaccessible.
-//    fileprivate override init() { policy = .changedKeys }
     
     // MARK: - Functions: Constructor
     
