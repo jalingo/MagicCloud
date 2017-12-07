@@ -52,7 +52,7 @@ class BatchErrorTests: XCTestCase {
         let error = genError(code: CKError.partialFailure.rawValue)
         errorMatch = error
 
-        let name = Notification.Name(MCNotification.error.toString())
+        let name = Notification.Name(MCErrorNotification)
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
 
         let testOp = BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
@@ -75,7 +75,7 @@ class BatchErrorTests: XCTestCase {
         let error = genError(code: CKError.limitExceeded.rawValue)
         errorMatch = error
 
-        let name = Notification.Name(MCNotification.error.toString())
+        let name = Notification.Name(MCErrorNotification)
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
 
         let testOp = BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
@@ -98,7 +98,7 @@ class BatchErrorTests: XCTestCase {
         let error = genError(code: CKError.batchRequestFailed.rawValue)
         errorMatch = error
 
-        let name = Notification.Name(MCNotification.error.toString())
+        let name = Notification.Name(MCErrorNotification)
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
 
         let testOp = BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])

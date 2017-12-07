@@ -9,15 +9,17 @@
 import CloudKit
 
 /// forType = CKRecordType
-public enum MCNotification {
-    case error, changeNoticed(forType: String, at: MCDatabase)
-    
-    static let userInfoKey = "MCNotification_Dictionary_Key"
-    
-    public func toString() -> String {
-        switch self {
-        case .error:                            return "CLOUD_KIT_ERROR"
-        case .changeNoticed(let type, let db):  return "\(type)_CHANGED_IN_\(db)"
-        }
-    }
-}
+//public enum MCNotification {
+//    case error, changeNoticed(forType: String, at: MCDatabase)
+//
+//    static let userInfoKey = "MCNotification_Dictionary_Key"
+//
+//    public func toString() -> String {
+//        switch self {
+//        case .error:                            return "CLOUD_KIT_ERROR"
+//        case .changeNoticed(let type, let db):  return "\(type)_CHANGED_IN_\(db)"
+//        }
+//    }
+//}
+
+public let MCErrorNotification = "CLOUD_KIT_ERROR"

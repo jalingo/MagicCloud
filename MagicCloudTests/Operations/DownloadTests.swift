@@ -173,7 +173,7 @@ class DownloadTests: XCTestCase {
 
         // Evaluates results.
         if let result = mockRec.recordables.first {
-            XCTAssert(ownedMock.recordID == result.recordID)
+            XCTAssert(ownedMock.recordID.recordName == result.recordID.recordName)
         } else {
             XCTFail()
         }

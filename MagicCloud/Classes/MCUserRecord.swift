@@ -43,7 +43,7 @@ public class MCUserRecord: MCRetrier {
         } else {
             
             // Fatal Errors...
-            let name = Notification.Name(MCNotification.error.toString())
+            let name = Notification.Name(MCErrorNotification)
             NotificationCenter.default.post(name: name, object: error)
             
             self.group.leave()

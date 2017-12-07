@@ -66,7 +66,7 @@ class MCErrorHandler<R: MCReceiver>: Operation, MCRetrier {
         
         // This console message reports instances when error shouldn't be ignored or isn't partial failure.
         if !(error.code == .unknownItem && ignoreUnknownItem) || !(error.code == .partialFailure) {
-            let name = Notification.Name(MCNotification.error.toString())
+            let name = Notification.Name(MCErrorNotification)
             NotificationCenter.default.post(name: name, object: error)
         }
         

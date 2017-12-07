@@ -98,7 +98,7 @@ struct MCSubscriberError: MCRetrier {
             }
         } else {
             // if not handled...
-            let name = Notification.Name(MCNotification.error.toString())
+            let name = Notification.Name(MCErrorNotification)
             NotificationCenter.default.post(name: name, object: error)
         }
         

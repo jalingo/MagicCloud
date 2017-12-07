@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MCNotificationConverter {
         convertToLocal(from: userInfo)
         
         // This observer demonstrates how to access error notifications and their underlying data.
-        let name = Notification.Name(MCNotification.error.toString())
+        let name = Notification.Name(MCErrorNotification)
         NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil) { notification in
             
             // Error notifications from MagicCloud should always include the actual CKError as Notification.object.

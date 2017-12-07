@@ -50,7 +50,7 @@ class MCErrorHandlerTests: XCTestCase {
         
         loadTestOp(error: error)
         
-        let name = Notification.Name(MCNotification.error.toString())
+        let name = Notification.Name(MCErrorNotification)
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
         
         OperationQueue().addOperation(testOp!)
@@ -74,7 +74,7 @@ class MCErrorHandlerTests: XCTestCase {
         
         loadTestOp(error: error)
         
-        let name = Notification.Name(MCNotification.error.toString())
+        let name = Notification.Name(MCErrorNotification)
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
 
         OperationQueue().addOperation(testOp!)
@@ -98,7 +98,7 @@ class MCErrorHandlerTests: XCTestCase {
         
         loadTestOp(error: error)
         
-        let name = Notification.Name(MCNotification.error.toString())
+        let name = Notification.Name(MCErrorNotification)
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
         
         OperationQueue().addOperation(testOp!)
@@ -122,7 +122,7 @@ class MCErrorHandlerTests: XCTestCase {
         
         loadTestOp(error: error)
         
-        let name = Notification.Name(MCNotification.error.toString())
+        let name = Notification.Name(MCErrorNotification)
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
         
         OperationQueue().addOperation(testOp!)
@@ -146,7 +146,7 @@ class MCErrorHandlerTests: XCTestCase {
         
         loadTestOp(error: error)
         
-        let name = Notification.Name(MCNotification.error.toString())
+        let name = Notification.Name(MCErrorNotification)
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
         
         OperationQueue().addOperation(testOp!)
@@ -170,7 +170,7 @@ class MCErrorHandlerTests: XCTestCase {
         
         loadTestOp(error: error)
         
-        let name = Notification.Name(MCNotification.error.toString())
+        let name = Notification.Name(MCErrorNotification)
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
         
         OperationQueue().addOperation(testOp!)

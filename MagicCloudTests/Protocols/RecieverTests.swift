@@ -223,9 +223,7 @@ class MockReceiver: MCReceiver {
      * This protected property is an array of recordables used by reciever.
      */
     var recordables = [type]() {
-        didSet {
-            print("** last download: \(recordables[recordables.count - 1].recordID.recordName)")
-            print("** recordables didSet = \(recordables.count)") }
+        didSet { print("** recordables didSet = \(recordables.count)") }
     }
     
     deinit {

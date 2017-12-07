@@ -43,7 +43,7 @@ class BatchError<R: MCReceiver>: Operation {
 // TODO: !! Needs to be removed before release, to prevent double notifications (here and @ MCErrorHandler).
 
 ///#######/// vvvvvvvv FOR TESTING PURPOSES vvvvvvvv ///#######///
-let name = Notification.Name(MCNotification.error.toString())
+let name = Notification.Name(MCErrorNotification)
 NotificationCenter.default.post(name: name, object: error)
 ///#######/// ^^^^^^^^ REMOVE BEFORE SUBMIT ^^^^^^^^ ///#######///
         
