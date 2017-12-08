@@ -67,8 +67,6 @@ class DeleteTests: XCTestCase {
 
             if let dictionary = results {
                 for entry in dictionary {
-                    print("key: \(entry.key)")
-                    print("value: \(entry.value)")
 
                     let cleanUpAfterFailure = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [entry.key])
                     if #available(iOS 11.0, *) {
