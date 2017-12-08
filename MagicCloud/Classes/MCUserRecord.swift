@@ -24,7 +24,7 @@ public class MCUserRecord: MCRetrier {
     /**
         This read-only, computed property should be called async from main thread because it calls to remote database before returning value. If successful returns the User's CloudKit CKRecordID, otherwise returns nil.
      */
-    var singleton: CKRecordID? {
+    public var singleton: CKRecordID? {
         group.enter()
 
         retrieveUserRecord()
@@ -61,4 +61,7 @@ public class MCUserRecord: MCRetrier {
             }
         }
     }
+    
+    // This makes initializer public.
+    public init() { }
 }
