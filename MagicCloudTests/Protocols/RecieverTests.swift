@@ -167,7 +167,7 @@ class RecievesRecTests: XCTestCase {
         mock?.subscribeToChanges(on: .publicDB)
         
         // gives time for mock to deal with conflict
-        let pause1 = Pause(seconds: 2)
+        let pause1 = Pause(seconds: 5)
         OperationQueue().addOperation(pause1)
         
         pause1.waitUntilFinished()
@@ -177,6 +177,7 @@ class RecievesRecTests: XCTestCase {
         MCDatabase.publicDB.db.fetchAllSubscriptions { possibleSubs, possibleError in
             if let subs = possibleSubs as? [CKQuerySubscription] {
                 if let sub = self.mock?.subscription.subscription{
+print("tt subs # \(subs.count) _ \(subs.map({$0.subscriptionID}))")
                     XCTAssert(subs.count == 1)
                     if subs.map({$0.subscriptionID}).contains(sub.subscriptionID) {
                         idMatches = true
@@ -223,7 +224,9 @@ class MockReceiver: MCReceiver {
      * This protected property is an array of recordables used by reciever.
      */
     var recordables = [type]() {
-        didSet { print("** recordables didSet = \(recordables.count)") }
+        didSet {
+            print("** newRecordable = \(String(describing: recordables.last?.recordID.recordName))")
+            print("** recordables didSet = \(recordables.count)") }
     }
     
     deinit {
