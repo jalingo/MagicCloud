@@ -47,7 +47,7 @@ class RemoteNotificationTests: XCTestCase {
         firstPause.waitUntilFinished()
         
         let firstResult = mockRec?.recordables.count
-        XCTAssert(firstResult != 0)
+        XCTAssert(firstResult == 1)
         
         let mockRemovedFromDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
         
