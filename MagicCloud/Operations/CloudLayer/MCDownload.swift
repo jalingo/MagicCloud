@@ -64,7 +64,11 @@ public class MCDownload<R: MCReceiver>: Operation {
     fileprivate func recordFetched() -> FetchBlock {
         return { record in            
             let recordable = R.type().prepare(from: record)
-            self.receiver.recordables.append(recordable)
+            
+            // This if statement checks to avoid downloading duplicates.
+            if !self.receiver.recordables.contains(where: {$0.recordID.recordName == recordable.recordID.recordName}) {
+                self.receiver.recordables.append(recordable)
+            }
         }
     }
     

@@ -110,7 +110,6 @@ public extension MCReceiver {
      */
     public func subscribeToChanges(on db: MCDatabase) {
         let recordType = type().recordType
-//        let triggers: CKQuerySubscriptionOptions = [.firesOnRecordCreation, .firesOnRecordUpdate, .firesOnRecordDeletion]
         subscription = MCSubscriber(forRecordType: recordType, on: db)
         subscription.start()
         
