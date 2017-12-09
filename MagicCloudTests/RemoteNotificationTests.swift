@@ -46,7 +46,8 @@ class RemoteNotificationTests: XCTestCase {
         OperationQueue().addOperation(firstPause)
         firstPause.waitUntilFinished()
         
-        XCTAssert(mockRec?.recordables.count != 0)
+        let firstResult = mockRec?.recordables.count
+        XCTAssert(firstResult != 0)
         
         let mockRemovedFromDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
         
@@ -59,7 +60,11 @@ class RemoteNotificationTests: XCTestCase {
         OperationQueue().addOperation(secondPause)
         secondPause.waitUntilFinished()
         
-        XCTAssert(mockRec?.recordables.count == 0)
+        if let lastResult = firstResult {
+            XCTAssert(mockRec?.recordables.count == lastResult - 1)
+        } else {
+            XCTFail()
+        }
         
         mockRec?.unsubscribeToChanges()
 
