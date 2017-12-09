@@ -11,7 +11,7 @@ import CloudKit
 /**
     This protocol enables conforming types to give access to an array of Recordable, and to prevent / allow that array's didSet to upload said array's changes to the cloud.
  */
-public protocol MCReceiver: AnyObject {
+public protocol MCReceiver: AnyObject { // <-- Do we still need AnyObject !!
     
     /// Receivers can only work with one type (for error handling).
     associatedtype type: MCRecordable
@@ -30,14 +30,16 @@ public protocol MCReceiver: AnyObject {
     func subscribeToChanges(on: MCDatabase)
     
     /**
-        This method unsubscribes from changes to the specified database. Implementation for this method should not be overwritten.
+        This method unsubscribes from previous subscription. Implementation for this method should not be overwritten.
      */
-    func unsubscribeToChanges(from: MCDatabase)
+    func unsubscribeToChanges()
     
     /// This method empties recordables, and refills it from the specified database.
     /// Implementation for this method should not be overwritten.
     func downloadAll(from: MCDatabase, completion: OptionalClosure)
 }
+
+// MARK: - Extensions
 
 public extension MCReceiver {
     
@@ -108,8 +110,8 @@ public extension MCReceiver {
      */
     public func subscribeToChanges(on db: MCDatabase) {
         let recordType = type().recordType
-        let triggers: CKQuerySubscriptionOptions = [.firesOnRecordCreation, .firesOnRecordUpdate, .firesOnRecordDeletion]
-        subscription = MCSubscriber(forRecordType: recordType, withConditions: triggers, on: db)
+//        let triggers: CKQuerySubscriptionOptions = [.firesOnRecordCreation, .firesOnRecordUpdate, .firesOnRecordDeletion]
+        subscription = MCSubscriber(forRecordType: recordType, on: db)
         subscription.start()
         
         // This turns on listeners for local notifications that respond to remote notifications.
@@ -117,7 +119,7 @@ public extension MCReceiver {
     }
     
     /// This method unsubscribes from changes to the specified database.
-    public func unsubscribeToChanges(from db: MCDatabase) { subscription.end() }
+    public func unsubscribeToChanges() { subscription.end() }
     
     /**
         This method empties recordables, and refills it from the specified database.
@@ -135,5 +137,24 @@ public extension MCReceiver {
         // empties recordables, then downloads from database.
         recordables = []
         OperationQueue().addOperation(op)
+    }
+}
+
+// MARK: - Wrappers
+
+class AnyReceiver<T: MCRecordable>: MCReceiver {
+    typealias type = T
+
+    var recordables: [T] = [T]()
+    
+    var subscription: MCSubscriber
+    
+    init(db: MCDatabase) {
+        subscription = MCSubscriber(forRecordType: T().recordType, on: db)
+        subscribeToChanges(on: db)
+    }
+    
+    deinit {
+        unsubscribeToChanges()
     }
 }

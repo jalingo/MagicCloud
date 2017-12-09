@@ -61,7 +61,7 @@ class RemoteNotificationTests: XCTestCase {
         
         XCTAssert(mockRec?.recordables.count == 0)
         
-        mockRec?.unsubscribeToChanges(from: .publicDB)
+        mockRec?.unsubscribeToChanges()
 
         let pause = Pause(seconds: 2)
         OperationQueue().addOperation(pause)

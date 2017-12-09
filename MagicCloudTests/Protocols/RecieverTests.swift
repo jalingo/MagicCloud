@@ -115,7 +115,7 @@ class RecievesRecTests: XCTestCase {
             if let error = possibleError as? CKError {
                 print("** error @ Subscription End tests \(error.code.rawValue): \(error.localizedDescription)")
             } else {
-                self.mock?.unsubscribeToChanges(from: .publicDB)
+                self.mock?.unsubscribeToChanges()
             }
             
             secondFetch.fulfill()
@@ -125,7 +125,7 @@ class RecievesRecTests: XCTestCase {
         guard originalNumberOfSubscriptions != nil, modifiedNumberOfSubscriptions != nil else { XCTFail(); return }
         XCTAssertNotEqual(originalNumberOfSubscriptions, modifiedNumberOfSubscriptions)
         
-        mock?.unsubscribeToChanges(from: .publicDB)
+        mock?.unsubscribeToChanges()
         
         let secondPause = Pause(seconds: 2)
         secondPause.completionBlock = { print("== done waiting for subscription to end") }
@@ -143,7 +143,7 @@ class RecievesRecTests: XCTestCase {
             if let error = possibleError as? CKError {
                 print("** error @ Subscription End tests \(error.code.rawValue): \(error.localizedDescription)")
             } else {
-                self.mock?.unsubscribeToChanges(from: .publicDB)
+                self.mock?.unsubscribeToChanges()
             }
             
             thirdFetch.fulfill()
@@ -227,7 +227,7 @@ class MockReceiver: MCReceiver {
     }
     
     deinit {
-        unsubscribeToChanges(from: .publicDB)
+        unsubscribeToChanges()
         
         let pause = Pause(seconds: 3)
         OperationQueue().addOperation(pause)

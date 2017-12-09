@@ -36,7 +36,7 @@ class ViewController: UIViewController, MCReceiver {
     
     // MARK: - Functions
     
-    deinit { unsubscribeToChanges(from: .publicDB) }
+    deinit { unsubscribeToChanges() }
     
     // MARK: - Functions: IBActions
 
@@ -67,7 +67,7 @@ class ViewController: UIViewController, MCReceiver {
         isSubscribed ?
         
         // This method unsubscribes from changes to the specified database.
-        unsubscribeToChanges(from: .publicDB)
+        unsubscribeToChanges()
         
         :   // else...
             
