@@ -142,14 +142,14 @@ public extension MCReceiver {
 
 // MARK: - Wrappers
 
-class AnyReceiver<T: MCRecordable>: MCReceiver {
-    typealias type = T
+public class MCAnyReceiver<T: MCRecordable>: MCReceiver {
+    public typealias type = T
 
-    var recordables: [T] = [T]()
+    public var recordables: [T] = [T]()
     
-    var subscription: MCSubscriber
+    public var subscription: MCSubscriber
     
-    init(db: MCDatabase) {
+    public init(db: MCDatabase) {
         subscription = MCSubscriber(forRecordType: T().recordType, on: db)
         subscribeToChanges(on: db)
     }
