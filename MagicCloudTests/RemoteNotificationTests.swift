@@ -32,7 +32,7 @@ class RemoteNotificationTests: XCTestCase {
     // MARK: - Functions: Tests
     
     func testNotificationReceiverCanConvertRemoteNotificationToLocal() {
-        mockRec?.subscribeToChanges(on: .publicDB)
+//        mockRec?.subscribeToChanges(on: .publicDB)        // <-- Already setup by the test app's view controller.
         
         let mockAddedToDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
         
@@ -42,7 +42,7 @@ class RemoteNotificationTests: XCTestCase {
         wait(for: [mockAddedToDatabase], timeout: 30)
 
         // Test pauses here to give app time to react and download recordable to receiver.
-        let firstPause = Pause(seconds: 2)
+        let firstPause = Pause(seconds: 4)
         OperationQueue().addOperation(firstPause)
         firstPause.waitUntilFinished()
         
