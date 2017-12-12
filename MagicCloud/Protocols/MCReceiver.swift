@@ -141,7 +141,7 @@ public extension MCReceiver {
 
 // MARK: - Wrappers
 
-public class MCAnyReceiver<T: MCRecordable>: MCReceiver {
+open class MCAnyReceiver<T: MCRecordable>: MCReceiver {
     public typealias type = T
 
     public var recordables: [T] = [T]()
