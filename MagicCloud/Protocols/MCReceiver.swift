@@ -56,6 +56,8 @@ public extension MCReceiver {
                 guard let id = notice.recordID else { return }
 
                 self.respondTo(trigger, for: id, on: db)
+            } else if let changed = notification.object as? LocalChangePackage {
+                self.respondTo(changed.reason, for: changed.id, on: changed.db)
             }
         }
     }

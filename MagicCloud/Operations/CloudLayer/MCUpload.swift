@@ -104,6 +104,14 @@ public class MCUpload<R: MCReceiver>: Operation {
         if isCancelled { return }
         
         database.db.add(op)
+        
+        if isCancelled { return }
+        
+        for recordable in recordables {
+            let name = Notification.Name(recordable.recordType)
+            let change = LocalChangePackage(id: recordable.recordID, reason: .recordCreated, db: database)
+            NotificationCenter.default.post(name: name, object: change)
+        }
     }
     
     // MARK: - Functions: Constructors

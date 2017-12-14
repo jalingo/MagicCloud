@@ -56,8 +56,18 @@ public class MCDelete<R: MCReceiver>: Operation {
     func delayDispatch(_ op: CKDatabaseOperation) {
         let time = DispatchTime.now() + Double(delayInSeconds)
         DispatchQueue(label: "DelayedRecordDeletion").asyncAfter(deadline: time) {
+
             if self.isCancelled { return }
+            
             self.database.db.add(op)
+            
+            if self.isCancelled { return }
+            
+            for recordable in self.recordables {
+                let name = Notification.Name(recordable.recordType)
+                let change = LocalChangePackage(id: recordable.recordID, reason: .recordDeleted, db: self.database)
+                NotificationCenter.default.post(name: name, object: change)
+            }
         }
     }
     

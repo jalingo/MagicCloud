@@ -22,3 +22,6 @@ public typealias ModifyBlock = ([CKRecord]?, [CKRecordID]?, Error?) -> Void
 
 public typealias NotifyBlock = (Notification) -> Void
 
+// MARK: - Local Notification Objects
+
+typealias LocalChangePackage = (id: CKRecordID, reason: CKQueryNotificationReason, db: MCDatabase)
