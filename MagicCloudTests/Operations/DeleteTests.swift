@@ -201,8 +201,8 @@ class DeleteTests: XCTestCase {
         let firstPause = Pause(seconds: 5)
 
         // This q delay gives subscriptions time to error handle...
-        DispatchQueue().asyncAfter(deadline: .now() + 3) {
-            let prep = MCUpload([mock!], from: mockRec, to: .privateDB)
+        DispatchQueue(label: "test q").asyncAfter(deadline: .now() + 3) {
+            let prep = MCUpload([self.mock!], from: self.mockRec, to: .privateDB)
             firstPause.addDependency(prep)
 
             OperationQueue().addOperation(firstPause)

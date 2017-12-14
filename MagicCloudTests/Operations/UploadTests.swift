@@ -56,7 +56,7 @@ class UploadTests: XCTestCase {
 //        clean.completionBlock = { group.leave() }
         
         OperationQueue().addOperation(pause)
-        OperationQueue().addOperation(op)
+        OperationQueue().addOperation(clean)
         pause.waitUntilFinished()
 //        group.wait()
     }
@@ -257,10 +257,10 @@ class UploadTests: XCTestCase {
         
         // This q delay gives subscriptions time to error handle...
         let pause = Pause(seconds: 3)
-        DispatchQueue().asyncAfter(deadline: .now() + 3) {
-            pause.addDependency(testOp!)
+        DispatchQueue(label: "test q").asyncAfter(deadline: .now() + 3) {
+            pause.addDependency(self.testOp!)
             OperationQueue().addOperation(pause)
-            OperationQueue().addOperation(testOp!)
+            OperationQueue().addOperation(self.testOp!)
         }
         
         pause.waitUntilFinished()

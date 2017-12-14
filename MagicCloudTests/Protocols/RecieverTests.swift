@@ -214,7 +214,7 @@ print("tt subs # \(subs.count) _ \(subs.map({$0.subscriptionID}))")
 
 // MARK: - Mocks
 
-class MockReceiver: MCReceiver {
+class MockReceiver: MCReceiverAbstraction {
 
     var subscription = MCSubscriber(forRecordType: type().recordType)
     
