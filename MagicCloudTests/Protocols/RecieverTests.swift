@@ -54,7 +54,7 @@ class RecievesRecTests: XCTestCase {
     
     func testReceiverHasRecordables() { XCTAssertNotNil(mock?.recordables) }
 
-    func testReceiverHasAssociatedTypeRecordable() { XCTAssert(mock?.recordables is [MCRecordable]) }
+    func testReceiverHasAssociatedTypeRecordable() { XCTAssertNotNil(mock?.recordables) }
     
     func testReceiverHasSubscriber() { XCTAssertNotNil(mock?.subscription) }
     
