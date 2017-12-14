@@ -82,7 +82,7 @@ class RecievesRecTests: XCTestCase {
             if let subscriptions = possibleSubscriptions, subscriptions.count != 0 {
                 let op = CKModifySubscriptionsOperation(subscriptionsToSave: nil,
                                                         subscriptionIDsToDelete: subscriptions.map({$0.subscriptionID}))
-                op.completionBlock = { print("@________ \(subscriptions.count)") }
+                op.completionBlock = { print("@fetchAllSubscriptions \(subscriptions.count)") }
                 MCDatabase.publicDB.db.add(op)
                 op.waitUntilFinished()
             }
@@ -177,7 +177,6 @@ class RecievesRecTests: XCTestCase {
         MCDatabase.publicDB.db.fetchAllSubscriptions { possibleSubs, possibleError in
             if let subs = possibleSubs as? [CKQuerySubscription] {
                 if let sub = self.mock?.subscription.subscription{
-print("tt subs # \(subs.count) _ \(subs.map({$0.subscriptionID}))")
                     XCTAssert(subs.count == 1)
                     if subs.map({$0.subscriptionID}).contains(sub.subscriptionID) {
                         idMatches = true
@@ -195,6 +194,44 @@ print("tt subs # \(subs.count) _ \(subs.map({$0.subscriptionID}))")
         
         wait(for: [fetchFinished], timeout: 5)
         XCTAssert(idMatches)
+    }
+    
+    func testReceiverWrapperSelfRegulatesLocally() {
+        let receiver = MCReceiver<MockRecordable>(db: .publicDB)
+        
+        let e = expectation(description: "Async activity completed.")
+        
+        // This delay allows receiver to establish subscription.
+        DispatchQueue(label: "test q").asyncAfter(deadline: .now() + 3) {
+            let _ = self.prepareDatabase()
+            
+            // This delay allows receiver to respond to changes.
+            DispatchQueue(label: "q test").asyncAfter(deadline: .now() + 5) { e.fulfill() }
+        }
+        
+        wait(for: [e], timeout: 15)
+        XCTAssertNotEqual(receiver.recordables.count, 0)
+    }
+    
+    func testReceiverWrappersSelfRegulatesRemotely() {
+        let receiver = MCReceiver<MockRecordable>(db: .publicDB)
+
+        print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY ADDED TO DATABASE")
+        let mockAddedToDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
+        wait(for: [mockAddedToDatabase], timeout: 30)
+
+        // Test pauses here to give app time to react and download recordable to receiver.
+        let firstPause = Pause(seconds: 4)
+        OperationQueue().addOperation(firstPause)
+        firstPause.waitUntilFinished()
+        
+        XCTAssertNotEqual(receiver.recordables.count, 0)
+        
+        let mockRemovedFromDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
+        
+        // Test pauses here to give external device time to remove mock from the database.
+        print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY REMOVED FROM DATABASE")
+        wait(for: [mockRemovedFromDatabase], timeout: 30)
     }
     
     // MARK: - Functions: XCTestCase
