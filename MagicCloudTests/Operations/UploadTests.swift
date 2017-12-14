@@ -23,6 +23,10 @@ class UploadTests: XCTestCase {
     
     var mockRec = MockReceiver()
     
+    var databaseNeedsCleanUp = false
+    
+    var firstRun = true
+    
     // MARK: - Functions
     
     func loadMockRecordables() {
@@ -41,6 +45,22 @@ class UploadTests: XCTestCase {
         mocks?.append(third)
     }
     
+    func cleanUpDatabase() {
+        // This gives time between tests, for all database requests from previous interactions to be served.
+//        let group = DispatchGroup()
+//        group.enter()
+        
+        let pause = Pause(seconds: 3)
+        let clean = MCDelete(mocks, of: mockRec, from: .publicDB)
+        pause.addDependency(clean)
+//        clean.completionBlock = { group.leave() }
+        
+        OperationQueue().addOperation(pause)
+        OperationQueue().addOperation(op)
+        pause.waitUntilFinished()
+//        group.wait()
+    }
+    
     // MARK: - Functions: Unit Tests
     
     func testUploadIsOp() { XCTAssertNotNil(testOp?.isFinished) }
@@ -48,6 +68,7 @@ class UploadTests: XCTestCase {
     func testUploadHasRecordables() { XCTAssertNotNil(testOp?.recordables) }
     
     func testUploadWorksWithPublic() {
+        databaseNeedsCleanUp = true
         
         var recordsInDatabase = true    // <-- Used to track all records existance.
         var recordInDatabase = false {
@@ -58,17 +79,21 @@ class UploadTests: XCTestCase {
 
         testOp = MCUpload(mocks, from: mockRec, to: .publicDB)
 
-        // This operation will be used to ensure cloud database is sanitized of test mock.
-        let prepOp = MCDelete(mocks, of: mockRec, from: .publicDB)
-        prepOp.name = "UploadTests.prepOp: Public"
-
-        // This operation will be used to clean up the database after the test finishes.
-        let cleanUp = MCDelete(mocks, of: mockRec, from: .publicDB)
-        cleanUp.name = "UploadTests.cleanUp: Public"
-
-        // These pauses give the cloud database a reasonable amount of time to update between interactions.
-        let firstPause = Pause(seconds: 3)
-        let secondPause = Pause(seconds: 3)
+//        // This operation will be used to ensure cloud database is sanitized of test mock.
+//        let prepOp = MCDelete(mocks, of: mockRec, from: .publicDB)
+//        prepOp.name = "UploadTests.prepOp: Public"
+//        firstPause.addDependency(prepOp)
+//        OperationQueue().addOperation(prepOp)
+//        OperationQueue().addOperation(firstPause)
+//
+//        // This operation will be used to clean up the database after the test finishes.
+//        let cleanUp = MCDelete(mocks, of: mockRec, from: .publicDB)
+//        cleanUp.name = "UploadTests.cleanUp: Public"
+//        OperationQueue().addOperation(cleanUp)
+//
+//        // These pauses give the cloud database a reasonable amount of time to update between interactions.
+//        let firstPause = Pause(seconds: 3)
+        let pause = Pause(seconds: 3)
 
         // This operation will verify that mock was uploaded, and record it's findings in `recordInDatabase`.
         let mockIDs = mocks!.map({ $0.recordID })
@@ -93,7 +118,7 @@ class UploadTests: XCTestCase {
             }
             
             // This cleans up the database, and removes test record.
-            OperationQueue().addOperation(cleanUp)
+//            OperationQueue().addOperation(cleanUp)
         }
 
         verifyOp.perRecordCompletionBlock = { record, id, error in
@@ -120,16 +145,17 @@ class UploadTests: XCTestCase {
         }
 
         // This is the actual test sequence (prepare -> pause -> upload -> pause -> verify w/ cleanUp).
-        firstPause.addDependency(prepOp)
-        testOp?.addDependency(firstPause)
-        secondPause.addDependency(testOp!)
-        verifyOp.addDependency(secondPause)
+//        firstPause.addDependency(prepOp)
+//        OperationQueue().addOperation(prepOp)
+//        OperationQueue().addOperation(firstPause)
+
+//        testOp?.addDependency(firstPause)
+        pause.addDependency(testOp!)
+        verifyOp.addDependency(pause)
         
-        OperationQueue().addOperation(firstPause)
-        OperationQueue().addOperation(testOp!)
-        OperationQueue().addOperation(secondPause)
+        OperationQueue().addOperation(pause)
         MCDatabase.publicDB.db.add(verifyOp)
-        OperationQueue().addOperation(prepOp)   // <-- Starts operation chain.
+        OperationQueue().addOperation(testOp!)          // <-- Starts operation chain.
         
         // Waits for operations to complete and then evaluates test.
         verifyOp.waitUntilFinished()
@@ -137,6 +163,7 @@ class UploadTests: XCTestCase {
     }
     
     func testUploadWorksWithPrivate() {
+        databaseNeedsCleanUp = true
         let database = CKContainer.default().privateCloudDatabase
         
         var recordsInDatabase = true    // <-- Used to track all records existance.
@@ -147,13 +174,13 @@ class UploadTests: XCTestCase {
         }
         
         // This operation will be used to ensure cloud database is sanitized of test mock.
-        let prepOp = MCDelete(mocks!, of: mockRec, from: .privateDB)
-        
-        // This operation will be used to clean up the database after the test finishes.
-        let cleanUp = MCDelete(mocks!, of: mockRec, from: .privateDB)
-        
-        // These pauses give the cloud database a reasonable amount of time to update between interactions.
-        let firstPause = Pause(seconds: 3)
+//        let prepOp = MCDelete(mocks!, of: mockRec, from: .privateDB)
+//
+//        // This operation will be used to clean up the database after the test finishes.
+//        let cleanUp = MCDelete(mocks!, of: mockRec, from: .privateDB)
+//
+//        // These pauses give the cloud database a reasonable amount of time to update between interactions.
+//        let firstPause = Pause(seconds: 3)
         let secondPause = Pause(seconds: 3)
         
         // This operation will verify that mock was uploaded, and record it's findings in `recordInDatabase`.
@@ -178,7 +205,7 @@ class UploadTests: XCTestCase {
             }
             
             // This cleans up the database, and removes test record.
-            OperationQueue().addOperation(cleanUp)
+//            OperationQueue().addOperation(cleanUp)
         }
         
         verifyOp.perRecordCompletionBlock = { record, id, error in
@@ -205,22 +232,28 @@ class UploadTests: XCTestCase {
         }
         
         // This is the actual test sequence (prepare -> pause -> upload -> pause -> verify w/ cleanUp).
-        firstPause.addDependency(prepOp)
-        testOp?.addDependency(firstPause)
+//        firstPause.addDependency(prepOp)
+//        testOp?.addDependency(firstPause)
         secondPause.addDependency(testOp!)
         verifyOp.addDependency(secondPause)
         
-        OperationQueue().addOperation(firstPause)
-        OperationQueue().addOperation(testOp!)
+//        OperationQueue().addOperation(firstPause)
         OperationQueue().addOperation(secondPause)
         database.add(verifyOp)
-        OperationQueue().addOperation(prepOp)   // <-- Starts operation chain.
-        
+//        OperationQueue().addOperation(prepOp)
+        OperationQueue().addOperation(testOp!)              // <-- Starts operation chain.
+
         // Waits for operations to complete and then evaluates test.
         verifyOp.waitUntilFinished()
         XCTAssert(recordsInDatabase)
     }
 
+    func testUploadSendsLocalNotificationToTriggerMirroringInMultipleReceivers() {
+        databaseNeedsCleanUp = true
+        
+        
+    }
+    
 //    func testPerformance() {
 //        self.measure {
 //            let cleanUp = Delete(self.mocks!)
@@ -246,21 +279,16 @@ class UploadTests: XCTestCase {
 
         loadMockRecordables()
         testOp = MCUpload(mocks!, from: mockRec, to: .privateDB)
+        
+        if firstRun { cleanUpDatabase() }
+        firstRun = false
     }
     
     override func tearDown() {
         testOp = nil
         mocks = nil
         
-        // This gives time between tests, for all database requests from previous interactions to be served.
-        let group = DispatchGroup()
-        group.enter()
-        
-        let pause = Pause(seconds: 5)
-        pause.completionBlock = { group.leave() }
-        OperationQueue().addOperation(pause)
-        
-        group.wait()
+        if databaseNeedsCleanUp { cleanUpDatabase() }
         super.tearDown()
     }
 }
