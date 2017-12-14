@@ -21,6 +21,8 @@ class DeleteTests: XCTestCase {
     
     var recordDeleted = false
     
+    var pauseNeeded = false
+    
     // MARK: - Functions
     
     fileprivate func verifyOperation(ids: [CKRecordID], failWhenFound: Bool = true) -> CKFetchRecordsOperation {
@@ -94,6 +96,8 @@ class DeleteTests: XCTestCase {
     func testDeleteHasDelay() { XCTAssertNotNil(testOp?.delayInSeconds) }
     
     func testDeleteDelaysLaunch() {
+        pauseNeeded = true
+        
         let delay: UInt64 = 5
         testOp?.delayInSeconds = delay
     
@@ -126,6 +130,8 @@ class DeleteTests: XCTestCase {
     }
     
     func testDeleteOnPrivate() {
+        pauseNeeded = true
+
         let uploaded = expectation(description: "Mock Object Uploaded")
         let prepOp = MCUpload([mock!], from: mockRec, to: .privateDB)
         prepOp.completionBlock = { uploaded.fulfill() }
@@ -155,6 +161,8 @@ class DeleteTests: XCTestCase {
     }
     
     func testDeleteOnPublic() {
+        pauseNeeded = true
+
         let uploaded = expectation(description: "Mock Object Uploaded")
         let prepOp = MCUpload([mock!], from: mockRec, to: .publicDB)
         prepOp.completionBlock = { uploaded.fulfill() }
@@ -208,14 +216,12 @@ class DeleteTests: XCTestCase {
         mock = nil
         testOp = nil
         
-        let group = DispatchGroup()
-        group.enter()
+        if pauseNeeded {
+            let pause = Pause(seconds: 2)
+            OperationQueue().addOperation(pause)
+            pause.waitUntilFinished()
+        }
         
-        let pause = Pause(seconds: 2)
-        pause.completionBlock = { group.leave() }
-        OperationQueue().addOperation(pause)
-        
-        group.wait()
         super.tearDown()
     }
 }
