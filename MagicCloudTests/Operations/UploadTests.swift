@@ -164,7 +164,6 @@ class UploadTests: XCTestCase {
     
     func testUploadWorksWithPrivate() {
         databaseNeedsCleanUp = true
-        let database = CKContainer.default().privateCloudDatabase
         
         var recordsInDatabase = true    // <-- Used to track all records existance.
         var recordInDatabase = false {
@@ -181,7 +180,7 @@ class UploadTests: XCTestCase {
 //
 //        // These pauses give the cloud database a reasonable amount of time to update between interactions.
 //        let firstPause = Pause(seconds: 3)
-        let secondPause = Pause(seconds: 3)
+        let pause = Pause(seconds: 3)
         
         // This operation will verify that mock was uploaded, and record it's findings in `recordInDatabase`.
         let mockIDs = mocks!.map({ $0.recordID })
@@ -234,12 +233,12 @@ class UploadTests: XCTestCase {
         // This is the actual test sequence (prepare -> pause -> upload -> pause -> verify w/ cleanUp).
 //        firstPause.addDependency(prepOp)
 //        testOp?.addDependency(firstPause)
-        secondPause.addDependency(testOp!)
-        verifyOp.addDependency(secondPause)
+        pause.addDependency(testOp!)
+        verifyOp.addDependency(pause)
         
 //        OperationQueue().addOperation(firstPause)
-        OperationQueue().addOperation(secondPause)
-        database.add(verifyOp)
+        OperationQueue().addOperation(pause)
+        MCDatabase.privateDB.db.add(verifyOp)
 //        OperationQueue().addOperation(prepOp)
         OperationQueue().addOperation(testOp!)              // <-- Starts operation chain.
 
@@ -251,7 +250,22 @@ class UploadTests: XCTestCase {
     func testUploadSendsLocalNotificationToTriggerMirroringInMultipleReceivers() {
         databaseNeedsCleanUp = true
         
+        let altReceiver = MockReceiver()
+        altReceiver.subscribeToChanges(on: .privateDB)
+
+        mockRec.subscribeToChanges(on: .privateDB)
         
+        // This q delay gives subscriptions time to error handle...
+        let pause = Pause(seconds: 3)
+        DispatchQueue().asyncAfter(deadline: .now() + 3) {
+            pause.addDependency(testOp!)
+            OperationQueue().addOperation(pause)
+            OperationQueue().addOperation(testOp!)
+        }
+        
+        pause.waitUntilFinished()
+        XCTAssertEqual(mockRec.recordables.count, altReceiver.recordables.count)
+        XCTAssert(mockRec.recordables.count != 0)
     }
     
 //    func testPerformance() {
