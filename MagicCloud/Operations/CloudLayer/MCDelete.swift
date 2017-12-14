@@ -11,7 +11,7 @@ import CloudKit
 /**
     This wrapper class for CKModifyRecordsOperations deletes records associated with the recordables inserted, from the specified database.
  */
-public class MCDelete<R: MCReceiver>: Operation {
+public class MCDelete<R: MCReceiverAbstraction>: Operation {
      
     // MARK: - Properties
     

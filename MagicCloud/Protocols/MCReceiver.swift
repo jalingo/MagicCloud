@@ -11,7 +11,7 @@ import CloudKit
 /**
     This protocol enables conforming types to give access to an array of Recordable, and to prevent / allow that array's didSet to upload said array's changes to the cloud.
  */
-public protocol MCReceiver: AnyObject { // <-- Do we still need AnyObject !!
+public protocol MCReceiverAbstraction: AnyObject { // <-- Do we still need AnyObject !!
     
     /// Receivers can only work with one type (for error handling).
     associatedtype type: MCRecordable
@@ -41,7 +41,7 @@ public protocol MCReceiver: AnyObject { // <-- Do we still need AnyObject !!
 
 // MARK: - Extensions
 
-public extension MCReceiver {
+public extension MCReceiverAbstraction {
     
     // MARK: - Properties
     
@@ -141,9 +141,9 @@ public extension MCReceiver {
     }
 }
 
-// MARK: - Wrappers
+// MARK: - class
 
-open class MCAnyReceiver<T: MCRecordable>: MCReceiver {
+open class MCReceiver<T: MCRecordable>: MCReceiverAbstraction {
     public typealias type = T
 
     public var recordables: [T] = [T]()

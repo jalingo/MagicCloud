@@ -12,7 +12,7 @@ import CloudKit     // <-- Still Needed, in most cases.
 
 // MARK: - Class: ViewController
 
-class ViewController: UIViewController, MCReceiver {
+class ViewController: UIViewController, MCReceiverAbstraction {
     
     // MARK: - Properties
 

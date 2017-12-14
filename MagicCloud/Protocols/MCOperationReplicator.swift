@@ -10,7 +10,7 @@ import Foundation
 import CloudKit
 
 protocol MCOperationReplicator {
-    func replicate<R: MCReceiver>(_ op: Operation, with receiver: R) -> Operation?
+    func replicate<R: MCReceiverAbstraction>(_ op: Operation, with receiver: R) -> Operation?
 }
 
 extension MCOperationReplicator {
@@ -18,7 +18,7 @@ extension MCOperationReplicator {
     /**
         This function takes the originatingOp (which has already been spent) and creates a new version with the same property values and completion blocks.
      */
-    func replicate<R: MCReceiver>(_ op: Operation, with receiver: R) -> Operation? {
+    func replicate<R: MCReceiverAbstraction>(_ op: Operation, with receiver: R) -> Operation? {
         
         // Custom Operations
         

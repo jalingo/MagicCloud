@@ -15,7 +15,7 @@ import UIKit
 /**
     This wrapper class for CKModifyRecordsOperation saves records for the injected recordables in the specified database.
  */
-public class MCUpload<R: MCReceiver>: Operation {
+public class MCUpload<R: MCReceiverAbstraction>: Operation {
     
     // MARK: - Properties
 

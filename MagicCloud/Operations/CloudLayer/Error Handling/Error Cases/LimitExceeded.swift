@@ -9,7 +9,7 @@
 import Foundation
 import CloudKit
 
-class LimitExceeded<R: MCReceiver>: Operation, MCOperationReplicator {
+class LimitExceeded<R: MCReceiverAbstraction>: Operation, MCOperationReplicator {
     
     // MARK: - Properties
     
