@@ -84,7 +84,7 @@ struct MCSubscriberError: MCRetrier {
     /// This function handles CKErrors resulting from failed subscription attempts.
     /// - Parameters: !!
     func handle(_ error: CKError, whileSubscribing isSubscribing: Bool, to id: String? = nil) {
-print("ee #\(error.code.rawValue) \(error.localizedDescription)")
+
         // Subscription already exists.
         guard error.code != CKError.Code.serverRejectedRequest else {
             subscriptionAlreadyExists(retryAfter: error.retryAfterSeconds)
