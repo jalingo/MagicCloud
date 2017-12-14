@@ -189,6 +189,38 @@ class DeleteTests: XCTestCase {
         XCTAssert(recordDeleted)
     }
 
+    func testDeleteSendsLocalNotificationToTriggerMirroringInMultipleReceivers() {
+        pauseNeeded = true
+        
+        let altReceiver = MockReceiver()
+        altReceiver.subscribeToChanges(on: .privateDB)
+        
+        mockRec.subscribeToChanges(on: .privateDB)
+
+        // This pause will give prep the time to download to receivers
+        let firstPause = Pause(seconds: 5)
+
+        // This q delay gives subscriptions time to error handle...
+        DispatchQueue().asyncAfter(deadline: .now() + 3) {
+            let prep = MCUpload([mock!], from: mockRec, to: .privateDB)
+            firstPause.addDependency(prep)
+
+            OperationQueue().addOperation(firstPause)
+            OperationQueue().addOperation(prep)
+        }
+        
+        firstPause.waitUntilFinished()
+        
+        let secondPause = Pause(seconds: 3)
+        secondPause.addDependency(testOp!)
+        OperationQueue().addOperation(secondPause)
+        OperationQueue().addOperation(testOp!)
+        
+        secondPause.waitUntilFinished()
+        XCTAssertEqual(mockRec.recordables.count, altReceiver.recordables.count)
+        XCTAssert(mockRec.recordables.count != 0)
+    }
+    
 //    func testPerformance() {
 //        self.measure {
 //            self.testOp = Delete([self.mock!])
@@ -200,7 +232,7 @@ class DeleteTests: XCTestCase {
 //            print("performance test completed")
 //        }
 //    }
-
+    
     // MARK: - Functions: XCTestCase
     
     override func setUp() {
