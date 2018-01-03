@@ -54,7 +54,7 @@ class RemoteNotificationTests: XCTestCase {
     // MARK: - Functions: Tests
     
     func testNotificationReceiverCanConvertRemoteNotificationToLocal() {
-//mockRec?.subscribeToChanges(on: .publicDB)        // <-- Already setup by the test app's view controller.
+        mockRec?.subscribeToChanges(on: .publicDB)
         
         let mockAddedToDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
         
@@ -69,6 +69,7 @@ class RemoteNotificationTests: XCTestCase {
         firstPause.waitUntilFinished()
         
         let firstResult = mockRec?.recordables.count
+print("-- firstResult \(String(describing: firstResult))")
         XCTAssert(firstResult == 1)
         
         let mockRemovedFromDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
@@ -83,6 +84,8 @@ class RemoteNotificationTests: XCTestCase {
         secondPause.waitUntilFinished()
         
         if let lastResult = firstResult {
+print("-- lastResult \(String(describing: lastResult))")
+print("-- count \(String(describing: mockRec?.recordables.count))")
             XCTAssert(mockRec?.recordables.count == lastResult - 1)
         } else {
             XCTFail()
