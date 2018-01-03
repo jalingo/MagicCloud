@@ -22,33 +22,11 @@ class RemoteNotificationTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockRec = MockReceiver()
-        
-        // These methods are for detecting phantom subscription issue.
-        countSubscriptions()
-        countSubscriptions(after: 7.0)
     }
     
     override func tearDown() {
         mockRec = nil
         super.tearDown()
-    }
-    
-    func countSubscriptions(after secs: Double = 0) {
-        DispatchQueue(label: "TEST").asyncAfter(deadline: .now() + secs) {
-            MCDatabase.publicDB.db.fetchAllSubscriptions { possibleSubs, possibleError in
-                var subs = String(describing: possibleSubs?.count)
-                let sub = subs.remove(at: subs.index(after: subs.index(of: "(")!))
-                let error = String(describing: possibleError?.localizedDescription)
-                
-                print("""
-                    ## ----------------- ##
-                    ## After \(secs) seconds ##
-                    ## Sub Count = \(sub)     ##
-                    ## Errors = \(error)      ##
-                    ## ----------------- ##
-                    """)
-            }
-        }
     }
 
     // MARK: - Functions: Tests
@@ -69,7 +47,6 @@ class RemoteNotificationTests: XCTestCase {
         firstPause.waitUntilFinished()
         
         let firstResult = mockRec?.recordables.count
-print("-- firstResult \(String(describing: firstResult))")
         XCTAssert(firstResult == 1)
         
         let mockRemovedFromDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
@@ -84,8 +61,6 @@ print("-- firstResult \(String(describing: firstResult))")
         secondPause.waitUntilFinished()
         
         if let lastResult = firstResult {
-print("-- lastResult \(String(describing: lastResult))")
-print("-- count \(String(describing: mockRec?.recordables.count))")
             XCTAssert(mockRec?.recordables.count == lastResult - 1)
         } else {
             XCTFail()
