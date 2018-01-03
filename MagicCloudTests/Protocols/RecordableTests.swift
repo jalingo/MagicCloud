@@ -84,21 +84,7 @@ public class MockRecordable: MCRecordable {   // <-- remove publix (below, too) 
         get { return _recordID ?? CKRecordID(recordName: "EmptyRecord") }
         set { _recordID = newValue }
     }
-    
-//    public var recordID: CKRecordID {
-//        get {
-//            return CKRecordID(recordName: "MockIdentifier: \(String(describing: created))")
-//        }
-//
-//        set {
-//            var str = newValue.recordName
-//            if let range = str.range(of: "MockIdentifier: ") {
-//                str.removeSubrange(range)
-//                if let date = DateFormatter().date(from: str) { created = date }
-//            }
-//        }
-//    }
-    
+
     // MARK: - Functions: Constructor
     
     public required init() { }
