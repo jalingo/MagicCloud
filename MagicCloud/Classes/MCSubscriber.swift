@@ -27,7 +27,7 @@ public class MCSubscriber {
         - Note: Each MCSubscriber manages a single subscription. For multiple subscriptions use different MCSubscribers.
      */
     func start() {
-        
+print("*- Starting Subscription \(subscription.recordType) / \(subscription.subscriptionID)")
         // Saves the subscription to database
         database.db.save(self.subscription) { possibleSubscription, possibleError in
             if let error = possibleError as? CKError {
@@ -100,36 +100,52 @@ struct MCSubscriberError: MCRetrier {
             // if not handled...
             let name = Notification.Name(MCErrorNotification)
             NotificationCenter.default.post(name: name, object: error)
+print("!! error not handled @ MCSubscriberError.handle")
         }
         
     }
     
     func subscriptionAlreadyExists(retryAfter: Double?) {
         database.db.fetchAllSubscriptions { possibleSubscriptions, possibleError in
-            
+print("*- MCSubscriberError.subscriptionAlreadyExists(after \(String(describing: retryAfter)))")
             // identify existing subscription...
             if let subs = possibleSubscriptions {
-                var conflictingSubscriptionFound = false
-
-                for sub in subs {
-                    if let subscription = sub as? CKQuerySubscription {
-                        //}, subscription == self.delegate?.subscription {
-
-                        if subscription.recordType == self.delegate?.subscription.recordType,
-                            subscription.querySubscriptionOptions == self.delegate?.subscription.querySubscriptionOptions {
-
-                            // delete the subscription...
-                            self.delegate?.end(subscriptionID: sub.subscriptionID)
-                            conflictingSubscriptionFound = true
-                        }
-                    }
+//                var conflictingSubscriptionFound = false
+print("*- Subs found = \(subs.count)")
+                
+                switch subs.count {
+                case 0:
+print("*- Writing...SHOULD NEVER TRIGGER")
+                    self.attemptCreateSubscriptionAgain(after: retryAfter)
+                case 1: break   // <-- Do NOTHING; leaves solitary subscription in place.
+                default:
+                    self.leaveOnlyFirstSubscription(in: subs)
                 }
-
-                // try new subscription again...
-                if conflictingSubscriptionFound {
-                    let delay = retryAfter ?? 1
-                    let q = DispatchQueue(label: self.retriableLabel)
-                    q.asyncAfter(deadline: .now() + delay) { self.delegate?.start() }
+            }
+        }
+    }
+    
+    func attemptCreateSubscriptionAgain(after retryAfter: Double?) {
+        let delay = retryAfter ?? 1
+        let q = DispatchQueue(label: self.retriableLabel)
+        q.asyncAfter(deadline: .now() + delay) { self.delegate?.start() }
+    }
+    
+    func leaveOnlyFirstSubscription(in subs: [CKSubscription]) {
+        var isNotFirst = false
+        for sub in subs {
+            if let subscription = sub as? CKQuerySubscription {
+                if subscription.recordType == self.delegate?.subscription.recordType,
+                    subscription.querySubscriptionOptions == self.delegate?.subscription.querySubscriptionOptions {
+print("*- Sub found = \(subscription.recordType) / \(subscription.subscriptionID)")
+                    
+                    // delete the subscription...
+                    if isNotFirst {
+print("*- Removing \(subscription.recordType) / \(subscription.subscriptionID)")
+                        self.delegate?.end(subscriptionID: sub.subscriptionID)
+                    } else {
+                        isNotFirst = true
+                    }
                 }
             }
         }
