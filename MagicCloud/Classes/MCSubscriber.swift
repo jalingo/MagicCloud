@@ -110,22 +110,18 @@ print("!! error not handled @ MCSubscriberError.handle")
 print("*- MCSubscriberError.subscriptionAlreadyExists(after \(String(describing: retryAfter)))")
             // identify existing subscription...
             if let subs = possibleSubscriptions {
-//                var conflictingSubscriptionFound = false
 print("*- Subs found = \(subs.count)")
-                
                 switch subs.count {
-                case 0:
-print("*- Writing...SHOULD NEVER TRIGGER")
-                    self.attemptCreateSubscriptionAgain(after: retryAfter)
+                case 0: self.attemptCreateSubscriptionAgain(after: retryAfter)
                 case 1: break   // <-- Do NOTHING; leaves solitary subscription in place.
-                default:
-                    self.leaveOnlyFirstSubscription(in: subs)
+                default: self.leaveOnlyFirstSubscription(in: subs)
                 }
             }
         }
     }
     
     func attemptCreateSubscriptionAgain(after retryAfter: Double?) {
+print("*- Writing...SHOULD NEVER TRIGGER")
         let delay = retryAfter ?? 1
         let q = DispatchQueue(label: self.retriableLabel)
         q.asyncAfter(deadline: .now() + delay) { self.delegate?.start() }
