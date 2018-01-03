@@ -146,16 +146,20 @@ public extension MCReceiverAbstraction {
 open class MCReceiver<T: MCRecordable>: MCReceiverAbstraction {
     public typealias type = T
 
-    public var recordables: [T] = [T]()
+    public var recordables: [T] = [T]() {
+        didSet { print("%% MCReceiver.recordables.didSet %%") }
+    }
     
     public var subscription: MCSubscriber
     
     public init(db: MCDatabase) {
         subscription = MCSubscriber(forRecordType: T().recordType, on: db)
         subscribeToChanges(on: db)
+        print("%% init MCReceiver %%")
     }
     
     deinit {
         unsubscribeToChanges()
+        print("%% deinit MCReceiver %%")
     }
 }

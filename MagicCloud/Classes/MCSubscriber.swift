@@ -113,7 +113,7 @@ print("*- MCSubscriberError.subscriptionAlreadyExists(after \(String(describing:
 print("*- Subs found = \(subs.count)")
                 switch subs.count {
                 case 0: self.attemptCreateSubscriptionAgain(after: retryAfter)
-                case 1: break   // <-- Do NOTHING; leaves solitary subscription in place.
+                case 1: print("*- Resolved..."); break   // <-- Do NOTHING; leaves solitary subscription in place.
                 default: self.leaveOnlyFirstSubscription(in: subs)
                 }
             }
@@ -121,7 +121,7 @@ print("*- Subs found = \(subs.count)")
     }
     
     func attemptCreateSubscriptionAgain(after retryAfter: Double?) {
-print("*- Writing...SHOULD NEVER TRIGGER")
+print("*- Writing...SHOULD NEVER TRIGGER !!")
         let delay = retryAfter ?? 1
         let q = DispatchQueue(label: self.retriableLabel)
         q.asyncAfter(deadline: .now() + delay) { self.delegate?.start() }
@@ -130,19 +130,13 @@ print("*- Writing...SHOULD NEVER TRIGGER")
     func leaveOnlyFirstSubscription(in subs: [CKSubscription]) {
         var isNotFirst = false
         for sub in subs {
-            if let subscription = sub as? CKQuerySubscription {
-                if subscription.recordType == self.delegate?.subscription.recordType,
+            if let subscription = sub as? CKQuerySubscription,
+                subscription.recordType == self.delegate?.subscription.recordType,
                     subscription.querySubscriptionOptions == self.delegate?.subscription.querySubscriptionOptions {
 print("*- Sub found = \(subscription.recordType) / \(subscription.subscriptionID)")
-                    
-                    // delete the subscription...
-                    if isNotFirst {
-print("*- Removing \(subscription.recordType) / \(subscription.subscriptionID)")
-                        self.delegate?.end(subscriptionID: sub.subscriptionID)
-                    } else {
-                        isNotFirst = true
-                    }
-                }
+print("*- Sub isNotFirst = \(isNotFirst)")
+                // delete the subscription...
+                isNotFirst ? (self.delegate?.end(subscriptionID: sub.subscriptionID)) : (isNotFirst = true)
             }
         }
     }

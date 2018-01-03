@@ -265,7 +265,8 @@ class MockReceiver: MCReceiverAbstraction {
     var recordables = [type]() {
         didSet {
             print("** newRecordable = \(String(describing: recordables.last?.recordID.recordName))")
-            print("** recordables didSet = \(recordables.count)") }
+            print("** recordables didSet = \(recordables.count)")
+        }
     }
     
     deinit {
@@ -275,6 +276,6 @@ class MockReceiver: MCReceiverAbstraction {
         OperationQueue().addOperation(pause)
         pause.waitUntilFinished()
         
-        print("** deinit MockReceiver")
+        print("** deinit MockReceiver complete")
     }
 }
