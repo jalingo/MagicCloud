@@ -61,7 +61,7 @@ class RecievesRecTests: XCTestCase {
     func testReceiverCanDownloadAll() {
         let _ = prepareDatabase()
         
-        let pause = Pause(seconds: 2)
+        let pause = Pause(seconds: 3)
         mock?.downloadAll(from: .publicDB) { pause.start() }
         pause.waitUntilFinished()
         
@@ -219,7 +219,7 @@ class RecievesRecTests: XCTestCase {
         print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY ADDED TO DATABASE")
         let mockAddedToDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
         wait(for: [mockAddedToDatabase], timeout: 30)
-
+        
         // Test pauses here to give app time to react and download recordable to receiver.
         let firstPause = Pause(seconds: 4)
         OperationQueue().addOperation(firstPause)
@@ -232,6 +232,8 @@ class RecievesRecTests: XCTestCase {
         // Test pauses here to give external device time to remove mock from the database.
         print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY REMOVED FROM DATABASE")
         wait(for: [mockRemovedFromDatabase], timeout: 30)
+        
+        XCTAssertEqual(receiver.recordables.count, 0)
     }
     
     // MARK: - Functions: XCTestCase

@@ -22,17 +22,39 @@ class RemoteNotificationTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockRec = MockReceiver()
+        
+        // These methods are for detecting phantom subscription issue.
+        countSubscriptions()
+        countSubscriptions(after: 7.0)
     }
     
     override func tearDown() {
         mockRec = nil
         super.tearDown()
     }
+    
+    func countSubscriptions(after secs: Double = 0) {
+        DispatchQueue(label: "TEST").asyncAfter(deadline: .now() + secs) {
+            MCDatabase.publicDB.db.fetchAllSubscriptions { possibleSubs, possibleError in
+                var subs = String(describing: possibleSubs?.count)
+                let sub = subs.remove(at: subs.index(after: subs.index(of: "(")!))
+                let error = String(describing: possibleError?.localizedDescription)
+                
+                print("""
+                    ## ----------------- ##
+                    ## After \(secs) seconds ##
+                    ## Sub Count = \(sub)     ##
+                    ## Errors = \(error)      ##
+                    ## ----------------- ##
+                    """)
+            }
+        }
+    }
 
     // MARK: - Functions: Tests
     
     func testNotificationReceiverCanConvertRemoteNotificationToLocal() {
-//        mockRec?.subscribeToChanges(on: .publicDB)        // <-- Already setup by the test app's view controller.
+//mockRec?.subscribeToChanges(on: .publicDB)        // <-- Already setup by the test app's view controller.
         
         let mockAddedToDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
         
