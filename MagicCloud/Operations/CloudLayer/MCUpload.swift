@@ -107,8 +107,8 @@ public class MCUpload<R: MCReceiverAbstraction>: Operation {
         
         if isCancelled { return }
         
-        // This delay gives time for upload to take effect before triggering receiver downloads.
-        DispatchQueue(label: "cloud q").asyncAfter(deadline: .now() + 3.0) {
+        // This supports multiple receiver downloads, after upload has finished.
+        op.completionBlock = {
             for recordable in self.recordables {
 print("&- MCUpload pinging local notification system.")
                 let name = Notification.Name(recordable.recordType)
