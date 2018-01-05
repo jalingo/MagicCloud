@@ -28,6 +28,34 @@ class RecievesRecTests: XCTestCase {
     
     // MARK: - Functions
     
+    func countSubscriptions(after secs: Double = 0) -> Int? {
+        let group = DispatchGroup()
+        group.enter()
+        
+        var number: Int?
+        DispatchQueue(label: "TEST").asyncAfter(deadline: .now() + secs) {
+            MCDatabase.publicDB.db.fetchAllSubscriptions { possibleSubs, possibleError in
+                var subs = String(describing: possibleSubs?.count)
+                let sub = subs.remove(at: subs.index(after: subs.index(of: "(")!))
+                let error = String(describing: possibleError?.localizedDescription)
+                
+                print("""
+                    ## ----------------- ##
+                    ## After \(secs) seconds ##
+                    ## Sub Count = \(sub)     ##
+                    ## Errors = \(error)      ##
+                    ## ----------------- ##
+                    """)
+                
+                number = possibleSubs?.count
+                group.leave()
+            }
+        }
+
+        group.wait()
+        return number
+    }
+    
     func prepareDatabase() -> Int {
         let op = MCUpload(mockRecordables, from: mock!, to: .publicDB)
         let pause = Pause(seconds: 3)
@@ -178,11 +206,9 @@ class RecievesRecTests: XCTestCase {
             if let subs = possibleSubs as? [CKQuerySubscription] {
                 if let sub = self.mock?.subscription.subscription{
                     XCTAssert(subs.count == 1)
-                    if subs.map({$0.subscriptionID}).contains(sub.subscriptionID) {
-                        idMatches = true
-                    } else {
-                        XCTFail()
-                    }
+                    if let first = subs.first,
+                        sub.recordType == first.recordType,
+                        sub.querySubscriptionOptions == first.querySubscriptionOptions { idMatches = true }
                 } else {
                     let id = staleAltSub.subscription.subscriptionID
                     XCTAssertFalse(subs.map({$0.subscriptionID}).contains(id))
