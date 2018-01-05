@@ -50,6 +50,15 @@ public class MCDelete<R: MCReceiverAbstraction>: Operation {
         if isCancelled { return }
         
         delayDispatch(op)
+        
+        if isCancelled { return }
+        
+        for recordable in recordables {
+print("&- MCDelete pinging local notification system.")
+            let name = Notification.Name(recordable.recordType)
+            let change = LocalChangePackage(id: recordable.recordID, reason: .recordDeleted, db: database)
+            NotificationCenter.default.post(name: name, object: change)
+        }
     }
     
     /// This method dispatches operation after specified delay.

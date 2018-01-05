@@ -107,10 +107,14 @@ public class MCUpload<R: MCReceiverAbstraction>: Operation {
         
         if isCancelled { return }
         
-        for recordable in recordables {
-            let name = Notification.Name(recordable.recordType)
-            let change = LocalChangePackage(id: recordable.recordID, reason: .recordCreated, db: database)
-            NotificationCenter.default.post(name: name, object: change)
+        // This delay gives time for upload to take effect before triggering receiver downloads.
+        DispatchQueue(label: "cloud q").asyncAfter(deadline: .now() + 3.0) {
+            for recordable in self.recordables {
+print("&- MCUpload pinging local notification system.")
+                let name = Notification.Name(recordable.recordType)
+                let change = LocalChangePackage(id: recordable.recordID, reason: .recordCreated, db: self.database)
+                NotificationCenter.default.post(name: name, object: change)
+            }
         }
     }
     
