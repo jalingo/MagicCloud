@@ -63,7 +63,12 @@ class MCErrorHandler<R: MCReceiverAbstraction>: Operation, MCRetrier {
     
     override func main() {
         if isCancelled { return }
-        
+//print("""
+//    !E- ERROR: \(error.code) \(error.localizedDescription) \(error)
+//    !E- for \(String(describing: originatingOp.name))
+//    !E- w/recordables: \(recordables.map({$0.recordID}))
+//    !E- on: \(database.rawValue)
+//    """)
         // This console message reports instances when error shouldn't be ignored or isn't partial failure.
         if !(error.code == .unknownItem && ignoreUnknownItem) || !(error.code == .partialFailure) {
             let name = Notification.Name(MCErrorNotification)
@@ -120,8 +125,6 @@ class MCErrorHandler<R: MCReceiverAbstraction>: Operation, MCRetrier {
                     }
                 }
             }
-            
-//            completionBlock = nil !!
         
         // These errors occur when CloudKit has a problem with a CKSharedDatabase operation.    // <-- Not currently supported but left here as a reminder for future versions.
 //        case .alreadyShared, .tooManyParticipants:
