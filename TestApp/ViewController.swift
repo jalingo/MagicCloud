@@ -15,6 +15,8 @@ import CloudKit     // <-- Still Needed, in most cases.
 class ViewController: UIViewController, MCReceiverAbstraction {
     
     // MARK: - Properties
+    
+    let serialQ = DispatchQueue(label: "VC Q")
 
     /// This property saves EXPECTED subscription state.
     var isSubscribed = true
