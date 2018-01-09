@@ -54,7 +54,6 @@ public class MCDelete<R: MCReceiverAbstraction>: Operation {
         if isCancelled { return }
         
         for recordable in recordables {
-print("&- MCDelete pinging local notification system.")
             let name = Notification.Name(recordable.recordType)
             let change = LocalChangePackage(id: recordable.recordID, reason: .recordDeleted, db: database)
             NotificationCenter.default.post(name: name, object: change)
@@ -67,16 +66,7 @@ print("&- MCDelete pinging local notification system.")
         DispatchQueue(label: "DelayedRecordDeletion").asyncAfter(deadline: time) {
 
             if self.isCancelled { return }
-            
             self.database.db.add(op)
-            
-            if self.isCancelled { return }
-            
-            for recordable in self.recordables {
-                let name = Notification.Name(recordable.recordType)
-                let change = LocalChangePackage(id: recordable.recordID, reason: .recordDeleted, db: self.database)
-                NotificationCenter.default.post(name: name, object: change)
-            }
         }
     }
     
