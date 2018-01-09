@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MCNotificationConverter {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         application.registerForRemoteNotifications()
-        MCUserRecord.verifyAccountAuthenticated(application: application)
+        MCUserRecord.verifyAccountAuthentication(application: application)
 
         return true
     }
