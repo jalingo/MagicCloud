@@ -64,7 +64,7 @@ public class MCUserRecord: MCRetrier {
     
     /// This method checks to see that User is logged in to their iCloud Account.
     /// Should be run in the app delegate, before any other cloud access is attempted.
-    static func verifyAccountAuthentication(application: UIApplication) {
+    public static func verifyAccountAuthentication(application: UIApplication) {
         CKContainer.default().accountStatus { status, possibleError in
             if let error = possibleError as? CKError {
                 print("E!!: error @ credential check")
