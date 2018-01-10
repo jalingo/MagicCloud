@@ -110,7 +110,6 @@ public class MCUpload<R: MCReceiverAbstraction>: Operation {
         // This supports multiple receiver downloads, after upload has finished.
         op.completionBlock = {
             for recordable in self.recordables {
-print("&- MCUpload pinging local notification system.")
                 let name = Notification.Name(recordable.recordType)
                 let change = LocalChangePackage(id: recordable.recordID, reason: .recordCreated, originatingRec: self.receiver.name, db: self.database)
                 NotificationCenter.default.post(name: name, object: change)
