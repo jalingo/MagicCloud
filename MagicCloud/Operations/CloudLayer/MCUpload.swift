@@ -103,10 +103,6 @@ public class MCUpload<R: MCReceiverAbstraction>: Operation {
         
         if isCancelled { return }
         
-        database.db.add(op)
-        
-        if isCancelled { return }
-        
         // This supports multiple receiver downloads, after upload has finished.
         op.completionBlock = {
             for recordable in self.recordables {
@@ -115,6 +111,11 @@ public class MCUpload<R: MCReceiverAbstraction>: Operation {
                 NotificationCenter.default.post(name: name, object: change)
             }
         }
+        
+        if isCancelled { return }
+        
+        database.db.add(op)
+        receiver.recordables += recordables
     }
     
     // MARK: - Functions: Constructors

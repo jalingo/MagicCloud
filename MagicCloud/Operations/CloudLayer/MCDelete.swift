@@ -49,14 +49,19 @@ public class MCDelete<R: MCReceiverAbstraction>: Operation {
         
         if isCancelled { return }
         
-        delayDispatch(op)
-        
-        if isCancelled { return }
-        
         for recordable in recordables {
             let name = Notification.Name(recordable.recordType)
             let change = LocalChangePackage(id: recordable.recordID, reason: .recordDeleted, originatingRec: self.receiver.name, db: database)
             NotificationCenter.default.post(name: name, object: change)
+        }
+        
+        if isCancelled { return }
+        
+        delayDispatch(op)
+        
+        // originating receiver will ignore notification, this manually removes...
+        for element in recordables {
+            if let index = receiver.recordables.index(where: { $0.recordID == element.recordID }) { receiver.recordables.remove(at: index) }
         }
     }
     
