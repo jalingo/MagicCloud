@@ -112,7 +112,7 @@ public class MCUpload<R: MCReceiverAbstraction>: Operation {
             for recordable in self.recordables {
 print("&- MCUpload pinging local notification system.")
                 let name = Notification.Name(recordable.recordType)
-                let change = LocalChangePackage(id: recordable.recordID, reason: .recordCreated, db: self.database)
+                let change = LocalChangePackage(id: recordable.recordID, reason: .recordCreated, originatingRec: self.receiver.name, db: self.database)
                 NotificationCenter.default.post(name: name, object: change)
             }
         }

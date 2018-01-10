@@ -55,7 +55,7 @@ public class MCDelete<R: MCReceiverAbstraction>: Operation {
         
         for recordable in recordables {
             let name = Notification.Name(recordable.recordType)
-            let change = LocalChangePackage(id: recordable.recordID, reason: .recordDeleted, db: database)
+            let change = LocalChangePackage(id: recordable.recordID, reason: .recordDeleted, originatingRec: self.receiver.name, db: database)
             NotificationCenter.default.post(name: name, object: change)
         }
     }
