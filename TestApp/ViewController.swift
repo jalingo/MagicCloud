@@ -16,6 +16,8 @@ class ViewController: UIViewController, MCReceiverAbstraction {
     
     // MARK: - Properties
     
+    let name = "TestApp VC"
+    
     let serialQ = DispatchQueue(label: "VC Q")
 
     /// This property saves EXPECTED subscription state.
