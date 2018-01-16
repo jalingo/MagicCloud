@@ -17,7 +17,9 @@ class LimitExceededTests: XCTestCase {
     
     var mock: MCUpload<MockReceiver>?
     
-    var mockRec = MockReceiver()
+    var mockRec = MockReceiver() {
+didSet { print("ø- instantiating MockReceiver") }
+    }
     
     var mocks: [MockRecordable]?
     

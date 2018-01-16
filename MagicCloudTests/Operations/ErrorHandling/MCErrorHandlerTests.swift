@@ -17,7 +17,9 @@ class MCErrorHandlerTests: XCTestCase {
     
     let mocks = [MCRecordable]()
         
-    let mockRec = MockReceiver()
+    var mockRec = MockReceiver() {
+didSet { print("ø- instantiating MockReceiver") }
+    }
     
     var testOp: MCErrorHandler<MockReceiver>?
     

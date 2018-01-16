@@ -19,7 +19,9 @@ class VersionConflictTests: XCTestCase {
     
     var mock: MCRecordable?
 
-    var mockRec = MockReceiver()
+    var mockRec = MockReceiver() {
+didSet { print("ø- instantiating MockReceiver") }
+    }
     
     var dict: [AnyHashable: Any]? {
         var dict = [AnyHashable: Any]()

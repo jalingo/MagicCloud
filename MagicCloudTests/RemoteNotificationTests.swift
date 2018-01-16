@@ -21,6 +21,7 @@ class RemoteNotificationTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+print("ø- instantiating MockReceiver")
         mockRec = MockReceiver()
     }
     

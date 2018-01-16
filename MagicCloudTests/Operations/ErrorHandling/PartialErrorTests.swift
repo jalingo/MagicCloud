@@ -37,7 +37,9 @@ class PartialErrorTests: XCTestCase {
     
     var mocks: [MCRecordable]?
     
-    var mockRec = MockReceiver()
+    var mockRec = MockReceiver() {
+didSet { print("ø- instantiating MockReceiver") }
+    }
     
     var database: MCDatabase { return .privateDB }
     

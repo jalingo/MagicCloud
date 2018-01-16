@@ -223,6 +223,7 @@ class RecievesRecTests: XCTestCase {
     }
     
     func testReceiverWrapperSelfRegulatesLocally() {
+print("ø- instantiating receiver")
         let receiver = MCReceiver<MockRecordable>(db: .publicDB)
         
         let e = expectation(description: "Async activity completed.")
@@ -240,6 +241,7 @@ class RecievesRecTests: XCTestCase {
     }
     
     func testReceiverWrappersSelfRegulatesRemotely() {
+print("ø- instantiating receiver")
         let receiver = MCReceiver<MockRecordable>(db: .publicDB)
 
         print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY ADDED TO DATABASE")
@@ -266,6 +268,7 @@ class RecievesRecTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+print("ø- instantiating MockReceiver")
         mock = MockReceiver()
     }
     
@@ -281,10 +284,14 @@ class RecievesRecTests: XCTestCase {
 
 class MockReceiver: MCReceiverAbstraction {
 
-    var subscription = MCSubscriber(forRecordType: type().recordType)
+    let name = "MockReceiver"
     
     typealias type = MockRecordable
-    
+
+    var subscription = MCSubscriber(forRecordType: type().recordType)
+
+    let serialQ = DispatchQueue(label: "MockRec Q")    
+
     /**
      * This protected property is an array of recordables used by reciever.
      */
@@ -294,14 +301,15 @@ class MockReceiver: MCReceiverAbstraction {
             print("** recordables didSet = \(recordables.count)")
         }
     }
-    
+
     deinit {
         unsubscribeToChanges()
-        
+
         let pause = Pause(seconds: 3)
         OperationQueue().addOperation(pause)
         pause.waitUntilFinished()
-        
+
         print("** deinit MockReceiver complete")
     }
 }
+

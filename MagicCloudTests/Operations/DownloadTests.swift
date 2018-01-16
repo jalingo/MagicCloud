@@ -21,7 +21,9 @@ class DownloadTests: XCTestCase {
     
     var mocks = [MockRecordable]()
     
-    var mockRec = MockReceiver()
+    var mockRec = MockReceiver() {
+didSet { print("ø- instantiating MockReceiver") }
+    }
     
     var shouldCleanPublic = false
     
@@ -208,6 +210,7 @@ class DownloadTests: XCTestCase {
         
         OperationQueue().addOperation(testOp!)
         wait(for: [expect], timeout: 10)
+
         XCTAssertEqual(mocks, mockRec.recordables)
     }
     

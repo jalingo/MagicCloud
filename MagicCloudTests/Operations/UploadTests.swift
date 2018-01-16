@@ -21,7 +21,9 @@ class UploadTests: XCTestCase {
     
     var mocks: [MockRecordable]?
     
-    var mockRec = MockReceiver()
+    var mockRec = MockReceiver() {
+didSet { print("ø- instantiating MockReceiver") }
+    }
     
     var databaseNeedsCleanUp = false
     
@@ -205,10 +207,8 @@ class UploadTests: XCTestCase {
 
     func testUploadSendsLocalNotificationToTriggerMirroringInMultipleReceivers() {
         databaseNeedsCleanUp = true
-        
-        let altReceiver = MockReceiver()
-        altReceiver.subscribeToChanges(on: .privateDB)
 
+        let altReceiver = MCReceiver<MockRecordable>(db: .privateDB)
         mockRec.subscribeToChanges(on: .privateDB)
         
         // This q delay gives subscriptions time to error handle...
@@ -220,6 +220,7 @@ class UploadTests: XCTestCase {
         }
         
         pause.waitUntilFinished()
+
         XCTAssertEqual(mockRec.recordables.count, altReceiver.recordables.count)
         XCTAssert(mockRec.recordables.count != 0)
     }
