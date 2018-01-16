@@ -7,6 +7,7 @@
 //
 
 import CloudKit
+import UIKit
 
 // MARK: - Class
 
@@ -37,6 +38,7 @@ public class MCUserRecord: MCRetrier {
     
     /// This method handles any errors during the record fetch operation.
     fileprivate func handle(_ error: CKError) {
+print("MCUserRecord.handle:error \(error.localizedDescription)")
         if retriableErrors.contains(error.code), let retryAfterValue = error.userInfo[CKErrorRetryAfterKey] as? TimeInterval {
             let queue = DispatchQueue(label: retriableLabel)
             queue.asyncAfter(deadline: .now() + retryAfterValue) { self.retrieveUserRecord() }
@@ -52,11 +54,12 @@ public class MCUserRecord: MCRetrier {
     
     /// This method fetches the current USER recordID and stores it in 'id' property.
     fileprivate func retrieveUserRecord() {
+//print("MCUserRecord.retrieveUserRecord")
         CKContainer.default().fetchUserRecordID { possibleID, possibleError in
             if let error = possibleError as? CKError {
                 self.handle(error)
             } else {
-                if let id = possibleID { self.id = id }
+                if let id = possibleID {self.id = id }
                 self.group.leave()
             }
         }
@@ -65,14 +68,15 @@ public class MCUserRecord: MCRetrier {
     /// This method checks to see that User is logged in to their iCloud Account.
     /// Should be run in the app delegate, before any other cloud access is attempted.
     public static func verifyAccountAuthentication(application: UIApplication) {
+print("MCUserRecord.verifyAcctAuth:app")
         CKContainer.default().accountStatus { status, possibleError in
             if let error = possibleError as? CKError {
-                print("E!!: error @ credential check")
-                print("#\(error.errorCode) :: \(error.localizedDescription)")
+print("MCUserRecord !!: error @ credential check")
+print("MCUserRecord \(error.errorCode) :: \(error.localizedDescription)")
             }
             
             var msg: String?
-            print("## acct status: \(status.rawValue)")
+
             switch status {
                 /* 0 */ case .couldNotDetermine: msg = "This app requires internet access to work properly."
                 /* 1 */ case .available: break      // <-- msg will remain nil, no message will be posted.
@@ -96,6 +100,7 @@ public class MCUserRecord: MCRetrier {
                 alertController.addAction(settings)
                 
                 DispatchQueue.main.async {
+print("MCUserRecord + main present alert")
                     application.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
                 }
             }

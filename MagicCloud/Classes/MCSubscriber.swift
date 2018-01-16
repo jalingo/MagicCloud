@@ -27,12 +27,9 @@ public class MCSubscriber {
         - Note: Each MCSubscriber manages a single subscription. For multiple subscriptions use different MCSubscribers.
      */
     func start() {
-print("*- Starting Subscription \(subscription.recordType) / \(subscription.subscriptionID)")
         // Saves the subscription to database
         database.db.save(self.subscription) { possibleSubscription, possibleError in
-            if let error = possibleError as? CKError {
-                self.subscriptionError.handle(error, whileSubscribing: true)
-            }
+            if let error = possibleError as? CKError { self.subscriptionError.handle(error, whileSubscribing: true) }
         }
     }
     
@@ -100,20 +97,18 @@ struct MCSubscriberError: MCRetrier {
             // if not handled...
             let name = Notification.Name(MCErrorNotification)
             NotificationCenter.default.post(name: name, object: error)
-print("!! error not handled @ MCSubscriberError.handle")
+print("!! error not handled @ MCSubscriberError.handle #\(error.errorCode)")
         }
-        
     }
     
     func subscriptionAlreadyExists(retryAfter: Double?) {
         database.db.fetchAllSubscriptions { possibleSubscriptions, possibleError in
-print("*- MCSubscriberError.subscriptionAlreadyExists(after \(String(describing: retryAfter)))")
+
             // identify existing subscription...
             if let subs = possibleSubscriptions {
-print("*- Subs found = \(subs.count)")
                 switch subs.count {
                 case 0: self.attemptCreateSubscriptionAgain(after: retryAfter)
-                case 1: print("*- Resolved..."); break   // <-- Do NOTHING; leaves solitary subscription in place.
+                case 1: break   // <-- Do NOTHING; leaves solitary subscription in place.
                 default: self.leaveOnlyFirstSubscription(in: subs)
                 }
             }
@@ -121,7 +116,7 @@ print("*- Subs found = \(subs.count)")
     }
     
     func attemptCreateSubscriptionAgain(after retryAfter: Double?) {
-print("*- Writing...SHOULD NEVER TRIGGER !!")
+print("MCSubscriber.attemptCreateSubscriptionAgain ...SHOULD NEVER TRIGGER !!")
         let delay = retryAfter ?? 1
         let q = DispatchQueue(label: self.retriableLabel)
         q.asyncAfter(deadline: .now() + delay) { self.delegate?.start() }
@@ -133,8 +128,8 @@ print("*- Writing...SHOULD NEVER TRIGGER !!")
             if let subscription = sub as? CKQuerySubscription,
                 subscription.recordType == self.delegate?.subscription.recordType,
                     subscription.querySubscriptionOptions == self.delegate?.subscription.querySubscriptionOptions {
-print("*- Sub found = \(subscription.recordType) / \(subscription.subscriptionID)")
-print("*- Sub isNotFirst = \(isNotFirst)")
+//print("*- Sub found = \(subscription.recordType) / \(subscription.subscriptionID)")
+//print("*- Sub isNotFirst = \(isNotFirst)")
                 // delete the subscription...
                 isNotFirst ? (self.delegate?.end(subscriptionID: sub.subscriptionID)) : (isNotFirst = true)
             }
