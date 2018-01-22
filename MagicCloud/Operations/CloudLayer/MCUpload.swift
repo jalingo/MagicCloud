@@ -68,6 +68,8 @@ public class MCUpload<R: MCReceiverAbstraction>: Operation {
         let op = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: nil)
         op.name = "Upload: \(database)"
         
+        op.modifyRecordsCompletionBlock = modifyCompletion
+        
         op.savePolicy = .changedKeys
         if #available(iOS 11.0, *) {
             op.configuration.isLongLived = true
