@@ -11,7 +11,12 @@ import CloudKit
 /**
     This protocol enables conforming types to give access to an array of Recordable, and to prevent / allow that array's didSet to upload said array's changes to the cloud.
  */
-public protocol MCReceiverAbstraction: AnyObject { // <-- Do we still need AnyObject !!
+public protocol MCReceiverAbstraction: AnyObject { // <-- Do we still need AnyObject? !!
+    
+    //!!
+    var name: String { get }
+    
+    var serialQ: DispatchQueue { get }
     
     /// Receivers can only work with one type (for error handling).
     associatedtype type: MCRecordable
@@ -48,16 +53,17 @@ public extension MCReceiverAbstraction {
     /// This closure contains behavior responding to database change notification.
     fileprivate var databaseChanged: NotifyBlock {
         return { notification in
-            if let info = notification.userInfo {
+            if let change = notification.object as? LocalChangePackage {
+                self.respondTo(change)
+            } else if let info = notification.userInfo {
                 let notice = CKQueryNotification(fromRemoteNotificationDictionary: info)
                 let trigger = notice.queryNotificationReason
                 let db = MCDatabase.from(scope: notice.databaseScope)
                 
                 guard let id = notice.recordID else { return }
-
-                self.respondTo(trigger, for: id, on: db)
-            } else if let changed = notification.object as? LocalChangePackage {
-                self.respondTo(changed.reason, for: changed.id, on: changed.db)
+                
+                let change = LocalChangePackage(id: id, reason: trigger, originatingRec: "unknown", db: db)
+                self.respondTo(change)
             }
         }
     }
@@ -74,25 +80,33 @@ public extension MCReceiverAbstraction {
             - id: The id for the record that was changed.
             - db: The database that was changed.
      */
-    fileprivate func respondTo(_ trigger: CKQueryNotificationReason, for id: CKRecordID, on db: MCDatabase) {
-        switch trigger {
+    fileprivate func respondTo(_ package: LocalChangePackage) {
+
+        // This guards against notifications resulting from internal changes.
+        guard package.originatingRec != self.name else { return }
+        
+        switch package.reason {
         case .recordDeleted:
-            if let index = self.recordables.index(where: { $0.recordID.isEqual(id) }) { self.recordables.remove(at: index) }
+            serialQ.sync {
+                if let index = recordables.index(where: { $0.recordID.isEqual(package.id) }) { recordables.remove(at: index) }
+            }
         case .recordUpdated:
-            if let index = self.recordables.index(where: { $0.recordID.recordName == id.recordName }) {
-                self.recordables.remove(at: index)
-                
-                let op = MCDownload(type: type().recordType,
-                                    queryField: "recordID",
-                                    queryValues: [CKReference(recordID: id, action: .none)],
-                                    to: self, from: db)
-                OperationQueue().addOperation(op)
+            serialQ.sync {
+                if let index = recordables.index(where: { $0.recordID.recordName == package.id.recordName }) {
+                    self.recordables.remove(at: index)
+                    
+                    let op = MCDownload(type: type().recordType,
+                                        queryField: "recordID",
+                                        queryValues: [CKReference(recordID: package.id, action: .none)],
+                                        to: self, from: package.db)
+                    OperationQueue().addOperation(op)
+                }
             }
         case .recordCreated:
             let op = MCDownload(type: type().recordType,
                                 queryField: "recordID",
-                                queryValues: [CKReference(recordID: id, action: .none)],
-                                to: self, from: db)
+                                queryValues: [CKReference(recordID: package.id, action: .none)],
+                                to: self, from: package.db)
             OperationQueue().addOperation(op)
         }
     }
@@ -138,28 +152,72 @@ public extension MCReceiverAbstraction {
         // empties recordables, then downloads from database.
         recordables = []
         OperationQueue().addOperation(op)
+        op.waitUntilFinished()
     }
 }
 
 // MARK: - class
 
 open class MCReceiver<T: MCRecordable>: MCReceiverAbstraction {
+
+    // !! For testing purposes...
+    public let name = "MCR<\(T.self)> created \(Date())"
+    
+    // !! needs comments
+    
     public typealias type = T
 
-    public var recordables: [T] = [T]() {
-        didSet { print("%% MCReceiver.recordables.didSet %%") }
-    }
+    public var serialQ = DispatchQueue(label: "Receiver Q")
+    
+    public var recordables: [T] = [T]()
     
     public var subscription: MCSubscriber
     
     public init(db: MCDatabase) {
         subscription = MCSubscriber(forRecordType: T().recordType, on: db)
         subscribeToChanges(on: db)
-        print("%% init MCReceiver %%")
+        
+        downloadAll(from: db)
     }
     
-    deinit {
-        unsubscribeToChanges()
-        print("%% deinit MCReceiver %%")
+    deinit { unsubscribeToChanges() }
+}
+
+// !! move back to tests after console prints removed...
+public class MockRecordable: MCRecordable {   // <-- remove publix (below, too) after testing remote subscriptions
+    
+    // MARK: - Properties
+    
+    fileprivate var _recordID: CKRecordID?
+    
+    var created = Date()
+    
+    // MARK: - Properties: Static Values
+    
+    static let key = "MockValue"
+    static let mockType = "MockRecordable"
+    
+    // MARK: - Properties: Recordable
+    
+    public var recordType: String { return MockRecordable.mockType }
+    
+    public var recordFields: Dictionary<String, CKRecordValue> {
+        get { return [MockRecordable.key: created as CKRecordValue] }
+        set {
+            if let date = newValue[MockRecordable.key] as? Date { created = date }
+        }
+    }
+    
+    public var recordID: CKRecordID {
+        get { return _recordID ?? CKRecordID(recordName: "EmptyRecord") }
+        set { _recordID = newValue }
+    }
+    
+    // MARK: - Functions: Constructor
+    
+    public required init() { }
+    
+    init(created: Date? = nil) {
+        if let date = created { self.created = date }
     }
 }
