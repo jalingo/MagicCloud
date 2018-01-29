@@ -156,7 +156,7 @@ public extension MCReceiverAbstraction {
     }
 }
 
-// MARK: - class
+// MARK: - Class
 
 open class MCReceiver<T: MCRecordable>: MCReceiverAbstraction {
 
@@ -173,11 +173,37 @@ open class MCReceiver<T: MCRecordable>: MCReceiverAbstraction {
     
     public var subscription: MCSubscriber
     
+    let db: MCDatabase
+    
+    let reachability = Reachability()!
+    
+    func listenForConnectivityChanges() {
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(_:)), name: .reachabilityChanged, object: reachability)
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("EE: could not start reachability notifier")
+        }
+    }
+    
+    @objc func reachabilityChanged(_ note: Notification) {
+        let reachability = note.object as! Reachability
+        
+        switch reachability.connection {
+        case .none: print("Network not reachable")
+        default: downloadAll(from: db)
+        }
+    }
+    
     public init(db: MCDatabase) {
+        self.db = db
+
         subscription = MCSubscriber(forRecordType: T().recordType, on: db)
         subscribeToChanges(on: db)
         
         downloadAll(from: db)
+        
+        listenForConnectivityChanges()
     }
     
     deinit { unsubscribeToChanges() }
