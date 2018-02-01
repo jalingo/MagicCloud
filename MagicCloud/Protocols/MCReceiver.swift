@@ -7,6 +7,7 @@
 //
 
 import CloudKit
+import Foundation
 
 /**
     This protocol enables conforming types to give access to an array of Recordable, and to prevent / allow that array's didSet to upload said array's changes to the cloud.
@@ -142,10 +143,11 @@ public extension MCReceiverAbstraction {
      */
     public func downloadAll(from db: MCDatabase, completion: OptionalClosure = nil) {
         let empty = type()
-
+print("                                         MCReceiver.downloadAll \(self.name)")
         // This operation will sync database records to recordables array, then runs completion.
         let op = MCDownload(type: empty.recordType, to: self, from: db)
         op.completionBlock = {
+print("                                         downloadAll complete  \(self.name)")
             if let block = completion { block() }
         }
 
@@ -178,11 +180,20 @@ open class MCReceiver<T: MCRecordable>: MCReceiverAbstraction {
     let reachability = Reachability()!
     
     func listenForConnectivityChanges() {
+print(#function)
+        // This listens for changes in the network (wifi -> wireless -> none)
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(_:)), name: .reachabilityChanged, object: reachability)
         do {
             try reachability.startNotifier()
         } catch {
             print("EE: could not start reachability notifier")
+        }
+        
+        // This listens for changes in iCloud account (login / out)
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.CKAccountChanged, object: nil, queue: nil) { note in
+            
+            MCUserRecord.verifyAccountAuthentication()
+            self.downloadAll(from: self.db)
         }
     }
     
