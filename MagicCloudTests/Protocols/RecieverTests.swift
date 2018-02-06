@@ -265,6 +265,7 @@ print("ø- instantiating receiver")
     }
     
     func testReceiverReactsCloudAccountChanges() {
+        mock?.listenForConnectivityChangesOnPublic()
         
         // loads mocks into the database
         let _ = prepareDatabase()
@@ -285,7 +286,8 @@ print("ø- instantiating receiver")
         XCTAssert(mock?.recordables.count != 0)
     }
     
-    func testReceiverReactsConnectionChanges() {
+    func testReceiverReactsNetworkChanges() {
+        mock?.listenForConnectivityChangesOnPublic()
         
         // loads mocks into the database
         let _ = prepareDatabase()
@@ -372,6 +374,35 @@ class MockReceiver: MCReceiverAbstraction {
         }
     }
 
+    let reachability = Reachability()!
+    
+    func listenForConnectivityChangesOnPublic() {
+print(#function)
+        // This listens for changes in the network (wifi -> wireless -> none)
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(_:)), name: .reachabilityChanged, object: reachability)
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("EE: could not start reachability notifier")
+        }
+        
+        // This listens for changes in iCloud account (login / out)
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.CKAccountChanged, object: nil, queue: nil) { note in
+            
+            MCUserRecord.verifyAccountAuthentication()
+            self.downloadAll(from: .publicDB)
+        }
+    }
+    
+    @objc func reachabilityChanged(_ note: Notification) {
+        let reachability = note.object as! Reachability
+        
+        switch reachability.connection {
+        case .none: print("Network not reachable")
+        default: downloadAll(from: .publicDB)
+        }
+    }
+    
     deinit {
         unsubscribeToChanges()
 
