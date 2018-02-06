@@ -264,6 +264,76 @@ print("ø- instantiating receiver")
         XCTAssertEqual(receiver.recordables.count, 0)
     }
     
+    func testReceiverReactsCloudAccountChanges() {
+        
+        // loads mocks into the database
+        let _ = prepareDatabase()
+        
+        // pauses long enough for receiver to download records the first time (to prevent timing issues)
+        while mock?.recordables.count == 0 { /* waiting for download to complete */ }
+        
+        // empties receiver, so that triggered download can be detected
+        mock?.recordables = []
+        
+        // posts the same notification, which should trigger download all
+        NotificationCenter.default.post(name: NSNotification.Name.CKAccountChanged, object: nil)
+        
+        // waits for notification to be reported, and receiver needs time to download records
+        while mock?.recordables.count == 0 { /* waiting for download to complete */ }
+        
+        // now that receiver has had time to download, verify success
+        XCTAssert(mock?.recordables.count != 0)
+    }
+    
+    func testReceiverReactsConnectionChanges() {
+        
+        // loads mocks into the database
+        let _ = prepareDatabase()
+        
+        // pauses long enough for receiver to download records the first time (to prevent timing issues)
+        while mock?.recordables.count == 0 { /* waiting for download to complete */ }
+        
+        // empties receiver, so that triggered download can be detected
+        mock?.recordables = []
+        
+        // pauses long enough for tester to disable wifi and download to take effect, then tests download occured
+        print("         !!!!! DISABLE WIFI OFF ON TEST DEVICE !!! ")
+        
+        let wifiDisabled = expectation(description: "10001")
+        DispatchQueue.main.async {
+            while self.mock?.recordables.count == 0 { /* waiting for download to complete */ }
+            wifiDisabled.fulfill()
+        }
+        
+        wait(for: [wifiDisabled], timeout: 30)
+        XCTAssert(mock?.recordables.count != 0)
+
+        // pauses (timeout @ 30 seconds) so that tester can manually disable all networks
+        print("         !!!!! PLACE TEST DEVICE IN AIRPORT MODE !!!!!")
+        
+        // pauses long enough for download to take effect, then tests empty occurs
+        let airportMode = expectation(description: "00101")
+        DispatchQueue.main.async {
+            while self.mock?.recordables.count != 0 { /* waiting for emptying to complete */ }
+            airportMode.fulfill()
+        }
+        
+        wait(for: [airportMode], timeout: 30)
+        XCTAssert(mock?.recordables.count == 0)
+
+        // pauses (timeout @ 30 seconds) so that tester can manually disable all networks
+        print("         !!!!! REMOVE TEST DEVICE FROM AIRPORT MODE !!!!!")
+        
+        let signalReturned = expectation(description: "10100")
+        DispatchQueue.main.async {
+            while self.mock?.recordables.count == 0 { /* waiting for download to complete */ }
+            signalReturned.fulfill()
+        }
+
+        wait(for: [signalReturned], timeout: 30)
+        XCTAssert(mock?.recordables.count != 0)
+    }
+    
     // MARK: - Functions: XCTestCase
     
     override func setUp() {
