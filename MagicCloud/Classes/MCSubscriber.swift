@@ -7,23 +7,26 @@
 //
 
 import CloudKit
-import UserNotifications
 
-/// This class 
+/// This public class handles Magic Cloud's CKQuerySubscriptions, allowing for receivers to be listen for changes while handling any errors that might arise (does NOT currently work with generic error handling).
 public class MCSubscriber {
 
     // MARK: - Properties
     
+    /// This read-only, constant property references CKQuerSubscription being decorated and registered by class.
     let subscription: CKQuerySubscription
     
+    /// This read-only, constant property references database that subscription will register with (pub / priv).
     let database: MCDatabase
-    
+
+    /// This read-only, computed property returns a subsctiption error handler using self as delegate.
     var subscriptionError: MCSubscriberError { return MCSubscriberError(delegate: self) }
     
     // MARK: - Functions
     
     /**
         This method creates a subscription that listens for injected change of record type at database and allows consequence.
+     
         - Note: Each MCSubscriber manages a single subscription. For multiple subscriptions use different MCSubscribers.
      */
     func start() {
@@ -33,7 +36,11 @@ public class MCSubscriber {
         }
     }
     
-    // !!
+    /**
+        This method unregisters either this class's subscription property or another subscription matching supplied identifier.
+     
+        - Parameter subscriptionID: An optional (defaults nil) string identifier to match against CKQuerySubscription.subscriptionID. If nil, id from subscription property used instead.
+     */
     func end(subscriptionID: String? = nil) {
         // This loads id with either parameter or self.subscription's id
         let id = subscriptionID ?? subscription.subscriptionID
@@ -48,12 +55,12 @@ public class MCSubscriber {
     // MARK: - Functions: Constructors
     
     /**
-        !!
+        This public class handles Magic Cloud's CKQuerySubscriptions, allowing for receivers to be listen for changes while handling any errors that might arise (does NOT currently work with generic error handling).
      
         - Parameters:
             - type: CKRecord.recordType that subscription listens for changes with.
             - triggers: CKQuerySubscriptionOptions for subscription.
-            - db: DatabaseType for subscription to be saved to.
+            - db: DatabaseType for subscription to be registered to.
      */
     public init(forRecordType type: String,
                 withConditions triggers: CKQuerySubscriptionOptions = [.firesOnRecordUpdate, .firesOnRecordDeletion, .firesOnRecordCreation],
@@ -67,72 +74,5 @@ public class MCSubscriber {
         subscription.notificationInfo = info       // This also passes record type for local notification.
         
         database = db
-    }
-}
-
-struct MCSubscriberError: MCRetrier {
-    
-    var delegate: MCSubscriber?
-    
-    var database: MCDatabase { return delegate?.database ?? .publicDB }
-    
-    var recordType: String { return delegate?.subscription.recordType ?? "MockRecordable" }
-    
-    /// This function handles CKErrors resulting from failed subscription attempts.
-    /// - Parameters: !!
-    func handle(_ error: CKError, whileSubscribing isSubscribing: Bool, to id: String? = nil) {
-
-        // Subscription already exists.
-        guard error.code != CKError.Code.serverRejectedRequest else {
-            subscriptionAlreadyExists(retryAfter: error.retryAfterSeconds)
-            return
-        }
-        
-        if retriableErrors.contains(error.code), let duration = error.userInfo[CKErrorRetryAfterKey] as? TimeInterval {
-            let q = DispatchQueue(label: retriableLabel)
-            q.asyncAfter(deadline: .now() + duration) {
-                isSubscribing ? self.delegate?.start() : self.delegate?.end(subscriptionID: id)
-            }
-        } else {
-            // if not handled...
-            let name = Notification.Name(MCErrorNotification)
-            NotificationCenter.default.post(name: name, object: error)
-print("!! error not handled @ MCSubscriberError.handle #\(error.errorCode)")
-        }
-    }
-    
-    func subscriptionAlreadyExists(retryAfter: Double?) {
-        database.db.fetchAllSubscriptions { possibleSubscriptions, possibleError in
-
-            // identify existing subscription...
-            if let subs = possibleSubscriptions {
-                switch subs.count {
-                case 0: self.attemptCreateSubscriptionAgain(after: retryAfter)
-                case 1: break   // <-- Do NOTHING; leaves solitary subscription in place.
-                default: self.leaveOnlyFirstSubscription(in: subs)
-                }
-            }
-        }
-    }
-    
-    func attemptCreateSubscriptionAgain(after retryAfter: Double?) {
-print("MCSubscriber.attemptCreateSubscriptionAgain ...SHOULD NEVER TRIGGER !!")
-        let delay = retryAfter ?? 1
-        let q = DispatchQueue(label: self.retriableLabel)
-        q.asyncAfter(deadline: .now() + delay) { self.delegate?.start() }
-    }
-    
-    func leaveOnlyFirstSubscription(in subs: [CKSubscription]) {
-        var isNotFirst = false
-        for sub in subs {
-            if let subscription = sub as? CKQuerySubscription,
-                subscription.recordType == self.delegate?.subscription.recordType,
-                    subscription.querySubscriptionOptions == self.delegate?.subscription.querySubscriptionOptions {
-//print("*- Sub found = \(subscription.recordType) / \(subscription.subscriptionID)")
-//print("*- Sub isNotFirst = \(isNotFirst)")
-                // delete the subscription...
-                isNotFirst ? (self.delegate?.end(subscriptionID: sub.subscriptionID)) : (isNotFirst = true)
-            }
-        }
     }
 }
