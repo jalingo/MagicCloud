@@ -3,7 +3,7 @@
 //  slBackend
 //
 //  Created by Jimmy Lingo on 5/21/17.
-//  Copyright © 2017 Promethatech. All rights reserved.
+//  Copyright © 2017 Escape Chaos. All rights reserved.
 //
 
 import XCTest

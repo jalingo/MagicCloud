@@ -3,7 +3,7 @@
 //  slBackend
 //
 //  Created by James Lingo on 11/12/17.
-//  Copyright © 2017 Promethatech. All rights reserved.
+//  Copyright © 2017 Escape Chaos. All rights reserved.
 //
 
 import CloudKit
