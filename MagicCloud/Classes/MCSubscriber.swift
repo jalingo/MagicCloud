@@ -16,7 +16,7 @@ public class MCSubscriber {
     /// This read-only, constant property references CKQuerSubscription being decorated and registered by class.
     let subscription: CKQuerySubscription
     
-    /// This read-only, constant property references database that subscription will register with (pub / priv).
+    /// This read-only, constant property stores database that subscription will register with (pub / priv).
     let database: MCDatabase
 
     /// This read-only, computed property returns a subsctiption error handler using self as delegate.
