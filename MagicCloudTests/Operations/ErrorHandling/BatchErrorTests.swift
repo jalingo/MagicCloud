@@ -17,9 +17,7 @@ class BatchErrorTests: XCTestCase {
     
     var mockOp: MockOperation?
     
-    var mockRec = MockReceiver() {
-didSet { print("ø- instantiating MockReceiver") }
-    }
+    var mockRec = MockReceiver() 
     
     var errorMatch: CKError?
     

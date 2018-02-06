@@ -9,7 +9,7 @@
 import CloudKit
 import UserNotifications
 
-//!!
+/// This class 
 public class MCSubscriber {
 
     // MARK: - Properties

@@ -40,12 +40,9 @@ class BatchError<R: MCReceiverAbstraction>: Operation {
         
         var resolution: Operation?
 
-// TODO: !! Needs to be removed before release, to prevent double notifications (here and @ MCErrorHandler).
-
-///#######/// vvvvvvvv FOR TESTING PURPOSES vvvvvvvv ///#######///
-let name = Notification.Name(MCErrorNotification)
-NotificationCenter.default.post(name: name, object: error)
-///#######/// ^^^^^^^^ REMOVE BEFORE SUBMIT ^^^^^^^^ ///#######///
+        // This notification is required for tests and is in addition to more specific notification
+        let name = Notification.Name(MCErrorNotification)
+        NotificationCenter.default.post(name: name, object: error)
         
         switch error.code {
         case .partialFailure:
