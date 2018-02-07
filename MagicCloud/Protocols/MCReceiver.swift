@@ -85,7 +85,7 @@ open class MCReceiver<T: MCRecordable>: MCReceiverAbstraction {
 
     /// This void method setups notification observers to listen for changes to both network connectivity (wifi, cell, none) and iCloud Account authentication.
     func listenForConnectivityChanges() {
-print(#function)
+
         // This listens for changes in the network (wifi -> wireless -> none)
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(_:)), name: .reachabilityChanged, object: reachability)
         do {
@@ -120,13 +120,17 @@ print(#function)
      */
     public init(db: MCDatabase) {
         self.db = db
-
         subscription = MCSubscriber(forRecordType: T().recordType, on: db)
-        subscribeToChanges(on: db)
-        
-        downloadAll(from: db)
-        
+
         listenForConnectivityChanges()
+
+        let g = DispatchGroup()
+        g.enter()
+        
+        downloadAll(from: db) { g.leave() }
+        g.wait()
+        
+        subscribeToChanges(on: db)
     }
     
     /// This deconstructor unregisters subscriptions from database.

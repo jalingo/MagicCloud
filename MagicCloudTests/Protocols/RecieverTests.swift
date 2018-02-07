@@ -329,7 +329,8 @@ print("ø- instantiating receiver")
         
         // At this point, database should be prepared and instantiation should trigger download.
         let r = MCReceiver<MockRecordable>(db: .publicDB)
-print("r = \(r.recordables.count)")
+
+        // code should not have to generate any delays, there should be records already.
         XCTAssert(r.recordables.count != 0)
     }
     
@@ -337,7 +338,7 @@ print("r = \(r.recordables.count)")
     
     override func setUp() {
         super.setUp()
-print("ø- instantiating MockReceiver")
+
         mock = MockReceiver()
     }
     
@@ -374,7 +375,7 @@ class MockReceiver: MCReceiverAbstraction {
     let reachability = Reachability()!
     
     func listenForConnectivityChangesOnPublic() {
-print(#function)
+
         // This listens for changes in the network (wifi -> wireless -> none)
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(_:)), name: .reachabilityChanged, object: reachability)
         do {
@@ -385,14 +386,14 @@ print(#function)
         
         // This listens for changes in iCloud account (login / out)
         NotificationCenter.default.addObserver(forName: NSNotification.Name.CKAccountChanged, object: nil, queue: nil) { note in
-print("detected account change")
+
             MCUserRecord.verifyAccountAuthentication()
             self.downloadAll(from: .publicDB)
         }
     }
     
     @objc func reachabilityChanged(_ note: Notification) {
-print(#function)
+
         let reachability = note.object as! Reachability
         
         switch reachability.connection {
