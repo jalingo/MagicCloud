@@ -195,57 +195,33 @@ didSet { print("ø- instantiating MockReceiver") }
         pauseNeeded = true
         testOp = MCDelete([mock!], of: mockRec, from: .publicDB)
 
-        // This checks that notifications are going out.
-        let name = Notification.Name(MockRecordable().recordType)
-        NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil) { notification in
-print("*- Notification Center pinged")
-            if let note = notification.object as? LocalChangePackage {
-print("*- for this reason: \(note.reason.rawValue)) \(note.reason)")
-print("*- for these ids: \(note.id)")
-print("*- on \(note.db.rawValue)")
-            }
-        }
-print("ø- instantiating altReceiver")
         let altReceiver = MCReceiver<MockRecordable>(db: .publicDB)
-print("ø- subscribing mocRec to changes")
         mockRec.subscribeToChanges(on: .publicDB)
 
         // This pause will give prep the time to download to receivers
         let firstPause = Pause(seconds: 5)
-print("*- waiting for subscription; even though it shouldn't matter")
+
         // This q delay gives subscriptions time to error handle...
         DispatchQueue(label: "test q").asyncAfter(deadline: .now() + 5) {
             let prep = MCUpload([self.mock!], from: self.mockRec, to: .publicDB)
             firstPause.addDependency(prep)
-prep.completionBlock = { print("*- prep complete") }
             
             OperationQueue().addOperation(firstPause)
             OperationQueue().addOperation(prep)
-print("*- prep op added to queue")
         }
         
         firstPause.waitUntilFinished()
-print("""
-    *- first pause concluded.
-    
-    *- mockRec.count = \(mockRec.recordables.count)
-    *- altRec.count = \(altReceiver.recordables.count)
-    """)
+
         XCTAssertEqual(mockRec.recordables.count, altReceiver.recordables.count)
         XCTAssert(mockRec.recordables.count != 0)
-testOp?.completionBlock = { print("*- testOp (delete) complete") }
+
         let secondPause = Pause(seconds: 5)
         secondPause.addDependency(testOp!)
         OperationQueue().addOperation(secondPause)
         OperationQueue().addOperation(testOp!)
-print("*- testOp added to queue...")
+
         secondPause.waitUntilFinished()
-print("""
-    *- second pause concluded.
-    
-    *- mockRec.count = \(mockRec.recordables.count)
-    *- altRec.count = \(altReceiver.recordables.count)
-    """)
+
         XCTAssertEqual(mockRec.recordables.count, altReceiver.recordables.count)
         XCTAssert(mockRec.recordables.count == 0)
     }

@@ -21,9 +21,7 @@ class DownloadTests: XCTestCase {
     
     var mocks = [MockRecordable]()
     
-    var mockRec = MockReceiver() {
-didSet { print("ø- instantiating MockReceiver") }
-    }
+    var mockRec = MockReceiver()
     
     var shouldCleanPublic = false
     
@@ -35,10 +33,13 @@ didSet { print("ø- instantiating MockReceiver") }
         let op = MCUpload(mocks, from: mockRec, to: db)
         let pause = Pause(seconds: 3)
         pause.addDependency(op)
+
         OperationQueue().addOperation(pause)
         OperationQueue().addOperation(op)
         
         pause.waitUntilFinished()
+        db == .publicDB ? (shouldCleanPublic = true) : (shouldCleanPrivate = false)
+    
         return 0
     }
     
@@ -81,9 +82,6 @@ didSet { print("ø- instantiating MockReceiver") }
                                 queryValues: [value],
                                 to: mockRec,
                                 from: .privateDB)
-
-            // This will be used to clean up the database after the test finishes.
-            shouldCleanPrivate = true
             
             let expect = expectation(description: "reciever.recordables updated")
             testOp?.completionBlock = { expect.fulfill() }
@@ -113,9 +111,6 @@ didSet { print("ø- instantiating MockReceiver") }
                                 queryValues: [value],
                                 to: mockRec,
                                 from: .publicDB)
-            
-            // This will be used to clean up the database after the test finishes.
-            shouldCleanPublic = true
             
             let expect = expectation(description: "reciever.recordables updated")
             testOp?.completionBlock = { expect.fulfill() }
@@ -147,9 +142,6 @@ didSet { print("ø- instantiating MockReceiver") }
         
         testOp = MCDownload(type: ownedMock.recordType, to: mockRec, from: .privateDB)
         
-        // This will be used to clean up the database after the test finishes.
-        shouldCleanPrivate = true
-        
         let expect = expectation(description: "reciever.recordables updated")
         testOp?.completionBlock = { expect.fulfill() }
         
@@ -178,9 +170,6 @@ didSet { print("ø- instantiating MockReceiver") }
         
         testOp = MCDownload(type: ownedMock.recordType, to: mockRec, from: .publicDB)
         
-        // This will be used to clean up the database after the test finishes.
-        shouldCleanPublic = true
-        
         let expect = expectation(description: "reciever.recordables updated")
         testOp?.completionBlock = { expect.fulfill() }
         
@@ -202,9 +191,6 @@ didSet { print("ø- instantiating MockReceiver") }
 
         testOp = MCDownload(type: mock.recordType, to: mockRec, from: .privateDB)
         
-        // This will be used to clean up the database after the test finishes.
-        shouldCleanPrivate = true
-        
         let expect = expectation(description: "reciever.recordables updated")
         testOp?.completionBlock = { expect.fulfill() }
         
@@ -220,9 +206,6 @@ didSet { print("ø- instantiating MockReceiver") }
         let _ = prepareDatabase()
         
         testOp = MCDownload(type: mock.recordType, to: mockRec, from: .publicDB)
-        
-        // This will be used to clean up the database after the test finishes.
-        shouldCleanPublic = true
         
         let expect = expectation(description: "reciever.recordables updated")
         testOp?.completionBlock = { expect.fulfill() }
