@@ -289,46 +289,31 @@ print("ø- instantiating receiver")
     func testReceiverReactsNetworkChanges() {
         mock?.listenForConnectivityChangesOnPublic()
         
-        // loads mocks into the database
+        // loads mocks into the database, with enough delay (currently) to accomodate mock?.downloadAll:db:
         let _ = prepareDatabase()
-        
-        // pauses long enough for receiver to download records the first time (to prevent timing issues)
-        while mock?.recordables.count == 0 { /* waiting for download to complete */ }
-        
+
         // empties receiver, so that triggered download can be detected
         mock?.recordables = []
-        
+
         // pauses long enough for tester to disable wifi and download to take effect, then tests download occured
-        print("         !!!!! DISABLE WIFI OFF ON TEST DEVICE !!! ")
-        
         let wifiDisabled = expectation(description: "10001")
         DispatchQueue.main.async {
-            while self.mock?.recordables.count == 0 { /* waiting for download to complete */ }
+            while self.mock?.recordables.count == 0 { print("         ** DISABLE WIFI OFF ON TEST DEVICE **") }
             wifiDisabled.fulfill()
         }
-        
+
         wait(for: [wifiDisabled], timeout: 30)
         XCTAssert(mock?.recordables.count != 0)
+        
+        let airportMode = expectation(forNotification: .reachabilityChanged, object: nil, handler: nil)
+        print("         ** PLACE TEST DEVICE IN AIRPORT MODE **")
 
-        // pauses (timeout @ 30 seconds) so that tester can manually disable all networks
-        print("         !!!!! PLACE TEST DEVICE IN AIRPORT MODE !!!!!")
-        
-        // pauses long enough for download to take effect, then tests empty occurs
-        let airportMode = expectation(description: "00101")
-        DispatchQueue.main.async {
-            while self.mock?.recordables.count != 0 { /* waiting for emptying to complete */ }
-            airportMode.fulfill()
-        }
-        
         wait(for: [airportMode], timeout: 30)
         XCTAssert(mock?.recordables.count == 0)
-
-        // pauses (timeout @ 30 seconds) so that tester can manually disable all networks
-        print("         !!!!! REMOVE TEST DEVICE FROM AIRPORT MODE !!!!!")
         
         let signalReturned = expectation(description: "10100")
         DispatchQueue.main.async {
-            while self.mock?.recordables.count == 0 { /* waiting for download to complete */ }
+            while self.mock?.recordables.count == 0 { print("         ** REMOVE TEST DEVICE FROM AIRPORT MODE **") }
             signalReturned.fulfill()
         }
 
@@ -344,7 +329,7 @@ print("ø- instantiating receiver")
         
         // At this point, database should be prepared and instantiation should trigger download.
         let r = MCReceiver<MockRecordable>(db: .publicDB)
-
+print("r = \(r.recordables.count)")
         XCTAssert(r.recordables.count != 0)
     }
     
@@ -400,13 +385,14 @@ print(#function)
         
         // This listens for changes in iCloud account (login / out)
         NotificationCenter.default.addObserver(forName: NSNotification.Name.CKAccountChanged, object: nil, queue: nil) { note in
-            
+print("detected account change")
             MCUserRecord.verifyAccountAuthentication()
             self.downloadAll(from: .publicDB)
         }
     }
     
     @objc func reachabilityChanged(_ note: Notification) {
+print(#function)
         let reachability = note.object as! Reachability
         
         switch reachability.connection {
