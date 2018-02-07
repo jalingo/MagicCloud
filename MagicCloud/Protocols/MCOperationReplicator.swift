@@ -9,15 +9,22 @@
 import Foundation
 import CloudKit
 
+/// Types conforming to this protocol will be able to replicate several Magic Cloud operations.
 protocol MCOperationReplicator {
+    
+    /**
+        This function takes the originatingOp (which has already been spent) and creates a new version with the same property values and completion blocks.
+     
+        - Parameters:
+            - op: The operation to be duplicated.
+            - receiver: The receiver type associated with the operation.
+        - Returns: If not nil, then operation was successfully replicated.
+     */
     func replicate<R: MCReceiverAbstraction>(_ op: Operation, with receiver: R) -> Operation?
 }
 
 extension MCOperationReplicator {
     
-    /**
-        This function takes the originatingOp (which has already been spent) and creates a new version with the same property values and completion blocks.
-     */
     func replicate<R: MCReceiverAbstraction>(_ op: Operation, with receiver: R) -> Operation? {
         
         // Custom Operations

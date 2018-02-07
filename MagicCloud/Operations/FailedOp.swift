@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// This mock operation is used for testing, but must be a part of the main build to interact with 'Duplicate'
+/// This mock operation is used for testing, but must be a part of the main build to interact with 'MCReplicator'
 class FailedOp: Operation {
     
     let notification: Notification
@@ -18,5 +18,4 @@ class FailedOp: Operation {
     }
     
     init(notify: Notification) { notification = notify }
-    
 }
