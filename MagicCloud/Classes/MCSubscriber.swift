@@ -13,8 +13,8 @@ public class MCSubscriber {
 
     // MARK: - Properties
     
-    /// This read-only, constant property references CKQuerSubscription being decorated and registered by class.
-    let subscription: CKQuerySubscription
+    /// This property references CKQuerSubscription being decorated and registered by class.
+    var subscription: CKQuerySubscription
     
     /// This read-only, constant property stores database that subscription will register with (pub / priv).
     let database: MCDatabase

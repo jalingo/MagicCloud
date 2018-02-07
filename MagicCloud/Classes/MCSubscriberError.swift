@@ -53,15 +53,18 @@ struct MCSubscriberError: MCRetrier {
      
         - Parameter retryAfter: If nil, retries are immediate. Else, double is number of seconds retry is delayed.
      */
-    func subscriptionAlreadyExists(retryAfter: Double?) {
+    fileprivate func subscriptionAlreadyExists(retryAfter: Double?) {
         database.db.fetchAllSubscriptions { possibleSubscriptions, possibleError in
             
             // identify existing subscription...
             if let subs = possibleSubscriptions {
                 switch subs.count {
-                case 0: self.attemptCreateSubscriptionAgain(after: retryAfter)
-                case 1: break   // <-- Do NOTHING; leaves solitary subscription in place.
-                default: self.leaveOnlyFirstSubscription(in: subs)
+                case 0:
+                    self.attemptCreateSubscriptionAgain(after: retryAfter)
+                case 1:
+                    self.replaceSubscription(with: subs.first)
+                default:
+                    self.leaveOnlyFirstSubscription(in: subs)
                 }
             }
         }
@@ -72,7 +75,7 @@ struct MCSubscriberError: MCRetrier {
      
         - Parameter retryAfter: If nil, retries are immediate. Else, double is number of seconds retry is delayed.
      */
-    func attemptCreateSubscriptionAgain(after retryAfter: Double?) {
+    fileprivate func attemptCreateSubscriptionAgain(after retryAfter: Double?) {
         print("MCSubscriber.attemptCreateSubscriptionAgain ...SHOULD NEVER TRIGGER")
  
         let delay = retryAfter ?? 1
@@ -85,7 +88,7 @@ struct MCSubscriberError: MCRetrier {
      
         - Parameter subs: An array of subscriptions that need to be unregistered, save one.
      */
-    func leaveOnlyFirstSubscription(in subs: [CKSubscription]) {
+    fileprivate func leaveOnlyFirstSubscription(in subs: [CKSubscription]) {
         var isNotFirst = false
         for sub in subs {
             if let subscription = sub as? CKQuerySubscription,
@@ -93,8 +96,15 @@ struct MCSubscriberError: MCRetrier {
                 subscription.querySubscriptionOptions == self.delegate?.subscription.querySubscriptionOptions {
 
                 // delete the subscription...
-                isNotFirst ? (self.delegate?.end(subscriptionID: sub.subscriptionID)) : (isNotFirst = true)
+                isNotFirst ? (self.delegate?.end(subscriptionID: subscription.subscriptionID)) : (self.replaceSubscription(with: subscription))
+                    isNotFirst = true
             }
         }
+    }
+    
+    /// This void method replaces delegate?.subscription with passed argument cast as CKQuerySubscription.
+    /// - Parameter sub: This argument is cast as CKQuerySubscription, and overwrites delegate?.subscription.
+    fileprivate func replaceSubscription(with sub: CKSubscription?) {
+        if let subscription = sub as? CKQuerySubscription { self.delegate?.subscription = subscription }
     }
 }
