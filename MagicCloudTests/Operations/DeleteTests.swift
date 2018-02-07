@@ -195,7 +195,7 @@ didSet { print("ø- instantiating MockReceiver") }
         pauseNeeded = true
         testOp = MCDelete([mock!], of: mockRec, from: .publicDB)
 
-        // !! This checks that notifications are going out.
+        // This checks that notifications are going out.
         let name = Notification.Name(MockRecordable().recordType)
         NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil) { notification in
 print("*- Notification Center pinged")

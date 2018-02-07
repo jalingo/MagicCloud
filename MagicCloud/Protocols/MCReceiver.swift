@@ -9,14 +9,19 @@
 import CloudKit
 import Foundation
 
+// MARK: Protocol
+
 /**
-    This protocol enables conforming types to give access to an array of Recordable, and to prevent / allow that array's didSet to upload said array's changes to the cloud.
+    This protocol enables conforming types to give access to an array of Recordable, and to match array's contents to the cloud.
  */
-public protocol MCReceiverAbstraction: AnyObject { // <-- Do we still need AnyObject? !!
+public protocol MCReceiverAbstraction: AnyObject {
     
-    //!!
+    // MARK: - Properties
+
+    /// This read-only, computed property returns unique string identifier for the receiver.
     var name: String { get }
     
+    /// This read-only, computed property returns a serial dispatch queue for local changes to recordables.
     var serialQ: DispatchQueue { get }
     
     /// Receivers can only work with one type (for error handling).
@@ -27,11 +32,15 @@ public protocol MCReceiverAbstraction: AnyObject { // <-- Do we still need AnyOb
     
     /// This property stores the CKQuerySubscription used by the receiver and should not be modified.
     var subscription: MCSubscriber { get set }
+
+    // MARK: - Functions
     
     /**
         This method subscribes to changes from the specified database, and prepares handling of events. Any changes that are detected will be reflected in recordables array.
      
         Implementation for this method should not be overwritten.
+     
+        - Parameter on: An argument representing the database that receiver receives recordables from.
      */
     func subscribeToChanges(on: MCDatabase)
     
@@ -42,7 +51,86 @@ public protocol MCReceiverAbstraction: AnyObject { // <-- Do we still need AnyOb
     
     /// This method empties recordables, and refills it from the specified database.
     /// Implementation for this method should not be overwritten.
+    /// - Parameter from: An argument representing the database that receiver receives recordables from.
+    /// - Parameter completion: If not nil, a closure that will be executed upon completion (no passed args).
     func downloadAll(from: MCDatabase, completion: OptionalClosure)
+}
+
+// MARK: - Class
+
+/// This open (can be sub-classed) class serves as the primary concrete adopter of MCReceiverAbstraction. Gives access to an array of Recordable, and keeps that array matching database records.
+open class MCReceiver<T: MCRecordable>: MCReceiverAbstraction {
+
+    // MARK: - Properties
+
+    /// This read-only, constant property stores database records will be received from.
+    let db: MCDatabase
+    
+    /// This read-only, constant stores Reachability class for detecting network connection changes.
+    let reachability = Reachability()!
+
+    // MARK: - Properties: MCReceiverAbstraction
+
+    public let name = "MCR<\(T.self)> created \(Date())"
+    
+    public typealias type = T
+
+    public var serialQ = DispatchQueue(label: "Receiver Q")
+    
+    public var recordables: [T] = [T]()
+    
+    public var subscription: MCSubscriber
+    
+    // MARK: - Functions
+
+    /// This void method setups notification observers to listen for changes to both network connectivity (wifi, cell, none) and iCloud Account authentication.
+    func listenForConnectivityChanges() {
+print(#function)
+        // This listens for changes in the network (wifi -> wireless -> none)
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(_:)), name: .reachabilityChanged, object: reachability)
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("EE: could not start reachability notifier")
+        }
+        
+        // This listens for changes in iCloud account (logged in / out)
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.CKAccountChanged, object: nil, queue: nil) { note in
+            
+            MCUserRecord.verifyAccountAuthentication()
+            self.downloadAll(from: self.db)             // <-- There will be situations where this line fails,
+        }                                               //     because not contingent on verification results.
+    }
+    
+    /// This void method handles network changes based on new status.
+    /// - Parameter note: The notification that reported network connection change.
+    @objc func reachabilityChanged(_ note: Notification) {
+        let reachability = note.object as! Reachability
+        
+        switch reachability.connection {
+        case .none: print("Network not reachable")
+        default: downloadAll(from: db)
+        }
+    }
+    
+    /**
+        This open (can be sub-classed) class serves as the primary concrete adopter of MCReceiverAbstraction. Gives access to an array of Recordable, and keeps that array matching database records.
+     
+        - Parameter db: An argument representing the database that receiver receives recordables from.
+     */
+    public init(db: MCDatabase) {
+        self.db = db
+
+        subscription = MCSubscriber(forRecordType: T().recordType, on: db)
+        subscribeToChanges(on: db)
+        
+        downloadAll(from: db)
+        
+        listenForConnectivityChanges()
+    }
+    
+    /// This deconstructor unregisters subscriptions from database.
+    deinit { unsubscribeToChanges() }
 }
 
 // MARK: - Extensions
@@ -75,14 +163,14 @@ public extension MCReceiverAbstraction {
         This method responds to the various types of changes to the specified database.
      
         In the event of a record deletion, associated recordable is removed from recordables. If a record is updated, the local copy is removed from recordables and replaced by a fresh download. If a record is created, a new recordable is made from a downloaded record.
-    
+     
         - Parameters:
             - trigger: The type of change reported by the database.
             - id: The id for the record that was changed.
             - db: The database that was changed.
      */
     fileprivate func respondTo(_ package: LocalChangePackage) {
-
+        
         // This guards against notifications resulting from internal changes.
         guard package.originatingRec != self.name else { return }
         
@@ -120,11 +208,8 @@ public extension MCReceiverAbstraction {
                                                using: databaseChanged)
     }
     
-    // MARK: - Functions: ReceivesRecordable
+    // MARK: - Functions: MCReceiverAbstraction
     
-    /**
-        This method subscribes to changes from the specified database, and prepares handling of events. Any changes that are detected will be reflected in recordables array.
-     */
     public func subscribeToChanges(on db: MCDatabase) {
         let recordType = type().recordType
         subscription = MCSubscriber(forRecordType: recordType, on: db)
@@ -134,127 +219,20 @@ public extension MCReceiverAbstraction {
         listenForDatabaseChanges()
     }
     
-    /// This method unsubscribes from changes to the specified database.
     public func unsubscribeToChanges() { subscription.end() }
     
-    /**
-        This method empties recordables, and refills it from the specified database.
-        Implementation for this method should not be overwritten.
-     */
     public func downloadAll(from db: MCDatabase, completion: OptionalClosure = nil) {
         let empty = type()
-print("                                         MCReceiver.downloadAll \(self.name)")
+        
         // This operation will sync database records to recordables array, then runs completion.
         let op = MCDownload(type: empty.recordType, to: self, from: db)
         op.completionBlock = {
-print("                                         downloadAll complete  \(self.name)")
             if let block = completion { block() }
         }
-
+        
         // empties recordables, then downloads from database.
         recordables = []
         OperationQueue().addOperation(op)
         op.waitUntilFinished()
-    }
-}
-
-// MARK: - Class
-
-open class MCReceiver<T: MCRecordable>: MCReceiverAbstraction {
-
-    // !! For testing purposes...
-    public let name = "MCR<\(T.self)> created \(Date())"
-    
-    // !! needs comments
-    
-    public typealias type = T
-
-    public var serialQ = DispatchQueue(label: "Receiver Q")
-    
-    public var recordables: [T] = [T]()
-    
-    public var subscription: MCSubscriber
-    
-    let db: MCDatabase
-    
-    let reachability = Reachability()!
-    
-    func listenForConnectivityChanges() {
-print(#function)
-        // This listens for changes in the network (wifi -> wireless -> none)
-        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(_:)), name: .reachabilityChanged, object: reachability)
-        do {
-            try reachability.startNotifier()
-        } catch {
-            print("EE: could not start reachability notifier")
-        }
-        
-        // This listens for changes in iCloud account (login / out)
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.CKAccountChanged, object: nil, queue: nil) { note in
-            
-            MCUserRecord.verifyAccountAuthentication()
-            self.downloadAll(from: self.db)
-        }
-    }
-    
-    @objc func reachabilityChanged(_ note: Notification) {
-        let reachability = note.object as! Reachability
-        
-        switch reachability.connection {
-        case .none: print("Network not reachable")
-        default: downloadAll(from: db)
-        }
-    }
-    
-    public init(db: MCDatabase) {
-        self.db = db
-
-        subscription = MCSubscriber(forRecordType: T().recordType, on: db)
-        subscribeToChanges(on: db)
-        
-        downloadAll(from: db)
-        
-        listenForConnectivityChanges()
-    }
-    
-    deinit { unsubscribeToChanges() }
-}
-
-// !! move back to tests after console prints removed...
-public class MockRecordable: MCRecordable {   // <-- remove publix (below, too) after testing remote subscriptions
-    
-    // MARK: - Properties
-    
-    fileprivate var _recordID: CKRecordID?
-    
-    var created = Date()
-    
-    // MARK: - Properties: Static Values
-    
-    static let key = "MockValue"
-    static let mockType = "MockRecordable"
-    
-    // MARK: - Properties: Recordable
-    
-    public var recordType: String { return MockRecordable.mockType }
-    
-    public var recordFields: Dictionary<String, CKRecordValue> {
-        get { return [MockRecordable.key: created as CKRecordValue] }
-        set {
-            if let date = newValue[MockRecordable.key] as? Date { created = date }
-        }
-    }
-    
-    public var recordID: CKRecordID {
-        get { return _recordID ?? CKRecordID(recordName: "EmptyRecord") }
-        set { _recordID = newValue }
-    }
-    
-    // MARK: - Functions: Constructor
-    
-    public required init() { }
-    
-    init(created: Date? = nil) {
-        if let date = created { self.created = date }
     }
 }

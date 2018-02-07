@@ -37,13 +37,13 @@ public class MCUserRecord: MCRetrier {
     // MARK: - Functions
     
     /// This method handles any errors during the record fetch operation.
+    /// - Parameter error: The CKError that needs to be handled.
     fileprivate func handle(_ error: CKError) {
-print("MCUserRecord.handle:error \(error.localizedDescription)")
         if retriableErrors.contains(error.code), let retryAfterValue = error.userInfo[CKErrorRetryAfterKey] as? TimeInterval {
             let queue = DispatchQueue(label: retriableLabel)
             queue.asyncAfter(deadline: .now() + retryAfterValue) { self.retrieveUserRecord() }
         } else {
-print("                                 ERROR not retried")
+
             // Fatal Errors...
             let name = Notification.Name(MCErrorNotification)
             NotificationCenter.default.post(name: name, object: error)
@@ -67,24 +67,23 @@ print("                                 ERROR not retried")
     /// This method checks to see that User is logged in to their iCloud Account.
     /// Should be run in the app delegate, before any other cloud access is attempted.
     public static func verifyAccountAuthentication() {
-print("MCUserRecord.verifyAcctAuth:app")
         CKContainer.default().accountStatus { status, possibleError in
             if let error = possibleError as? CKError {
-print("MCUserRecord !!: error @ credential check")
-print("MCUserRecord \(error.errorCode) :: \(error.localizedDescription)")
+print("         EE: MCUserRecord error @ credential check")
+print("             MCUserRecord \(error.errorCode) :: \(error.localizedDescription)")
             }
             
             var msg: String?
 
             switch status {
-            /* 0 */ case .couldNotDetermine: msg = "This app requires internet access to work properly."
-            /* 1 */ case .available: break      // <-- msg will remain nil, no message will be posted.
-            /* 2 */ case .restricted: msg = """
+    /* 0 */ case .couldNotDetermine: msg = "This app requires internet access to work properly."
+    /* 1 */ case .available: break      // <-- msg will remain nil, no message will be posted.
+    /* 2 */ case .restricted: msg = """
                 This app requires internet access and an iCloud account to work properly.
                 
                 Access was denied due to Parental Controls or Mobile Device Management restrictions.
                 """
-            /* 3 */ case .noAccount: msg = """
+    /* 3 */ case .noAccount: msg = """
                 This app requires internet access and an iCloud account to work properly.
                 
                 From Settings, tap iCloud, authenticate your Apple ID and enable iCloud drive.
@@ -107,7 +106,6 @@ print("MCUserRecord \(error.errorCode) :: \(error.localizedDescription)")
                 alertController.addAction(settings)
                 
                 DispatchQueue.main.async {
-print("MCUserRecord + main present alert")
                     UIApplication.shared.keyWindow?.rootViewController?.present(alertController,
                                                                                 animated: true,
                                                                                 completion: nil)
@@ -117,5 +115,6 @@ print("MCUserRecord + main present alert")
     }
     
     // This makes initializer public.
+    /// This struct contains a static var (singleton) which accesses USER's iCloud CKRecordID.
     public init() { }
 }

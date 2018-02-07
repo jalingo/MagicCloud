@@ -25,6 +25,7 @@
 		A17DE9E61FBE56D900D2EB4F /* MCSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17DE9E41FBE56D900D2EB4F /* MCSubscriber.swift */; };
 		A1AC0DB0202A69AB00C2CDE0 /* MCSubscriberError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC0DAF202A69AB00C2CDE0 /* MCSubscriberError.swift */; };
 		A1AC0DB1202A69AB00C2CDE0 /* MCSubscriberError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC0DAF202A69AB00C2CDE0 /* MCSubscriberError.swift */; };
+		A1AC0DB4202A740700C2CDE0 /* MockRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC0DB3202A740700C2CDE0 /* MockRecordable.swift */; };
 		A1AC8F3F201EC647000B02E8 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC8F3E201EC647000B02E8 /* Reachability.swift */; };
 		A1AC8F40201EC647000B02E8 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC8F3E201EC647000B02E8 /* Reachability.swift */; };
 		A1B0CF171FC51FBE009474EE /* RemoteNotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B0CF161FC51FBE009474EE /* RemoteNotificationTests.swift */; };
@@ -145,6 +146,7 @@
 		A16EA5021FC666DF001E57F8 /* MCNotificationConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCNotificationConverter.swift; sourceTree = "<group>"; };
 		A17DE9E41FBE56D900D2EB4F /* MCSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCSubscriber.swift; sourceTree = "<group>"; };
 		A1AC0DAF202A69AB00C2CDE0 /* MCSubscriberError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCSubscriberError.swift; sourceTree = "<group>"; };
+		A1AC0DB3202A740700C2CDE0 /* MockRecordable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRecordable.swift; sourceTree = "<group>"; };
 		A1AC8F3E201EC647000B02E8 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		A1B0CF161FC51FBE009474EE /* RemoteNotificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteNotificationTests.swift; sourceTree = "<group>"; };
 		A1CB77141FBA8535008ADF09 /* MCOperationReplicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCOperationReplicator.swift; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 		A1268EC31FBA806300ADAA74 /* MagicCloudTests */ = {
 			isa = PBXGroup;
 			children = (
+				A1AC0DB3202A740700C2CDE0 /* MockRecordable.swift */,
 				A1B0CF161FC51FBE009474EE /* RemoteNotificationTests.swift */,
 				A1CB77531FBA877A008ADF09 /* Protocols */,
 				A1CB775A1FBA8798008ADF09 /* Operations */,
@@ -684,6 +687,7 @@
 				A1CB77591FBA8793008ADF09 /* UploadTests.swift in Sources */,
 				A1CB774C1FBA874F008ADF09 /* RecieverTests.swift in Sources */,
 				A1CB77521FBA8773008ADF09 /* PauseTests.swift in Sources */,
+				A1AC0DB4202A740700C2CDE0 /* MockRecordable.swift in Sources */,
 				A1CB77C81FBC3241008ADF09 /* BatchErrorTests.swift in Sources */,
 				A1B0CF171FC51FBE009474EE /* RemoteNotificationTests.swift in Sources */,
 				A1CB77CC1FBC3326008ADF09 /* MCReceiver.swift in Sources */,

@@ -45,7 +45,6 @@ struct MCSubscriberError: MCRetrier {
             // if not handled...
             let name = Notification.Name(MCErrorNotification)
             NotificationCenter.default.post(name: name, object: error)
-            print("!! error not handled @ MCSubscriberError.handle #\(error.errorCode)")
         }
     }
     
@@ -74,7 +73,7 @@ struct MCSubscriberError: MCRetrier {
         - Parameter retryAfter: If nil, retries are immediate. Else, double is number of seconds retry is delayed.
      */
     func attemptCreateSubscriptionAgain(after retryAfter: Double?) {
-        print("MCSubscriber.attemptCreateSubscriptionAgain ...SHOULD NEVER TRIGGER !!")
+        print("MCSubscriber.attemptCreateSubscriptionAgain ...SHOULD NEVER TRIGGER")
  
         let delay = retryAfter ?? 1
         let q = DispatchQueue(label: self.retriableLabel)
