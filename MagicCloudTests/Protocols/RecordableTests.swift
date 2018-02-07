@@ -47,52 +47,8 @@ class RecordableTests: XCTestCase {
         }
     }
     
-    func testRecordableRequiresBlankInit() {
-        XCTAssertNotNil(MockRecordable())
-    }
+    func testRecordableRequiresBlankInit() { XCTAssertNotNil(MockRecordable()) }
 }
-
-
-// MARK: - Mock
-
-/// Mock instance that only conforms to `Recordable` for testing and prototype development.
-//public class MockRecordable: MCRecordable {   // <-- remove publix (below, too) after testing remote subscriptions
-//    
-//    // MARK: - Properties
-//    
-//    fileprivate var _recordID: CKRecordID?
-//    
-//    var created = Date()
-//    
-//    // MARK: - Properties: Static Values
-//    
-//    static let key = "MockValue"
-//    static let mockType = "MockRecordable"
-//    
-//    // MARK: - Properties: Recordable
-//    
-//    public var recordType: String { return MockRecordable.mockType }
-//    
-//    public var recordFields: Dictionary<String, CKRecordValue> {
-//        get { return [MockRecordable.key: created as CKRecordValue] }
-//        set {
-//            if let date = newValue[MockRecordable.key] as? Date { created = date }
-//        }
-//    }
-//
-//    public var recordID: CKRecordID {
-//        get { return _recordID ?? CKRecordID(recordName: "EmptyRecord") }
-//        set { _recordID = newValue }
-//    }
-//
-//    // MARK: - Functions: Constructor
-//    
-//    public required init() { }
-//    
-//    init(created: Date? = nil) {
-//        if let date = created { self.created = date }
-//    }
-//}
 
 extension MockRecordable: Equatable { }
 

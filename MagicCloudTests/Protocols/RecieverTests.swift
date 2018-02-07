@@ -336,6 +336,18 @@ print("ø- instantiating receiver")
         XCTAssert(mock?.recordables.count != 0)
     }
     
+    
+    func testReceiverStartsDownloadingBeforeInitCompletes() {
+
+        // loads mocks into the database
+        let _ = prepareDatabase()
+        
+        // At this point, database should be prepared and instantiation should trigger download.
+        let r = MCReceiver<MockRecordable>(db: .publicDB)
+
+        XCTAssert(r.recordables.count != 0)
+    }
+    
     // MARK: - Functions: XCTestCase
     
     override func setUp() {
