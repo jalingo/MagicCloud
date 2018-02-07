@@ -8,7 +8,7 @@
 
 import CloudKit
 
-// MARK: - Closures
+// MARK: Closures
 
 public typealias OptionalClosure = (()->())?
 
@@ -25,3 +25,7 @@ public typealias NotifyBlock = (Notification) -> Void
 // MARK: - Local Notification Objects
 
 typealias LocalChangePackage = (id: CKRecordID, reason: CKQueryNotificationReason, originatingRec: String, db: MCDatabase)
+
+// MARK: - Global Constants
+
+public let MCErrorNotification = "CLOUD_KIT_ERROR"
