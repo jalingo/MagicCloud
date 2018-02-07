@@ -14,7 +14,7 @@
 		A1268EE11FBA80BC00ADAA74 /* MCReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDD1FBA80BC00ADAA74 /* MCReceiver.swift */; };
 		A1268EE31FBA80BC00ADAA74 /* MCRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* MCRecordable.swift */; };
 		A1268EE41FBA80BC00ADAA74 /* MCRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* MCRecordable.swift */; };
-		A1268EE71FBA821400ADAA74 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE61FBA821400ADAA74 /* TypeAliases.swift */; };
+		A1268EE71FBA821400ADAA74 /* TypeAliases & Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE61FBA821400ADAA74 /* TypeAliases & Constants.swift */; };
 		A1268EEA1FBA821C00ADAA74 /* MCDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE91FBA821C00ADAA74 /* MCDatabase.swift */; };
 		A1298E471FD2008300390C88 /* MagicCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1268EB61FBA806200ADAA74 /* MagicCloud.framework */; };
 		A1298E481FD2008300390C88 /* MagicCloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A1268EB61FBA806200ADAA74 /* MagicCloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -44,7 +44,7 @@
 		A1CB77591FBA8793008ADF09 /* UploadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77561FBA8792008ADF09 /* UploadTests.swift */; };
 		A1CB775D1FBA87DB008ADF09 /* MCErrorHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB775C1FBA87DB008ADF09 /* MCErrorHandlerTests.swift */; };
 		A1CB77681FBAAE9A008ADF09 /* MCDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE91FBA821C00ADAA74 /* MCDatabase.swift */; };
-		A1CB77691FBAAE9D008ADF09 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE61FBA821400ADAA74 /* TypeAliases.swift */; };
+		A1CB77691FBAAE9D008ADF09 /* TypeAliases & Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE61FBA821400ADAA74 /* TypeAliases & Constants.swift */; };
 		A1CB77821FBB986F008ADF09 /* MCDownload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77341FBA86AC008ADF09 /* MCDownload.swift */; };
 		A1CB77831FBB9874008ADF09 /* MCDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77351FBA86AD008ADF09 /* MCDelete.swift */; };
 		A1CB77841FBB9879008ADF09 /* MCUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77361FBA86AE008ADF09 /* MCUpload.swift */; };
@@ -138,7 +138,7 @@
 		A1268EC61FBA806300ADAA74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A1268EDD1FBA80BC00ADAA74 /* MCReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCReceiver.swift; sourceTree = "<group>"; };
 		A1268EDE1FBA80BC00ADAA74 /* MCRecordable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCRecordable.swift; sourceTree = "<group>"; };
-		A1268EE61FBA821400ADAA74 /* TypeAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
+		A1268EE61FBA821400ADAA74 /* TypeAliases & Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TypeAliases & Constants.swift"; sourceTree = "<group>"; };
 		A1268EE91FBA821C00ADAA74 /* MCDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCDatabase.swift; sourceTree = "<group>"; };
 		A16EA5021FC666DF001E57F8 /* MCNotificationConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCNotificationConverter.swift; sourceTree = "<group>"; };
 		A17DE9E41FBE56D900D2EB4F /* MCSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCSubscriber.swift; sourceTree = "<group>"; };
@@ -316,7 +316,7 @@
 			isa = PBXGroup;
 			children = (
 				A1AC8F3E201EC647000B02E8 /* Reachability.swift */,
-				A1268EE61FBA821400ADAA74 /* TypeAliases.swift */,
+				A1268EE61FBA821400ADAA74 /* TypeAliases & Constants.swift */,
 				A1268EE91FBA821C00ADAA74 /* MCDatabase.swift */,
 			);
 			path = Resources;
@@ -664,7 +664,7 @@
 				A1268EE31FBA80BC00ADAA74 /* MCRecordable.swift in Sources */,
 				A1CB77171FBA8535008ADF09 /* MCOperationReplicator.swift in Sources */,
 				A1CB77371FBA86AF008ADF09 /* MCDownload.swift in Sources */,
-				A1268EE71FBA821400ADAA74 /* TypeAliases.swift in Sources */,
+				A1268EE71FBA821400ADAA74 /* TypeAliases & Constants.swift in Sources */,
 				A1CB77381FBA86AF008ADF09 /* MCDelete.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -691,7 +691,7 @@
 				A1E626401FD7A6F00036FD67 /* MCRetrier.swift in Sources */,
 				A1CB77871FBB9CB7008ADF09 /* FailedOp.swift in Sources */,
 				A1CB77831FBB9874008ADF09 /* MCDelete.swift in Sources */,
-				A1CB77691FBAAE9D008ADF09 /* TypeAliases.swift in Sources */,
+				A1CB77691FBAAE9D008ADF09 /* TypeAliases & Constants.swift in Sources */,
 				A1CB77D11FBCBF47008ADF09 /* VersionConflict.swift in Sources */,
 				A1CB77681FBAAE9A008ADF09 /* MCDatabase.swift in Sources */,
 				A1CB77841FBB9879008ADF09 /* MCUpload.swift in Sources */,
