@@ -40,7 +40,7 @@ Alternatively, clone from [github](github.com/jalingo/MagicCloud), then add the 
 
 ### Quick Start Guide
 
-Check out the **Quick Start Guide**, a how-to video at (Escape Chaos)[escapeChaos.com/MagicCloud], and see a test app get fully configured in less than 15 lines of code.
+Check out the **Quick Start Guide**, a how-to video at (Escape Chaos)[https://escapeChaos.com/MagicCloud], and see a test app get fully configured in less than 15 lines of code.
 
 ## Examples
 
