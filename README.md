@@ -10,7 +10,7 @@ Default setup covers _error handling, subscriptions, account changes and more_. 
 
 Meet the requirements for **CloudKit**, which includes a _paid developer account_.
 
-An **iOS** project. (Why wouldn't you use Swift for that?)
+An **iOS** (min 10.3), project. (Why wouldn't you use Swift for that?)
 
 ## Getting Started
 
@@ -27,7 +27,13 @@ Before installing **Magic Cloud** be sure **CloudKit** and **Push Notification**
 If you're comfortable using **CocoaPods** to [manage your dependencies](https://guides.cocoapods.org/using/getting-started.html) (recommended), add the following line to your target in the podfile. 
 
 ```ruby
-pod 'MagicCloud', '~> 2.2.2'
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '10.3'   // <- 10.3 minimum requirement, can be more recent...
+use_frameworks!         // <- MagicCloud is a swift framework, ensure this is present.
+
+target '<Your Target Name>' do
+    pod 'MagicCloud', '~> 2.0'
+end
 ```
 
 Then, from your project's directory...
