@@ -27,7 +27,7 @@ Before installing **Magic Cloud** be sure **CloudKit** and **Push Notification**
 If you're comfortable using **CocoaPods** to manage your dependencies (recommended), add the following line to your target in the podfile. 
 
 ```ruby
-  pod 'MagicCloud', '~> 2.2'
+pod 'MagicCloud', '~> 2.2'
 ```
 
 Then, from your project's directory...
@@ -36,11 +36,11 @@ Then, from your project's directory...
 pod install
 ```
 
-Alternatively, you could clone from [github](github.com/jalingo/MagicCloud) (not recommended). Then add the framework to your project manually.
+Alternatively, clone from [github](github.com/jalingo/MagicCloud), then add the framework to your project manually (not recommended).
 
 #### Quick Start Guide
 
-A how-to video at escapeChaos.com/MagicCloud, check out the **Quick Start Guide** and see a test app get fully configured in less than 15 lines of code.
+Check out the **Quick Start Guide**, a how-to video at [escapeChaos.com/MagicCloud], and see a test app get fully configured in less than 15 lines of code.
 
 ## Examples
 
@@ -55,8 +55,8 @@ extension MockType: MCRecordable {
     
     public var recordType: String { return "MockType" }            // <-- This string will serve as a CKRecordType.Name
     
-    public var recordFields: Dictionary<String, CKRecordValue> {   // <-- This is where the properties that need to be saved   
-        get {                                                      //     are set / recovered from CKRecord fields. 
+    public var recordFields: Dictionary<String, CKRecordValue> {   // <-- This is where the properties that should be CKRecord   
+        get {                                                      //     fields are updated / recovered. 
             return [Mock.key: created as CKRecordValue] 
         }
         
@@ -65,18 +65,65 @@ extension MockType: MCRecordable {
         }
     }
     
-    public var recordID: CKRecordID {
+    public var recordID: CKRecordID {                              // <-- This ID needs to be unique for each instance.
         get { return _recordID ?? CKRecordID(recordName: "EmptyRecord") }
-        set { _recordID = newValue }
-    }
+        set { _recordID = newValue }                               // <-- This value needs to be saved when instances are
+    }                                                              //     created from downloaded database records. 
     
     // MARK: - Functions: Recordable
     
-    public required init() { }
-}
+    public required init() { }                                     // <-- This empty init is used to generate empty instances
+}                                                                  //     that can then be overwritten from database records.
 ```
 
 #### MCReceiver
+
+Once there are recordables to work with, use `MCReceiver`(s) to save and recover these types in the `CloudKit` databases.
+
+```swift
+let mocksInPublicDatabase = MCReceiver<MockType>(db: .publicDB)
+let mocksInPrivateDatabase = MCReceiver<MockType>(db: .privateDB)
+```
+
+Shortly after they're initialized, the receivers should finish downloading and transforming any existing records. These can be accessed from the `recordables` array.
+
+```swift
+let publicMocks: [MockType] = mocksInPublicDatabase.recordables
+```
+
+Voila! Any changes to records in the cloud database (add / edit / remove) will automatically be reflected in the receiver's recordables array until it deinits.
+
+***Note:***  While multiple local receivers for the same data type reduces stability, it is supported. Any change will be reflected in all receivers, both in the local app and in other users' apps.
+
+#### MCUpload
+
+In order to add an `MCRecordable` to the database and other local receivers, the `MCUpload` operation and an associated receiver is required.
+
+```swift
+let mock = MockType()
+ 
+let op = MCUpload([mock], from: mocksInPublicDatabase, to: .publicDB)
+op.start()
+```
+
+***Note:***  While multiple local receivers for the same data type reduces stability, it is supported. Any change will be reflected in all receivers, both in the local app and in other users' apps.
+
+***Caution:***  In the current version, adding elements directly to recordables will not be mirrored in the database (coming in a future release).
+
+#### MCDelete
+
+In order to remove an `MCRecordable` from the database and other local receivers, the `MCDelete` operation and an associated receiver is required.
+
+```swift
+let mock = MockType()
+
+let op = MCDelete([mock], of: mocksInPublicDatabase, from: .publicDB)
+op.start()
+```
+
+***Note:***  While multiple local receivers for the same data type reduces stability, it is supported. Any change will be reflected in all receivers, both in the local app and in other users' apps.
+
+***Caution:***  In the current version, removing elements directly from recordables will not be mirrored in the database (coming in a future release).
 
 #### MCUserRecord
 
