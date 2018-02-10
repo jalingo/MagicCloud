@@ -27,7 +27,7 @@ Before installing **Magic Cloud** be sure **CloudKit** and **Push Notification**
 If you're comfortable using **CocoaPods** to [manage your dependencies](https://guides.cocoapods.org/using/getting-started.html) (recommended), add the following line to your target in the podfile. 
 
 ```ruby
-pod 'MagicCloud', '~> 2.2.1'
+pod 'MagicCloud', '~> 2.2.2'
 ```
 
 Then, from your project's directory...
