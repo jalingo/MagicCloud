@@ -48,7 +48,7 @@ For basic projects, these examples should be all that is necessary.
 
 ### MCRecordable
 
-Any data type that needs to have it's model stored as records will need to conform to the `MCRecordable` protocol. 
+Any data type that needs to have it's model stored as records (and it's properties saved as those records' fields) will need to conform to the `MCRecordable` protocol. 
 
 ```swift
 extension MockType: MCRecordable {
