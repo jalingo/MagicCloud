@@ -37,7 +37,7 @@ Checkout escapeChaos.com/MagicCloud for how-to videos and documentation.
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
-  s.source_files  = "MagicCloud", "MagicCloud/**/*.{h,m}"
+  s.source_files  = "MagicCloud", "MagicCloud/**/*.{h,m,swift}"
 
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
