@@ -47,20 +47,15 @@ class ViewController: UIViewController, MCReceiverAbstraction {
     @IBAction func newMockTapped(_ sender: UIButton) {
         let mock = MockRecordable()
 
-        // This operation will save an instance conforming to recordable as a record in the specified database.
+        // This operation will save an instance conforming to recordable as a record in the specified database and all other receivers.
         let op = MCUpload([mock], from: self, to: .publicDB)
         op.start()
-
-        // The Upload operation will not effect local cache; recordables needs to be appended separately.
-        recordables.append(mock)
     }
     
     @IBAction func removeMockTapped(_ sender: UIButton) {
-
-        // The Delete operation will not effect lcoal cache; recordables needs to be modified separately.
-        if let mock = recordables.popLast() {
+        if let mock = recordables.last {
  
-            // This operation will remove these instances if present in the specified database.
+            // This operation will remove these instances if present in the specified database, and then in all other receivers.
             let op = MCDelete([mock], of: self, from: .publicDB)
             op.start()
         }
