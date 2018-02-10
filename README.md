@@ -127,6 +127,20 @@ op.start()
 
 ### MCUserRecord
 
+If you're dealing with private databases or need a unique token for each cloud account, use `MCUserRecord` to retrieve the user's unique **iCloud** identifier.
+
+```swift
+if let userRecord = MCUserRecord().singleton {          // <-- Returns nil if not logged in OR if not connected to network.
+    print("User Record: \(userRecord.recordName)") 
+}
+```
+
+To test if a user is logged in to their **iCloud** account, and have them receive a warning with a link to the **Settings** app if not, use simply call the following static method.
+
+```swift
+MCUserRecord.verifyAccountAuthentication()
+```
+
 ## Considerations
 
 While the aforementioned code is all that is needed for most projects, there are still a few design considerations and common issues to keep in mind.
@@ -171,7 +185,7 @@ NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil) {
 If you've had any issues, first please review the existing documentation. After being certain that you're dealing with a replicable bug, the best way to submit the issue is through GitHub.
 
 ```
-Issues > Create New...
+@ github.com/jalingo/MagicCloud > "Issues" tab > "New Issue" button
 ```
 
 You can also email `dev@escapechaos.com`, or for a more immediate response try **Stack Overflow**.
