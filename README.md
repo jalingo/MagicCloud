@@ -180,6 +180,8 @@ NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil) {
 
 ### CloudKit Dashboard
 
+Each **CloudKit** container can be directly accessed at the [CloudKit Dashboard](https://icloud.developer.apple.com/dashboard), where developers can modify the database schema, query / modify records, manage subscriptions, etc...
+
 ## Reporting Bugs
 
 If you've had any issues, first please review the existing documentation. After being certain that you're dealing with a replicable bug, the best way to submit the issue is through GitHub.
