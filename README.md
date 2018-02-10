@@ -16,13 +16,13 @@ An **iOS** project. (Why wouldn't you use Swift for that?)
 
 In order to use **Magic Cloud**, a project has to be configured for **CloudKit** and the **MagicCloud** framework will need to be linked to its workspace.
 
-#### Preparing App for CloudKit
+### Preparing App for CloudKit
 
 **Magic Cloud** is meant to work on top of **Apple's CloudKit** technology, not replace it. The developer does not maintain any actual databases and is not responsible for _data integrity, security or loss_.
 
 Before installing **Magic Cloud** be sure **CloudKit** and **Push Notification** are [enabled in your project's capabilities](https://developer.apple.com/library/content/documentation/DataManagement/Conceptual/CloudKitQuickStart/EnablingiCloudandConfiguringCloudKit/EnablingiCloudandConfiguringCloudKit.html).
 
-#### Installations
+### Installations
 
 If you're comfortable using **CocoaPods** to [manage your dependencies](https://guides.cocoapods.org/using/getting-started.html) (recommended), add the following line to your target in the podfile. 
 
@@ -38,7 +38,7 @@ pod install
 
 Alternatively, clone from [github](github.com/jalingo/MagicCloud), then add the framework to your project manually (not recommended).
 
-#### Quick Start Guide
+### Quick Start Guide
 
 Check out the **Quick Start Guide**, a how-to video at [escapeChaos.com/MagicCloud], and see a test app get fully configured in less than 15 lines of code.
 
@@ -46,7 +46,7 @@ Check out the **Quick Start Guide**, a how-to video at [escapeChaos.com/MagicClo
 
 For basic projects, these examples should be all that is necessary.
 
-#### MCRecordable
+### MCRecordable
 
 Any data type that needs to have it's model stored as records will need to conform to the `MCRecordable` protocol. 
 
@@ -76,7 +76,7 @@ extension MockType: MCRecordable {
 }                                                                  //     that can then be overwritten from database records.
 ```
 
-#### MCReceiver
+### MCReceiver
 
 Once there are recordables to work with, use `MCReceiver`(s) to save and recover these types in the `CloudKit` databases.
 
@@ -95,7 +95,7 @@ Voila! Any changes to records in the cloud database (add / edit / remove) will a
 
 ***Note:***  While multiple local receivers for the same data type reduces stability, it is supported. Any change will be reflected in all receivers, both in the local app and in other users' apps.
 
-#### MCUpload
+### MCUpload
 
 In order to add an `MCRecordable` to the database and other local receivers, the `MCUpload` operation and an associated receiver is required.
 
@@ -110,7 +110,7 @@ op.start()
 
 ***Caution:***  In the current version, adding elements directly to recordables will not be mirrored in the database (coming in a future release).
 
-#### MCDelete
+### MCDelete
 
 In order to remove an `MCRecordable` from the database and other local receivers, the `MCDelete` operation and an associated receiver is required.
 
@@ -125,13 +125,13 @@ op.start()
 
 ***Caution:***  In the current version, removing elements directly from recordables will not be mirrored in the database (coming in a future release).
 
-#### MCUserRecord
+### MCUserRecord
 
 ## Considerations
 
 While the aforementioned code is all that needed for most projects, there are still a few design considerations and common issues to keep in mind.
 
-#### Concurrency, Grand Central Dispatch & the Main Thread
+### Concurrency, Grand Central Dispatch & the Main Thread
 
 If this project is your first attempt at working with asynchronous operations, there are a lot of great resources out there that will ultimately save you a lot of time and trouble...
 
@@ -144,7 +144,7 @@ Thanks to **Grand Central Dispatch**, **Apple** has done most of the heavy lifti
 
 Do ***NOT*** lock up the **main thread** with cloud activity; every app needs to keep waiting for data and updating views on separate threads. If your not sure what that means, then you may want to more closely review the documentation mentioned above.
 
-#### Error Notifications
+### Error Notifications
 
 **Error Handling** is a big part of cloud development, but in most cases **Magic Cloud** can deal with them sufficiently. In case developers need to perform additional handling, every time an issue is encountered a **Notification** is posted that includes the original **CKError**.
 
@@ -161,7 +161,7 @@ NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil) {
 
 ***CAUTION:***  In cases where there's a batch issue, a single error may generate multiple notifications.
 
-#### CloudKit Dashboard
+### CloudKit Dashboard
 
 ## Reporting Bugs
 
