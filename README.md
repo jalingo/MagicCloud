@@ -22,7 +22,12 @@ In order to use **Magic Cloud**, a project has to be configured for **CloudKit**
 
 #### Quick Start Guide
 
+_Coming soon..._
+A how-to video at escapeChaos.com/MagicCloud, check out the **Quick Start Guide** and see a test app get fully configured in less than 15 lines of code.
+
 ## Examples
+
+For basic projects, these examples should be all that is necessary.
 
 #### MCRecordable
 
@@ -47,6 +52,20 @@ Thanks to **Grand Central Dispatch**, **Apple** has done most of the heavy lifti
 Do ***NOT*** lock up the **main thread** with cloud activity; every app needs to keep waiting for data and updating views on separate threads. If your not sure what that means, then you may want to more closely review the documentation mentioned above.
 
 #### Error Notifications & Authentication
+
+**Error Handling** is a big part of cloud development, but in most instances **Magic Cloud** can deal with them sufficiently. In case developers need to perform additional handling, every time an issue is encountered a **Notification** is posted that includes the original **CKError**.
+
+To listen for these, use `MCErrorNotification`:
+
+```
+let name = Notification.Name(MCErrorNotification)
+NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil) { notification in
+
+     // Error notifications from MagicCloud should always include the actual CKError as Notification.object.
+     if let error = notification.object as? CKError { print("!! CKError: \(error.localizedDescription)") }
+
+}
+```
 
 ## Reporting Bugs
 
