@@ -33,7 +33,7 @@ Checkout escapeChaos.com/MagicCloud for how-to videos and documentation.
 
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
-  s.source       = { :git => "https://github.com/jalingo/MagicCloud.git", :tag => "#{s.version}" }
+  s.source       = { :git => 'https://github.com/jalingo/MagicCloud.git', :tag => s.version }
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
