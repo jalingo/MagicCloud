@@ -51,21 +51,22 @@ Thanks to **Grand Central Dispatch**, **Apple** has done most of the heavy lifti
 
 Do ***NOT*** lock up the **main thread** with cloud activity; every app needs to keep waiting for data and updating views on separate threads. If your not sure what that means, then you may want to more closely review the documentation mentioned above.
 
-#### Error Notifications & Authentication
+#### Error Notifications
 
-**Error Handling** is a big part of cloud development, but in most instances **Magic Cloud** can deal with them sufficiently. In case developers need to perform additional handling, every time an issue is encountered a **Notification** is posted that includes the original **CKError**.
+**Error Handling** is a big part of cloud development, but in most cases **Magic Cloud** can deal with them sufficiently. In case developers need to perform additional handling, every time an issue is encountered a **Notification** is posted that includes the original **CKError**.
 
-To listen for these, use `MCErrorNotification`:
+To listen for these notifications, use `MCErrorNotification`:
 
 ```
 let name = Notification.Name(MCErrorNotification)
 NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil) { notification in
 
      // Error notifications from MagicCloud should always include the actual CKError as Notification.object.
-     if let error = notification.object as? CKError { print("!! CKError: \(error.localizedDescription)") }
-
+     if let error = notification.object as? CKError { print("CKError: \(error.localizedDescription)") }
 }
 ```
+
+***CAUTION:***  In cases where there's a batch issue, a single error may generate multiple notifications.
 
 ## Reporting Bugs
 
