@@ -22,12 +22,18 @@ In order to use **Magic Cloud**, a project has to be configured for **CloudKit**
 
 Before installing **Magic Cloud** be sure **CloudKit** and **Push Notification** are [enabled in your project's capabilities](https://developer.apple.com/library/content/documentation/DataManagement/Conceptual/CloudKitQuickStart/EnablingiCloudandConfiguringCloudKit/EnablingiCloudandConfiguringCloudKit.html).
 
-#### CocoaPods or Clone
+#### Installations
 
-If you're comfortable using **CocoaPods** to manage your dependencies (recommended), add the following line to your podfile. 
+If you're comfortable using **CocoaPods** to manage your dependencies (recommended), add the following line to your target in the podfile. 
 
-```
+```ruby
   pod 'MagicCloud', '~> 2.2'
+```
+
+Then, from your project's directory...
+
+```bash
+pod install
 ```
 
 Alternatively, you could clone from github.com/jalingo/MagicCloud.git (not recommended). Then add the framework to your project manually.
