@@ -26,11 +26,10 @@ Checkout escapeChaos.com/MagicCloud for how-to videos and documentation.
   # ――― Author Metadata  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
   s.author             = { "JA Lingo" => "James@EscapeChaos.com" }
-#  s.social_media_url   = "https://www.linkedin.com/in/jalingo"
 
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
-  s.platform     = :ios, "10.0"
+  s.platform     = :ios, "10.3"
 
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
@@ -39,10 +38,6 @@ Checkout escapeChaos.com/MagicCloud for how-to videos and documentation.
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
   s.source_files  = "MagicCloud", "MagicCloud/**/*.{h,m}"
-
-  # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
-
-  # s.resources = "*.png"
 
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
