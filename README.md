@@ -93,7 +93,7 @@ let publicMocks: [MockType] = mocksInPublicDatabase.recordables
 
 Voila! Any changes to records in the cloud database (add / edit / remove) will automatically be reflected in the receiver's recordables array until it deinits.
 
-***Note:***  While multiple local receivers for the same data type reduces stability, it is supported. Any change will be reflected in all receivers, both in the local app and in other users' apps.
+**Note:**  While multiple local receivers for the same data type reduces stability, it is supported. Any change will be reflected in all receivers, both in the local app and in other users' apps.
 
 ### MCUpload
 
@@ -106,9 +106,9 @@ let op = MCUpload([mock], from: mocksInPublicDatabase, to: .publicDB)
 op.start()
 ```
 
-***Note:***  While multiple local receivers for the same data type reduces stability, it is supported. Any change will be reflected in all receivers, both in the local app and in other users' apps.
+**Note:**  While multiple local receivers for the same data type reduces stability, it is supported. Any change will be reflected in all receivers, both in the local app and in other users' apps.
 
-***Caution:***  In the current version, adding elements directly to recordables will not be mirrored in the database (coming in a future release).
+**Caution:**  In the current version, adding elements directly to recordables will not be mirrored in the database (coming in a future release).
 
 ### MCDelete
 
@@ -121,24 +121,24 @@ let op = MCDelete([mock], of: mocksInPublicDatabase, from: .publicDB)
 op.start()
 ```
 
-***Note:***  While multiple local receivers for the same data type reduces stability, it is supported. Any change will be reflected in all receivers, both in the local app and in other users' apps.
+**Note:**  While multiple local receivers for the same data type reduces stability, it is supported. Any change will be reflected in all receivers, both in the local app and in other users' apps.
 
-***Caution:***  In the current version, removing elements directly from recordables will not be mirrored in the database (coming in a future release).
+**Caution:**  In the current version, removing elements directly from recordables will not be mirrored in the database (coming in a future release).
 
 ### MCUserRecord
 
 ## Considerations
 
-While the aforementioned code is all that needed for most projects, there are still a few design considerations and common issues to keep in mind.
+While the aforementioned code is all that is needed for most projects, there are still a few design considerations and common issues to keep in mind.
 
 ### Concurrency, Grand Central Dispatch & the Main Thread
 
-If this project is your first attempt at working with asynchronous operations, there are a lot of great resources out there that will ultimately save you a lot of time and trouble...
+If this project is your first attempt at working with asynchronous operations, **Apple** has a lot of great resources out there that will ultimately save you a lot of time and trouble...
 
 [CloudKit Documentation](https://developer.apple.com/documentation/cloudkit)
-Apple's Concurrency Programming Guide
-Apple's CloudKit Design Guide
-Apple's Grand Central Dispatch ...
+[CloudKit QuickStart](https://developer.apple.com/library/content/documentation/DataManagement/Conceptual/CloudKitQuickStart/Introduction/Introduction.html)
+[Concurrency Programming Guide](https://developer.apple.com/library/content/documentation/General/Conceptual/ConcurrencyProgrammingGuide/Introduction/Introduction.html)
+[CloudKit Design Guide](https://developer.apple.com/library/content/documentation/General/Conceptual/iCloudDesignGuide/DesigningforCloudKit/DesigningforCloudKit.html#//apple_ref/doc/uid/TP40012094-CH9-SW1)
 
 Thanks to **Grand Central Dispatch**, **Apple** has done most of the heavy lifting for us, but you will still have to understand the order your processes will execute and that varying amounts of time will be needed for cloud interactions to occur. **Dispatch Groups** (and **XCTExpectations** for unit testing) can be very helpful, in this regard.
 
@@ -159,7 +159,7 @@ NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil) {
 }
 ```
 
-***CAUTION:***  In cases where there's a batch issue, a single error may generate multiple notifications.
+**CAUTION:**  In cases where there's a batch issue, a single error may generate multiple notifications.
 
 ### CloudKit Dashboard
 
