@@ -163,7 +163,7 @@ Do ***NOT*** lock up the **main thread** with cloud activity; every app needs to
 
 ### Error Notifications
 
-**Error Handling** is a big part of cloud development, but in most cases **Magic Cloud** can deal with them sufficiently. In case developers need to perform additional handling, every time an issue is encountered a **Notification** is posted that includes the original **CKError**.
+**Error Handling** is a big part of cloud development, but in most cases **Magic Cloud** can deal with them sufficiently. For developers that need to perform additional handling, every time an issue is encountered a **Notification** is posted that includes the original **CKError**.
 
 To listen for these notifications, use `MCErrorNotification`.
 
