@@ -136,8 +136,11 @@ While the aforementioned code is all that is needed for most projects, there are
 If this project is your first attempt at working with asynchronous operations, **Apple** has a lot of great resources out there that will ultimately save you a lot of time and trouble...
 
 [CloudKit Documentation](https://developer.apple.com/documentation/cloudkit)
+
 [CloudKit QuickStart](https://developer.apple.com/library/content/documentation/DataManagement/Conceptual/CloudKitQuickStart/Introduction/Introduction.html)
+
 [Concurrency Programming Guide](https://developer.apple.com/library/content/documentation/General/Conceptual/ConcurrencyProgrammingGuide/Introduction/Introduction.html)
+
 [CloudKit Design Guide](https://developer.apple.com/library/content/documentation/General/Conceptual/iCloudDesignGuide/DesigningforCloudKit/DesigningforCloudKit.html#//apple_ref/doc/uid/TP40012094-CH9-SW1)
 
 Thanks to **Grand Central Dispatch**, **Apple** has done most of the heavy lifting for us, but you will still have to understand the order your processes will execute and that varying amounts of time will be needed for cloud interactions to occur. **Dispatch Groups** (and **XCTExpectations** for unit testing) can be very helpful, in this regard.
@@ -150,7 +153,7 @@ Do ***NOT*** lock up the **main thread** with cloud activity; every app needs to
 
 To listen for these notifications, use `MCErrorNotification`.
 
-```
+```swift
 let name = Notification.Name(MCErrorNotification)
 NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil) { notification in
 
