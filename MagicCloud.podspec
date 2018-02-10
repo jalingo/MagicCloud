@@ -46,6 +46,6 @@ Checkout escapeChaos.com/MagicCloud for how-to videos and documentation.
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
   s.requires_arc = true
-  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4' }
+  s.swift_version = '4'
 
 end
