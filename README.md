@@ -18,7 +18,7 @@ In order to use **Magic Cloud**, a project has to be configured for **CloudKit**
 
 #### Preparing App for CloudKit
 
-**Magic Cloud** is meant to work on top of **Apple's CloudKit** technology, not replace it. The developer does not maintain any actual databases and is not responsible for data integrity, security or loss.
+**Magic Cloud** is meant to work on top of **Apple's CloudKit** technology, not replace it. The developer does not maintain any actual databases and is not responsible for _data integrity, security or loss_.
 
 Before installing **Magic Cloud** be sure **CloudKit** and **Push Notification** are [enabled in your project's capabilities](https://developer.apple.com/library/content/documentation/DataManagement/Conceptual/CloudKitQuickStart/EnablingiCloudandConfiguringCloudKit/EnablingiCloudandConfiguringCloudKit.html).
 
@@ -36,7 +36,7 @@ Then, from your project's directory...
 pod install
 ```
 
-Alternatively, you could clone from github.com/jalingo/MagicCloud.git (not recommended). Then add the framework to your project manually.
+Alternatively, you could clone from [github](github.com/jalingo/MagicCloud) (not recommended). Then add the framework to your project manually.
 
 #### Quick Start Guide
 
