@@ -131,7 +131,7 @@ if let userRecord = MCUserRecord().singleton {          // <-- Returns nil if no
 }
 ```
 
-To test if a user is logged in to their **iCloud** account, and have them receive a warning with a link to the **Settings** app if not, use simply call the following static method.
+To test if a user is logged in to their **iCloud** account, and have them receive a warning with a link to the **Settings** app if not, simply call the following static method. If needed, you'll probably want to get this out of the way in the app delegate (`didFinishLaunchingWithOptions` is recommended).
 
 ```swift
 MCUserRecord.verifyAccountAuthentication()
