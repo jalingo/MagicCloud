@@ -2,7 +2,7 @@
 
 **Magic Cloud** is a **Swift (iOS) Framework** that makes using **CloudKit** simple and easy.
 
-Just conform any data types that need to be saved as database records to the `MCRecordable` prototype. Then the generic `MCMirror` classes can maintain a local array of that type, and mirror it to **CloudKit's** databases in the background.
+For any data types that need to be saved as database records, just conform them to the `MCRecordable` protocol. Then the generic `MCMirror` classes can maintain a local array of that type, and mirror it to **CloudKit's** databases in the background.
 
 Default setup covers _error handling, subscriptions, account changes and more_. Can be configured / customized for optimized performance (for more details on that, the **Magic Cloud Blog** is coming to our [site](escapechaos.com)), or just use as is. 
 
