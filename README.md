@@ -2,9 +2,11 @@
 
 **Magic Cloud** is a **Swift (iOS) Framework** that makes using **CloudKit** simple and easy.
 
-Just conform any data types that need to be saved as database records to the **MCRecordable** prototype. Then the generic **MCReceiver** classes can maintain a local array of that type, and mirror it to **CloudKit's** databases in the background.
+Just conform any data types that need to be saved as database records to the `MCRecordable` prototype. Then the generic `MCMirror` classes can maintain a local array of that type, and mirror it to **CloudKit's** databases in the background.
 
-Default setup covers _error handling, subscriptions, account changes and more_. Can be configured / customized for optimized performance, or just use as is. Check out the **Quick Start Guide** to get started with less than 15 lines of code!
+Default setup covers _error handling, subscriptions, account changes and more_. Can be configured / customized for optimized performance (for more details on that, the **Magic Cloud Blog** is coming to our [site](escapechaos.com)), or just use as is. 
+
+Check out the **Quick Start Guide** and see an app add working cloud functionality with less than 15 lines of code!
 
 ## Requirements
 
@@ -52,6 +54,24 @@ Check out the **Quick Start Guide**, a how-to video at [Escape Chaos](https://ww
 
 For basic projects, these examples should be all that is necessary.
 
+### MCNotificationConverter
+
+Once you have **CloudKit** enabled and the cocoapod installed, there's one last piece of configuration that has to happen in the app delegate.
+
+First make your app delegate conform to **MCNotificationConverter**.
+
+```swift
+class AppDelegate: UIResponder, UIApplicationDelegate, MCNotificationConverter {    // <-- Adding it here...
+```
+
+Next, scroll down to the `application(_:didReceiveRemoteNotification:fetchCompletionHandler:)` method and insert this.
+
+```swift
+    convertToLocal(from: userInfo)
+```
+
+With that line in place, any notifications from the CloudKit databases will be converted to a local notification and handled by the `MCMirror`s.
+
 ### MCRecordable
 
 Any data type that needs to have it's model stored as records (and it's properties saved as those records' fields) will need to conform to the `MCRecordable` protocol. 
@@ -82,54 +102,24 @@ extension MockType: MCRecordable {
 }                                                                  //     that can then be overwritten from database records.
 ```
 
-### MCReceiver
+### MCMirror
 
-Once there are recordables to work with, use `MCReceiver`(s) to save and recover these types in the `CloudKit` databases.
-
-```swift
-let mocksInPublicDatabase = MCReceiver<MockType>(db: .publicDB)
-let mocksInPrivateDatabase = MCReceiver<MockType>(db: .privateDB)
-```
-
-Shortly after they're initialized, the receivers should finish downloading and transforming any existing records. These can be accessed from the `recordables` array.
+Once there are recordables to work with, use `MCMirror`(s) to save and recover these types in the `CloudKit` databases.
 
 ```swift
-let publicMocks: [MockType] = mocksInPublicDatabase.recordables
+let mocksInPublicDatabase = MCMirror<MockType>(db: .publicDB)
+let mocksInPrivateDatabase = MCMirror<MockType>(db: .privateDB)
 ```
 
-Voila! Any changes to records in the cloud database (add / edit / remove) will automatically be reflected in the receiver's recordables array until it deinits.
-
-**Note:**  While multiple local receivers for the same data type reduces stability, it is supported. Any change will be reflected in all receivers, both in the local app and in other users' apps.
-
-### MCUpload
-
-In order to add an `MCRecordable` to the database and other local receivers, the `MCUpload` operation and an associated receiver is required.
+Shortly after they're initialized, the receivers should finish downloading and transforming any existing records. These can be accessed from the `dataModel` array.
 
 ```swift
-let mock = MockType()
- 
-let op = MCUpload([mock], from: mocksInPublicDatabase, to: .publicDB)
-op.start()
+let publicMocks: [MockType] = mocksInPublicDatabase.dataModel
 ```
 
-**Note:**  While multiple local receivers for the same data type reduces stability, it is supported. Any change will be reflected in all receivers, both in the local app and in other users' apps.
+Voila! Any changes to records in the cloud database (add / edit / remove) will automatically be reflected in the receiver's recordables array until it deinits. When elements are added, modified or deleted from the `dataModel` array, the `MCMirror` will ensure those changes are mirrored to the respective database in the background.
 
-**Caution:**  In the current version, adding elements directly to recordables will not be mirrored in the database (coming in a future release).
-
-### MCDelete
-
-In order to remove an `MCRecordable` from the database and other local receivers, the `MCDelete` operation and an associated receiver is required.
-
-```swift
-let mock = MockType()
-
-let op = MCDelete([mock], of: mocksInPublicDatabase, from: .publicDB)
-op.start()
-```
-
-**Note:**  While multiple local receivers for the same data type reduces stability, it is supported. Any change will be reflected in all receivers, both in the local app and in other users' apps.
-
-**Caution:**  In the current version, removing elements directly from recordables will not be mirrored in the database (coming in a future release).
+**Note:**  While multiple mirrors for the same data type in the same app reduces stability, it is supported. Any change will be reflected in all receivers, both in the local app and in other users' apps.
 
 ### MCUserRecord
 
@@ -163,9 +153,9 @@ If this project is your first attempt at working with asynchronous operations, *
 
 [CloudKit Design Guide](https://developer.apple.com/library/content/documentation/General/Conceptual/iCloudDesignGuide/DesigningforCloudKit/DesigningforCloudKit.html#//apple_ref/doc/uid/TP40012094-CH9-SW1)
 
-Thanks to **Grand Central Dispatch**, **Apple** has done most of the heavy lifting for us, but you will still have to understand the order your processes will execute and that varying amounts of time will be needed for cloud interactions to occur. **Dispatch Groups** (and **XCTExpectations** for unit testing) can be very helpful, in this regard.
+**Apple** and **Magic Cloud** have done most of the heavy lifting, but you will still have to understand the order your processes will execute and that varying amounts of time will be needed for cloud interactions to occur. **Dispatch Groups** (and **XCTExpectations** for unit testing) can be very helpful, in this regard.
 
-Do ***NOT*** lock up the **main thread** with cloud activity; every app needs to keep waiting for data and updating views on separate threads. If your not sure what that means, then you may want to more closely review the documentation mentioned above.
+Do ***NOT*** lock up the **main thread** with cloud activity; every app needs to separate threads for updating views and  waiting for data. If you're not sure what that means, then you may want to review the documentation mentioned above.
 
 ### Error Notifications
 
