@@ -58,9 +58,7 @@ func -(lhs: [MCRecordable], rhs: [MCRecordable]) -> [MCRecordable] {
 }
 
 func == (lhs: [MCRecordable], rhs: [MCRecordable]) -> Bool {
-    print("                 lhs = \(lhs), rhs = \(rhs)")
     guard lhs.count == rhs.count else { return false }
-    print("                 passed guard, then = \((lhs - rhs).count)")
     return (lhs - rhs).count == 0
 }
 
