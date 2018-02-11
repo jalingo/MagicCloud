@@ -77,6 +77,8 @@
 		A1CD903420302270005B529C /* ArrayComparer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CD903320302270005B529C /* ArrayComparer.swift */; };
 		A1CD903520302270005B529C /* ArrayComparer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CD903320302270005B529C /* ArrayComparer.swift */; };
 		A1CD903720302802005B529C /* MCMirrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CD903620302802005B529C /* MCMirrorTests.swift */; };
+		A1CD903920303003005B529C /* MCMirror.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CD903820303003005B529C /* MCMirror.swift */; };
+		A1CD903A20303003005B529C /* MCMirror.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CD903820303003005B529C /* MCMirror.swift */; };
 		A1E6263F1FD7A6F00036FD67 /* MCRetrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E6263E1FD7A6F00036FD67 /* MCRetrier.swift */; };
 		A1E626401FD7A6F00036FD67 /* MCRetrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E6263E1FD7A6F00036FD67 /* MCRetrier.swift */; };
 /* End PBXBuildFile section */
@@ -190,6 +192,7 @@
 		A1CD9031203017B3005B529C /* ArrayComparerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayComparerTests.swift; sourceTree = "<group>"; };
 		A1CD903320302270005B529C /* ArrayComparer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayComparer.swift; sourceTree = "<group>"; };
 		A1CD903620302802005B529C /* MCMirrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCMirrorTests.swift; sourceTree = "<group>"; };
+		A1CD903820303003005B529C /* MCMirror.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCMirror.swift; sourceTree = "<group>"; };
 		A1E6263E1FD7A6F00036FD67 /* MCRetrier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCRetrier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -278,7 +281,6 @@
 			isa = PBXGroup;
 			children = (
 				A1AC0DB3202A740700C2CDE0 /* MockRecordable.swift */,
-				A1CD903620302802005B529C /* MCMirrorTests.swift */,
 				A1B0CF161FC51FBE009474EE /* RemoteNotificationTests.swift */,
 				A1CB77531FBA877A008ADF09 /* Protocols */,
 				A1CB775A1FBA8798008ADF09 /* Operations */,
@@ -290,9 +292,10 @@
 		A1268EE51FBA811F00ADAA74 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				A1CD903320302270005B529C /* ArrayComparer.swift */,
 				A1268EDE1FBA80BC00ADAA74 /* MCRecordable.swift */,
 				A1268EDD1FBA80BC00ADAA74 /* MCReceiver.swift */,
+				A1CD903820303003005B529C /* MCMirror.swift */,
+				A1CD903320302270005B529C /* ArrayComparer.swift */,
 				A1E6263E1FD7A6F00036FD67 /* MCRetrier.swift */,
 				A1CB77141FBA8535008ADF09 /* MCOperationReplicator.swift */,
 				A16EA5021FC666DF001E57F8 /* MCNotificationConverter.swift */,
@@ -364,6 +367,7 @@
 		A1CB77531FBA877A008ADF09 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				A1CD903620302802005B529C /* MCMirrorTests.swift */,
 				A1CD9031203017B3005B529C /* ArrayComparerTests.swift */,
 				A1CB77491FBA874F008ADF09 /* RecordableTests.swift */,
 				A1CB77481FBA874F008ADF09 /* RecieverTests.swift */,
@@ -661,6 +665,7 @@
 				A1CB77CE1FBCB1C1008ADF09 /* PartialError.swift in Sources */,
 				A1CB77CF1FBCB1C1008ADF09 /* BatchError.swift in Sources */,
 				A1CB77391FBA86AF008ADF09 /* MCUpload.swift in Sources */,
+				A1CD903920303003005B529C /* MCMirror.swift in Sources */,
 				A17DE9E51FBE56D900D2EB4F /* MCSubscriber.swift in Sources */,
 				A1E6263F1FD7A6F00036FD67 /* MCRetrier.swift in Sources */,
 				A1CB77D21FBCBF4B008ADF09 /* VersionConflict.swift in Sources */,
@@ -710,6 +715,7 @@
 				A1CD9032203017B3005B529C /* ArrayComparerTests.swift in Sources */,
 				A1CB77841FBB9879008ADF09 /* MCUpload.swift in Sources */,
 				A1CB77851FBB9881008ADF09 /* Pause.swift in Sources */,
+				A1CD903A20303003005B529C /* MCMirror.swift in Sources */,
 				A17DE9E61FBE56D900D2EB4F /* MCSubscriber.swift in Sources */,
 				A1CB77181FBA8535008ADF09 /* MCOperationReplicator.swift in Sources */,
 				A1CB77821FBB986F008ADF09 /* MCDownload.swift in Sources */,

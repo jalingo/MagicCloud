@@ -42,10 +42,6 @@ class MCMirrorTests: XCTestCase {
     }
 }
 
-protocol MCMirrorAbstraction: ArrayComparer {
-    var dataModel: [MCRecordable] { get set }
-}
-
 struct MockMirror: MCMirrorAbstraction {
     let receiver: MCReceiver<MockRecordable>
     
@@ -57,30 +53,4 @@ struct MockMirror: MCMirrorAbstraction {
     }
 }
 
-class MCMirror<T: MCRecordable>: MCMirrorAbstraction {
 
-    let receiver: MCReceiver<T>
-    
-    var dataModel: [MCRecordable] {
-        get { return receiver.recordables }
-        
-        set {
-            let results = check(receiver.recordables, against: newValue)
-            let q = OperationQueue()
-            
-            if let changes = results.add as? [T] {
-                let op = MCUpload(changes, from: receiver, to: receiver.db)
-                q.addOperation(op)
-            }
-            
-            if let changes = results.remove as? [T] {
-                let op = MCDelete(changes, of: receiver, from: receiver.db)
-                q.addOperation(op)
-            }
-        }
-    }
-    
-    init(db: MCDatabase) {
-        receiver = MCReceiver<T>(db: db)
-    }
-}
