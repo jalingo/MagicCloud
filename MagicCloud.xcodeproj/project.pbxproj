@@ -74,6 +74,8 @@
 		A1CB78021FBCF132008ADF09 /* TestAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB78011FBCF132008ADF09 /* TestAppUITests.swift */; };
 		A1CB78101FBCF16B008ADF09 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1CB77D81FBCE8E5008ADF09 /* CloudKit.framework */; };
 		A1CD9032203017B3005B529C /* ArrayComparerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CD9031203017B3005B529C /* ArrayComparerTests.swift */; };
+		A1CD903420302270005B529C /* ArrayComparer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CD903320302270005B529C /* ArrayComparer.swift */; };
+		A1CD903520302270005B529C /* ArrayComparer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CD903320302270005B529C /* ArrayComparer.swift */; };
 		A1E6263F1FD7A6F00036FD67 /* MCRetrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E6263E1FD7A6F00036FD67 /* MCRetrier.swift */; };
 		A1E626401FD7A6F00036FD67 /* MCRetrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E6263E1FD7A6F00036FD67 /* MCRetrier.swift */; };
 /* End PBXBuildFile section */
@@ -185,6 +187,7 @@
 		A1CB78031FBCF132008ADF09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A1CB780F1FBCF15C008ADF09 /* TestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestApp.entitlements; sourceTree = "<group>"; };
 		A1CD9031203017B3005B529C /* ArrayComparerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayComparerTests.swift; sourceTree = "<group>"; };
+		A1CD903320302270005B529C /* ArrayComparer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayComparer.swift; sourceTree = "<group>"; };
 		A1E6263E1FD7A6F00036FD67 /* MCRetrier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCRetrier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -284,6 +287,7 @@
 		A1268EE51FBA811F00ADAA74 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				A1CD903320302270005B529C /* ArrayComparer.swift */,
 				A1268EDE1FBA80BC00ADAA74 /* MCRecordable.swift */,
 				A1268EDD1FBA80BC00ADAA74 /* MCReceiver.swift */,
 				A1E6263E1FD7A6F00036FD67 /* MCRetrier.swift */,
@@ -668,6 +672,7 @@
 				A1CB77171FBA8535008ADF09 /* MCOperationReplicator.swift in Sources */,
 				A1CB77371FBA86AF008ADF09 /* MCDownload.swift in Sources */,
 				A1268EE71FBA821400ADAA74 /* TypeAliases & Constants.swift in Sources */,
+				A1CD903420302270005B529C /* ArrayComparer.swift in Sources */,
 				A1CB77381FBA86AF008ADF09 /* MCDelete.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -678,6 +683,7 @@
 			files = (
 				A1CB77C91FBC3241008ADF09 /* VersionConflictTests.swift in Sources */,
 				A16EA5041FC666DF001E57F8 /* MCNotificationConverter.swift in Sources */,
+				A1CD903520302270005B529C /* ArrayComparer.swift in Sources */,
 				A1AC0DB1202A69AB00C2CDE0 /* MCSubscriberError.swift in Sources */,
 				A1CB77C71FBC3241008ADF09 /* PartialErrorTests.swift in Sources */,
 				A1CB77861FBB9B94008ADF09 /* MCErrorHandler.swift in Sources */,
