@@ -47,5 +47,6 @@ public class MockRecordable: MCRecordable {
     
     init(created: Date? = nil) {
         if let date = created { self.created = date }
+        _recordID = CKRecordID(recordName: "Mock Created: \(self.created)")
     }
 }
