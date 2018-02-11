@@ -70,7 +70,7 @@ Next, scroll down to the `application(_:didReceiveRemoteNotification:fetchComple
     convertToLocal(from: userInfo)
 ```
 
-With that line in place, any notifications from the CloudKit databases will be converted to a local notification and handled by the `MCMirror`s.
+With that line in place, any notifications from the **CloudKit** databases will be converted to a local notification and handled by any `MCMirror`s that are setup.
 
 ### MCRecordable
 
