@@ -19,7 +19,10 @@ public class MockRecordable: MCRecordable {
     
     // MARK: - Properties: Static Values
     
+    /// "MockValue"
     static let key = "MockValue"
+
+    /// "MockRecordable"
     static let mockType = "MockRecordable"
     
     // MARK: - Properties: Recordable
