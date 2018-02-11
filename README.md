@@ -114,7 +114,7 @@ let mocksInPrivateDatabase = MCMirror<MockType>(db: .privateDB)
 Shortly after they're initialized, the receivers should finish downloading and transforming any existing records. These can be accessed from the `dataModel` array.
 
 ```swift
-let publicMocks: [MockType] = mocksInPublicDatabase.dataModel
+let publicMocks = mocksInPublicDatabase.dataModel
 ```
 
 Voila! Any changes to records in the cloud database (add / edit / remove) will automatically be reflected in the receiver's recordables array until it deinits. When elements are added, modified or deleted from the `dataModel` array, the `MCMirror` will ensure those changes are mirrored to the respective database in the background.
