@@ -64,10 +64,13 @@ First make your app delegate conform to **MCNotificationConverter**.
 class AppDelegate: UIResponder, UIApplicationDelegate, MCNotificationConverter {    // <-- Add it here...
 ```
 
-Next, scroll down to the `application(_:didReceiveRemoteNotification:fetchCompletionHandler:)` method and insert this.
+Next, scroll down to the `userNotificationCenter(_:willPresent:withCompletionHandler:)` method and insert this.
 
 ```swift
+func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    let userInfo = notification.request.content.userInfo
     convertToLocal(from: userInfo)
+}
 ```
 
 With that line in place, any notifications from the **CloudKit** databases will be converted to a local notification and handled by any `MCMirror`s that are setup.
