@@ -8,14 +8,28 @@
 
 import CloudKit
 
+// MARK: Protocol
+
 protocol ArrayComparer {
+    
+    /// Each array being compared has to conform to MCRecordable
     typealias T = MCRecordable
     
+    /**
+        This method compares passed arguments and returns the results of the comparison with a tuple containing values that need to be modified to resolve conflicts between two arguments.
+
+        - Parameters:
+            - original: This argument represents an array before changes have been made.
+            - changed: This argument represents an array after changes have been made.
+     
+        - Returns: Tuple whose first value (add) represents new and modified elements, and whose second value (remove) represents original elements missing from changed array.
+     */
     func check(_ original: [T], against changed: [T]) -> (add: [T], remove: [T])
 }
 
+// MARK: - Extensions
+
 extension ArrayComparer {
-    
     func check(_ original: [T], against changed: [T]) -> (add: [T], remove: [T]) {
         let added = changed - original
         let removed = original - changed
@@ -30,10 +44,12 @@ extension ArrayComparer {
             
             return false
         }
-        print("                 edited = \(edited.map({ $0.recordID.recordName }))")
+
         return (added + edited, removed)
     }
 }
+
+// MARK: - Global Functions
 
 func -(lhs: [MCRecordable], rhs: [MCRecordable]) -> [MCRecordable] {
     return lhs.filter { left in
