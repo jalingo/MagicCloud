@@ -155,11 +155,11 @@ While the aforementioned code is all that is needed for most projects, there are
 
 ### Concurrency, Grand Central Dispatch & the Main Thread
 
-If this project is your first attempt at working with asynchronous operations, **Apple** has a lot of great resources out there that will ultimately save you a lot of time and trouble...
-
-[CloudKit Documentation](https://developer.apple.com/documentation/cloudkit)
+If this project is your first attempt at working with asynchronous operations, **Apple** has several great resources out there that will ultimately save you a lot of time and trouble...
 
 [CloudKit QuickStart](https://developer.apple.com/library/content/documentation/DataManagement/Conceptual/CloudKitQuickStart/Introduction/Introduction.html)
+
+[CloudKit Documentation](https://developer.apple.com/documentation/cloudkit)
 
 [Concurrency Programming Guide](https://developer.apple.com/library/content/documentation/General/Conceptual/ConcurrencyProgrammingGuide/Introduction/Introduction.html)
 
@@ -190,9 +190,11 @@ NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil) {
 
 Each **CloudKit** container can be directly accessed at the [CloudKit Dashboard](https://icloud.developer.apple.com/dashboard), where developers can modify the database schema, query / modify records, manage subscriptions, etc...
 
+**DON'T FORGET** to make all record names queryable. `MCMirror`s use those names to find and fetch records.
+
 ## Reporting Bugs
 
-If you've had any issues, first please review the existing documentation. After being certain that you're dealing with a replicable bug, the best way to submit the issue is through GitHub.
+If you've had any issues, first please review the existing documentation thoroughly. After being certain that you're dealing with a replicable bug, the best way to submit the issue is through GitHub.
 
 ```
 @ github.com/jalingo/MagicCloud > "Issues" tab > "New Issue" button
