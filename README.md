@@ -129,7 +129,7 @@ mocksInPublicDatabase.dataModel[0].created = Date.distantFuture  // <-- This wil
 mocksInPublicDatabase.dataModel.removeLast                       // <-- This will remove a record from the database.
 ```
 
-**Note:**  While multiple mirrors for the same data type in the same app reduces stability, it is supported. Any change will be reflected in all receivers, both in the local app and in other users' apps.
+**Note:**  While multiple mirrors for the same data type in the same app reduces stability, it is supported. Any change will be reflected in all mirrors, both in the local app and in other users' apps.
 
 ### MCUserRecord
 
