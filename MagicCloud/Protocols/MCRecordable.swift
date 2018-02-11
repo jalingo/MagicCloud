@@ -59,3 +59,7 @@ extension MCRecordable {
         return newFromRecord
     }
 }
+
+func ==(lhs: MCRecordable, rhs: MCRecordable) -> Bool {
+    return lhs.recordID.recordName == rhs.recordID.recordName
+}
