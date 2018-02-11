@@ -45,6 +45,8 @@ public protocol MCRecordable {
     init()
 }
 
+// MARK: - Extensions
+
 extension MCRecordable {
     
     /// Builds an appropriate recordable based on type.
@@ -63,3 +65,4 @@ extension MCRecordable {
 func ==(lhs: MCRecordable, rhs: MCRecordable) -> Bool {
     return lhs.recordID.recordName == rhs.recordID.recordName
 }
+
