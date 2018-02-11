@@ -61,7 +61,7 @@ Once you have **CloudKit** enabled and the cocoapod installed, there's one last 
 First make your app delegate conform to **MCNotificationConverter**.
 
 ```swift
-class AppDelegate: UIResponder, UIApplicationDelegate, MCNotificationConverter {    // <-- Adding it here...
+class AppDelegate: UIResponder, UIApplicationDelegate, MCNotificationConverter {    // <-- Add it here...
 ```
 
 Next, scroll down to the `application(_:didReceiveRemoteNotification:fetchCompletionHandler:)` method and insert this.
