@@ -12,11 +12,11 @@ protocol MCMirrorAbstraction: ArrayComparer {
     var dataModel: [MCRecordable] { get set }
 }
 
-@objcMembers open class MCMirror<T: MCRecordable>: MCMirrorAbstraction {
+open class MCMirror<T: MCRecordable>: MCMirrorAbstraction {
     
     fileprivate let receiver: MCReceiver<T>
     
-    public dynamic var dataModel: [MCRecordable] {
+    public var dataModel: [MCRecordable] {
         get { return receiver.recordables }
         
         set {
