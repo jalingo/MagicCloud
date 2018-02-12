@@ -34,7 +34,7 @@ platform :ios, '10.3'   # <- 10.3 minimum requirement, can be more recent...
 use_frameworks!         # <- MagicCloud is a swift framework, ensure this is present.
 
 target '<Your Target Name>' do
-    pod 'MagicCloud', '~> 2.0'  # <- Use the current version.
+    pod 'MagicCloud', '~> 2.1'  # <- Use the current version.
 end
 ```
 
