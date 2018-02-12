@@ -69,7 +69,10 @@ public class MCSubscriber {
         let predicate = NSPredicate(value: true)
         self.subscription = CKQuerySubscription(recordType: type, predicate: predicate, options: triggers)
         
+        let info = CKNotificationInfo()
+        info.alertLocalizationKey = type
         subscription.notificationInfo = info                                // <-- Passes record type for local notification.
+        
         subscription.notificationInfo?.shouldSendContentAvailable = true    // <-- Required for background notifications.
         
         database = db
