@@ -14,9 +14,9 @@ protocol MCMirrorAbstraction: ArrayComparer {
 
 open class MCMirror<T: MCRecordable>: MCMirrorAbstraction {
     
-    let receiver: MCReceiver<T>
+    fileprivate let receiver: MCReceiver<T>
     
-    var dataModel: [MCRecordable] {
+    public var dataModel: [MCRecordable] {
         get { return receiver.recordables }
         
         set {
