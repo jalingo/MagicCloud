@@ -35,7 +35,7 @@ open class MCMirror<T: MCRecordable>: MCMirrorAbstraction {
         }
     }
     
-    open init(db: MCDatabase) {
+    public init(db: MCDatabase) {
         receiver = MCReceiver<T>(db: db)
     }
 }
