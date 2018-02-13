@@ -103,13 +103,15 @@ If you'll need to disable any of your features during a subscription failure (e.
 
 ```swift
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-    
+        // This is only one of the ways you can 'gracefully disable' features that require cloud. 
     }
 ```
 
+With all the setup / configuration out of the way, now you can get started...
+
 ### MCRecordable
 
-Any data type that needs to have it's model stored as records (and it's properties saved as those records' fields) will need to conform to the `MCRecordable` protocol. 
+Any data type that needs to have it's model stored as records (and it's properties saved as those records' fields) will need to conform to the `MCRecordable` protocol. Currently, **Magic Cloud** doesn't handle `CKRecords` directly.
 
 ```swift
 extension MockType: MCRecordable {
