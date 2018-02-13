@@ -34,7 +34,7 @@ platform :ios, '10.3'   # <- 10.3 minimum requirement, can be more recent...
 use_frameworks!         # <- MagicCloud is a swift framework, ensure this is present.
 
 target '<Your Target Name>' do
-    pod 'MagicCloud', '~> 2.1'  # <- Use the current version.
+    pod 'MagicCloud', '~> 1.2.7'  # <- Use the current version.
 end
 ```
 
@@ -64,16 +64,41 @@ First make your app delegate conform to **MCNotificationConverter**.
 class AppDelegate: UIResponder, UIApplicationDelegate, MCNotificationConverter {    // <-- Add it here...
 ```
 
-Next, scroll down to the `userNotificationCenter(_:willPresent:withCompletionHandler:)` method and insert this.
+Next, scroll down and insert **ONE of the FIRST TWO methods** into the same class.
 
 ```swift
-func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-    let userInfo = notification.request.content.userInfo
-    convertToLocal(from: userInfo)
-}
+    // This is the current way ...
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        convertToLocal(from: userInfo)
+    }
 ```
 
-With that line in place, any notifications from the **CloudKit** databases will be converted to a local notification and handled by any `MCMirror`s that are setup.
+```swift
+    // This version is deprecated, but works for pre-iOS 10 apps...
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+        convertToLocal(from: userInfo)
+    }
+    
+```
+
+```swift
+// This version DOES NOT work for silent push notifications, so it will miss any pushes from Magic Cloud...
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        let userInfo = notification.request.content.userInfo
+        convertToLocal(from: userInfo)          // <-- DOES NOT WORK !!
+    }
+```
+
+With that in place, any notifications from the **CloudKit** databases will be converted to a local notification and handled by any `MCMirror`s that are setup. 
+
+If you'll need to disable any of your features during a subscription failure (e.g. airplane mode, bad network connection, etc...), add this method to the app delegate and do so here (or more likely, post a notification here).
+
+```swift
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+    
+    }
+```
 
 ### MCRecordable
 
