@@ -9,6 +9,9 @@
 import Foundation
 
 protocol MCMirrorAbstraction: ArrayComparer {
+    
+    var changeNotification: Notification.Name { get }
+
     var dataModel: [MCRecordable] { get set }
 }
 
@@ -16,6 +19,8 @@ open class MCMirror<T: MCRecordable>: MCMirrorAbstraction {
     
     fileprivate let receiver: MCReceiver<T>
     
+    public var changeNotification: Notification.Name { return Notification.Name(receiver.name) }
+
     public var dataModel: [MCRecordable] {
         get { return receiver.recordables }
         
@@ -35,7 +40,5 @@ open class MCMirror<T: MCRecordable>: MCMirrorAbstraction {
         }
     }
     
-    public init(db: MCDatabase) {
-        receiver = MCReceiver<T>(db: db)
-    }
+    public init(db: MCDatabase) { receiver = MCReceiver<T>(db: db) }
 }
