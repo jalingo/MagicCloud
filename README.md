@@ -89,7 +89,7 @@ Finally, scroll down and insert **ONE of the FIRST TWO methods** into the same c
 ```
 
 ```swift
-// This version DOES NOT work for silent push notifications, so it will miss any pushes from Magic Cloud...
+    // This version DOES NOT work for silent push notifications, so it will miss any pushes from Magic Cloud...
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
         let userInfo = notification.request.content.userInfo
