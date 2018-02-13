@@ -6,7 +6,7 @@ For any data types that need to be saved as database records, just conform them 
 
 Default setup covers _error handling, subscriptions, account changes and more_. Can be configured / customized for optimized performance (for more details on that, the **Magic Cloud Blog** is coming to our [site](escapechaos.com)), or just use as is. 
 
-Check out the **Quick Start Guide** and see an app add working cloud functionality with less than 15 lines of code!
+Check out the **Quick Start Guide** and see an app add working cloud functionality with less than 20 lines of code!
 
 ## Requirements
 
