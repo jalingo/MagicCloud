@@ -64,7 +64,14 @@ First make your app delegate conform to **MCNotificationConverter**.
 class AppDelegate: UIResponder, UIApplicationDelegate, MCNotificationConverter {    // <-- Add it here...
 ```
 
-Next, scroll down and insert **ONE of the FIRST TWO methods** into the same class.
+Next, insert the following two lines into the `didFinishLaunchingWithOptions` method already in the app delegate.
+
+```swift
+        MCUserRecord.verifyAccountAuthentication()      // <-- More information about this below @ MCUserRecord
+        application.registerForRemoteNotifications()
+```
+
+Finally, scroll down and insert **ONE of the FIRST TWO methods** into the same class.
 
 ```swift
     // This is the current way ...
