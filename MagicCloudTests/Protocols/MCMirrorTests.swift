@@ -27,13 +27,15 @@ class MCMirrorTests: XCTestCase {
         
         if let rec = mock {
             let op = MCUpload([mockRecordable], from: rec, to: .publicDB)
+            op.completionBlock = { print("** prep finished")}
             q.addOperation(op)
             
+            op.waitUntilFinished()
             needToCleanDatabase = true
         }
         
-        let pause = Pause(seconds: 2)
-        pause.completionBlock = { print("** database prepped")}
+        let pause = Pause(seconds: 3)
+        pause.completionBlock = { print("** database prepped") }
         q.addOperation(pause)
 
         pause.waitUntilFinished()
@@ -85,16 +87,12 @@ class MCMirrorTests: XCTestCase {
         }
     }
     
-    func testMirrorDownloadsAll() {
+    func testMirrorDownloadsAllBeforeFinishingInit() {
         let _ = prepDatabase()
         
         let mirror = MCMirror<MockRecordable>(db: .publicDB)
-        
-        let pause = Pause(seconds: 2)
-        q.addOperation(pause)
-        
-        pause.waitUntilFinished()
-        XCTAssert(mirror.silentRecordables.count != 0)
+
+        XCTAssert(mirror.silentRecordables.count != 0, "\(mirror.silentRecordables.count)")        
     }
     
     func testMirrorMakesAdditions() {
