@@ -100,7 +100,7 @@ didSet { print("ø- instantiating MockReceiver") }
     func testDeleteDelaysLaunch() {
         pauseNeeded = true
         
-        let delay: UInt64 = 5
+        let delay: Double = 5
         testOp?.delayInSeconds = delay
     
         let prepOp = MCUpload([mock!], from: mockRec, to: .privateDB)
@@ -149,7 +149,7 @@ didSet { print("ø- instantiating MockReceiver") }
 
         OperationQueue().addOperation(testOp!)
         OperationQueue().addOperation(firstPause)
-        wait(for: [deleted], timeout: 4)
+        wait(for: [deleted], timeout: 7)
         
         let secondPause = Pause(seconds: 2)
         let verifyOp = verifyOperation(ids: [mock!.recordID])
@@ -195,7 +195,7 @@ didSet { print("ø- instantiating MockReceiver") }
         pauseNeeded = true
         testOp = MCDelete([mock!], of: mockRec, from: .publicDB)
 
-        let altReceiver = MCReceiver<MockRecordable>(db: .publicDB)
+        let altReceiver = MCMirror<MockRecordable>(db: .publicDB)
         mockRec.subscribeToChanges(on: .publicDB)
 
         // This pause will give prep the time to download to receivers
@@ -212,8 +212,8 @@ didSet { print("ø- instantiating MockReceiver") }
         
         firstPause.waitUntilFinished()
 
-        XCTAssertEqual(mockRec.recordables.count, altReceiver.recordables.count)
-        XCTAssert(mockRec.recordables.count != 0)
+        XCTAssertEqual(mockRec.silentRecordables.count, altReceiver.silentRecordables.count)
+        XCTAssert(mockRec.silentRecordables.count != 0)
 
         let secondPause = Pause(seconds: 5)
         secondPause.addDependency(testOp!)
@@ -222,8 +222,8 @@ didSet { print("ø- instantiating MockReceiver") }
 
         secondPause.waitUntilFinished()
 
-        XCTAssertEqual(mockRec.recordables.count, altReceiver.recordables.count)
-        XCTAssert(mockRec.recordables.count == 0)
+        XCTAssertEqual(mockRec.silentRecordables.count, altReceiver.silentRecordables.count)
+        XCTAssert(mockRec.silentRecordables.count == 0)
     }
     
 //    func testPerformance() {

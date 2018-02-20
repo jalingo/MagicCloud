@@ -11,7 +11,7 @@ import CloudKit
 /**
     Downloads records from specified database, converts them back to recordables and then loads them into associated receiver. Destination is the receiver's 'recordables' property, an array of receiver's associated type, but array is NOT emptied or otherwise prepared before appending results.
  */
-public class MCDownload<R: MCReceiverAbstraction>: Operation {
+public class MCDownload<R: MCMirrorAbstraction>: Operation {
 
     // MARK: - Properties
     
@@ -57,6 +57,10 @@ public class MCDownload<R: MCReceiverAbstraction>: Operation {
         op.recordFetchedBlock = recordFetched()
         op.queryCompletionBlock = queryCompletion(op: op)
         
+        // This passes the completion block down to the end of the operation.
+        op.completionBlock = self.completionBlock
+        self.completionBlock = nil
+        
         op.name = "Download @ \(database)"
     }
     
@@ -66,8 +70,8 @@ public class MCDownload<R: MCReceiverAbstraction>: Operation {
             let recordable = R.type().prepare(from: record)
             
             // This if statement checks to avoid downloading duplicates.
-            if !self.receiver.recordables.contains(where: {$0.recordID.recordName == recordable.recordID.recordName}) {
-                self.receiver.recordables.append(recordable)
+            if !self.receiver.silentRecordables.contains(where: {$0.recordID.recordName == recordable.recordID.recordName}) {
+                self.receiver.silentRecordables.append(recordable)
             }
         }
     }
@@ -113,12 +117,13 @@ public class MCDownload<R: MCReceiverAbstraction>: Operation {
         if isCancelled { return }
         
         let op = CKQueryOperation(query: query)
-
-        // This passes the completion block down to the end of the operation.
-        op.completionBlock = self.completionBlock
-        self.completionBlock = nil
         
+        if isCancelled { return }
+
         decorate(op: op)
+        
+        if isCancelled { return }
+
         database.db.add(op)
     }
     

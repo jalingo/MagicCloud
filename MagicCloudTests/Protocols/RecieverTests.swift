@@ -80,9 +80,7 @@ class RecievesRecTests: XCTestCase {
     
     // MARK: - Functions: Unit Tests
     
-    func testReceiverHasRecordables() { XCTAssertNotNil(mock?.recordables) }
-
-    func testReceiverHasAssociatedTypeRecordable() { XCTAssertNotNil(mock?.recordables) }
+    func testReceiverHasRecordables() { XCTAssertNotNil(mock?.silentRecordables) }
     
     func testReceiverHasSubscriber() { XCTAssertNotNil(mock?.subscription) }
     
@@ -93,7 +91,7 @@ class RecievesRecTests: XCTestCase {
         mock?.downloadAll(from: .publicDB) { pause.start() }
         pause.waitUntilFinished()
         
-        if let recordables = mock?.recordables {
+        if let recordables = mock?.silentRecordables {
             XCTAssertEqual(recordables, mockRecordables)
         } else {
             XCTFail()
@@ -223,8 +221,7 @@ class RecievesRecTests: XCTestCase {
     }
     
     func testReceiverWrapperSelfRegulatesLocally() {
-print("ø- instantiating receiver")
-        let receiver = MCReceiver<MockRecordable>(db: .publicDB)
+        let receiver = MCMirror<MockRecordable>(db: .publicDB)
         
         let e = expectation(description: "Async activity completed.")
         
@@ -237,12 +234,11 @@ print("ø- instantiating receiver")
         }
         
         wait(for: [e], timeout: 15)
-        XCTAssertNotEqual(receiver.recordables.count, 0)
+        XCTAssertNotEqual(receiver.silentRecordables.count, 0)
     }
     
     func testReceiverWrappersSelfRegulatesRemotely() {
-print("ø- instantiating receiver")
-        let receiver = MCReceiver<MockRecordable>(db: .publicDB)
+        let receiver = MCMirror<MockRecordable>(db: .publicDB)
 
         print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY ADDED TO DATABASE")
         let mockAddedToDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
@@ -253,7 +249,7 @@ print("ø- instantiating receiver")
         OperationQueue().addOperation(firstPause)
         firstPause.waitUntilFinished()
         
-        XCTAssertNotEqual(receiver.recordables.count, 0)
+        XCTAssertNotEqual(receiver.silentRecordables.count, 0)
         
         let mockRemovedFromDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
         
@@ -261,7 +257,7 @@ print("ø- instantiating receiver")
         print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY REMOVED FROM DATABASE")
         wait(for: [mockRemovedFromDatabase], timeout: 30)
         
-        XCTAssertEqual(receiver.recordables.count, 0)
+        XCTAssertEqual(receiver.silentRecordables.count, 0)
     }
     
     func testReceiverReactsCloudAccountChanges() {
@@ -271,19 +267,19 @@ print("ø- instantiating receiver")
         let _ = prepareDatabase()
         
         // pauses long enough for receiver to download records the first time (to prevent timing issues)
-        while mock?.recordables.count == 0 { /* waiting for download to complete */ }
+        while mock?.silentRecordables.count == 0 { /* waiting for download to complete */ }
         
         // empties receiver, so that triggered download can be detected
-        mock?.recordables = []
+        mock?.silentRecordables = []
         
         // posts the same notification, which should trigger download all
         NotificationCenter.default.post(name: NSNotification.Name.CKAccountChanged, object: nil)
         
         // waits for notification to be reported, and receiver needs time to download records
-        while mock?.recordables.count == 0 { /* waiting for download to complete */ }
+        while mock?.silentRecordables.count == 0 { /* waiting for download to complete */ }
         
         // now that receiver has had time to download, verify success
-        XCTAssert(mock?.recordables.count != 0)
+        XCTAssert(mock?.silentRecordables.count != 0)
     }
     
     func testReceiverReactsNetworkChanges() {
@@ -293,32 +289,32 @@ print("ø- instantiating receiver")
         let _ = prepareDatabase()
 
         // empties receiver, so that triggered download can be detected
-        mock?.recordables = []
+        mock?.silentRecordables = []
 
         // pauses long enough for tester to disable wifi and download to take effect, then tests download occured
         let wifiDisabled = expectation(description: "10001")
         DispatchQueue.main.async {
-            while self.mock?.recordables.count == 0 { print("         ** DISABLE WIFI OFF ON TEST DEVICE **") }
+            while self.mock?.silentRecordables.count == 0 { print("         ** DISABLE WIFI OFF ON TEST DEVICE **") }
             wifiDisabled.fulfill()
         }
 
         wait(for: [wifiDisabled], timeout: 30)
-        XCTAssert(mock?.recordables.count != 0)
+        XCTAssert(mock?.silentRecordables.count != 0)
         
         let airportMode = expectation(forNotification: .reachabilityChanged, object: nil, handler: nil)
         print("         ** PLACE TEST DEVICE IN AIRPORT MODE **")
 
         wait(for: [airportMode], timeout: 30)
-        XCTAssert(mock?.recordables.count == 0)
+        XCTAssert(mock?.silentRecordables.count == 0)
         
         let signalReturned = expectation(description: "10100")
         DispatchQueue.main.async {
-            while self.mock?.recordables.count == 0 { print("         ** REMOVE TEST DEVICE FROM AIRPORT MODE **") }
+            while self.mock?.silentRecordables.count == 0 { print("         ** REMOVE TEST DEVICE FROM AIRPORT MODE **") }
             signalReturned.fulfill()
         }
 
         wait(for: [signalReturned], timeout: 30)
-        XCTAssert(mock?.recordables.count != 0)
+        XCTAssert(mock?.silentRecordables.count != 0)
     }
     
     
@@ -328,10 +324,10 @@ print("ø- instantiating receiver")
         let _ = prepareDatabase()
         
         // At this point, database should be prepared and instantiation should trigger download.
-        let r = MCReceiver<MockRecordable>(db: .publicDB)
+        let r = MCMirror<MockRecordable>(db: .publicDB)
 
         // code should not have to generate any delays, there should be records already.
-        XCTAssert(r.recordables.count != 0)
+        XCTAssert(r.silentRecordables.count != 0)
     }
     
     // MARK: - Functions: XCTestCase
@@ -351,65 +347,4 @@ print("ø- instantiating receiver")
 }
 
 // MARK: - Mocks
-
-class MockReceiver: MCReceiverAbstraction {
-
-    let name = "MockReceiver"
-    
-    typealias type = MockRecordable
-
-    var subscription = MCSubscriber(forRecordType: type().recordType)
-
-    let serialQ = DispatchQueue(label: "MockRec Q")    
-
-    /**
-     * This protected property is an array of recordables used by reciever.
-     */
-    var recordables = [type]() {
-        didSet {
-            print("** newRecordable = \(String(describing: recordables.last?.recordID.recordName))")
-            print("** recordables didSet = \(recordables.count)")
-        }
-    }
-
-    let reachability = Reachability()!
-    
-    func listenForConnectivityChangesOnPublic() {
-
-        // This listens for changes in the network (wifi -> wireless -> none)
-        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(_:)), name: .reachabilityChanged, object: reachability)
-        do {
-            try reachability.startNotifier()
-        } catch {
-            print("EE: could not start reachability notifier")
-        }
-        
-        // This listens for changes in iCloud account (login / out)
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.CKAccountChanged, object: nil, queue: nil) { note in
-
-            MCUserRecord.verifyAccountAuthentication()
-            self.downloadAll(from: .publicDB)
-        }
-    }
-    
-    @objc func reachabilityChanged(_ note: Notification) {
-
-        let reachability = note.object as! Reachability
-        
-        switch reachability.connection {
-        case .none: print("Network not reachable")
-        default: downloadAll(from: .publicDB)
-        }
-    }
-    
-    deinit {
-        unsubscribeToChanges()
-
-        let pause = Pause(seconds: 3)
-        OperationQueue().addOperation(pause)
-        pause.waitUntilFinished()
-
-        print("** deinit MockReceiver complete")
-    }
-}
 

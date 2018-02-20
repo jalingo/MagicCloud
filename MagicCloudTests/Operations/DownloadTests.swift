@@ -90,7 +90,7 @@ class DownloadTests: XCTestCase {
             wait(for: [expect], timeout: 10)
 
             // Evaluates results.
-            if let result = mockRec.recordables.first {
+            if let result = mockRec.silentRecordables.first {
                 XCTAssert(mock == result)
             } else {
                 XCTFail()
@@ -119,7 +119,7 @@ class DownloadTests: XCTestCase {
             wait(for: [expect], timeout: 10)
             
             // Evaluates results.
-            if let result = mockRec.recordables.first {
+            if let result = mockRec.silentRecordables.first {
                 XCTAssert(mock == result)
             } else {
                 XCTFail()
@@ -149,8 +149,8 @@ class DownloadTests: XCTestCase {
         wait(for: [expect], timeout: 10)
 
         // Evaluates results.
-        XCTAssert(mockRec.recordables.contains(ownedMock))
-        if let result = mockRec.recordables.first {
+        XCTAssert(mockRec.silentRecordables.contains(ownedMock))
+        if let result = mockRec.silentRecordables.first {
             XCTAssert(ownedMock.recordID.recordName == result.recordID.recordName)
         } else {
             XCTFail()
@@ -177,7 +177,7 @@ class DownloadTests: XCTestCase {
         wait(for: [expect], timeout: 10)
         
         // Evaluates results.
-        if let result = mockRec.recordables.first {
+        if let result = mockRec.silentRecordables.first {
             XCTAssert(ownedMock.recordID == result.recordID)
         } else {
             XCTFail()
@@ -185,19 +185,16 @@ class DownloadTests: XCTestCase {
     }
 
     func testDownloadByTypeWorksWithPrivate() {
-        
+        let recordablesDidSet = expectation(forNotification: mockRec.changeNotification, object: nil, handler: nil)
+
         // This operation will be used to ensure mocks are already present in cloud database.
         let _ = prepareDatabase(db: .privateDB)
 
         testOp = MCDownload(type: mock.recordType, to: mockRec, from: .privateDB)
-        
-        let expect = expectation(description: "reciever.recordables updated")
-        testOp?.completionBlock = { expect.fulfill() }
-        
         OperationQueue().addOperation(testOp!)
-        wait(for: [expect], timeout: 10)
-
-        XCTAssertEqual(mocks, mockRec.recordables)
+        
+        wait(for: [recordablesDidSet], timeout: 15)
+        XCTAssertEqual(mocks, mockRec.silentRecordables)
     }
     
     func testDownloadByTypeWorksWithPublic() {
@@ -212,7 +209,7 @@ class DownloadTests: XCTestCase {
         
         OperationQueue().addOperation(testOp!)
         wait(for: [expect], timeout: 10)
-        XCTAssert(mocks == mockRec.recordables)
+        XCTAssert(mocks == mockRec.silentRecordables)
     }
     
     // MARK: - Functions: XCTestCase
@@ -223,7 +220,7 @@ class DownloadTests: XCTestCase {
         shouldCleanPublic = false
         shouldCleanPrivate = false
 
-        mock = MockRecordable()
+        mock = MockRecordable(created: Date())
         mockRec = MockReceiver()
         mocks = [mock]
 

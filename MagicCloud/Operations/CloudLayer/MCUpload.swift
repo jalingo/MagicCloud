@@ -15,7 +15,7 @@ import UIKit
 /**
     This wrapper class for CKModifyRecordsOperation saves records for the injected recordables in the specified database.
  */
-public class MCUpload<R: MCReceiverAbstraction>: Operation {
+public class MCUpload<R: MCMirrorAbstraction>: Operation {
     
     // MARK: - Properties
 
@@ -77,6 +77,17 @@ public class MCUpload<R: MCReceiverAbstraction>: Operation {
             op.isLongLived = true
         }
         
+        let block = completionBlock
+        
+        // After cloud is updated, this will notify all local receivers, then run passed down completion handling.
+        op.completionBlock = {
+            let unchanged: [R.type] = self.receiver.localRecordables - self.recordables as! [R.type]
+            self.receiver.localRecordables = unchanged + self.recordables
+            block?()
+        }
+        
+        completionBlock = nil
+        
         return op
     }
     
@@ -99,25 +110,15 @@ public class MCUpload<R: MCReceiverAbstraction>: Operation {
     // MARK: - Functions: Operation
     
     public override func main() {
+        guard recordables.count != 0 else { return }
+        
         if isCancelled { return }
         
         let op = decorate()
         
         if isCancelled { return }
         
-        // This supports multiple receiver downloads, after upload has finished.
-        op.completionBlock = {
-            for recordable in self.recordables {
-                let name = Notification.Name(recordable.recordType)
-                let change = LocalChangePackage(id: recordable.recordID, reason: .recordCreated, originatingRec: self.receiver.name, db: self.database)
-                NotificationCenter.default.post(name: name, object: change)
-            }
-        }
-        
-        if isCancelled { return }
-        
         database.db.add(op)
-        receiver.recordables += recordables
     }
     
     // MARK: - Functions: Constructors
@@ -131,7 +132,7 @@ public class MCUpload<R: MCReceiverAbstraction>: Operation {
     public init(_ recs: [R.type]? = nil, from rec: R, to db: MCDatabase) {
         receiver = rec
         database = db   //DatabaseType.from(scope: db)
-        recordables = recs ?? rec.recordables
+        recordables = recs ?? rec.silentRecordables
         
         super.init()
         

@@ -19,7 +19,7 @@ import CloudKit
  
     Operation requires local cache to conform to `Recordable` protocol for version conflict resolution.
  */
-class MCErrorHandler<R: MCReceiverAbstraction>: Operation, MCRetrier {
+class MCErrorHandler<R: MCMirrorAbstraction>: Operation, MCRetrier {
     
     // MARK: - Properties
     

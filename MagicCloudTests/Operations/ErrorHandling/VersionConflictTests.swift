@@ -15,13 +15,11 @@ class VersionConflictTests: XCTestCase {
     
     let TEST_KEY = "MockValue"
     
-    var testOp: VersionConflict<MockReceiver>?
+    var testOp: VersionConflict<MCMirror<MockRecordable>>?
     
     var mock: MCRecordable?
 
-    var mockRec = MockReceiver() {
-didSet { print("ø- instantiating MockReceiver") }
-    }
+    var mockRec = MCMirror<MockRecordable>(db: .publicDB)
     
     var dict: [AnyHashable: Any]? {
         var dict = [AnyHashable: Any]()
@@ -36,7 +34,7 @@ didSet { print("ø- instantiating MockReceiver") }
     var previous: CKRecord?
     
     var _previous: CKRecord {
-        let rec = CKRecord(recordType: mock!.recordType, recordID: CKRecordID(recordName: "Distant-Past"))
+        let rec = CKRecord(recordType: mock!.recordType, recordID: CKRecordID(recordName: "MockIdentifier: \(Date.distantPast)"))
         rec[TEST_KEY] = Date.distantPast as CKRecordValue
 
         return rec
@@ -54,7 +52,7 @@ didSet { print("ø- instantiating MockReceiver") }
     var attempted: CKRecord?
     
     var _attempted: CKRecord {
-        let rec = CKRecord(recordType: mock!.recordType, recordID: CKRecordID(recordName: "MockIdentifier: 4001-01-01 00:00:00 +0000"))
+        let rec = CKRecord(recordType: mock!.recordType, recordID: CKRecordID(recordName: "MockIdentifier: \(Date.distantFuture)"))
         rec[TEST_KEY] = Date.distantFuture as CKRecordValue
 
         return rec
@@ -67,7 +65,7 @@ didSet { print("ø- instantiating MockReceiver") }
         saved = _saved
         attempted = _attempted
         
-        mockRec = MockReceiver()
+        mockRec = MCMirror<MockRecordable>(db: .publicDB)
     }
 
     func nullifyInfo() {
@@ -110,7 +108,7 @@ didSet { print("ø- instantiating MockReceiver") }
         
         secondPause.waitUntilFinished()
         
-        let result = mockRec.recordables.filter() { $0.recordID.recordName == "MockIdentifier: 4001-01-01 00:00:00 +0000" } // <- RecordName for MockRecordable dependent on date field.
+        let result = mockRec.silentRecordables.filter() { $0.recordID.recordName == "MockIdentifier: \(Date.distantFuture)" }
         if let firstEntry = result.first?.recordFields[TEST_KEY] as? Date, let attempted = attempted?[TEST_KEY] as? Date {
             XCTAssert(firstEntry == attempted)
         } else {
@@ -140,7 +138,7 @@ didSet { print("ø- instantiating MockReceiver") }
         
         secondPause.waitUntilFinished()
         
-        let result = mockRec.recordables.filter() { $0.recordID.recordName == "MockIdentifier: 4001-01-01 00:00:00 +0000" }    // <-- RecordName for MockRecordable dependent on date field.
+        let result = mockRec.silentRecordables.filter() { $0.recordID.recordName == "MockIdentifier: \(Date.distantFuture)" }        
         if let firstEntry = result.first?.recordFields[TEST_KEY] as? Date, let attempted = attempted?[TEST_KEY] as? Date {
             XCTAssert(firstEntry == attempted)
         } else {
@@ -164,7 +162,7 @@ didSet { print("ø- instantiating MockReceiver") }
         verifyOp.waitUntilFinished()
         
         // With no changes to make, no record should be in the database to download.
-        XCTAssert(mockRec.recordables.count == 0)
+        XCTAssert(mockRec.silentRecordables.count == 0)
     }
     
     // MARK: - Functions: XCTestCase

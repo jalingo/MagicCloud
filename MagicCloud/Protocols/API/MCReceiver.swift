@@ -14,21 +14,33 @@ import Foundation
 /**
     This protocol enables conforming types to give access to an array of Recordable, and to match array's contents to the cloud.
  */
-public protocol MCReceiverAbstraction: AnyObject {
+public protocol MCMirrorAbstraction: AnyObject, MCArrayComparer {
     
     // MARK: - Properties
 
+    /// Receivers can only work with one type (for error handling).
+    associatedtype type: MCRecordable
+
     /// This read-only, computed property returns unique string identifier for the receiver.
     var name: String { get }
-    
+
+    /// This read-only, computed property returns the Notificaion.Name that will be posted anytime silentRecordables is updated. This notification does not trigger any activity internal to Magic Cloud, but allows apps implementing the framework to know when receivers have been updated, both from the cloud and locally.
+    var changeNotification: Notification.Name { get }
+
     /// This read-only, computed property returns a serial dispatch queue for local changes to recordables.
     var serialQ: DispatchQueue { get }
     
-    /// Receivers can only work with one type (for error handling).
-    associatedtype type: MCRecordable
+    /// This read-only property stores the cloud database being mirrored.
+    var db: MCDatabase { get }
     
-    /// This protected property is an array of recordables used by reciever.
-    var recordables: [type] { get set }
+    /// Changes made to this array will NOT be reflected to the cloud and NOT broadcast to other local receivers. Can still be heard using `changeNotification` property.
+    var silentRecordables: [type] { get set }
+    
+    /// Changes made to this array will NOT be reflected to the cloud and WILL broadcast to other local receivers.
+    var localRecordables: [type] { get set }
+    
+    /// Changes made to this array WILL be reflected to the cloud and WILL broadcast to other local receivers.
+    var cloudRecordables: [type] { get set }
     
     /// This property stores the CKQuerySubscription used by the receiver and should not be modified.
     var subscription: MCSubscriber { get set }
@@ -59,25 +71,29 @@ public protocol MCReceiverAbstraction: AnyObject {
 // MARK: - Class
 
 /// This open (can be sub-classed) class serves as the primary concrete adopter of MCReceiverAbstraction. Gives access to an array of Recordable, and keeps that array matching database records.
-open class MCReceiver<T: MCRecordable>: MCReceiverAbstraction {
+open class MCMirror<T: MCRecordable>: MCMirrorAbstraction {
 
     // MARK: - Properties
 
     /// This read-only, constant property stores database records will be received from.
-    let db: MCDatabase
+    public let db: MCDatabase
     
     /// This read-only, constant stores Reachability class for detecting network connection changes.
     let reachability = Reachability()!
 
     // MARK: - Properties: MCReceiverAbstraction
-
-    public let name = "MCR<\(T.self)> created \(Date())"
+    
+    public let name = "MCR<\(type.self)> created \(Date().timeIntervalSince1970)"
     
     public typealias type = T
 
     public var serialQ = DispatchQueue(label: "Receiver Q")
     
-    public var recordables: [T] = [T]()
+    public var silentRecordables: [type] = [type]() {
+        didSet {
+print("         2 didSet silentRecordables @ |\(name)| ... \(oldValue.count) -> \(silentRecordables.count)")
+            NotificationCenter.default.post(name: changeNotification, object: nil) }
+    }
     
     public var subscription: MCSubscriber
     
@@ -98,8 +114,8 @@ open class MCReceiver<T: MCRecordable>: MCReceiverAbstraction {
         NotificationCenter.default.addObserver(forName: NSNotification.Name.CKAccountChanged, object: nil, queue: nil) { note in
             
             MCUserRecord.verifyAccountAuthentication()
-            self.downloadAll(from: self.db)             // <-- There will be situations where this line fails,
-        }                                               //     because not contingent on verification results.
+            self.downloadAll(from: self.db)
+        }
     }
     
     /// This void method handles network changes based on new status.
@@ -120,7 +136,7 @@ open class MCReceiver<T: MCRecordable>: MCReceiverAbstraction {
      */
     public init(db: MCDatabase) {
         self.db = db
-        subscription = MCSubscriber(forRecordType: T().recordType, on: db)
+        subscription = MCSubscriber(forRecordType: type().recordType, on: db)
 
         listenForConnectivityChanges()
 
@@ -139,29 +155,88 @@ open class MCReceiver<T: MCRecordable>: MCReceiverAbstraction {
 
 // MARK: - Extensions
 
-public extension MCReceiverAbstraction {
+public extension MCMirrorAbstraction {
     
     // MARK: - Properties
+    
+    public var changeNotification: Notification.Name { return Notification.Name(name) }
+    
+    public var cloudRecordables: [type] {
+        get { return silentRecordables }
+        
+        set {
+print("         0 setting cloudRecordables @ |\(name)|")
+            let results = check(silentRecordables, against: newValue)
+print("         0 results @ |\(name)| ... (added: +\(results.add.count), edited: ~\(results.edited.count), removed: -\(results.remove.count)")
+            guard results.add.count != 0 || results.remove.count != 0 || results.remove.count != 0 else { return }
+print("         0 passing @ |\(name)|")
+            let q = OperationQueue()
+
+            var delay: Double?
+            
+            if let changes = results.add + results.edited as? [type] {
+                let op = MCUpload(changes, from: self, to: db)          // <- op guards against zero count internal
+                q.addOperation(op)
+                
+                delay = 0.5
+            }
+
+            if let changes = results.remove as? [type] {
+                let op = MCDelete(changes, of: self, from: self.db)     // <- op guards against zero count internal
+                if let delay = delay { op.delayInSeconds = delay }
+                q.addOperation(op)
+            }
+        }
+    }
+    
+    public var localRecordables: [type] {
+        get { return silentRecordables }
+        set {
+print("         1 setting localRecordables @ |\(name)| ... \(silentRecordables.count) -> \(newValue.count)")
+            let results = check(silentRecordables, against: newValue)
+print("         1 results @ |\(name)| ... (added: +\(results.add.count), edited: ~\(results.edited.count), removed: -\(results.remove.count)")
+            if let changes = results.add    as? [type] { notify(changes, because: .recordCreated) }
+            if let changes = results.remove as? [type] { notify(changes, because: .recordDeleted) }
+            if let changes = results.edited as? [type] { notify(changes, because: .recordUpdated) }
+print("         1 updating silent")
+            silentRecordables = newValue
+        }
+    }
     
     /// This closure contains behavior responding to database change notification.
     fileprivate var databaseChanged: NotifyBlock {
         return { notification in
             if let change = notification.object as? LocalChangePackage {
+print("         package arrived packed   / local FROM \(change.originatingRec) TO \(self.name)")
                 self.respondTo(change)
             } else if let info = notification.userInfo {
+print("         package arrived unpacked / remote TO \(self.name)")
                 let notice = CKQueryNotification(fromRemoteNotificationDictionary: info)
                 let trigger = notice.queryNotificationReason
                 let db = MCDatabase.from(scope: notice.databaseScope)
                 
                 guard let id = notice.recordID else { return }
                 
-                let change = LocalChangePackage(id: id, reason: trigger, originatingRec: "unknown", db: db)
+                let change = LocalChangePackage(ids: [id], reason: trigger, originatingRec: "Remote", db: db)
                 self.respondTo(change)
             }
         }
     }
     
     // MARK: - Functions
+    
+    /**
+        !!
+     */
+    fileprivate func notify(_ changes: [type], because reason: CKQueryNotificationReason) {
+print("                 |\(self.name)| ... attempting to notify \(reason) \(reason.rawValue)")
+        guard changes.count != 0 else { return }
+print("                 |\(self.name)| ... passing guard \(changes.count)")
+        let name = Notification.Name(type().recordType)
+        let package = LocalChangePackage(ids: changes.map { $0.recordID }, reason: reason, originatingRec: self.name, db: db)
+print("                 |\(self.name)| ... posting for \(type().recordType)")
+        NotificationCenter.default.post(name: name, object: package)
+    }
     
     /**
         This method responds to the various types of changes to the specified database.
@@ -174,32 +249,36 @@ public extension MCReceiverAbstraction {
             - db: The database that was changed.
      */
     fileprivate func respondTo(_ package: LocalChangePackage) {
-        
+print("             responding to \(package.ids.count) ids for \(package.reason) \(package.reason.rawValue)")
+print("             in \(name) from \(package.originatingRec)")
         // This guards against notifications resulting from internal changes.
-        guard package.originatingRec != self.name else { return }
-        
+        guard package.originatingRec != self.name && package.ids.count != 0 else { return }
+print("             guard passed")
         switch package.reason {
         case .recordDeleted:
             serialQ.sync {
-                if let index = recordables.index(where: { $0.recordID.isEqual(package.id) }) { recordables.remove(at: index) }
+                let missingRecordables = package.ids.map { $0.recordName }
+                let reducedSet = silentRecordables.filter { !missingRecordables.contains($0.recordID.recordName) }
+                silentRecordables = reducedSet
             }
         case .recordUpdated:
             serialQ.sync {
-                if let index = recordables.index(where: { $0.recordID.recordName == package.id.recordName }) {
-                    self.recordables.remove(at: index)
-                    
-                    let op = MCDownload(type: type().recordType,
-                                        queryField: "recordID",
-                                        queryValues: [CKReference(recordID: package.id, action: .none)],
-                                        to: self, from: package.db)
-                    OperationQueue().addOperation(op)
-                }
+                let editedRecordables = package.ids.map { $0.recordName }
+                let reducedSet = silentRecordables.filter { !editedRecordables.contains($0.recordID.recordName) }
+                silentRecordables = reducedSet
+
+                let refs = package.ids.map { CKReference(recordID: $0, action: .none) }
+                let op = MCDownload(type: type().recordType,
+                                    queryField: "recordID",
+                                    queryValues: refs,
+                                    to: self, from: self.db)
+                OperationQueue().addOperation(op)
             }
         case .recordCreated:
             let op = MCDownload(type: type().recordType,
                                 queryField: "recordID",
-                                queryValues: [CKReference(recordID: package.id, action: .none)],
-                                to: self, from: package.db)
+                                queryValues: package.ids.map { CKReference(recordID: $0, action: .none) },
+                                to: self, from: self.db)
             OperationQueue().addOperation(op)
         }
     }
@@ -235,7 +314,7 @@ public extension MCReceiverAbstraction {
         }
         
         // empties recordables, then downloads from database.
-        recordables = []
+        silentRecordables = []
         OperationQueue().addOperation(op)
         op.waitUntilFinished()
     }

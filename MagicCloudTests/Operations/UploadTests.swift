@@ -15,17 +15,13 @@ class UploadTests: XCTestCase {
     
     let start = Date()
     
-    let time = TimeInterval(exactly: 3)
-    
-    var testOp: MCUpload<MockReceiver>?
+    var testOp: MCUpload<MCMirror<MockRecordable>>?
     
     var mocks: [MockRecordable]?
     
-    var mockRec = MockReceiver() {
-didSet { print("ø- instantiating MockReceiver") }
-    }
+    var mockRec = MCMirror<MockRecordable>(db: .privateDB)
     
-    var databaseNeedsCleanUp = false
+    var databaseToCleanUp: MCDatabase?
     
     var firstRun = true
     
@@ -48,9 +44,11 @@ didSet { print("ø- instantiating MockReceiver") }
     }
     
     func cleanUpDatabase() {
+        guard let db = databaseToCleanUp else { return }
+        
         // This gives time between tests, for all database requests from previous interactions to be served.
         let pause = Pause(seconds: 3)
-        let clean = MCDelete(mocks, of: mockRec, from: .publicDB)
+        let clean = MCDelete(mocks, of: mockRec, from: db)
         pause.addDependency(clean)
         
         OperationQueue().addOperation(pause)
@@ -65,7 +63,7 @@ didSet { print("ø- instantiating MockReceiver") }
     func testUploadHasRecordables() { XCTAssertNotNil(testOp?.recordables) }
     
     func testUploadWorksWithPublic() {
-        databaseNeedsCleanUp = true
+        databaseToCleanUp = .publicDB
         
         var recordsInDatabase = true    // <-- Used to track all records existance.
         var recordInDatabase = false {
@@ -137,7 +135,7 @@ didSet { print("ø- instantiating MockReceiver") }
     }
     
     func testUploadWorksWithPrivate() {
-        databaseNeedsCleanUp = true
+        databaseToCleanUp = .privateDB
         
         var recordsInDatabase = true    // <-- Used to track all records existance.
         var recordInDatabase = false {
@@ -206,14 +204,13 @@ didSet { print("ø- instantiating MockReceiver") }
     }
 
     func testUploadSendsLocalNotificationToTriggerMirroringInMultipleReceivers() {
-        databaseNeedsCleanUp = true
+        databaseToCleanUp = .privateDB
 
-        let altReceiver = MCReceiver<MockRecordable>(db: .privateDB)
-        mockRec.subscribeToChanges(on: .privateDB)
-        
+        let altReceiver = MCMirror<MockRecordable>(db: .privateDB)
+
         // This q delay gives subscriptions time to error handle...
-        let pause = Pause(seconds: 3)
-        DispatchQueue(label: "test q").asyncAfter(deadline: .now() + 3) {
+        let pause = Pause(seconds: 2)
+        DispatchQueue(label: "test q").asyncAfter(deadline: .now() + 2) {
             pause.addDependency(self.testOp!)
             OperationQueue().addOperation(pause)
             OperationQueue().addOperation(self.testOp!)
@@ -221,8 +218,8 @@ didSet { print("ø- instantiating MockReceiver") }
         
         pause.waitUntilFinished()
 
-        XCTAssertEqual(mockRec.recordables.count, altReceiver.recordables.count)
-        XCTAssert(mockRec.recordables.count != 0)
+        XCTAssertEqual(mockRec.silentRecordables.count, altReceiver.silentRecordables.count)
+        XCTAssert(mockRec.silentRecordables.count != 0)
     }
     
 //    func testPerformance() {
@@ -259,7 +256,7 @@ didSet { print("ø- instantiating MockReceiver") }
         testOp = nil
         mocks = nil
         
-        if databaseNeedsCleanUp { cleanUpDatabase() }
+        cleanUpDatabase()
         super.tearDown()
     }
 }

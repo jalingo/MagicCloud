@@ -8,37 +8,16 @@
 
 import Foundation
 
-protocol MCMirrorAbstraction: ArrayComparer {
-    
-    var changeNotification: Notification.Name { get }
+//protocol _MCMirrorAbstraction: MCArrayComparer {
+//    
+//    associatedtype type = MCRecordable
+//    
+//    var changeNotification: Notification.Name { get }
+//
+//    var recordables: [type] { get set }
+//}
+//
+//open class _MCMirror<T: MCRecordable>: MCMirrorReceiver<T>, MCMirrorAbstraction {
+//    
+//}
 
-    var dataModel: [MCRecordable] { get set }
-}
-
-open class MCMirror<T: MCRecordable>: MCMirrorAbstraction {
-    
-    fileprivate let receiver: MCReceiver<T>
-    
-    public var changeNotification: Notification.Name { return Notification.Name(receiver.name) }
-
-    public var dataModel: [MCRecordable] {
-        get { return receiver.recordables }
-        
-        set {
-            let results = check(receiver.recordables, against: newValue)
-            let q = OperationQueue()
-            
-            if let changes = results.add as? [T] {
-                let op = MCUpload(changes, from: receiver, to: receiver.db)
-                q.addOperation(op)
-            }
-            
-            if let changes = results.remove as? [T] {
-                let op = MCDelete(changes, of: receiver, from: receiver.db)
-                q.addOperation(op)
-            }
-        }
-    }
-    
-    public init(db: MCDatabase) { receiver = MCReceiver<T>(db: db) }
-}

@@ -41,6 +41,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MCNotificationConverter {
                 if let id = cNote.recordID { self.doSomethingWith(this: trigger, or: id) }
             }
         }
+        
+        completionHandler(.noData)
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) { }

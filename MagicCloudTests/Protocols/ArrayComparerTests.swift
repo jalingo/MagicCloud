@@ -49,7 +49,7 @@ class ArrayComparerTests: XCTestCase {
         }
 
         if let result = mock?.check(originalMocks, against: editedMocks) {
-            XCTAssert(result.add == [mock_0e])
+            XCTAssert(result.edited == [mock_0e])
             XCTAssert(result.remove == [])
         } else {
             XCTFail()
@@ -57,6 +57,6 @@ class ArrayComparerTests: XCTestCase {
     }
 }
 
-struct MockComparer: ArrayComparer { }
+struct MockComparer: MCArrayComparer { }
 
 

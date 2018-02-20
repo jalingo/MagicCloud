@@ -9,7 +9,7 @@
 import CloudKit
 
 /// This operation identifies the type of error thrown by batch and handles it.
-class BatchError<R: MCReceiverAbstraction>: Operation {
+class BatchError<R: MCMirrorAbstraction>: Operation {
     
     // MARK: - Properties
     

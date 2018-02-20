@@ -12,11 +12,12 @@ import CloudKit     // <-- Still Needed, in most cases.
 
 // MARK: - Class: ViewController
 
-class ViewController: UIViewController, MCReceiverAbstraction {
+class ViewController: UIViewController {
     
     // MARK: - Properties
     
-    let name = "TestApp VC"
+    // Will be nil unless manually set by uncommenting below
+    var mirror: MCMirror<MockRecordable>? // = MCMirror<MockRecordable>(db: .publicDB)
     
     let serialQ = DispatchQueue(label: "VC Q")
 
@@ -25,40 +26,27 @@ class ViewController: UIViewController, MCReceiverAbstraction {
     
     /// This array stores data recovered from the cloud and is kept synced (while subscription is active).
     /// Can be used as a data model directly, but for increased stability consider saving locally.
-    var recordables = [MockRecordable]() {
-        didSet {
-            DispatchQueue.main.async { self.countDisplay.text = "\(self.recordables.count)" }
+    var dataModel: [MockRecordable] {
+        get { return mirror?.cloudRecordables  ?? [] }
+        set {
+            mirror?.cloudRecordables = newValue
+            DispatchQueue.main.async { self.countDisplay.text = "\(self.dataModel.count)" }
         }
     }
-    
-    /// This property stores the subscriptionID used by the receiver and should not be modified.
-    var subscription = MCSubscriber(forRecordType: type().recordType, on: .publicDB) 
 
     // MARK: - Properties: IBOutlets
     
     @IBOutlet weak var countDisplay: UILabel!
     
-    // MARK: - Functions
-    
-    deinit { unsubscribeToChanges() }
-    
     // MARK: - Functions: IBActions
 
     @IBAction func newMockTapped(_ sender: UIButton) {
         let mock = MockRecordable()
-
-        // This operation will save an instance conforming to recordable as a record in the specified database and all other receivers.
-        let op = MCUpload([mock], from: self, to: .publicDB)
-        op.start()
+        dataModel.append(mock)
     }
     
     @IBAction func removeMockTapped(_ sender: UIButton) {
-        if let mock = recordables.last {
- 
-            // This operation will remove these instances if present in the specified database, and then in all other receivers.
-            let op = MCDelete([mock], of: self, from: .publicDB)
-            op.start()
-        }
+        if dataModel.count != 0 { dataModel.removeLast() }
     }
     
     @IBAction func subscribeTapped(_ sender: UIButton) {
@@ -66,12 +54,12 @@ class ViewController: UIViewController, MCReceiverAbstraction {
         isSubscribed ?
         
         // This method unsubscribes from changes to the specified database.
-        unsubscribeToChanges()
+        mirror?.unsubscribeToChanges()
         
         :   // else...
             
         // This method subscribes to changes from the specified database, and prepares handling of events.
-        subscribeToChanges(on: .publicDB)
+        mirror?.subscribeToChanges(on: mirror!.db)
         
         // Switches state.
         isSubscribed = !isSubscribed
@@ -79,19 +67,7 @@ class ViewController: UIViewController, MCReceiverAbstraction {
         // Title change does not indicate success, but does report expected state.
         isSubscribed ?
             sender.setTitle("Unsubscribe", for: .normal) : sender.setTitle("Subscribe", for: .normal)
-    }
-    
-    // MARK: - Functions: UIViewController
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // This method empties recordables, and refills it from the specified database.
-        downloadAll(from: .publicDB)
-        
-        // This method subscribes to changes from the specified database, and prepares handling of events.
-        subscribeToChanges(on: .publicDB)
-    }
+    }    
 }
 
 

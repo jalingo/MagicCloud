@@ -11,12 +11,12 @@ import CloudKit
 /**
     This wrapper class for CKModifyRecordsOperations deletes records associated with the recordables inserted, from the specified database.
  */
-public class MCDelete<R: MCReceiverAbstraction>: Operation {
+public class MCDelete<R: MCMirrorAbstraction>: Operation {
      
     // MARK: - Properties
     
     /// If a delay is required before dispatching, it can be set here in seconds format (defaults to 0).
-    var delayInSeconds: UInt64 = 0
+    var delayInSeconds: Double = 0
 
     /// This constant property is an array that stores the recordables associated with the records that need to be removed from the specified database.
     let recordables: [R.type]
@@ -43,33 +43,20 @@ public class MCDelete<R: MCReceiverAbstraction>: Operation {
     // MARK: - Functions
     
     public override func main() {
+        guard recordables.count != 0 else { return }
+
         if isCancelled { return }
 
         let op = decorate()
         
         if isCancelled { return }
         
-        for recordable in recordables {
-            let name = Notification.Name(recordable.recordType)
-            let change = LocalChangePackage(id: recordable.recordID, reason: .recordDeleted, originatingRec: self.receiver.name, db: database)
-            NotificationCenter.default.post(name: name, object: change)
-        }
-        
-        if isCancelled { return }
-        
         delayDispatch(op)
-        
-        // originating receiver will ignore notification, this manually removes...
-        for element in recordables {
-            if let index = receiver.recordables.index(where: { $0.recordID == element.recordID }) { receiver.recordables.remove(at: index) }
-        }
     }
     
     /// This method dispatches operation after specified delay.
     func delayDispatch(_ op: CKDatabaseOperation) {
-        let time = DispatchTime.now() + Double(delayInSeconds)
-        DispatchQueue(label: "DelayedRecordDeletion").asyncAfter(deadline: time) {
-
+        DispatchQueue(label: "DelayedRecordDeletion").asyncAfter(deadline: .now() + delayInSeconds) {
             if self.isCancelled { return }
             self.database.db.add(op)
         }
@@ -106,8 +93,20 @@ public class MCDelete<R: MCReceiverAbstraction>: Operation {
             op.isLongLived = true
         }
         
+        let block = self.completionBlock
+        
         // This passes the completion block down to the last operation...
-        op.completionBlock = self.completionBlock
+        op.completionBlock = {
+            
+            // originating receiver will ignore notification, this manually removes...
+            let newVal = self.receiver.silentRecordables.filter { silent in
+                !self.recordables.contains(where: { silent.recordID.recordName == $0.recordID.recordName })
+            }
+            self.receiver.localRecordables = newVal
+            
+            block?()
+        }
+        
         self.completionBlock = nil
         
         return op
@@ -122,7 +121,7 @@ public class MCDelete<R: MCReceiverAbstraction>: Operation {
             - db: The DatabaseType enumerating the CKDatabase containing the records that need to be deleted.
      */
     public init(_ array: [R.type]? = nil, of rec: R, from db: MCDatabase) {
-        recordables = array ?? rec.recordables
+        recordables = array ?? rec.silentRecordables
         receiver = rec
         database = db
         

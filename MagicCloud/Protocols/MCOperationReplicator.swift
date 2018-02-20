@@ -20,12 +20,12 @@ protocol MCOperationReplicator {
             - receiver: The receiver type associated with the operation.
         - Returns: If not nil, then operation was successfully replicated.
      */
-    func replicate<R: MCReceiverAbstraction>(_ op: Operation, with receiver: R) -> Operation?
+    func replicate<R: MCMirrorAbstraction>(_ op: Operation, with receiver: R) -> Operation?
 }
 
 extension MCOperationReplicator {
     
-    func replicate<R: MCReceiverAbstraction>(_ op: Operation, with receiver: R) -> Operation? {
+    func replicate<R: MCMirrorAbstraction>(_ op: Operation, with receiver: R) -> Operation? {
         
         // Custom Operations
         

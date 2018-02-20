@@ -24,7 +24,7 @@ public typealias NotifyBlock = (Notification) -> Void
 
 // MARK: - Local Notification Objects
 
-typealias LocalChangePackage = (id: CKRecordID, reason: CKQueryNotificationReason, originatingRec: String, db: MCDatabase)
+typealias LocalChangePackage = (ids: [CKRecordID], reason: CKQueryNotificationReason, originatingRec: String, db: MCDatabase)
 
 // MARK: - Global Constants
 

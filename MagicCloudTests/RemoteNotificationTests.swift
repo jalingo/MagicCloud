@@ -21,7 +21,6 @@ class RemoteNotificationTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-print("ø- instantiating MockReceiver")
         mockRec = MockReceiver()
     }
     
@@ -47,7 +46,7 @@ print("ø- instantiating MockReceiver")
         OperationQueue().addOperation(firstPause)
         firstPause.waitUntilFinished()
         
-        let firstResult = mockRec?.recordables.count
+        let firstResult = mockRec?.silentRecordables.count
         XCTAssert(firstResult == 1)
         
         let mockRemovedFromDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
@@ -62,7 +61,7 @@ print("ø- instantiating MockReceiver")
         secondPause.waitUntilFinished()
         
         if let lastResult = firstResult {
-            XCTAssert(mockRec?.recordables.count == lastResult - 1)
+            XCTAssert(mockRec?.silentRecordables.count == lastResult - 1)
         } else {
             XCTFail()
         }
