@@ -27,11 +27,8 @@ class ViewController: UIViewController {
     /// This array stores data recovered from the cloud and is kept synced (while subscription is active).
     /// Can be used as a data model directly, but for increased stability consider saving locally.
     var dataModel: [MockRecordable] {
-        get { return mirror?.cloudRecordables  ?? [] }
-        set {
-            mirror?.cloudRecordables = newValue
-            DispatchQueue.main.async { self.countDisplay.text = "\(self.dataModel.count)" }
-        }
+        get { return mirror?.cloudRecordables ?? [] }
+        set { mirror?.cloudRecordables = newValue }
     }
 
     // MARK: - Properties: IBOutlets
@@ -67,54 +64,16 @@ class ViewController: UIViewController {
         // Title change does not indicate success, but does report expected state.
         isSubscribed ?
             sender.setTitle("Unsubscribe", for: .normal) : sender.setTitle("Subscribe", for: .normal)
-    }    
-}
-
-
-// MARK: - Mock
-
-/// Mock instance that only conforms to `Recordable` for testing and prototype development.
- class MockRecordable: MCRecordable {
-    
-    // MARK: - Properties
-    
-    var created = Date()
-    
-    // MARK: - Properties: Static Values
-    
-    static let key = "MockValue"
-    static let mockType = "MockRecordable"
-    
-    // MARK: - Properties: Recordable
-    
-    var recordType: String { return MockRecordable.mockType }
-    
-    var recordFields: Dictionary<String, CKRecordValue> {
-        get { return [MockRecordable.key: created as CKRecordValue] }
-        set {
-            if let date = newValue[MockRecordable.key] as? Date { created = date }
-        }
     }
     
-    var recordID: CKRecordID {
-        get {
-            return CKRecordID(recordName: "MockIdentifier: \(String(describing: created))")
-        }
-        
-        set {
-            var str = newValue.recordName
-            if let range = str.range(of: "MockIdentifier: ") {
-                str.removeSubrange(range)
-                if let date = DateFormatter().date(from: str) { created = date }
+    // MARK: - Functions: UIViewController
+    
+    override func viewDidLoad() {
+        if let name = mirror?.changeNotification {
+            NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil) { _ in
+                DispatchQueue.main.async { self.countDisplay.text = "\(self.dataModel.count)" }
             }
         }
     }
-    
-    // MARK: - Functions: Constructor
-    
-    public required init() { }
-    
-    init(created: Date? = nil) {
-        if let date = created { self.created = date }
-    }
 }
+
