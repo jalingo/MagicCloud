@@ -204,7 +204,7 @@ If this project is your first attempt at working with asynchronous operations, *
 
 **Apple** and **Magic Cloud** have done most of the heavy lifting, but you will still have to understand the order your processes will execute and that varying amounts of time will be needed for cloud interactions to occur. **Dispatch Groups** (and **XCTExpectations** for unit testing) can be very helpful, in this regard.
 
-Do ***NOT*** lock up the **main thread** with cloud activity; every app needs to separate threads for updating views and  waiting for data. If you're not sure what that means, then you may want to review the documentation mentioned above.
+Do ***NOT*** lock up the **main thread** with cloud activity; every app needs to have separate threads for updating views and  waiting for data. If you're not sure what that means, then you may want to review the documentation mentioned above.
 
 ### Error Notifications
 
