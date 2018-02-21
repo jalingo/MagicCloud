@@ -82,6 +82,7 @@
 		A1CD903A20303003005B529C /* MCMirror.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CD903820303003005B529C /* MCMirror.swift */; };
 		A1E6263F1FD7A6F00036FD67 /* MCRetrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E6263E1FD7A6F00036FD67 /* MCRetrier.swift */; };
 		A1E626401FD7A6F00036FD67 /* MCRetrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E6263E1FD7A6F00036FD67 /* MCRetrier.swift */; };
+		A1FEF543203C99190097C125 /* MockRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC0DB3202A740700C2CDE0 /* MockRecordable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -674,6 +675,7 @@
 				A1CB77CD1FBCB1C1008ADF09 /* LimitExceeded.swift in Sources */,
 				A1AC0DB0202A69AB00C2CDE0 /* MCSubscriberError.swift in Sources */,
 				A1CB77CE1FBCB1C1008ADF09 /* PartialError.swift in Sources */,
+				A1FEF543203C99190097C125 /* MockRecordable.swift in Sources */,
 				A1CB77CF1FBCB1C1008ADF09 /* BatchError.swift in Sources */,
 				A1CB77391FBA86AF008ADF09 /* MCUpload.swift in Sources */,
 				A1CD903920303003005B529C /* MCMirror.swift in Sources */,

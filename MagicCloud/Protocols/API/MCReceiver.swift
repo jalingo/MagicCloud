@@ -83,16 +83,14 @@ open class MCMirror<T: MCRecordable>: MCMirrorAbstraction {
 
     // MARK: - Properties: MCReceiverAbstraction
     
-    public let name = "MCR<\(type.self)> created \(Date().timeIntervalSince1970)"
+    public let name = "MCR<\(type.self)> \(Date().timeIntervalSince1970)"
     
     public typealias type = T
 
     public var serialQ = DispatchQueue(label: "Receiver Q")
     
     public var silentRecordables: [type] = [type]() {
-        didSet {
-print("         2 didSet silentRecordables @ |\(name)| ... \(oldValue.count) -> \(silentRecordables.count)")
-            NotificationCenter.default.post(name: changeNotification, object: nil) }
+        didSet { NotificationCenter.default.post(name: changeNotification, object: nil) }
     }
     
     public var subscription: MCSubscriber
@@ -142,10 +140,9 @@ print("         2 didSet silentRecordables @ |\(name)| ... \(oldValue.count) -> 
 
         let g = DispatchGroup()
         g.enter()
-        
         downloadAll(from: db) { g.leave() }
+
         g.wait()
-        
         subscribeToChanges(on: db)
     }
     
@@ -165,11 +162,10 @@ public extension MCMirrorAbstraction {
         get { return silentRecordables }
         
         set {
-print("         0 setting cloudRecordables @ |\(name)|")
             let results = check(silentRecordables, against: newValue)
-print("         0 results @ |\(name)| ... (added: +\(results.add.count), edited: ~\(results.edited.count), removed: -\(results.remove.count)")
+
             guard results.add.count != 0 || results.remove.count != 0 || results.remove.count != 0 else { return }
-print("         0 passing @ |\(name)|")
+
             let q = OperationQueue()
 
             var delay: Double?
@@ -192,13 +188,12 @@ print("         0 passing @ |\(name)|")
     public var localRecordables: [type] {
         get { return silentRecordables }
         set {
-print("         1 setting localRecordables @ |\(name)| ... \(silentRecordables.count) -> \(newValue.count)")
             let results = check(silentRecordables, against: newValue)
-print("         1 results @ |\(name)| ... (added: +\(results.add.count), edited: ~\(results.edited.count), removed: -\(results.remove.count)")
+
             if let changes = results.add    as? [type] { notify(changes, because: .recordCreated) }
             if let changes = results.remove as? [type] { notify(changes, because: .recordDeleted) }
             if let changes = results.edited as? [type] { notify(changes, because: .recordUpdated) }
-print("         1 updating silent")
+
             silentRecordables = newValue
         }
     }
@@ -207,10 +202,8 @@ print("         1 updating silent")
     fileprivate var databaseChanged: NotifyBlock {
         return { notification in
             if let change = notification.object as? LocalChangePackage {
-print("         package arrived packed   / local FROM \(change.originatingRec) TO \(self.name)")
                 self.respondTo(change)
             } else if let info = notification.userInfo {
-print("         package arrived unpacked / remote TO \(self.name)")
                 let notice = CKQueryNotification(fromRemoteNotificationDictionary: info)
                 let trigger = notice.queryNotificationReason
                 let db = MCDatabase.from(scope: notice.databaseScope)
@@ -226,15 +219,18 @@ print("         package arrived unpacked / remote TO \(self.name)")
     // MARK: - Functions
     
     /**
-        !!
+        This fileprivate, void method posts a notification to default NotificationCenter with recordable's type as name and a LocalChangePackage as the object, constructed from the arguments passed.
+     
+        - Parameters:
+            - changes: An array of associated type to be either added, overwritten or removed from local storage.
+            - reason: The CKQueryNotificationReason indicating whether changes should be added, overwritten or removed from local storage.
      */
     fileprivate func notify(_ changes: [type], because reason: CKQueryNotificationReason) {
-print("                 |\(self.name)| ... attempting to notify \(reason) \(reason.rawValue)")
         guard changes.count != 0 else { return }
-print("                 |\(self.name)| ... passing guard \(changes.count)")
+
         let name = Notification.Name(type().recordType)
         let package = LocalChangePackage(ids: changes.map { $0.recordID }, reason: reason, originatingRec: self.name, db: db)
-print("                 |\(self.name)| ... posting for \(type().recordType)")
+
         NotificationCenter.default.post(name: name, object: package)
     }
     
@@ -243,17 +239,13 @@ print("                 |\(self.name)| ... posting for \(type().recordType)")
      
         In the event of a record deletion, associated recordable is removed from recordables. If a record is updated, the local copy is removed from recordables and replaced by a fresh download. If a record is created, a new recordable is made from a downloaded record.
      
-        - Parameters:
-            - trigger: The type of change reported by the database.
-            - id: The id for the record that was changed.
-            - db: The database that was changed.
+        - Parameter package: LocalChangePackage recovered from notification.
      */
     fileprivate func respondTo(_ package: LocalChangePackage) {
-print("             responding to \(package.ids.count) ids for \(package.reason) \(package.reason.rawValue)")
-print("             in \(name) from \(package.originatingRec)")
+
         // This guards against notifications resulting from internal changes.
         guard package.originatingRec != self.name && package.ids.count != 0 else { return }
-print("             guard passed")
+
         switch package.reason {
         case .recordDeleted:
             serialQ.sync {

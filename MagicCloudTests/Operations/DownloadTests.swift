@@ -75,6 +75,7 @@ class DownloadTests: XCTestCase {
 
         // This operation will be used to ensure mocks are already present in cloud database.
         let _ = prepareDatabase(db: .privateDB)
+        mockRec.silentRecordables = []
         
         if let key = mock.recordFields.first?.key, let value = mock.recordFields[key] {
             testOp = MCDownload(type: mock.recordType,

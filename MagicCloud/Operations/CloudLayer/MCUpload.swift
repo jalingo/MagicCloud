@@ -56,7 +56,8 @@ public class MCUpload<R: MCMirrorAbstraction>: Operation {
     
     /// This read-only, computed property returns a ModifyBlock for uploading with a CKModifyRecordsOperation.
     fileprivate var modifyCompletion: ModifyBlock {
-        return { _, _, error in
+        return { recs, ids, error in
+print("                         Upload recs \(recs!.count) @|\(String(describing: self.name))| ... \(String(describing: error))")
             guard error == nil else { self.handle(error, from: self, whileIgnoringUnknownItem: false); return }
         }
     }
@@ -110,8 +111,9 @@ public class MCUpload<R: MCMirrorAbstraction>: Operation {
     // MARK: - Functions: Operation
     
     public override func main() {
+
         guard recordables.count != 0 else { return }
-        
+
         if isCancelled { return }
         
         let op = decorate()
@@ -136,6 +138,6 @@ public class MCUpload<R: MCMirrorAbstraction>: Operation {
         
         super.init()
         
-        self.name = "Upload"
+        self.name = "Upload \(String(describing: recs?.count)) recs for \(rec.name) to \(db)"
     }
 }

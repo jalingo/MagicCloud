@@ -14,10 +14,10 @@ import MagicCloud
 class ViewController: UIViewController {
     
     // MARK: - Properties
-    
+
     // Will be nil unless manually set by uncommenting below
-    var mirror: MCMirror<MockRecordable>? // = MCMirror<MockRecordable>(db: .publicDB)
-    
+    var mirror: MCMirror<MockRecordable>? // = MCMirror<MockRecordable>(db: .privateDB)
+//let alt = MCMirror<MockRecordable>(db: .privateDB)
     let serialQ = DispatchQueue(label: "VC Q")
 
     /// This property saves EXPECTED subscription state.
@@ -37,7 +37,7 @@ class ViewController: UIViewController {
     // MARK: - Functions: IBActions
 
     @IBAction func newMockTapped(_ sender: UIButton) {
-        let mock = MockRecordable()
+        let mock = MockRecordable(created: Date())
         dataModel.append(mock)
     }
     
@@ -72,6 +72,8 @@ class ViewController: UIViewController {
             NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil) { _ in
                 DispatchQueue.main.async { self.countDisplay.text = "\(self.dataModel.count)" }
             }
+//NotificationCenter.default.addObserver(forName: alt.changeNotification, object: nil, queue: nil) { _ in
+//print("                                          DING DING DING DING DING \(self.alt.silentRecordables.count) \(self.alt.name)") }
         }
     }
 }

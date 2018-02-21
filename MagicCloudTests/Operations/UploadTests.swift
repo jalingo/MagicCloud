@@ -19,7 +19,7 @@ class UploadTests: XCTestCase {
     
     var mocks: [MockRecordable]?
     
-    var mockRec = MCMirror<MockRecordable>(db: .privateDB)
+    var mockRec: MCMirror<MockRecordable>?// = MCMirror<MockRecordable>(db: .privateDB)
     
     var databaseToCleanUp: MCDatabase?
     
@@ -45,10 +45,10 @@ class UploadTests: XCTestCase {
     
     func cleanUpDatabase() {
         guard let db = databaseToCleanUp else { return }
-        
+
         // This gives time between tests, for all database requests from previous interactions to be served.
         let pause = Pause(seconds: 3)
-        let clean = MCDelete(mocks, of: mockRec, from: db)
+        let clean = MCDelete(mocks, of: mockRec!, from: db)
         pause.addDependency(clean)
         
         OperationQueue().addOperation(pause)
@@ -65,14 +65,9 @@ class UploadTests: XCTestCase {
     func testUploadWorksWithPublic() {
         databaseToCleanUp = .publicDB
         
-        var recordsInDatabase = true    // <-- Used to track all records existance.
-        var recordInDatabase = false {
-            didSet {
-                if !recordInDatabase { recordsInDatabase = false }
-            }
-        }
+        var recordsFetched = [CKRecord]()
 
-        testOp = MCUpload(mocks, from: mockRec, to: .publicDB)
+        testOp = MCUpload(mocks, from: mockRec!, to: .publicDB)
 
         let pause = Pause(seconds: 3)
 
@@ -87,9 +82,8 @@ class UploadTests: XCTestCase {
                                                       originating: verifyOp,
                                                       target: .publicDB,
                                                       instances: self.mocks!,
-                                                      receiver: self.mockRec)
+                                                      receiver: self.mockRec!)
                     errorHandler.ignoreUnknownItem = true
-                    errorHandler.ignoreUnknownItemCustomAction = { recordInDatabase = false }
                     OperationQueue().addOperation(errorHandler)
                 } else {
                     print("NSError: \(error!) @ testUploadWorksWithPublic.0")
@@ -100,20 +94,17 @@ class UploadTests: XCTestCase {
         }
 
         verifyOp.perRecordCompletionBlock = { record, id, error in
+            if let record = record { recordsFetched.append(record) }
+            
             guard error == nil else {
                 if let cloudError = error as? CKError {
-                    if cloudError.code == CKError.unknownItem {
-                        recordInDatabase = false
-                    } else {
-                        let errorHandler = MCErrorHandler(error: cloudError,
-                                                          originating: verifyOp,
-                                                          target: .publicDB,
-                                                          instances: self.mocks!,
-                                                          receiver: self.mockRec)
-                        errorHandler.ignoreUnknownItem = true
-                        errorHandler.ignoreUnknownItemCustomAction = { recordInDatabase = false }
-                        OperationQueue().addOperation(errorHandler)
-                    }
+                    let errorHandler = MCErrorHandler(error: cloudError,
+                                                      originating: verifyOp,
+                                                      target: .publicDB,
+                                                      instances: self.mocks!,
+                                                      receiver: self.mockRec!)
+                    errorHandler.ignoreUnknownItem = true
+                    OperationQueue().addOperation(errorHandler)
                 } else {
                     print("NSError: \(error!) @ testUploadWorksWithPublic.1")
                 }
@@ -131,19 +122,14 @@ class UploadTests: XCTestCase {
         
         // Waits for operations to complete and then evaluates test.
         verifyOp.waitUntilFinished()
-        XCTAssert(recordsInDatabase)
+        XCTAssert(recordsFetched.count != 0)
     }
     
     func testUploadWorksWithPrivate() {
         databaseToCleanUp = .privateDB
         
-        var recordsInDatabase = true    // <-- Used to track all records existance.
-        var recordInDatabase = false {
-            didSet {
-                if !recordInDatabase { recordsInDatabase = false }
-            }
-        }
-        
+        var recordsFetched = [CKRecord]()
+
         let pause = Pause(seconds: 3)
         
         // This operation will verify that mock was uploaded, and record it's findings in `recordInDatabase`.
@@ -156,9 +142,8 @@ class UploadTests: XCTestCase {
                                                       originating: verifyOp,
                                                       target: .privateDB,
                                                       instances: self.mocks!,
-                                                      receiver: self.mockRec)
+                                                      receiver: self.mockRec!)
                     errorHandler.ignoreUnknownItem = true
-                    errorHandler.ignoreUnknownItemCustomAction = { recordInDatabase = false }
                     OperationQueue().addOperation(errorHandler)
                 } else {
                     print("NSError: \(error!) @ testUploadWorksWithPrivate.0")
@@ -169,22 +154,17 @@ class UploadTests: XCTestCase {
         }
         
         verifyOp.perRecordCompletionBlock = { record, id, error in
+            if let record = record { recordsFetched.append(record) }
+            
             guard error == nil else {
                 if let cloudError = error as? CKError {
-                    if cloudError.code == CKError.unknownItem {
-                        recordInDatabase = false
-                    } else {
-                        let errorHandler = MCErrorHandler(error: cloudError,
-                                                          originating: verifyOp,
-                                                          target: .privateDB,
-                                                          instances: self.mocks!,
-                                                          receiver: self.mockRec)
-                        errorHandler.ignoreUnknownItem = true
-                        errorHandler.ignoreUnknownItemCustomAction = { recordInDatabase = false }
-                        OperationQueue().addOperation(errorHandler)
-                    }
-                } else {
-                    print("NSError: \(error!) @ testUploadWorksWithPrivate.1")
+                    let errorHandler = MCErrorHandler(error: cloudError,
+                                                      originating: verifyOp,
+                                                      target: .privateDB,
+                                                      instances: self.mocks!,
+                                                      receiver: self.mockRec!)
+                    errorHandler.ignoreUnknownItem = true
+                    OperationQueue().addOperation(errorHandler)
                 }
                 
                 return
@@ -200,17 +180,19 @@ class UploadTests: XCTestCase {
 
         // Waits for operations to complete and then evaluates test.
         verifyOp.waitUntilFinished()
-        XCTAssert(recordsInDatabase)
+        XCTAssert(recordsFetched.count != 0)
     }
 
     func testUploadSendsLocalNotificationToTriggerMirroringInMultipleReceivers() {
-        databaseToCleanUp = .privateDB
+        let d = MCDatabase.privateDB
+        databaseToCleanUp = d
 
-        let altReceiver = MCMirror<MockRecordable>(db: .privateDB)
+        let altReceiver = MCMirror<MockRecordable>(db: d)
 
         // This q delay gives subscriptions time to error handle...
         let pause = Pause(seconds: 2)
         DispatchQueue(label: "test q").asyncAfter(deadline: .now() + 2) {
+            pause.completionBlock = { print("** pause finished") }
             pause.addDependency(self.testOp!)
             OperationQueue().addOperation(pause)
             OperationQueue().addOperation(self.testOp!)
@@ -218,8 +200,8 @@ class UploadTests: XCTestCase {
         
         pause.waitUntilFinished()
 
-        XCTAssertEqual(mockRec.silentRecordables.count, altReceiver.silentRecordables.count)
-        XCTAssert(mockRec.silentRecordables.count != 0)
+        XCTAssertEqual(mockRec!.silentRecordables.count, altReceiver.silentRecordables.count)
+        XCTAssert(mockRec!.silentRecordables.count != 0)
     }
     
 //    func testPerformance() {
@@ -245,11 +227,20 @@ class UploadTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        loadMockRecordables()
-        testOp = MCUpload(mocks!, from: mockRec, to: .privateDB)
+        mockRec = MCMirror<MockRecordable>(db: .privateDB)
         
-        if firstRun { cleanUpDatabase() }
+        loadMockRecordables()
+        testOp = MCUpload(mocks!, from: mockRec!, to: .privateDB)
+        
+        if firstRun {
+            databaseToCleanUp = .privateDB
+            cleanUpDatabase()
+            databaseToCleanUp = .publicDB
+            cleanUpDatabase()
+        }
+        
         firstRun = false
+        databaseToCleanUp = nil
     }
     
     override func tearDown() {
