@@ -54,6 +54,8 @@ public class MCDownload<R: MCMirrorAbstraction>: Operation {
     fileprivate func decorate(op: CKQueryOperation) {
         if let integer = limit { op.resultsLimit = integer }
     
+        if database == .privateDB { op.zoneID = CKRecordZone.default().zoneID}
+        
         op.recordFetchedBlock = recordFetched()
         op.queryCompletionBlock = queryCompletion(op: op)
         
@@ -68,7 +70,7 @@ public class MCDownload<R: MCMirrorAbstraction>: Operation {
     fileprivate func recordFetched() -> FetchBlock {
         return { record in            
             let recordable = R.type().prepare(from: record)
-            
+
             // This if statement checks to avoid downloading duplicates.
             if !self.receiver.silentRecordables.contains(where: {$0.recordID.recordName == recordable.recordID.recordName}) {
                 self.receiver.silentRecordables.append(recordable)
