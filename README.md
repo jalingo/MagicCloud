@@ -34,7 +34,7 @@ platform :ios, '10.3'   # <- 10.3 minimum requirement, can be more recent...
 use_frameworks!         # <- MagicCloud is a swift framework, ensure this is present.
 
 target '<Your Target Name>' do
-    pod 'MagicCloud', '~> 2.0.7'  # <- Be sure to use the current version.
+    pod 'MagicCloud', '~> 2.9.5'  # <- Be sure to use the current version.
 end
 ```
 
@@ -154,19 +154,19 @@ Shortly after they're initialized, the receivers should finish downloading and t
 let publicMocks = mocksInPublicDatabase.dataModel
 ```
 
-Voila! Any changes to records in the cloud database (add / edit / remove) will automatically be reflected in the receiver's recordables array until it deinits. When elements are added, modified or deleted from the `dataModel` array, the `MCMirror` will ensure those changes are mirrored to the respective database in the background.
+Voila! Any changes to records in the cloud database (add / edit / remove) will automatically be reflected in the receiver's recordables array until it deinits. When elements are added, modified or deleted from the `cloudRecordables` array, the `MCMirror` will ensure those changes are mirrored to the respective database in the background.
 
 ```swift
 let new = MockType(created: Date())
 
-mocksInPublicDatabase.dataModel.append(new)                      // <-- This will add a new record to the database.
+mocksInPublicDatabase.cloudRecordables.append(new)                      // <-- This will add a new record to the database.
 
-mocksInPublicDatabase.dataModel[0].created = Date.distantFuture  // <-- This will modify an existing database record.
+mocksInPublicDatabase.cloudRecordables[0].created = Date.distantFuture  // <-- This will modify an existing database record.
 
-mocksInPublicDatabase.dataModel.removeLast                       // <-- This will remove a record from the database.
+mocksInPublicDatabase.cloudRecordables.removeLast                       // <-- This will remove a record from the database.
 ```
 
-**Note:**  While multiple mirrors for the same data type in the same app reduces stability, it is supported. Any change will be reflected in all mirrors, both in the local app and in other users' apps.
+**Note:**  While multiple mirrors for the same data type in the same app reduces stability, it is supported. Any change should be reflected in all mirrors, both in the local app and in other users' apps.
 
 ### MCUserRecord
 
