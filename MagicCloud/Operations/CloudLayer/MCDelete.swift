@@ -52,6 +52,10 @@ public class MCDelete<R: MCMirrorAbstraction>: Operation {
         if isCancelled { return }
         
         delayDispatch(op)
+        
+        if isCancelled { return }
+        
+        op.waitUntilFinished()
     }
     
     /// This method dispatches operation after specified delay.

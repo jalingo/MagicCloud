@@ -57,7 +57,6 @@ public class MCUpload<R: MCMirrorAbstraction>: Operation {
     /// This read-only, computed property returns a ModifyBlock for uploading with a CKModifyRecordsOperation.
     fileprivate var modifyCompletion: ModifyBlock {
         return { recs, ids, error in
-print("                         Upload recs \(recs!.count) @|\(String(describing: self.name))| ... \(String(describing: error))")
             guard error == nil else { self.handle(error, from: self, whileIgnoringUnknownItem: false); return }
         }
     }
@@ -121,6 +120,10 @@ print("                         Upload recs \(recs!.count) @|\(String(describing
         if isCancelled { return }
         
         database.db.add(op)
+        
+        if isCancelled { return }
+        
+        op.waitUntilFinished()
     }
     
     // MARK: - Functions: Constructors

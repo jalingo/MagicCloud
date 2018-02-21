@@ -127,6 +127,10 @@ public class MCDownload<R: MCMirrorAbstraction>: Operation {
         if isCancelled { return }
 
         database.db.add(op)
+        
+        if isCancelled { return }
+        
+        op.waitUntilFinished()
     }
     
     // MARK: - Functions: Constructors
