@@ -1,5 +1,5 @@
 //
-//  Receiver.swift
+//  MCMirror.swift
 //  slBackend
 //
 //  Created by Jimmy Lingo on 5/15/17.
