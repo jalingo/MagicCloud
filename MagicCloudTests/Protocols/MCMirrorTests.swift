@@ -27,7 +27,6 @@ class MCMirrorTests: XCTestCase {
         
         if let rec = mock {
             let op = MCUpload([mockRecordable], from: rec, to: .publicDB)
-            op.completionBlock = { print("** prep finished")}
             q.addOperation(op)
             
             op.waitUntilFinished()
@@ -35,7 +34,6 @@ class MCMirrorTests: XCTestCase {
         }
         
         let pause = Pause(seconds: 3)
-        pause.completionBlock = { print("** database prepped") }
         q.addOperation(pause)
 
         pause.waitUntilFinished()
@@ -118,7 +116,6 @@ class MCMirrorTests: XCTestCase {
         mirror.cloudRecordables.removeAll()
 
         let pause = Pause(seconds: 3)
-        pause.completionBlock = { print("** mirror deletion pause")}
         q.addOperation(pause)
         
         pause.waitUntilFinished()
