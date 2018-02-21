@@ -17,9 +17,9 @@ class VersionConflictTests: XCTestCase {
     
     var testOp: VersionConflict<MCMirror<MockRecordable>>?
     
-    var mock: MCRecordable?
+    var mock: MockRecordable?
 
-    var mockRec = MCMirror<MockRecordable>(db: .publicDB)
+    var mockRec: MCMirror<MockRecordable>?
     
     var dict: [AnyHashable: Any]? {
         var dict = [AnyHashable: Any]()
@@ -76,11 +76,11 @@ class VersionConflictTests: XCTestCase {
     
     func loadTestOp() {
         let error = NSError(domain: CKErrorDomain, code: CKError.serverRecordChanged.rawValue, userInfo: dict as? [String : Any])
-        testOp = VersionConflict(rec: mockRec,
+        testOp = VersionConflict(rec: mockRec!,
                                  error: CKError(_nsError: error),
                                  target: .privateDB,
                                  policy: .changedKeys,
-                                 instances: [mock as! MockRecordable],
+                                 instances: [mock!],
                                  completionBlock: nil)
     }
     
@@ -92,12 +92,12 @@ class VersionConflictTests: XCTestCase {
         let firstPause = Pause(seconds: 3)
         firstPause.addDependency(testOp!)
         
-        let cleanUp = MCDelete([mock as! MockRecordable], of: mockRec, from: .privateDB)
+        let cleanUp = MCDelete([mock!], of: mockRec!, from: .privateDB)
         
         let secondPause = Pause(seconds: 2)
         secondPause.addDependency(cleanUp)
 
-        let verifyOp = MCDownload(type: mock!.recordType, to: mockRec, from: .privateDB)
+        let verifyOp = MCDownload(type: mock!.recordType, to: mockRec!, from: .privateDB)
         verifyOp.addDependency(firstPause)
         verifyOp.completionBlock = { OperationQueue().addOperation(cleanUp) }
 
@@ -108,7 +108,7 @@ class VersionConflictTests: XCTestCase {
         
         secondPause.waitUntilFinished()
         
-        let result = mockRec.silentRecordables.filter() { $0.recordID.recordName == "MockIdentifier: \(Date.distantFuture)" }
+        let result = mockRec!.silentRecordables.filter() { $0.recordID.recordName == "MockIdentifier: \(Date.distantFuture)" }
         if let firstEntry = result.first?.recordFields[TEST_KEY] as? Date, let attempted = attempted?[TEST_KEY] as? Date {
             XCTAssert(firstEntry == attempted)
         } else {
@@ -122,12 +122,12 @@ class VersionConflictTests: XCTestCase {
         let firstPause = Pause(seconds: 3)
         firstPause.addDependency(testOp!)
         
-        let cleanUp = MCDelete([mock as! MockRecordable], of: mockRec, from: .privateDB)
+        let cleanUp = MCDelete([mock!], of: mockRec!, from: .privateDB)
         
         let secondPause = Pause(seconds: 2)
         secondPause.addDependency(cleanUp)
         
-        let verifyOp = MCDownload(type: mock!.recordType, to: mockRec, from: .privateDB)
+        let verifyOp = MCDownload(type: mock!.recordType, to: mockRec!, from: .privateDB)
         verifyOp.addDependency(firstPause)
         verifyOp.completionBlock = { OperationQueue().addOperation(cleanUp) }
         
@@ -138,7 +138,7 @@ class VersionConflictTests: XCTestCase {
         
         secondPause.waitUntilFinished()
         
-        let result = mockRec.silentRecordables.filter() { $0.recordID.recordName == "MockIdentifier: \(Date.distantFuture)" }        
+        let result = mockRec!.silentRecordables.filter() { $0.recordID.recordName == "MockIdentifier: \(Date.distantFuture)" }
         if let firstEntry = result.first?.recordFields[TEST_KEY] as? Date, let attempted = attempted?[TEST_KEY] as? Date {
             XCTAssert(firstEntry == attempted)
         } else {
@@ -152,7 +152,7 @@ class VersionConflictTests: XCTestCase {
         let firstPause = Pause(seconds: 3)
         firstPause.addDependency(testOp!)
 
-        let verifyOp = MCDownload(type: mock!.recordType, to: mockRec, from: .privateDB)
+        let verifyOp = MCDownload(type: mock!.recordType, to: mockRec!, from: .privateDB)
         verifyOp.addDependency(firstPause)
         
         OperationQueue().addOperation(verifyOp)
@@ -162,7 +162,7 @@ class VersionConflictTests: XCTestCase {
         verifyOp.waitUntilFinished()
         
         // With no changes to make, no record should be in the database to download.
-        XCTAssert(mockRec.silentRecordables.count == 0)
+        XCTAssert(mockRec!.silentRecordables.count == 0)
     }
     
     // MARK: - Functions: XCTestCase
@@ -173,12 +173,16 @@ class VersionConflictTests: XCTestCase {
         mock = MockRecordable()
         loadInfo()
         loadTestOp()
+        
+        mockRec = MCMirror<MockRecordable>(db: .publicDB)
     }
     
     override func tearDown() {
         mock = nil
         testOp = nil
         nullifyInfo()
+
+        mockRec = nil
         
         super.tearDown()
     }
