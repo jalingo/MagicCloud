@@ -149,17 +149,13 @@ class VersionConflictTests: XCTestCase {
     func testVersionConflictResolvesAsUnchanged() {
         testOp?.policy = .ifServerRecordUnchanged
         
-        let firstPause = Pause(seconds: 3)
-        firstPause.addDependency(testOp!)
+        let pause = Pause(seconds: 3)
+        pause.addDependency(testOp!)
 
-        let verifyOp = MCDownload(type: mock!.recordType, to: mockRec!, from: .privateDB)
-        verifyOp.addDependency(firstPause)
-        
-        OperationQueue().addOperation(verifyOp)
-        OperationQueue().addOperation(firstPause)
+        OperationQueue().addOperation(pause)
         OperationQueue().addOperation(testOp!)
         
-        verifyOp.waitUntilFinished()
+        pause.waitUntilFinished()
         
         // With no changes to make, no record should be in the database to download.
         XCTAssert(mockRec!.silentRecordables.count == 0)
