@@ -120,6 +120,8 @@ public class MCDelete<R: MCMirrorAbstraction>: Operation {
     // MARK: - Functions: Constructors
     
     /**
+        This wrapper class for CKModifyRecordsOperations deletes records associated with the recordables inserted, from the specified database.
+     
         - Parameters:
             - array: The recordables associated with the records that need to be removed from the specified database.
             - rec: The MCReceiver associated with MCDelete, that was itself storing the recordables to be deleted from the specified database.

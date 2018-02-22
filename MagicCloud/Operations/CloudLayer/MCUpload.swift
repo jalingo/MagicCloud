@@ -130,6 +130,8 @@ public class MCUpload<R: MCMirrorAbstraction>: Operation {
     // MARK: - Functions: Constructors
     
     /**
+         This wrapper class for CKModifyRecordsOperation saves records for the injected recordables in the specified database.
+     
         - Parameters:
             - recs: An array of the MCRecordables associated with the records that need to be uploaded to the specified database.
             - rec: The MCReceiver from which records are being derived and uploaded.
