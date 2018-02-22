@@ -11,7 +11,6 @@
 		90C4E8731FC0EAE300A8D329 /* MCUserRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C4E8711FC0EAE300A8D329 /* MCUserRecord.swift */; };
 		A1268EC01FBA806200ADAA74 /* MagicCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1268EB61FBA806200ADAA74 /* MagicCloud.framework */; };
 		A1268EC71FBA806300ADAA74 /* MagicCloud.h in Headers */ = {isa = PBXBuildFile; fileRef = A1268EB91FBA806200ADAA74 /* MagicCloud.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A1268EE11FBA80BC00ADAA74 /* MCReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDD1FBA80BC00ADAA74 /* MCReceiver.swift */; };
 		A1268EE31FBA80BC00ADAA74 /* MCRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* MCRecordable.swift */; };
 		A1268EE41FBA80BC00ADAA74 /* MCRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* MCRecordable.swift */; };
 		A1268EE71FBA821400ADAA74 /* TypeAliases & Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE61FBA821400ADAA74 /* TypeAliases & Constants.swift */; };
@@ -56,7 +55,6 @@
 		A1CB77C81FBC3241008ADF09 /* BatchErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77C31FBC3241008ADF09 /* BatchErrorTests.swift */; };
 		A1CB77C91FBC3241008ADF09 /* VersionConflictTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77C41FBC3241008ADF09 /* VersionConflictTests.swift */; };
 		A1CB77CB1FBC3241008ADF09 /* LimitExceededTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77C61FBC3241008ADF09 /* LimitExceededTests.swift */; };
-		A1CB77CC1FBC3326008ADF09 /* MCReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDD1FBA80BC00ADAA74 /* MCReceiver.swift */; };
 		A1CB77CD1FBCB1C1008ADF09 /* LimitExceeded.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77401FBA86E5008ADF09 /* LimitExceeded.swift */; };
 		A1CB77CE1FBCB1C1008ADF09 /* PartialError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB773F1FBA86E5008ADF09 /* PartialError.swift */; };
 		A1CB77CF1FBCB1C1008ADF09 /* BatchError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB773E1FBA86E4008ADF09 /* BatchError.swift */; };
@@ -144,7 +142,6 @@
 		A1268EBA1FBA806200ADAA74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A1268EBF1FBA806200ADAA74 /* MagicCloudTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MagicCloudTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1268EC61FBA806300ADAA74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A1268EDD1FBA80BC00ADAA74 /* MCReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCReceiver.swift; sourceTree = "<group>"; };
 		A1268EDE1FBA80BC00ADAA74 /* MCRecordable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCRecordable.swift; sourceTree = "<group>"; };
 		A1268EE61FBA821400ADAA74 /* TypeAliases & Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TypeAliases & Constants.swift"; sourceTree = "<group>"; };
 		A1268EE91FBA821C00ADAA74 /* MCDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCDatabase.swift; sourceTree = "<group>"; };
@@ -444,7 +441,6 @@
 			isa = PBXGroup;
 			children = (
 				A1268EDE1FBA80BC00ADAA74 /* MCRecordable.swift */,
-				A1268EDD1FBA80BC00ADAA74 /* MCReceiver.swift */,
 				A1CD903820303003005B529C /* MCMirror.swift */,
 				A16EA5021FC666DF001E57F8 /* MCNotificationConverter.swift */,
 			);
@@ -683,7 +679,6 @@
 				A1E6263F1FD7A6F00036FD67 /* MCRetrier.swift in Sources */,
 				A1CB77D21FBCBF4B008ADF09 /* VersionConflict.swift in Sources */,
 				90C4E8721FC0EAE300A8D329 /* MCUserRecord.swift in Sources */,
-				A1268EE11FBA80BC00ADAA74 /* MCReceiver.swift in Sources */,
 				A1268EEA1FBA821C00ADAA74 /* MCDatabase.swift in Sources */,
 				A1CB77281FBA8683008ADF09 /* FailedOp.swift in Sources */,
 				A1CB773C1FBA86CB008ADF09 /* MCErrorHandler.swift in Sources */,
@@ -715,7 +710,6 @@
 				A1AC0DB4202A740700C2CDE0 /* MockRecordable.swift in Sources */,
 				A1CB77C81FBC3241008ADF09 /* BatchErrorTests.swift in Sources */,
 				A1B0CF171FC51FBE009474EE /* RemoteNotificationTests.swift in Sources */,
-				A1CB77CC1FBC3326008ADF09 /* MCReceiver.swift in Sources */,
 				A1CB77CB1FBC3241008ADF09 /* LimitExceededTests.swift in Sources */,
 				A1268EE41FBA80BC00ADAA74 /* MCRecordable.swift in Sources */,
 				A1E626401FD7A6F00036FD67 /* MCRetrier.swift in Sources */,
