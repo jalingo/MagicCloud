@@ -13,7 +13,7 @@ class RecievesRecTests: XCTestCase {
     
     // MARK: - Properties
 
-    var mock: MockReceiver?
+    var mock: MCMirror<MockRecordable>?
     
     var mockRecordables: [MockRecordable] {
         var array = [MockRecordable]()
@@ -261,7 +261,7 @@ class RecievesRecTests: XCTestCase {
     }
     
     func testReceiverReactsCloudAccountChanges() {
-        mock?.listenForConnectivityChangesOnPublic()
+//        mock?.listenForConnectivityChangesOnPublic()
         
         // loads mocks into the database
         let _ = prepareDatabase()
@@ -283,33 +283,45 @@ class RecievesRecTests: XCTestCase {
     }
     
     func testReceiverReactsNetworkChanges() {
-        mock?.listenForConnectivityChangesOnPublic()
+//        mock?.listenForConnectivityChangesOnPublic()
         
         // loads mocks into the database, with enough delay (currently) to accomodate mock?.downloadAll:db:
         let _ = prepareDatabase()
-
+NotificationCenter.default.addObserver(forName: mock!.changeNotification, object: nil, queue: nil) { _ in
+print("                 DING DING @ \(String(describing: self.mock?.name)) | \(String(describing: self.mock?.silentRecordables.count))") }
+    let pause = Pause(seconds: 2)
+    OperationQueue().addOperation(pause)
+    pause.waitUntilFinished()
         // empties receiver, so that triggered download can be detected
         mock?.silentRecordables = []
-
+print("  *0 mocks = \(String(describing: mock?.silentRecordables.count))")
         // pauses long enough for tester to disable wifi and download to take effect, then tests download occured
-        let wifiDisabled = expectation(description: "10001")
+        let wifiDisabled = expectation(forNotification: .reachabilityChanged, object: nil, handler: nil)
+print("  *1 mocks = \(String(describing: self.mock?.silentRecordables.count))")
+        print("         ** DISABLE WIFI OFF ON TEST DEVICE **")
+print("  *2 mocks = \(String(describing: self.mock?.silentRecordables.count))")
+
+            /*expectation(description: "10001")
         DispatchQueue.main.async {
-            while self.mock?.silentRecordables.count == 0 { print("         ** DISABLE WIFI OFF ON TEST DEVICE **") }
+            print("         ** DISABLE WIFI OFF ON TEST DEVICE **")
+            while self.mock?.silentRecordables.count == 0 { print(".") } //, terminator: "") }
             wifiDisabled.fulfill()
-        }
+        }*/
 
         wait(for: [wifiDisabled], timeout: 30)
+print("  *3 mocks = \(String(describing: self.mock?.silentRecordables.count))")
         XCTAssert(mock?.silentRecordables.count != 0)
         
         let airportMode = expectation(forNotification: .reachabilityChanged, object: nil, handler: nil)
         print("         ** PLACE TEST DEVICE IN AIRPORT MODE **")
 
         wait(for: [airportMode], timeout: 30)
-        XCTAssert(mock?.silentRecordables.count == 0)
-        
+        XCTAssert(mock?.silentRecordables.count == 0, "\(String(describing: mock?.silentRecordables.count))")
+print("  *4 mocks = \(String(describing: self.mock?.silentRecordables.count))")
         let signalReturned = expectation(description: "10100")
         DispatchQueue.main.async {
-            while self.mock?.silentRecordables.count == 0 { print("         ** REMOVE TEST DEVICE FROM AIRPORT MODE **") }
+            print("         ** REMOVE TEST DEVICE FROM AIRPORT MODE **")
+            while self.mock?.silentRecordables.count == 0 { print("..", terminator: "") }
             signalReturned.fulfill()
         }
 
@@ -335,7 +347,8 @@ class RecievesRecTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        mock = MockReceiver()
+        mock = MCMirror<MockRecordable>(db: .publicDB)
+        //MockReceiver()
     }
     
     override func tearDown() {
