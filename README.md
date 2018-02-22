@@ -5,6 +5,8 @@ MagicCloud
 [![CocoaPods Platform](https://img.shields.io/cocoapods/p/MagicCloud.svg)](https://github.com/jalingo/MagicCloud)
 [![Language](https://img.shields.io/badge/language-Swift-green.svg)](https://github.com/jalingo/MagicCloud)
 [![CocoaPods Tag](https://img.shields.io/cocoapods/v/MagicCloud.svg)](https://github.com/jalingo/MagicCloud)
+[![iOS App Store](https://img.shields.io/badge/App%20Store-Approved-brightgreen.svg)](https://escapechaos/magiccloud)
+[![Jazzy Docs](https://img.shields.io/badge/Jazzy%20Docs-100%25-green.svg)](https://github.com/jalingo/MagicCloud)
 
 **Magic Cloud** is a **Swift (iOS) Framework** that makes using **CloudKit** simple and easy.
 
@@ -40,7 +42,7 @@ platform :ios, '10.3'   # <- 10.3 minimum requirement, can be more recent...
 use_frameworks!         # <- MagicCloud is a swift framework, ensure this is present.
 
 target '<Your Target Name>' do
-    pod 'MagicCloud', '~> 2.9.5'  # <- Be sure to use the current version.
+    pod 'MagicCloud', '~> 2.9.6'  # <- Be sure to use the current version.
 end
 ```
 
