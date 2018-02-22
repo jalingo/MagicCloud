@@ -10,6 +10,7 @@ import CloudKit
 
 // MARK: Protocol
 
+/// This protocol allows conforming instances to compare arrays of MCRecordable, by granting access to the `check` method.
 public protocol MCArrayComparer {
     
     /// Each array being compared has to conform to MCRecordable
