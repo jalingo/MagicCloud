@@ -33,7 +33,7 @@ public protocol MCMirrorAbstraction: AnyObject, MCArrayComparer {
     /// This read-only property stores the cloud database being mirrored.
     var db: MCDatabase { get }
     
-    /// Changes made to this array will NOT be reflected to the cloud and NOT broadcast to other local receivers. Can still be heard using `changeNotification` property.
+    /// Changes made to this array will NOT be reflected to the cloud and NOT broadcast to other local receivers. Can still be observed using `changeNotification` property.
     var silentRecordables: [type] { get set }
     
     /// Changes made to this array will NOT be reflected to the cloud and WILL broadcast to other local receivers.
@@ -83,24 +83,34 @@ open class MCMirror<T: MCRecordable>: MCMirrorAbstraction {
 
     // MARK: - Properties: MCReceiverAbstraction
     
+    /// This read-only, computed property returns unique string identifier for the receiver.
     public let name = "MCR<\(type.self)> \(Date().timeIntervalSince1970)"
     
+    /// Receivers can only work with one type (for error handling).
     public typealias type = T
 
+    /// This read-only, computed property returns a serial dispatch queue for local changes to recordables.
     public var serialQ = DispatchQueue(label: "Receiver Q")
-    
+
+    /// Changes made to this array will NOT be reflected to the cloud and NOT broadcast to other local receivers. Can still be observed using `changeNotification` property.
     public var silentRecordables: [type] = [type]() {
         didSet { NotificationCenter.default.post(name: changeNotification, object: nil) }
     }
     
+    /// This property stores the CKQuerySubscription used by the receiver and should not be modified.
     public var subscription: MCSubscriber
     
     // MARK: - Functions
 
     /// This void method setups notification observers to listen for changes to both network connectivity (wifi, cell, none) and iCloud Account authentication.
     func listenForConnectivityChanges() {
-
+        
         // This listens for changes in the network (wifi -> wireless -> none)
+        NotificationCenter.default.addObserver(forName: .reachabilityChanged, object: nil, queue: nil) { _ in
+print(" heard")
+        }
+        
+        // This is required for reachability configuration...
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(_:)), name: .reachabilityChanged, object: reachability)
         do {
             try reachability.startNotifier()
@@ -110,7 +120,7 @@ open class MCMirror<T: MCRecordable>: MCMirrorAbstraction {
         
         // This listens for changes in iCloud account (logged in / out)
         NotificationCenter.default.addObserver(forName: NSNotification.Name.CKAccountChanged, object: nil, queue: nil) { note in
-            
+print(" heard again")
             MCUserRecord.verifyAccountAuthentication()
             self.downloadAll(from: self.db)
         }
@@ -156,14 +166,16 @@ public extension MCMirrorAbstraction {
     
     // MARK: - Properties
     
+    /// Defaults to a Notification.Name constructed from MCMirrorAbstraction.name property.
     public var changeNotification: Notification.Name { return Notification.Name(name) }
     
+    /// Defaults to a computed property to get `silentRecordables` & set `newValue` to cloud database (which will trigger set for `localRecordables`.
     public var cloudRecordables: [type] {
         get { return silentRecordables }
         
         set {
             let results = check(silentRecordables, against: newValue)
-
+print("     CLOUD SET @ \(self.name) | \(results)")
             guard results.add.count != 0 || results.remove.count != 0 || results.remove.count != 0 else { return }
 
             let q = OperationQueue()
@@ -185,11 +197,12 @@ public extension MCMirrorAbstraction {
         }
     }
     
+    /// Defaults to a computed property to get `silentRecordables` & set `newValue` to a `LocalChangePackage` that is broadcast through `NotificationCenter.default` (observe by `recordType` name) and set to `silentRecordables`.
     public var localRecordables: [type] {
         get { return silentRecordables }
         set {
             let results = check(silentRecordables, against: newValue)
-
+print("     LOCAL SET @ \(self.name) | \(results)")
             if let changes = results.add    as? [type] { notify(changes, because: .recordCreated) }
             if let changes = results.remove as? [type] { notify(changes, because: .recordDeleted) }
             if let changes = results.edited as? [type] { notify(changes, because: .recordUpdated) }
@@ -242,10 +255,10 @@ public extension MCMirrorAbstraction {
         - Parameter package: LocalChangePackage recovered from notification.
      */
     fileprivate func respondTo(_ package: LocalChangePackage) {
-
+print("   responding \(package.originatingRec) -> \(self.name) | \(package.ids.count)")
         // This guards against notifications resulting from internal changes.
         guard package.originatingRec != self.name && package.ids.count != 0 else { return }
-
+print("   passed \(package.reason.rawValue)")
         switch package.reason {
         case .recordDeleted:
             serialQ.sync {
@@ -276,15 +289,17 @@ public extension MCMirrorAbstraction {
     }
     
     /// This method is triggered by the remote notification subscribeToChanges(on:) setup.
-    func listenForDatabaseChanges() {
+    fileprivate func listenForDatabaseChanges() {
         NotificationCenter.default.addObserver(forName: Notification.Name(type().recordType),
                                                object: nil,
                                                queue: nil,
                                                using: databaseChanged)
     }
     
-    // MARK: - Functions: MCReceiverAbstraction
+    // MARK: - Functions: MCMirrorAbstraction
     
+    /// This method subscribes to changes from the specified database, and prepares handling of events. Any changes that are detected will be reflected in recordables array.
+    /// Implementation for this method should not be overwritten.
     public func subscribeToChanges(on db: MCDatabase) {
         let recordType = type().recordType
         subscription = MCSubscriber(forRecordType: recordType, on: db)
@@ -294,8 +309,16 @@ public extension MCMirrorAbstraction {
         listenForDatabaseChanges()
     }
     
+    /**
+        This method unsubscribes from previous subscription.
+        Implementation for this method should not be overwritten.
+     */
     public func unsubscribeToChanges() { subscription.end() }
     
+    /// This method empties recordables, and refills it from the specified database.
+    /// Implementation for this method should not be overwritten.
+    /// - Parameter from: An argument representing the database that receiver receives recordables from.
+    /// - Parameter completion: If not nil, a closure that will be executed upon completion (no passed args).
     public func downloadAll(from db: MCDatabase, completion: OptionalClosure = nil) {
         let empty = type()
         
