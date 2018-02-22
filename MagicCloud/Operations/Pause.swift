@@ -42,6 +42,8 @@ public class Pause: Operation {
     
     // MARK: - Functions: Initializers
         
+    /// This operation class can be used to set delays as a dependency in operation chains.
+    /// - Parameter seconds: This argumant is passed to specify the `TimeInterval` of pause in `main`.
     public init(seconds: TimeInterval) {
         duration = seconds
         super.init()
