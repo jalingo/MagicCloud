@@ -1,4 +1,10 @@
-# MagicCloud
+MagicCloud
+==========
+
+[![License](https://img.shields.io/github/license/jalingo/MagicCloud.svg)](http://opensource.org/licenses/BSD-new)
+[![CocoaPods Platform](https://img.shields.io/cocoapods/p/MagicCloud.svg)](https://github.com/jalingo/MagicCloud)
+[![Language](https://img.shields.io/badge/language-Swift-green.svg)](https://github.com/jalingo/MagicCloud)
+[![CocoaPods Tag](https://img.shields.io/cocoapods/v/MagicCloud.svg)](https://github.com/jalingo/MagicCloud)
 
 **Magic Cloud** is a **Swift (iOS) Framework** that makes using **CloudKit** simple and easy.
 
