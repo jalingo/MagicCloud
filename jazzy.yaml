@@ -1,5 +1,0 @@
-podspec: MagicCloud.podspec
-sdk: iphoneos
-module: MagicCloud
-umbrella_header: MagicCloud/MagicCloud.h
-framework_root: .
