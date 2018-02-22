@@ -294,7 +294,6 @@
 			isa = PBXGroup;
 			children = (
 				A1CD903B2030313E005B529C /* API */,
-				A1CD903320302270005B529C /* MCArrayComparer.swift */,
 				A1E6263E1FD7A6F00036FD67 /* MCRetrier.swift */,
 				A1CB77141FBA8535008ADF09 /* MCOperationReplicator.swift */,
 			);
@@ -442,6 +441,7 @@
 			children = (
 				A1268EDE1FBA80BC00ADAA74 /* MCRecordable.swift */,
 				A1CD903820303003005B529C /* MCMirror.swift */,
+				A1CD903320302270005B529C /* MCArrayComparer.swift */,
 				A16EA5021FC666DF001E57F8 /* MCNotificationConverter.swift */,
 			);
 			path = API;
