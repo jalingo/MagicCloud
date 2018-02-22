@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   # ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
   s.name         = "MagicCloud"
-  s.version      = "2.9.5"
+  s.version      = "2.9.6"
   s.summary      = "A CloudKit framework that makes database interactions a breeze."
 
 s.description  = <<-DESC
@@ -14,7 +14,7 @@ Any data types that need to be saved as database records conform to the MCRecord
 
 Default setup covers error handling, subscriptions, account changes and more. Can be configured / customized for optimized performance.
 
-Checkout escapeChaos.com/MagicCloud for how-to videos and documentation.
+Checkout escapeChaos.com/MagicCloud for how-to videos and more documentation.
                    DESC
 
   s.homepage     = "https://github.com/jalingo/MagicCloud"
@@ -26,6 +26,7 @@ Checkout escapeChaos.com/MagicCloud for how-to videos and documentation.
   # ――― Author Metadata  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
   s.author             = { "JA Lingo" => "James@EscapeChaos.com" }
+  s.social_media_url   = 'https://twitter.com/jalingo'
 
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
