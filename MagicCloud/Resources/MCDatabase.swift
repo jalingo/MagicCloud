@@ -10,9 +10,17 @@ import CloudKit
 
 // MARK: - Enum
 
-/// This enumerates the different cloud databases available.
+/// This enumerates the different cloud databases available as strings, and provides access
 public enum MCDatabase: String {
-    case publicDB, privateDB, sharedDB
+    
+    /// A string enumeration of CKContainer.default().publicCloudDatabase
+    case publicDB
+    
+    /// A string enumeration of CKContainer.default().privateCloudDatabase
+    case privateDB
+    
+    /// A string enumeration of CKContainer.default().sharedCloudDatabase
+    case sharedDB
 
     /// Derives and returns an MCDatabaseType from a CKDatabaseScope.
     static func from(scope: CKDatabaseScope) -> MCDatabase {

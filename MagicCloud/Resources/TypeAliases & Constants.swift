@@ -28,4 +28,5 @@ typealias LocalChangePackage = (ids: [CKRecordID], reason: CKQueryNotificationRe
 
 // MARK: - Global Constants
 
+/// String key = "CLOUD_KIT_ERROR"
 public let MCErrorNotification = "CLOUD_KIT_ERROR"
