@@ -1,6 +1,6 @@
 //
 //  Pause.swift
-//  Voyage01
+//  Voyager
 //
 //  Created by j.lingo on 10/11/16.
 //  Copyright © 2016 j.lingo. All rights reserved.
@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// This operation class can be used to set delays as a dependency in operation chains.
 public class Pause: Operation {
     
     // MARK: - Properties
@@ -20,6 +21,7 @@ public class Pause: Operation {
     
     // MARK: - Functions: Operation
     
+    /// If not cancelled, this method override will set a timer for the specified duration and wait.
     public override func main() {
         if isCancelled { return }
         
@@ -33,10 +35,7 @@ public class Pause: Operation {
 
         CFRunLoopRun()
         
-        while timerIncomplete {
-            /* waiting */
-            print(".", separator: "", terminator: "")
-            
+        while timerIncomplete { // waiting
             if isCancelled { timerIncomplete = false }
         }
     }

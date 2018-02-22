@@ -42,6 +42,7 @@ public class MCDelete<R: MCMirrorAbstraction>: Operation {
     
     // MARK: - Functions
     
+    /// If not cancelled, this method override will decorate and launch a CKModifyRecordsOperation in the specifified database.
     public override func main() {
         guard recordables.count != 0 else { return }
 

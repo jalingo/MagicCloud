@@ -114,6 +114,7 @@ public class MCDownload<R: MCMirrorAbstraction>: Operation {
     
     // MARK: - Functions: Operation
     
+    /// If not cancelled, this method override will decorate and launch a CKQueryOperation in the specifified database.
     public override func main() {
         
         if isCancelled { return }
