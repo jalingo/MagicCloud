@@ -1,0 +1,11 @@
+framework module MagicCloud {
+  umbrella header "MagicCloud.h"
+
+  export *
+  module * { export * }
+}
+
+module MagicCloud.Swift {
+    header "MagicCloud-Swift.h"
+    requires objc
+}

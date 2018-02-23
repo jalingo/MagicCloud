@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>MCDownload Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/MCDownload" class="dashAnchor"></a>
+    <a title="MCDownload Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">MagicCloud Docs</a> (100% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">MagicCloud Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        MCDownload Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/MCDelete.html">MCDelete</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MCDownload.html">MCDownload</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MCMirror.html">MCMirror</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MCSubscriber.html">MCSubscriber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MCUpload.html">MCUpload</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MCUserRecord.html">MCUserRecord</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Pause.html">Pause</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Global Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Global Variables.html#/s:10MagicCloud19MCErrorNotificationSSv">MCErrorNotification</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/MCDatabase.html">MCDatabase</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/MCArrayComparer.html">MCArrayComparer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/MCMirrorAbstraction.html">MCMirrorAbstraction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/MCNotificationConverter.html">MCNotificationConverter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/MCRecordable.html">MCRecordable</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>MCDownload</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">MCDownload</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/MCMirrorAbstraction.html">MCMirrorAbstraction</a></span><span class="o">&gt;</span><span class="p">:</span> <span class="kt">Operation</span></code></pre>
+
+                </div>
+              </div>
+            <p>Downloads records from specified database, converts them back to recordables and then loads them into associated receiver. Destination is the receiver&rsquo;s &lsquo;recordables&rsquo; property, an array of receiver&rsquo;s associated type, but array is NOT emptied or otherwise prepared before appending results.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Functions:%20Operation"></a>
+                <a name="//apple_ref/swift/Section/Functions: Operation" class="dashAnchor"></a>
+                <a href="#/Functions:%20Operation">
+                  <h3 class="section-name">Functions: Operation</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud10MCDownloadC4mainyyF"></a>
+                    <a name="//apple_ref/swift/Method/main()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud10MCDownloadC4mainyyF">main()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If not cancelled, this method override will decorate and launch a CKQueryOperation in the specifified database.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">override</span> <span class="kd">func</span> <span class="nf">main</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Functions:%20Constructors"></a>
+                <a name="//apple_ref/swift/Section/Functions: Constructors" class="dashAnchor"></a>
+                <a href="#/Functions:%20Constructors">
+                  <h3 class="section-name">Functions: Constructors</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud10MCDownloadCACyxGSS4type_SS10queryFieldSaySo13CKRecordValue_pG0E6Valuesx2toAA10MCDatabaseO4fromtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(type:queryField:queryValues:to:from:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud10MCDownloadCACyxGSS4type_SS10queryFieldSaySo13CKRecordValue_pG0E6Valuesx2toAA10MCDatabaseO4fromtcfc">init(type:queryField:queryValues:to:from:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This init constructs a &lsquo;MCDownload&rsquo; operation with a predicate that attempts to match a specified field&rsquo;s value.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">queryField</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">queryValues</span><span class="p">:</span> <span class="p">[</span><span class="kt">CKRecordValue</span><span class="p">],</span> <span class="n">to</span> <span class="nv">rec</span><span class="p">:</span> <span class="kt">R</span><span class="p">,</span> <span class="n">from</span> <span class="nv">db</span><span class="p">:</span> <span class="kt"><a href="../Enums/MCDatabase.html">MCDatabase</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>type</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Every &lsquo;MCDownload&rsquo; op targets a specifc recordType and this parameter is how it&rsquo;s injected.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>queryField</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>&lsquo;K&rsquo; in <q>%K IN %@</q> predicate, where K represents CKRecord Field.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>queryValues</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>&lsquo;@&rsquo; in <q>%K IN %@</q> predicate, where @ represents an array of possible matching CKRecordValue&rsquo;s.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>to</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Instance conforming to &lsquo;RecievesRecordable&rsquo; that will ultimately recieve the results of the query.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>from</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>&lsquo;CKDatabase&rsquo; that will be searched for records. Leave nil to search default of both private and public.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud10MCDownloadCACyxGSS4type_So11NSPredicateC8matchingx2toAA10MCDatabaseO4fromtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(type:matching:to:from:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud10MCDownloadCACyxGSS4type_So11NSPredicateC8matchingx2toAA10MCDatabaseO4fromtcfc">init(type:matching:to:from:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This init constructs a &lsquo;MCDownload&rsquo; operation with a custom predicate.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">matching</span> <span class="nv">predicate</span><span class="p">:</span> <span class="kt">NSPredicate</span><span class="p">,</span> <span class="n">to</span> <span class="nv">rec</span><span class="p">:</span> <span class="kt">R</span><span class="p">,</span> <span class="n">from</span> <span class="nv">db</span><span class="p">:</span> <span class="kt"><a href="../Enums/MCDatabase.html">MCDatabase</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>type</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Every &lsquo;MCDownload&rsquo; op targets a specifc recordType and this parameter is how it&rsquo;s injected.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>predicate</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The predicate for CKQuery to test against.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>to</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Instance conforming to &lsquo;RecievesRecordable&rsquo; that will ultimately recieve the results of the query.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>from</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>&lsquo;CKDatabase&rsquo; that will be searched for records. Leave nil to search default of both private and public.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud10MCDownloadCACyxGSS4type_x2toAA10MCDatabaseO4fromtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(type:to:from:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud10MCDownloadCACyxGSS4type_x2toAA10MCDatabaseO4fromtcfc">init(type:to:from:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This init constructs a &lsquo;MCDownload&rsquo; operation with a predicate that collects all records of the specified type.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">to</span> <span class="nv">rec</span><span class="p">:</span> <span class="kt">R</span><span class="p">,</span> <span class="n">from</span> <span class="nv">db</span><span class="p">:</span> <span class="kt"><a href="../Enums/MCDatabase.html">MCDatabase</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>type</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Every &lsquo;MCDownload&rsquo; op targets a specifc recordType and this parameter is how it&rsquo;s injected.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>to</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Instance conforming to &lsquo;RecievesRecordable&rsquo; that will ultimately recieve the results of the query.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>from</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>&lsquo;CKDatabase&rsquo; that will be searched for records. Leave nil to search default of both private and public.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2018 <a class="link" href="https://github.com/jalingo/MagicCloud" target="_blank" rel="external">JA Lingo</a>. All rights reserved. (Last updated: 2018-02-22)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

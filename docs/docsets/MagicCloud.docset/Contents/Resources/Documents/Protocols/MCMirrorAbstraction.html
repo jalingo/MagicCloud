@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>MCMirrorAbstraction Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Protocol/MCMirrorAbstraction" class="dashAnchor"></a>
+    <a title="MCMirrorAbstraction Protocol Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">MagicCloud Docs</a> (100% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">MagicCloud Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        MCMirrorAbstraction Protocol Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/MCDelete.html">MCDelete</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MCDownload.html">MCDownload</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MCMirror.html">MCMirror</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MCSubscriber.html">MCSubscriber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MCUpload.html">MCUpload</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MCUserRecord.html">MCUserRecord</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Pause.html">Pause</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Global Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Global Variables.html#/s:10MagicCloud19MCErrorNotificationSSv">MCErrorNotification</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/MCDatabase.html">MCDatabase</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/MCArrayComparer.html">MCArrayComparer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/MCMirrorAbstraction.html">MCMirrorAbstraction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/MCNotificationConverter.html">MCNotificationConverter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/MCRecordable.html">MCRecordable</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>MCMirrorAbstraction</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">MCMirrorAbstraction</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="p">,</span> <span class="kt"><a href="../Protocols/MCArrayComparer.html">MCArrayComparer</a></span></code></pre>
+
+                </div>
+              </div>
+            <p>This protocol enables conforming types to give access to an array of Recordable, and to match array&rsquo;s contents to the cloud.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Properties"></a>
+                <a name="//apple_ref/swift/Section/Properties" class="dashAnchor"></a>
+                <a href="#/Properties">
+                  <h3 class="section-name">Properties</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud19MCMirrorAbstractionP4type"></a>
+                    <a name="//apple_ref/swift/Alias/type" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud19MCMirrorAbstractionP4type">type</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Receivers can only work with one type (for error handling).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="nv">type</span><span class="p">:</span> <span class="kt"><a href="../Protocols/MCRecordable.html">MCRecordable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud19MCMirrorAbstractionP4nameSSv"></a>
+                    <a name="//apple_ref/swift/Property/name" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud19MCMirrorAbstractionP4nameSSv">name</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This read-only, computed property returns unique string identifier for the receiver.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud19MCMirrorAbstractionP18changeNotificationSo14NSNotificationC4NameVv"></a>
+                    <a name="//apple_ref/swift/Property/changeNotification" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud19MCMirrorAbstractionP18changeNotificationSo14NSNotificationC4NameVv">changeNotification</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This read-only, computed property returns the Notificaion.Name that will be posted anytime silentRecordables is updated. This notification does not trigger any activity internal to Magic Cloud, but allows apps implementing the framework to know when receivers have been updated, both from the cloud and locally.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        <p>Defaults to a Notification.Name constructed from MCMirrorAbstraction.name property.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">changeNotification</span><span class="p">:</span> <span class="kt">Notification</span><span class="o">.</span><span class="kt">Name</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud19MCMirrorAbstractionP7serialQSo13DispatchQueueCv"></a>
+                    <a name="//apple_ref/swift/Property/serialQ" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud19MCMirrorAbstractionP7serialQSo13DispatchQueueCv">serialQ</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This read-only, computed property returns a serial dispatch queue for local changes to recordables.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">serialQ</span><span class="p">:</span> <span class="kt">DispatchQueue</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud19MCMirrorAbstractionP2dbAA10MCDatabaseOv"></a>
+                    <a name="//apple_ref/swift/Property/db" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud19MCMirrorAbstractionP2dbAA10MCDatabaseOv">db</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This read-only property stores the cloud database being mirrored.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">db</span><span class="p">:</span> <span class="kt"><a href="../Enums/MCDatabase.html">MCDatabase</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud19MCMirrorAbstractionP17silentRecordablesSay4typeQzGv"></a>
+                    <a name="//apple_ref/swift/Property/silentRecordables" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud19MCMirrorAbstractionP17silentRecordablesSay4typeQzGv">silentRecordables</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Changes made to this array will NOT be reflected to the cloud and NOT broadcast to other local receivers. Can still be observed using <code><a href="../Protocols/MCMirrorAbstraction.html#/s:10MagicCloud19MCMirrorAbstractionP18changeNotificationSo14NSNotificationC4NameVv">changeNotification</a></code> property.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">silentRecordables</span><span class="p">:</span> <span class="p">[</span><span class="n"><a href="../Protocols/MCMirrorAbstraction.html#/s:10MagicCloud19MCMirrorAbstractionP4type">type</a></span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud19MCMirrorAbstractionP16localRecordablesSay4typeQzGv"></a>
+                    <a name="//apple_ref/swift/Property/localRecordables" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud19MCMirrorAbstractionP16localRecordablesSay4typeQzGv">localRecordables</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Changes made to this array will NOT be reflected to the cloud and WILL broadcast to other local receivers.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        <p>Defaults to a computed property to get <code>silentRecordables</code> &amp; set <code>newValue</code> to a <code>LocalChangePackage</code> that is broadcast through <code>NotificationCenter.default</code> (observe by <code>recordType</code> name) and set to <code>silentRecordables</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">localRecordables</span><span class="p">:</span> <span class="p">[</span><span class="n"><a href="../Protocols/MCMirrorAbstraction.html#/s:10MagicCloud19MCMirrorAbstractionP4type">type</a></span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud19MCMirrorAbstractionP16cloudRecordablesSay4typeQzGv"></a>
+                    <a name="//apple_ref/swift/Property/cloudRecordables" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud19MCMirrorAbstractionP16cloudRecordablesSay4typeQzGv">cloudRecordables</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Changes made to this array WILL be reflected to the cloud and WILL broadcast to other local receivers.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        <p>Defaults to a computed property to get <code>silentRecordables</code> &amp; set <code>newValue</code> to cloud database (which will trigger set for <code>localRecordables</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">cloudRecordables</span><span class="p">:</span> <span class="p">[</span><span class="n"><a href="../Protocols/MCMirrorAbstraction.html#/s:10MagicCloud19MCMirrorAbstractionP4type">type</a></span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud19MCMirrorAbstractionP12subscriptionAA12MCSubscriberCv"></a>
+                    <a name="//apple_ref/swift/Property/subscription" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud19MCMirrorAbstractionP12subscriptionAA12MCSubscriberCv">subscription</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This property stores the CKQuerySubscription used by the receiver and should not be modified.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">subscription</span><span class="p">:</span> <span class="kt"><a href="../Classes/MCSubscriber.html">MCSubscriber</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Functions"></a>
+                <a name="//apple_ref/swift/Section/Functions" class="dashAnchor"></a>
+                <a href="#/Functions">
+                  <h3 class="section-name">Functions</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud19MCMirrorAbstractionP18subscribeToChangesyAA10MCDatabaseO2on_tF"></a>
+                    <a name="//apple_ref/swift/Method/subscribeToChanges(on:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud19MCMirrorAbstractionP18subscribeToChangesyAA10MCDatabaseO2on_tF">subscribeToChanges(on:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This method subscribes to changes from the specified database, and prepares handling of events. Any changes that are detected will be reflected in recordables array.</p>
+
+<p>Implementation for this method should not be overwritten.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        <p>This method subscribes to changes from the specified database, and prepares handling of events. Any changes that are detected will be reflected in recordables array.
+Implementation for this method should not be overwritten.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">subscribeToChanges</span><span class="p">(</span><span class="nv">on</span><span class="p">:</span> <span class="kt"><a href="../Enums/MCDatabase.html">MCDatabase</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>on</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An argument representing the database that receiver receives recordables from.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud19MCMirrorAbstractionP20unsubscribeToChangesyyF"></a>
+                    <a name="//apple_ref/swift/Method/unsubscribeToChanges()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud19MCMirrorAbstractionP20unsubscribeToChangesyyF">unsubscribeToChanges()</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This method unsubscribes from previous subscription. Implementation for this method should not be overwritten.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        <p>This method unsubscribes from previous subscription.
+Implementation for this method should not be overwritten.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">unsubscribeToChanges</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud19MCMirrorAbstractionP11downloadAllyAA10MCDatabaseO4from_yycSg10completiontF"></a>
+                    <a name="//apple_ref/swift/Method/downloadAll(from:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud19MCMirrorAbstractionP11downloadAllyAA10MCDatabaseO4from_yycSg10completiontF">downloadAll(from:completion:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This method empties recordables, and refills it from the specified database.
+Implementation for this method should not be overwritten.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        <p>This method empties recordables, and refills it from the specified database.
+Implementation for this method should not be overwritten.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">downloadAll</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="kt"><a href="../Enums/MCDatabase.html">MCDatabase</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">OptionalClosure</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>from</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An argument representing the database that receiver receives recordables from.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>If not nil, a closure that will be executed upon completion (no passed args).</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2018 <a class="link" href="https://github.com/jalingo/MagicCloud" target="_blank" rel="external">JA Lingo</a>. All rights reserved. (Last updated: 2018-02-22)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

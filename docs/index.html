@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>MagicCloud  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a title="MagicCloud  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">MagicCloud Docs</a> (100% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">MagicCloud Reference</a>
+        <img id="carat" src="img/carat.png" />
+        MagicCloud  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/MCDelete.html">MCDelete</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/MCDownload.html">MCDownload</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/MCMirror.html">MCMirror</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/MCSubscriber.html">MCSubscriber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/MCUpload.html">MCUpload</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/MCUserRecord.html">MCUserRecord</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Pause.html">Pause</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Global Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Global Variables.html#/s:10MagicCloud19MCErrorNotificationSSv">MCErrorNotification</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Enums/MCDatabase.html">MCDatabase</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/MCArrayComparer.html">MCArrayComparer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/MCMirrorAbstraction.html">MCMirrorAbstraction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/MCNotificationConverter.html">MCNotificationConverter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/MCRecordable.html">MCRecordable</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            
+            <h1 id='magiccloud' class='heading'>MagicCloud</h1>
+
+<p><a href="http://opensource.org/licenses/BSD-new"><img src="https://img.shields.io/github/license/jalingo/MagicCloud.svg" alt="License"></a>
+<a href="https://github.com/jalingo/MagicCloud"><img src="https://img.shields.io/cocoapods/p/MagicCloud.svg" alt="CocoaPods Platform"></a>
+<a href="https://github.com/jalingo/MagicCloud"><img src="https://img.shields.io/badge/language-Swift-green.svg" alt="Language"></a>
+<a href="https://github.com/jalingo/MagicCloud"><img src="https://img.shields.io/cocoapods/v/MagicCloud.svg" alt="CocoaPods Tag"></a>
+<a href="https://escapechaos/magiccloud"><img src="https://img.shields.io/badge/App%20Store-Approved-brightgreen.svg" alt="iOS App Store"></a>
+<a href="https://github.com/jalingo/MagicCloud"><img src="https://img.shields.io/badge/Jazzy%20Docs-100%25-green.svg" alt="Jazzy Docs"></a></p>
+
+<p><strong>Magic Cloud</strong> is a <strong>Swift (iOS) Framework</strong> that makes using <strong>CloudKit</strong> simple and easy.</p>
+
+<p>For any data types that need to be saved as database records, just conform them to the <code><a href="Protocols/MCRecordable.html">MCRecordable</a></code> protocol. Then the generic <code><a href="Classes/MCMirror.html">MCMirror</a></code> classes can maintain a local array of that type, and mirror it to <strong>CloudKit&rsquo;s</strong> databases in the background.</p>
+
+<p>Default setup covers <em>error handling, subscriptions, account changes and more</em>. Can be configured / customized for optimized performance (for more details on that, the <strong>Magic Cloud Blog</strong> is coming to our <a href="escapechaos.com">site</a>), or just use as is. </p>
+
+<p>Check out the <strong>Quick Start Guide</strong> and see an app add working cloud functionality with <em>less than 20 lines of code!</em></p>
+<h2 id='requirements' class='heading'>Requirements</h2>
+
+<p>Meet the requirements for <strong>CloudKit</strong>, which includes a <em>paid developer account</em>.</p>
+
+<p>An <strong>iOS</strong> (min 10.3), project. (Why wouldn&rsquo;t you use Swift for that?)</p>
+<h2 id='getting-started' class='heading'>Getting Started</h2>
+
+<p>In order to use <strong>Magic Cloud</strong>, a project has to be configured for <strong>CloudKit</strong> and the <strong>MagicCloud</strong> framework will need to be linked to its workspace.</p>
+<h3 id='preparing-app-for-cloudkit' class='heading'>Preparing App for CloudKit</h3>
+
+<p><strong>Magic Cloud</strong> is meant to work on top of <strong>Apple&rsquo;s CloudKit</strong> technology, not replace it. The developer does not maintain any actual databases and is not responsible for <em>data integrity, security or loss</em>.</p>
+
+<p>Before installing <strong>Magic Cloud</strong> be sure <strong>CloudKit</strong> and <strong>Push Notification</strong> are <a href="https://developer.apple.com/library/content/documentation/DataManagement/Conceptual/CloudKitQuickStart/EnablingiCloudandConfiguringCloudKit/EnablingiCloudandConfiguringCloudKit.html">enabled in your project&rsquo;s capabilities</a>.</p>
+<h3 id='installations' class='heading'>Installations</h3>
+
+<p>If you&rsquo;re comfortable using <strong>CocoaPods</strong> to <a href="https://guides.cocoapods.org/using/getting-started.html">manage your dependencies</a> (recommended), add the following in the podfile. </p>
+<pre class="highlight ruby"><code><span class="n">source</span> <span class="s1">'https://github.com/CocoaPods/Specs.git'</span>
+<span class="n">platform</span> <span class="ss">:ios</span><span class="p">,</span> <span class="s1">'10.3'</span>   <span class="c1"># &lt;- 10.3 minimum requirement, can be more recent...</span>
+<span class="n">use_frameworks!</span>         <span class="c1"># &lt;- MagicCloud is a swift framework, ensure this is present.</span>
+
+<span class="n">target</span> <span class="s1">'&lt;Your Target Name&gt;'</span> <span class="k">do</span>
+    <span class="n">pod</span> <span class="s1">'MagicCloud'</span><span class="p">,</span> <span class="s1">'~&gt; 2.9.6'</span>  <span class="c1"># &lt;- Be sure to use the current version.</span>
+<span class="k">end</span>
+</code></pre>
+
+<p>Then, from your project&rsquo;s directory&hellip;</p>
+<pre class="highlight shell"><code>pod <span class="nb">install</span>
+</code></pre>
+
+<p>Alternatively, clone from <a href="github.com/jalingo/MagicCloud">github</a>, then add the framework to your project manually (not recommended).</p>
+<h3 id='quick-start-guide' class='heading'>Quick Start Guide</h3>
+
+<p>Check out the <strong>Quick Start Guide</strong>, a how-to video at <a href="https://www.escapechaos.com/magiccloud">Escape Chaos</a>, to see a test app get fully configured in less than 20 lines of code.</p>
+<h2 id='examples' class='heading'>Examples</h2>
+
+<p>For basic projects, these examples should be all that is necessary.</p>
+<h3 id='mcnotificationconverter' class='heading'>MCNotificationConverter</h3>
+
+<p>Once you have <strong>CloudKit</strong> enabled and the cocoapod installed, there&rsquo;s one last piece of configuration that has to happen in the app delegate.</p>
+
+<p>First make your app delegate conform to <strong>MCNotificationConverter</strong>.</p>
+<pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">AppDelegate</span><span class="p">:</span> <span class="kt">UIResponder</span><span class="p">,</span> <span class="kt">UIApplicationDelegate</span><span class="p">,</span> <span class="kt">MCNotificationConverter</span> <span class="p">{</span>    <span class="c1">// &lt;-- Add it here...</span>
+</code></pre>
+
+<p>Next, insert the following two lines into the <code>didFinishLaunchingWithOptions</code> method already in the app delegate.</p>
+<pre class="highlight swift"><code>        <span class="kt">MCUserRecord</span><span class="o">.</span><span class="nf">verifyAccountAuthentication</span><span class="p">()</span>      <span class="c1">// &lt;-- More information about this below @ MCUserRecord</span>
+        <span class="n">application</span><span class="o">.</span><span class="nf">registerForRemoteNotifications</span><span class="p">()</span>
+</code></pre>
+
+<p>Finally, scroll down and insert <strong>ONE of the FIRST TWO methods</strong> into the same class.</p>
+<pre class="highlight swift"><code>    <span class="c1">// This is the current way ...</span>
+    <span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">application</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span> <span class="n">didReceiveRemoteNotification</span> <span class="nv">userInfo</span><span class="p">:</span> <span class="p">[</span><span class="kt">AnyHashable</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">],</span> <span class="n">fetchCompletionHandler</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">UIBackgroundFetchResult</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">convertToLocal</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">userInfo</span><span class="p">)</span>
+    <span class="p">}</span>
+</code></pre>
+<pre class="highlight swift"><code>    <span class="c1">// This version is deprecated, but works for pre-iOS 10 apps...</span>
+    <span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">application</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span> <span class="n">didReceiveRemoteNotification</span> <span class="nv">userInfo</span><span class="p">:</span> <span class="p">[</span><span class="kt">AnyHashable</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">])</span> <span class="p">{</span>
+        <span class="nf">convertToLocal</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">userInfo</span><span class="p">)</span>
+    <span class="p">}</span>
+
+</code></pre>
+<pre class="highlight swift"><code>    <span class="c1">// This version DOES NOT work for silent push notifications, so it will miss any pushes from Magic Cloud...</span>
+    <span class="kd">func</span> <span class="nf">userNotificationCenter</span><span class="p">(</span><span class="n">_</span> <span class="nv">center</span><span class="p">:</span> <span class="kt">UNUserNotificationCenter</span><span class="p">,</span> <span class="n">willPresent</span> <span class="nv">notification</span><span class="p">:</span> <span class="kt">UNNotification</span><span class="p">,</span> <span class="n">withCompletionHandler</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">UNNotificationPresentationOptions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="k">let</span> <span class="nv">userInfo</span> <span class="o">=</span> <span class="n">notification</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">userInfo</span>
+        <span class="nf">convertToLocal</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">userInfo</span><span class="p">)</span>          <span class="c1">// &lt;-- DOES NOT WORK !!</span>
+    <span class="p">}</span>
+</code></pre>
+
+<p>With that in place, any notifications from the <strong>CloudKit</strong> databases will be converted to a local notification and handled by any <code><a href="Classes/MCMirror.html">MCMirror</a></code>s that are setup. </p>
+
+<p>If you&rsquo;ll need to disable any of your features during a subscription failure (e.g. airplane mode, bad network connection, etc&hellip;), add this method to the app delegate and do so here (or more likely, post a notification here).</p>
+<pre class="highlight swift"><code>    <span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">application</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span> <span class="n">didFailToRegisterForRemoteNotificationsWithError</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// This is only one of the ways you can 'gracefully disable' features that require cloud. </span>
+    <span class="p">}</span>
+</code></pre>
+
+<p>With all the setup / configuration out of the way, now you can get started&hellip;</p>
+<h3 id='mcrecordable' class='heading'>MCRecordable</h3>
+
+<p>Any data type that needs to have it&rsquo;s model stored as records (and it&rsquo;s properties saved as those records&rsquo; fields) will need to conform to the <code><a href="Protocols/MCRecordable.html">MCRecordable</a></code> protocol. Currently, <strong>Magic Cloud</strong> doesn&rsquo;t handle <code>CKRecords</code> directly.</p>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">MockType</span><span class="p">:</span> <span class="kt">MCRecordable</span> <span class="p">{</span>
+
+    <span class="kd">public</span> <span class="k">var</span> <span class="nv">recordType</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">return</span> <span class="s">"MockType"</span> <span class="p">}</span>            <span class="c1">// &lt;-- This string will serve as a CKRecordType.Name</span>
+
+ <span class="err"> </span> <span class="err"> </span><span class="kd">public</span> <span class="k">var</span> <span class="nv">recordFields</span><span class="p">:</span> <span class="kt">Dictionary</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">CKRecordValue</span><span class="o">&gt;</span> <span class="p">{</span>   <span class="c1">// &lt;-- This is where the properties that should be CKRecord   </span>
+ <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span><span class="k">get</span> <span class="p">{</span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span>  <span class="c1">//     fields are updated / recovered. </span>
+ <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span>  <span class="k">return</span> <span class="p">[</span><span class="kt">Mock</span><span class="o">.</span><span class="nv">key</span><span class="p">:</span> <span class="n">created</span> <span class="k">as</span> <span class="kt">CKRecordValue</span><span class="p">]</span> 
+        <span class="p">}</span>
+
+        <span class="k">set</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="k">let</span> <span class="nv">date</span> <span class="o">=</span> <span class="n">newValue</span><span class="p">[</span><span class="kt">Mock</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="k">as?</span> <span class="kt">Date</span> <span class="p">{</span> <span class="n">created</span> <span class="o">=</span> <span class="n">date</span> <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="k">var</span> <span class="nv">recordID</span><span class="p">:</span> <span class="kt">CKRecordID</span> <span class="p">{</span>                              <span class="c1">// &lt;-- This ID needs to be unique for each instance.</span>
+        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">_recordID</span> <span class="p">??</span> <span class="kt">CKRecordID</span><span class="p">(</span><span class="nv">recordName</span><span class="p">:</span> <span class="s">"EmptyRecord"</span><span class="p">)</span> <span class="p">}</span>
+        <span class="k">set</span> <span class="p">{</span> <span class="n">_recordID</span> <span class="o">=</span> <span class="n">newValue</span> <span class="p">}</span>                               <span class="c1">// &lt;-- This value needs to be saved when instances are</span>
+ <span class="err"> </span> <span class="err"> </span><span class="p">}</span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span>  <span class="c1">//     created from downloaded database records. </span>
+
+    <span class="c1">// MARK: - Functions: Recordable</span>
+
+    <span class="kd">public</span> <span class="kd">required</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span> <span class="p">}</span>                                     <span class="c1">// &lt;-- This empty init is used to generate empty instances</span>
+<span class="p">}</span>                                                                  <span class="c1">//     that can then be overwritten from database records.</span>
+</code></pre>
+<h3 id='mcmirror' class='heading'>MCMirror</h3>
+
+<p>Once there are recordables to work with, use <code><a href="Classes/MCMirror.html">MCMirror</a></code>(s) to save and recover these types in the <code>CloudKit</code> databases.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">mocksInPublicDatabase</span> <span class="o">=</span> <span class="kt">MCMirror</span><span class="o">&lt;</span><span class="kt">MockType</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">db</span><span class="p">:</span> <span class="o">.</span><span class="n">publicDB</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">mocksInPrivateDatabase</span> <span class="o">=</span> <span class="kt">MCMirror</span><span class="o">&lt;</span><span class="kt">MockType</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">db</span><span class="p">:</span> <span class="o">.</span><span class="n">privateDB</span><span class="p">)</span>
+</code></pre>
+
+<p>Shortly after they&rsquo;re initialized, the receivers should finish downloading and transforming any existing records. These can be accessed from the <code>dataModel</code> array.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">publicMocks</span> <span class="o">=</span> <span class="n">mocksInPublicDatabase</span><span class="o">.</span><span class="n">dataModel</span>
+</code></pre>
+
+<p>Voila! Any changes to records in the cloud database (add / edit / remove) will automatically be reflected in the receiver&rsquo;s recordables array until it deinits. When elements are added, modified or deleted from the <code>cloudRecordables</code> array, the <code><a href="Classes/MCMirror.html">MCMirror</a></code> will ensure those changes are mirrored to the respective database in the background.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">new</span> <span class="o">=</span> <span class="kt">MockType</span><span class="p">(</span><span class="nv">created</span><span class="p">:</span> <span class="kt">Date</span><span class="p">())</span>
+
+<span class="n">mocksInPublicDatabase</span><span class="o">.</span><span class="n">cloudRecordables</span><span class="o">.</span><span class="nf">append</span><span class="p">(</span><span class="k">new</span><span class="p">)</span>                      <span class="c1">// &lt;-- This will add a new record to the database.</span>
+
+<span class="n">mocksInPublicDatabase</span><span class="o">.</span><span class="n">cloudRecordables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="kt">Date</span><span class="o">.</span><span class="n">distantFuture</span>  <span class="c1">// &lt;-- This will modify an existing database record.</span>
+
+<span class="n">mocksInPublicDatabase</span><span class="o">.</span><span class="n">cloudRecordables</span><span class="o">.</span><span class="n">removeLast</span>                       <span class="c1">// &lt;-- This will remove a record from the database.</span>
+</code></pre>
+
+<p><strong>Note:</strong>  While multiple mirrors for the same data type in the same app reduces stability, it is supported. Any change should be reflected in all mirrors, both in the local app and in other users&rsquo; apps.</p>
+<h3 id='mcuserrecord' class='heading'>MCUserRecord</h3>
+
+<p>If you&rsquo;re dealing with private databases or need a unique token for each cloud account, use <code><a href="Classes/MCUserRecord.html">MCUserRecord</a></code> to retrieve the user&rsquo;s unique <strong>iCloud</strong> identifier.</p>
+<pre class="highlight swift"><code><span class="k">if</span> <span class="k">let</span> <span class="nv">userRecord</span> <span class="o">=</span> <span class="kt">MCUserRecord</span><span class="p">()</span><span class="o">.</span><span class="n">singleton</span> <span class="p">{</span>          <span class="c1">// &lt;-- Returns nil if not logged in OR if not connected to network.</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"User Record: </span><span class="se">\(</span><span class="n">userRecord</span><span class="o">.</span><span class="n">recordName</span><span class="se">)</span><span class="s">"</span><span class="p">)</span> 
+<span class="p">}</span>
+</code></pre>
+
+<p>To test if a user is logged in to their <strong>iCloud</strong> account, and have them receive a warning with a link to the <strong>Settings</strong> app if not, simply call the following static method.</p>
+<pre class="highlight swift"><code><span class="kt">MCUserRecord</span><span class="o">.</span><span class="nf">verifyAccountAuthentication</span><span class="p">()</span>
+</code></pre>
+
+<p>If needed, you&rsquo;ll probably want to get this out of the way in the app delegate (<code>didFinishLaunchingWithOptions</code> method is recommended).</p>
+<h2 id='considerations' class='heading'>Considerations</h2>
+
+<p>While the aforementioned code is all that is needed for most projects, there are still a few design considerations and common issues to keep in mind.</p>
+<h3 id='concurrency-grand-central-dispatch-amp-the-main-thread' class='heading'>Concurrency, Grand Central Dispatch &amp; the Main Thread</h3>
+
+<p>If this project is your first attempt at working with asynchronous operations, <strong>Apple</strong> has several great resources out there that will ultimately save you a lot of time and trouble&hellip;</p>
+
+<p><a href="https://developer.apple.com/library/content/documentation/DataManagement/Conceptual/CloudKitQuickStart/Introduction/Introduction.html">CloudKit QuickStart</a></p>
+
+<p><a href="https://developer.apple.com/documentation/cloudkit">CloudKit Documentation</a></p>
+
+<p><a href="https://developer.apple.com/library/content/documentation/General/Conceptual/ConcurrencyProgrammingGuide/Introduction/Introduction.html">Concurrency Programming Guide</a></p>
+
+<p><a href="https://developer.apple.com/library/content/documentation/General/Conceptual/iCloudDesignGuide/DesigningforCloudKit/DesigningforCloudKit.html#//apple_ref/doc/uid/TP40012094-CH9-SW1">CloudKit Design Guide</a></p>
+
+<p><strong>Apple</strong> and <strong>Magic Cloud</strong> have done most of the heavy lifting, but you will still have to understand the order your processes will execute and that varying amounts of time will be needed for cloud interactions to occur. <strong>Dispatch Groups</strong> (and <strong>XCTExpectations</strong> for unit testing) can be very helpful, in this regard.</p>
+
+<p>Do <strong><em>NOT</em></strong> lock up the <strong>main thread</strong> with cloud activity; every app needs to have separate threads for updating views and  waiting for data. If you&rsquo;re not sure what that means, then you may want to review the documentation mentioned above.</p>
+<h3 id='error-notifications' class='heading'>Error Notifications</h3>
+
+<p><strong>Error Handling</strong> is a big part of cloud development, but in most cases <strong>Magic Cloud</strong> can deal with them sufficiently. For developers that need to perform additional handling, every time an issue is encountered a <strong>Notification</strong> is posted that includes the original <strong>CKError</strong>.</p>
+
+<p>To listen for these notifications, use <code><a href="Global Variables.html#/s:10MagicCloud19MCErrorNotificationSSv">MCErrorNotification</a></code>.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">name</span> <span class="o">=</span> <span class="kt">Notification</span><span class="o">.</span><span class="kt">Name</span><span class="p">(</span><span class="kt">MCErrorNotification</span><span class="p">)</span>
+<span class="kt">NotificationCenter</span><span class="o">.</span><span class="k">default</span><span class="o">.</span><span class="nf">addObserver</span><span class="p">(</span><span class="nv">forName</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="nv">object</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">queue</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span> <span class="p">{</span> <span class="n">notification</span> <span class="k">in</span>
+
+     <span class="c1">// Error notifications from MagicCloud should always include the actual CKError as Notification.object.</span>
+     <span class="k">if</span> <span class="k">let</span> <span class="nv">error</span> <span class="o">=</span> <span class="n">notification</span><span class="o">.</span><span class="n">object</span> <span class="k">as?</span> <span class="kt">CKError</span> <span class="p">{</span> <span class="nf">print</span><span class="p">(</span><span class="s">"CKError: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p><strong>CAUTION:</strong>  In cases where there&rsquo;s a batch issue, a single error may generate multiple notifications.</p>
+<h3 id='cloudkit-dashboard' class='heading'>CloudKit Dashboard</h3>
+
+<p>Each <strong>CloudKit</strong> container can be directly accessed at the <a href="https://icloud.developer.apple.com/dashboard">CloudKit Dashboard</a>, where developers can modify the database schema, query / modify records, manage subscriptions, etc&hellip;</p>
+
+<p><strong>DON&rsquo;T FORGET</strong> to make all record names queryable. <code><a href="Classes/MCMirror.html">MCMirror</a></code>s use those names to find and fetch records.</p>
+<h2 id='reporting-bugs' class='heading'>Reporting Bugs</h2>
+
+<p>If you&rsquo;ve had any issues, first please review the existing documentation thoroughly. After being certain that you&rsquo;re dealing with a replicable bug, the best way to submit the issue is through GitHub.</p>
+<pre class="highlight plaintext"><code>@ github.com/jalingo/MagicCloud &gt; "Issues" tab &gt; "New Issue" button
+</code></pre>
+
+<p>You can also email <code>dev@escapechaos.com</code>, or for a more immediate response try <strong>Stack Overflow</strong>.</p>
+
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2018 <a class="link" href="https://github.com/jalingo/MagicCloud" target="_blank" rel="external">JA Lingo</a>. All rights reserved. (Last updated: 2018-02-22)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

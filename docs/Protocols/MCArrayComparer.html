@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>MCArrayComparer Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Protocol/MCArrayComparer" class="dashAnchor"></a>
+    <a title="MCArrayComparer Protocol Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">MagicCloud Docs</a> (100% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">MagicCloud Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        MCArrayComparer Protocol Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/MCDelete.html">MCDelete</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MCDownload.html">MCDownload</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MCMirror.html">MCMirror</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MCSubscriber.html">MCSubscriber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MCUpload.html">MCUpload</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MCUserRecord.html">MCUserRecord</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Pause.html">Pause</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Global Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Global Variables.html#/s:10MagicCloud19MCErrorNotificationSSv">MCErrorNotification</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/MCDatabase.html">MCDatabase</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/MCArrayComparer.html">MCArrayComparer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/MCMirrorAbstraction.html">MCMirrorAbstraction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/MCNotificationConverter.html">MCNotificationConverter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/MCRecordable.html">MCRecordable</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>MCArrayComparer</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">MCArrayComparer</span></code></pre>
+
+                </div>
+              </div>
+            <p>This protocol allows conforming instances to compare arrays of MCRecordable, by granting access to the <code>check</code> method.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud15MCArrayComparerP7Elementa"></a>
+                    <a name="//apple_ref/swift/Alias/Element" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud15MCArrayComparerP7Elementa">Element</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Each array being compared has to conform to MCRecordable</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">typealias</span> <span class="kt">Element</span> <span class="o">=</span> <span class="kt"><a href="../Protocols/MCRecordable.html">MCRecordable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud15MCArrayComparerP5checkSayAA12MCRecordable_pG3add_AF6editedAF6removetAF_AF7againsttF"></a>
+                    <a name="//apple_ref/swift/Method/check(_:against:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud15MCArrayComparerP5checkSayAA12MCRecordable_pG3add_AF6editedAF6removetAF_AF7againsttF">check(_:against:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This method compares passed arguments and returns the results of the comparison with a tuple containing values that need to be modified to resolve conflicts between two arguments.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">check</span><span class="p">(</span><span class="n">_</span> <span class="nv">original</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/MCArrayComparer.html#/s:10MagicCloud15MCArrayComparerP7Elementa">Element</a></span><span class="p">],</span> <span class="n">against</span> <span class="nv">changed</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/MCArrayComparer.html#/s:10MagicCloud15MCArrayComparerP7Elementa">Element</a></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nv">add</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/MCArrayComparer.html#/s:10MagicCloud15MCArrayComparerP7Elementa">Element</a></span><span class="p">],</span> <span class="nv">edited</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/MCArrayComparer.html#/s:10MagicCloud15MCArrayComparerP7Elementa">Element</a></span><span class="p">],</span> <span class="nv">remove</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/MCArrayComparer.html#/s:10MagicCloud15MCArrayComparerP7Elementa">Element</a></span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>original</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>This argument represents an array before changes have been made.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>changed</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>This argument represents an array after changes have been made.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Tuple whose value (add) represents new, (edited) modified elements and (remove) represents original elements missing from changed array.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2018 <a class="link" href="https://github.com/jalingo/MagicCloud" target="_blank" rel="external">JA Lingo</a>. All rights reserved. (Last updated: 2018-02-22)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
