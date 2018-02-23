@@ -18,6 +18,7 @@ Checkout escapeChaos.com/MagicCloud for how-to videos and more documentation.
                    DESC
 
   s.homepage     = "https://github.com/jalingo/MagicCloud"
+  s.documentation_url = 'https://jalingo.github.io/MagicCloud'
 
   # ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
@@ -34,7 +35,7 @@ Checkout escapeChaos.com/MagicCloud for how-to videos and more documentation.
 
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
-  s.source       = { :git => 'https://github.com/jalingo/MagicCloud.git', :tag => s.version }
+  s.source       = { :git => 'https://github.com/jalingo/MagicCloud.git', :tag => s.version.to_s }
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
