@@ -1,4 +1,5 @@
-MagicCloud
+![alt text](https://raw.githubusercontent.com/jalingo/MagicCloud/master/Badge.png)
+MagicCloud       
 ==========
 [![License](https://img.shields.io/github/license/jalingo/MagicCloud.svg)](http://opensource.org/licenses/BSD-new)
 [![CocoaPods Platform](https://img.shields.io/cocoapods/p/MagicCloud.svg)](https://github.com/jalingo/MagicCloud)
@@ -6,8 +7,6 @@ MagicCloud
 [![CocoaPods Tag](https://img.shields.io/cocoapods/v/MagicCloud.svg)](https://github.com/jalingo/MagicCloud)
 [![iOS App Store](https://img.shields.io/badge/App%20Store-Approved-brightgreen.svg)](https://escapechaos/magiccloud)
 [![Jazzy Docs](https://img.shields.io/badge/Jazzy%20Docs-100%25-green.svg)](https://github.com/jalingo/MagicCloud)
-
-![alt text](https://raw.githubusercontent.com/jalingo/MagicCloud/master/Badge.png)
 
 **Magic Cloud** is a **Swift (iOS) Framework** that makes using **CloudKit** simple and easy.
 
