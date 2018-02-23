@@ -17,16 +17,16 @@ Default setup covers error handling, subscriptions, account changes and more. Ca
 Checkout escapeChaos.com/MagicCloud for how-to videos and more documentation.
                    DESC
 
-  s.homepage     = "https://github.com/jalingo/MagicCloud"
+  s.homepage     = 'https://github.com/jalingo/MagicCloud'
   s.documentation_url = 'https://jalingo.github.io/MagicCloud'
 
   # ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
-  s.license      = { :type => "BSD-new", :file => "LICENSE" }
+  s.license      = { :type => 'BSD-new', :file => "LICENSE" }
 
   # ――― Author Metadata  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
-  s.author             = { "JA Lingo" => "James@EscapeChaos.com" }
+  s.author             = { 'JA Lingo' => 'James@EscapeChaos.com' }
   s.social_media_url   = 'https://twitter.com/jalingo'
 
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -43,7 +43,7 @@ Checkout escapeChaos.com/MagicCloud for how-to videos and more documentation.
 
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
-  s.frameworks = "CloudKit", "UIKit"
+  s.ios.frameworks = "CloudKit", "UIKit"
 
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
