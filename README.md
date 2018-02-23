@@ -1,4 +1,5 @@
 ![alt text](https://raw.githubusercontent.com/jalingo/MagicCloud/master/Badge.png)
+
 MagicCloud       
 ==========
 [![License](https://img.shields.io/github/license/jalingo/MagicCloud.svg)](http://opensource.org/licenses/BSD-new)
