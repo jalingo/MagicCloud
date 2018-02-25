@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   # ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
   s.name         = "MagicCloud"
-  s.version      = "2.9.7"
+  s.version      = "2.9.8"
   s.summary      = "A CloudKit framework that makes database interactions a breeze."
 
 s.description  = <<-DESC
@@ -17,8 +17,8 @@ Default setup covers error handling, subscriptions, account changes and more. Ca
 Checkout escapeChaos.com/MagicCloud for how-to videos and more documentation.
                    DESC
 
-  s.homepage     = 'https://github.com/jalingo/MagicCloud'
-  s.documentation_url = 'https://jalingo.github.io/MagicCloud'
+  #s.homepage     = 'https://github.com/jalingo/MagicCloud'
+  #s.documentation_url = 'https://jalingo.github.io/MagicCloud'
 
   # ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
