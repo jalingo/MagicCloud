@@ -1,5 +1,0 @@
-podspec: MagicCloud.podspec
-sdk: iphoneos
-module: MagicCloud
-framework_root: .
-swift_version: 4.0
