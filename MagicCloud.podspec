@@ -17,8 +17,8 @@ Default setup covers error handling, subscriptions, account changes and more. Ca
 Checkout escapeChaos.com/MagicCloud for how-to videos and more documentation.
                    DESC
 
-  #s.homepage     = 'https://github.com/jalingo/MagicCloud'
-  #s.documentation_url = 'https://jalingo.github.io/MagicCloud'
+  s.homepage     = 'https://github.com/jalingo/MagicCloud'
+  s.documentation_url = 'https://jalingo.github.io/MagicCloud'
 
   # ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
