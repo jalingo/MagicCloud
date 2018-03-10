@@ -54,7 +54,7 @@ struct MCSubscriberError: MCRetrier {
         - Parameter retryAfter: If nil, retries are immediate. Else, double is number of seconds retry is delayed.
      */
     fileprivate func subscriptionAlreadyExists(retryAfter: Double?) {
-        database.defaultDB.fetchAllSubscriptions { possibleSubscriptions, possibleError in
+        database.db.fetchAllSubscriptions { possibleSubscriptions, possibleError in
             
             // identify existing subscription...
             if let subs = possibleSubscriptions {

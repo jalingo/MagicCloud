@@ -120,7 +120,7 @@ public class MCUpload<R: MCMirrorAbstraction>: Operation {
         
         if isCancelled { return }
         
-        database.defaultDB.add(op)
+        database.db.add(op)
         
         if isCancelled { return }
         

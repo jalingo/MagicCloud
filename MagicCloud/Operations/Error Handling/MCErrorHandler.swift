@@ -67,7 +67,7 @@ print("""
     !E- ERROR: \(error.code) \(error.localizedDescription) \(error)
     !E- for \(String(describing: originatingOp.name))
     !E- w/recordables: \(recordables.map({$0.recordID}))
-    !E- on: \(database.rawValue)
+    !E- on: \(database)
     """)
         // This console message reports instances when error shouldn't be ignored or isn't partial failure.
         if !(error.code == .unknownItem && ignoreUnknownItem) || !(error.code == .partialFailure) {
@@ -119,7 +119,7 @@ print("""
                     if self.isCancelled { return }
                     
                     if let cloudOp = op as? CKDatabaseOperation {
-                        self.database.defaultDB.add(cloudOp)
+                        self.database.db.add(cloudOp)
                     } else {
                         OperationQueue().addOperation(op)
                     }

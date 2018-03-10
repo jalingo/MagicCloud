@@ -31,7 +31,7 @@ public class MCSubscriber {
      */
     func start() {
         // Saves the subscription to database
-        database.defaultDB.save(self.subscription) { possibleSubscription, possibleError in
+        database.db.save(self.subscription) { possibleSubscription, possibleError in
             if let error = possibleError as? CKError { self.subscriptionError.handle(error, whileSubscribing: true) }
         }
     }
@@ -45,7 +45,7 @@ public class MCSubscriber {
         // This loads id with either parameter or self.subscription's id
         let id = subscriptionID ?? subscription.subscriptionID
 
-        database.defaultDB.delete(withSubscriptionID: id) { possibleID, possibleError in
+        database.db.delete(withSubscriptionID: id) { possibleID, possibleError in
             if let error = possibleError as? CKError {
                 self.subscriptionError.handle(error, whileSubscribing: false, to: subscriptionID)
             }

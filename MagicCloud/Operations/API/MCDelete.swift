@@ -63,7 +63,7 @@ public class MCDelete<R: MCMirrorAbstraction>: Operation {
     func delayDispatch(_ op: CKDatabaseOperation) {
         DispatchQueue(label: "DelayedRecordDeletion").asyncAfter(deadline: .now() + delayInSeconds) {
             if self.isCancelled { return }
-            self.database.defaultDB.add(op)
+            self.database.db.add(op)
         }
     }
     
