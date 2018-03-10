@@ -170,7 +170,7 @@ class VersionConflict<R: MCMirrorAbstraction>: Operation {
                 OperationQueue().addOperation(completionOperation)
             }
             
-            database.db.add(op)
+            database.defaultDB.add(op)
         }
     }
     

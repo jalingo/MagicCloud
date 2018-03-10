@@ -82,7 +82,7 @@ public class MCDownload<R: MCMirrorAbstraction>: Operation {
     fileprivate func queryCompletion(op: CKQueryOperation) -> QueryBlock {
         return { cursor, error in
             if let queryCursor = cursor {
-                self.database.db.add(self.followUp(cursor: queryCursor, op: op))
+                self.database.defaultDB.add(self.followUp(cursor: queryCursor, op: op))
             } else {
                 guard error == nil else {
                     if let cloudError = error as? CKError {
@@ -127,7 +127,7 @@ public class MCDownload<R: MCMirrorAbstraction>: Operation {
         
         if isCancelled { return }
 
-        database.db.add(op)
+        database.defaultDB.add(op)
         
         if isCancelled { return }
         

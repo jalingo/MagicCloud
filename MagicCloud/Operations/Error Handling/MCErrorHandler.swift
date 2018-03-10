@@ -119,7 +119,7 @@ print("""
                     if self.isCancelled { return }
                     
                     if let cloudOp = op as? CKDatabaseOperation {
-                        self.database.db.add(cloudOp)
+                        self.database.defaultDB.add(cloudOp)
                     } else {
                         OperationQueue().addOperation(op)
                     }

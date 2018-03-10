@@ -32,11 +32,13 @@ public enum MCDatabase: String {
     }
     
     /// This read-only, computed property returns the actual CKDatabase being enumerated.
-    var db: CKDatabase {
+    var defaultDB: CKDatabase {
         switch self {
         case .publicDB: return CKContainer.default().publicCloudDatabase
         case .privateDB: return CKContainer.default().privateCloudDatabase
         case .sharedDB: return CKContainer.default().sharedCloudDatabase
         }
     }
+    
+    
 }
