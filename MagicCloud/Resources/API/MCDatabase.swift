@@ -15,16 +15,16 @@ public indirect enum MCDatabase {
 
     // MARK: - Cases
     
-    /// A string enumeration of CKContainer.default().publicCloudDatabase
+    /// An enumeration of CKContainer.default().publicCloudDatabase
     case publicDB
     
-    /// A string enumeration of CKContainer.default().privateCloudDatabase
+    /// An enumeration of CKContainer.default().privateCloudDatabase
     case privateDB
     
-    /// A string enumeration of CKContainer.default().sharedCloudDatabase
+    /// An enumeration of CKContainer.default().sharedCloudDatabase
     case sharedDB
 
-    /// A string enumeration of an MCDatabase w/custom container.
+    /// An indirect enumeration of an MCDatabase w/custom container.
     case custom(MCDatabase, CKContainer)
 
     // MARK: - Properties
