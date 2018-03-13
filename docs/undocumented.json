@@ -1,6 +1,12 @@
 {
   "warnings": [
-
+    {
+      "file": "/Users/jameslingo/Documents/Dev/Swift/MagicCloud/MagicCloudTests/MockRecordable.swift",
+      "line": 48,
+      "symbol": "MockRecordable.init(created:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    }
   ],
   "source_directory": "/Users/jameslingo/Documents/Dev/Swift/MagicCloud"
 }
