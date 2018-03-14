@@ -15,7 +15,7 @@ class ViewController: UIViewController {
     
     // MARK: - Properties
 
-    // Will be nil unless manually set by uncommenting below
+    // Will be nil unless manually set by uncommenting below (left this way for unit testing).
     var mirror: MCMirror<MockRecordable>? // = MCMirror<MockRecordable>(db: .privateDB)
 //let alt = MCMirror<MockRecordable>(db: .privateDB)
     let serialQ = DispatchQueue(label: "VC Q")
