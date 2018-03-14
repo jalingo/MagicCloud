@@ -26,7 +26,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MCNotificationConverter {
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         
         // This method creates a local notification from remote's userInfo, if it was intended for MagicCloud.
-        convertToLocal(from: userInfo)
+        if convertToLocal(from: userInfo) {
+            completionHandler(.newData)
+        } else {
+            completionHandler(.noData)
+        }
         
         // This observer demonstrates how to access error notifications and their underlying data.
         let name = Notification.Name(MCErrorNotification)
@@ -41,8 +45,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MCNotificationConverter {
                 if let id = cNote.recordID { self.doSomethingWith(this: trigger, or: id) }
             }
         }
-        
-        completionHandler(.noData)
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) { }
