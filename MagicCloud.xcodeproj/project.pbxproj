@@ -283,9 +283,8 @@
 		A1268EC31FBA806300ADAA74 /* MagicCloudTests */ = {
 			isa = PBXGroup;
 			children = (
-				A1A49A2920365D35002A8148 /* MockMirror.swift */,
-				A1AC0DB3202A740700C2CDE0 /* MockRecordable.swift */,
 				A1B0CF161FC51FBE009474EE /* RemoteNotificationTests.swift */,
+				A18190E02058E70800B0BDF8 /* Mocks */,
 				A1CB77531FBA877A008ADF09 /* Protocols */,
 				A1CB775A1FBA8798008ADF09 /* Operations */,
 				A1268EC61FBA806300ADAA74 /* Info.plist */,
@@ -301,6 +300,15 @@
 				A1CB77141FBA8535008ADF09 /* MCOperationReplicator.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		A18190E02058E70800B0BDF8 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				A1A49A2920365D35002A8148 /* MockMirror.swift */,
+				A1AC0DB3202A740700C2CDE0 /* MockRecordable.swift */,
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		A181C0B0203F84570004B84B /* API */ = {
