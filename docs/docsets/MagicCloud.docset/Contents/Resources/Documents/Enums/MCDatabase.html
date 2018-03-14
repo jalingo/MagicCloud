@@ -14,7 +14,7 @@
     <a title="MCDatabase Enumeration Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">MagicCloud Docs</a> (98% documented)</p>
+        <p><a href="../index.html">MagicCloud Docs</a> (100% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -47,9 +47,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/MCUserRecord.html">MCUserRecord</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/MockRecordable.html">MockRecordable</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/Pause.html">Pause</a>
@@ -97,11 +94,11 @@
             <h1>MCDatabase</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">MCDatabase</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">indirect</span> <span class="kd">enum</span> <span class="kt">MCDatabase</span></code></pre>
 
                 </div>
               </div>
-            <p>This enumerates the different cloud databases available as strings, and provides access</p>
+            <p>This enumerates the different cloud databases available, and provides access.</p>
 
           </section>
           <section class="section task-group-section">
@@ -120,7 +117,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A string enumeration of CKContainer.default().publicCloudDatabase</p>
+                        <p>An enumeration of CKContainer.default().publicCloudDatabase or public scope of a custom container.</p>
 
                       </div>
                       <div class="declaration">
@@ -151,7 +148,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A string enumeration of CKContainer.default().privateCloudDatabase</p>
+                        <p>An enumeration of CKContainer.default().privateCloudDatabase or private scope of a custom container.</p>
 
                       </div>
                       <div class="declaration">
@@ -182,7 +179,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A string enumeration of CKContainer.default().sharedCloudDatabase</p>
+                        <p>A string enumeration of CKContainer.default().sharedCloudDatabase or shared scope of a custom container.</p>
 
                       </div>
                       <div class="declaration">
@@ -198,10 +195,72 @@
                 </li>
               </ul>
             </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud10MCDatabaseO6customA2C_So11CKContainerCtcACmF"></a>
+                    <a name="//apple_ref/swift/Element/custom" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud10MCDatabaseO6customA2C_So11CKContainerCtcACmF">custom</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An indirect enumeration of an MCDatabase w/custom container.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">custom</span><span class="p">(</span><span class="kt">MCDatabase</span><span class="p">,</span> <span class="kt">CKContainer</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud10MCDatabaseO11descriptionSSv"></a>
+                    <a name="//apple_ref/swift/Property/description" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud10MCDatabaseO11descriptionSSv">description</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This read-only, computed property returns a string description of this enumeration.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2018 <a class="link" href="https://github.com/jalingo/MagicCloud" target="_blank" rel="external">JA Lingo</a>. All rights reserved. (Last updated: 2018-03-13)</p>
+          <p>&copy; 2018 <a class="link" href="https://github.com/jalingo/MagicCloud" target="_blank" rel="external">JA Lingo</a>. All rights reserved. (Last updated: 2018-03-14)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

@@ -13,7 +13,7 @@
     <a title="Classes  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">MagicCloud Docs</a> (98% documented)</p>
+        <p><a href="index.html">MagicCloud Docs</a> (100% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -46,9 +46,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="Classes/MCUserRecord.html">MCUserRecord</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Classes/MockRecordable.html">MockRecordable</a>
               </li>
               <li class="nav-group-task">
                 <a href="Classes/Pause.html">Pause</a>
@@ -103,9 +100,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:10MagicCloud14MockRecordableC"></a>
-                    <a name="//apple_ref/swift/Class/MockRecordable" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10MagicCloud14MockRecordableC">MockRecordable</a>
+                    <a name="/s:10MagicCloud8MCDeleteC"></a>
+                    <a name="//apple_ref/swift/Class/MCDelete" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud8MCDeleteC">MCDelete</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -113,15 +110,47 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This mock class was built for testing MCRecordable.</p>
+                        <p>This wrapper class for CKModifyRecordsOperations deletes records associated with the recordables inserted, from the specified database.</p>
 
-                        <a href="Classes/MockRecordable.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/MCDelete.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">MockRecordable</span><span class="p">:</span> <span class="kt"><a href="Protocols/MCRecordable.html">MCRecordable</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">MCDelete</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="Protocols/MCMirrorAbstraction.html">MCMirrorAbstraction</a></span><span class="o">&gt;</span><span class="p">:</span> <span class="kt">Operation</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10MagicCloud10MCDownloadC"></a>
+                    <a name="//apple_ref/swift/Class/MCDownload" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud10MCDownloadC">MCDownload</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Downloads records from specified database, converts them back to recordables and then loads them into associated receiver. Destination is the receiver&rsquo;s &lsquo;recordables&rsquo; property, an array of receiver&rsquo;s associated type, but array is NOT emptied or otherwise prepared before appending results.</p>
+
+                        <a href="Classes/MCDownload.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">MCDownload</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="Protocols/MCMirrorAbstraction.html">MCMirrorAbstraction</a></span><span class="o">&gt;</span><span class="p">:</span> <span class="kt">Operation</span></code></pre>
 
                         </div>
                       </div>
@@ -142,9 +171,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:10MagicCloud8MCUploadC"></a>
-                    <a name="//apple_ref/swift/Class/MCUpload" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10MagicCloud8MCUploadC">MCUpload</a>
+                    <a name="/s:10MagicCloud8MCMirrorC"></a>
+                    <a name="//apple_ref/swift/Class/MCMirror" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud8MCMirrorC">MCMirror</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -152,15 +181,15 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This wrapper class for CKModifyRecordsOperation saves records for the injected recordables in the specified database.</p>
+                        <p>This open (can be sub-classed) class serves as the primary concrete adopter of MCReceiverAbstraction. Gives access to an array of Recordable, and keeps that array matching database records.</p>
 
-                        <a href="Classes/MCUpload.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/MCMirror.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">MCUpload</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="Protocols/MCMirrorAbstraction.html">MCMirrorAbstraction</a></span><span class="o">&gt;</span><span class="p">:</span> <span class="kt">Operation</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">class</span> <span class="kt">MCMirror</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt"><a href="Protocols/MCRecordable.html">MCRecordable</a></span><span class="o">&gt;</span><span class="p">:</span> <span class="kt"><a href="Protocols/MCMirrorAbstraction.html">MCMirrorAbstraction</a></span></code></pre>
 
                         </div>
                       </div>
@@ -213,9 +242,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:10MagicCloud12MCUserRecordC"></a>
-                    <a name="//apple_ref/swift/Class/MCUserRecord" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10MagicCloud12MCUserRecordC">MCUserRecord</a>
+                    <a name="/s:10MagicCloud8MCUploadC"></a>
+                    <a name="//apple_ref/swift/Class/MCUpload" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud8MCUploadC">MCUpload</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -223,15 +252,15 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This struct contains a static var (singleton) which accesses USER&rsquo;s iCloud CKRecordID.</p>
+                        <p>This wrapper class for CKModifyRecordsOperation saves records for the injected recordables in the specified database.</p>
 
-                        <a href="Classes/MCUserRecord.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/MCUpload.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">MCUserRecord</span><span class="p">:</span> <span class="kt">MCRetrier</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">MCUpload</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="Protocols/MCMirrorAbstraction.html">MCMirrorAbstraction</a></span><span class="o">&gt;</span><span class="p">:</span> <span class="kt">Operation</span></code></pre>
 
                         </div>
                       </div>
@@ -252,9 +281,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:10MagicCloud8MCMirrorC"></a>
-                    <a name="//apple_ref/swift/Class/MCMirror" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10MagicCloud8MCMirrorC">MCMirror</a>
+                    <a name="/s:10MagicCloud12MCUserRecordC"></a>
+                    <a name="//apple_ref/swift/Class/MCUserRecord" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10MagicCloud12MCUserRecordC">MCUserRecord</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -262,15 +291,15 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This open (can be sub-classed) class serves as the primary concrete adopter of MCReceiverAbstraction. Gives access to an array of Recordable, and keeps that array matching database records.</p>
+                        <p>This struct contains a static var (singleton) which accesses USER&rsquo;s iCloud CKRecordID.</p>
 
-                        <a href="Classes/MCMirror.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/MCUserRecord.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">class</span> <span class="kt">MCMirror</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt"><a href="Protocols/MCRecordable.html">MCRecordable</a></span><span class="o">&gt;</span><span class="p">:</span> <span class="kt"><a href="Protocols/MCMirrorAbstraction.html">MCMirrorAbstraction</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">MCUserRecord</span><span class="p">:</span> <span class="kt">MCRetrier</span></code></pre>
 
                         </div>
                       </div>
@@ -311,74 +340,10 @@
                 </li>
               </ul>
             </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:10MagicCloud10MCDownloadC"></a>
-                    <a name="//apple_ref/swift/Class/MCDownload" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10MagicCloud10MCDownloadC">MCDownload</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Downloads records from specified database, converts them back to recordables and then loads them into associated receiver. Destination is the receiver&rsquo;s &lsquo;recordables&rsquo; property, an array of receiver&rsquo;s associated type, but array is NOT emptied or otherwise prepared before appending results.</p>
-
-                        <a href="Classes/MCDownload.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">MCDownload</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="Protocols/MCMirrorAbstraction.html">MCMirrorAbstraction</a></span><span class="o">&gt;</span><span class="p">:</span> <span class="kt">Operation</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:10MagicCloud8MCDeleteC"></a>
-                    <a name="//apple_ref/swift/Class/MCDelete" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10MagicCloud8MCDeleteC">MCDelete</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>This wrapper class for CKModifyRecordsOperations deletes records associated with the recordables inserted, from the specified database.</p>
-
-                        <a href="Classes/MCDelete.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">MCDelete</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="Protocols/MCMirrorAbstraction.html">MCMirrorAbstraction</a></span><span class="o">&gt;</span><span class="p">:</span> <span class="kt">Operation</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2018 <a class="link" href="https://github.com/jalingo/MagicCloud" target="_blank" rel="external">JA Lingo</a>. All rights reserved. (Last updated: 2018-03-13)</p>
+          <p>&copy; 2018 <a class="link" href="https://github.com/jalingo/MagicCloud" target="_blank" rel="external">JA Lingo</a>. All rights reserved. (Last updated: 2018-03-14)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
