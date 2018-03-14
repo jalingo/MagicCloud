@@ -38,7 +38,7 @@ class DownloadTests: XCTestCase {
         OperationQueue().addOperation(op)
         
         pause.waitUntilFinished()
-        db == .publicDB ? (shouldCleanPublic = true) : (shouldCleanPrivate = false)
+        db.description == MCDatabase.publicDB.description ? (shouldCleanPublic = true) : (shouldCleanPrivate = false)
     
         return 0
     }

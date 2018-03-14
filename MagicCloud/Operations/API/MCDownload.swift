@@ -54,7 +54,7 @@ public class MCDownload<R: MCMirrorAbstraction>: Operation {
     fileprivate func decorate(op: CKQueryOperation) {
         if let integer = limit { op.resultsLimit = integer }
     
-        if database == .privateDB { op.zoneID = CKRecordZone.default().zoneID}
+        if database.scope == MCDatabase.privateDB.scope { op.zoneID = CKRecordZone.default().zoneID}
         
         op.recordFetchedBlock = recordFetched()
         op.queryCompletionBlock = queryCompletion(op: op)
