@@ -21,7 +21,9 @@ Check out the **Quick Start Guide** and see an app add working cloud functionali
 
 Meet the requirements for **CloudKit**, which includes a _paid developer account_.
 
-An **iOS** (min 10.3), project. (Why wouldn't you use Swift for that?)
+An **iOS** project (min 10.3), that requires a relational database. (Why wouldn't you use Swift for that?)
+
+Does **NOT** directly support shared databases (upcoming version).
 
 ## Getting Started
 
