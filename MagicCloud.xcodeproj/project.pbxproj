@@ -10,7 +10,6 @@
 		90C4E8721FC0EAE300A8D329 /* MCUserRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C4E8711FC0EAE300A8D329 /* MCUserRecord.swift */; };
 		90C4E8731FC0EAE300A8D329 /* MCUserRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C4E8711FC0EAE300A8D329 /* MCUserRecord.swift */; };
 		A1268EC01FBA806200ADAA74 /* MagicCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1268EB61FBA806200ADAA74 /* MagicCloud.framework */; };
-		A1268EC71FBA806300ADAA74 /* MagicCloud.h in Headers */ = {isa = PBXBuildFile; fileRef = A1268EB91FBA806200ADAA74 /* MagicCloud.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A1268EE31FBA80BC00ADAA74 /* MCRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* MCRecordable.swift */; };
 		A1268EE41FBA80BC00ADAA74 /* MCRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EDE1FBA80BC00ADAA74 /* MCRecordable.swift */; };
 		A1268EE71FBA821400ADAA74 /* TypeAliases & Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1268EE61FBA821400ADAA74 /* TypeAliases & Constants.swift */; };
@@ -141,7 +140,6 @@
 /* Begin PBXFileReference section */
 		90C4E8711FC0EAE300A8D329 /* MCUserRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCUserRecord.swift; sourceTree = "<group>"; };
 		A1268EB61FBA806200ADAA74 /* MagicCloud.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MagicCloud.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1268EB91FBA806200ADAA74 /* MagicCloud.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MagicCloud.h; sourceTree = "<group>"; };
 		A1268EBA1FBA806200ADAA74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A1268EBF1FBA806200ADAA74 /* MagicCloudTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MagicCloudTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1268EC61FBA806300ADAA74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -272,7 +270,6 @@
 		A1268EB81FBA806200ADAA74 /* MagicCloud */ = {
 			isa = PBXGroup;
 			children = (
-				A1268EB91FBA806200ADAA74 /* MagicCloud.h */,
 				A1268EBA1FBA806200ADAA74 /* Info.plist */,
 				A1CB771A1FBA8563008ADF09 /* Resources */,
 				A1CB77191FBA853C008ADF09 /* Classes */,
@@ -485,7 +482,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1268EC71FBA806300ADAA74 /* MagicCloud.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
