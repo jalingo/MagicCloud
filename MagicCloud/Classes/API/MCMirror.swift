@@ -91,11 +91,8 @@ open class MCMirror<T: MCRecordable>: MCMirrorAbstraction {
         
         listenForConnectivityChanges()
         
-        let g = DispatchGroup()
-        g.enter()
-        downloadAll(from: db) { g.leave() }
-        
-        g.wait()
+        DispatchQueue(label: "Mirror.init downloadAll ##\(self.name)").async { self.downloadAll(from: self.db) }
+
         subscribeToChanges(on: db)
     }
     
