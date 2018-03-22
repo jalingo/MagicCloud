@@ -316,19 +316,6 @@ class RecievesRecTests: XCTestCase {
         XCTAssert(mock?.silentRecordables.count != 0)
     }
     
-    
-    func testReceiverStartsDownloadingBeforeInitCompletes() {
-
-        // loads mocks into the database
-        let _ = prepareDatabase()
-        
-        // At this point, database should be prepared and instantiation should trigger download.
-        let r = MCMirror<MockRecordable>(db: .publicDB)
-
-        // code should not have to generate any delays, there should be records already.
-        XCTAssert(r.silentRecordables.count != 0)
-    }
-    
     // MARK: - Functions: XCTestCase
     
     override func setUp() {

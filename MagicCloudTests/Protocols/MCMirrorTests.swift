@@ -85,14 +85,6 @@ class MCMirrorTests: XCTestCase {
         }
     }
     
-    func testMirrorDownloadsAllBeforeFinishingInit() {
-        let _ = prepDatabase()
-        
-        let mirror = MCMirror<MockRecordable>(db: .publicDB)
-
-        XCTAssert(mirror.silentRecordables.count != 0, "\(mirror.silentRecordables.count)")        
-    }
-    
     func testMirrorMakesAdditions() {
         let mirror = MCMirror<MockRecordable>(db: .publicDB)
 
