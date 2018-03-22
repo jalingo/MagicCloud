@@ -145,13 +145,15 @@ public class MCDownload<R: MCMirrorAbstraction>: Operation {
         - parameter to: Instance conforming to 'RecievesRecordable' that will ultimately recieve the results of the query.
         - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    public init(type: String, queryField: String, queryValues: [CKRecordValue], to rec: R, from db: MCDatabase) {
+    public convenience init(type: String, queryField: String, queryValues: [CKRecordValue], to rec: R, from db: MCDatabase) {
         let predicate = NSPredicate(format: "%K IN %@", queryField, queryValues)
-        query = CKQuery(recordType: type, predicate: predicate)
-        receiver = rec
-        database = db
-        
-        super.init()
+        // TODO !! cleanup after tests?
+//        query = CKQuery(recordType: type, predicate: predicate)
+//        receiver = rec
+//        database = db
+//
+//        super.init()
+        self.init(type: type, matching: predicate, to: rec, from: db)
     }
     
     /**
@@ -177,12 +179,14 @@ public class MCDownload<R: MCMirrorAbstraction>: Operation {
         - parameter to: Instance conforming to 'RecievesRecordable' that will ultimately recieve the results of the query.
         - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
      */
-    public init(type: String, to rec: R, from db: MCDatabase) {
+    public convenience init(type: String, to rec: R, from db: MCDatabase) {
         let predicate = NSPredicate(format: "TRUEPREDICATE")
-        query = CKQuery(recordType: type, predicate: predicate)
-        receiver = rec
-        database = db
-        
-        super.init()
+        // TODO !! cleanup after tests?
+//        query = CKQuery(recordType: type, predicate: predicate)
+//        receiver = rec
+//        database = db
+//
+//        super.init()
+        self.init(type: type, matching: predicate, to: rec, from: db)
     }
 }
