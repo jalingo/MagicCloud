@@ -11,7 +11,7 @@ import CloudKit
 /**
     Downloads records from specified database, converts them back to recordables and then loads them into associated receiver. Destination is the receiver's 'recordables' property, an array of receiver's associated type, but array is NOT emptied or otherwise prepared before appending results.
  */
-public class MCDownload<R: MCMirrorAbstraction>: Operation {
+public class MCDownload<R: MCMirrorAbstraction>: Operation, MCDatabaseOperation {
 
     // MARK: - Properties
     
@@ -34,18 +34,14 @@ public class MCDownload<R: MCMirrorAbstraction>: Operation {
      */
     var query: CKQuery
     
+    // MARK: - MCCloudErrorHandler
+    
     /// This is the receiver that downloaded records will be sent to as instances conforming to Recordable.
     let receiver: R
     
-    /**
-        A conduit for accessing and for performing operations on the public and private data of an app container.
-     
-        An app container has a public database whose data is accessible to all users and a private database whose data is accessible only to the current user. A database object takes requests for data and applies them to the appropriate part of the container.
-     
-        You do not create database objects yourself, nor should you subclass CKDatabase. Your app’s CKContainer objects provide the CKDatabase objects you use to access the associated data. Use database objects as-is to perform operations on data.
-     
-        The public database is always available, regardless of whether the device has an an active iCloud account. When no iCloud account is available, your app may fetch records and perform queries on the public database, but it may not save changes. (Saving records to the public database requires an active iCloud account to identify the owner of those records.) Access to the private database always requires an active iCloud account on the device.
-     */
+    // MARK: - Properties: MCDatabaseOperation
+    
+    /// This read-only property returns the target cloud database for operation.
     let database: MCDatabase
     
     // MARK: - Functions
@@ -147,12 +143,18 @@ public class MCDownload<R: MCMirrorAbstraction>: Operation {
      */
     public convenience init(type: String, queryField: String, queryValues: [CKRecordValue], to rec: R, from db: MCDatabase) {
         let predicate = NSPredicate(format: "%K IN %@", queryField, queryValues)
-        // TODO !! cleanup after tests?
-//        query = CKQuery(recordType: type, predicate: predicate)
-//        receiver = rec
-//        database = db
-//
-//        super.init()
+        self.init(type: type, matching: predicate, to: rec, from: db)
+    }
+    
+    /**
+     This init constructs a 'MCDownload' operation with a predicate that collects all records of the specified type.
+     
+     - parameter type: Every 'MCDownload' op targets a specifc recordType and this parameter is how it's injected.
+     - parameter to: Instance conforming to 'RecievesRecordable' that will ultimately recieve the results of the query.
+     - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
+     */
+    public convenience init(type: String, to rec: R, from db: MCDatabase) {
+        let predicate = NSPredicate(format: "TRUEPREDICATE")
         self.init(type: type, matching: predicate, to: rec, from: db)
     }
     
@@ -170,23 +172,5 @@ public class MCDownload<R: MCMirrorAbstraction>: Operation {
         database = db
         
         super.init()
-    }
-    
-    /**
-        This init constructs a 'MCDownload' operation with a predicate that collects all records of the specified type.
-     
-        - parameter type: Every 'MCDownload' op targets a specifc recordType and this parameter is how it's injected.
-        - parameter to: Instance conforming to 'RecievesRecordable' that will ultimately recieve the results of the query.
-        - parameter from: 'CKDatabase' that will be searched for records. Leave nil to search default of both private and public.
-     */
-    public convenience init(type: String, to rec: R, from db: MCDatabase) {
-        let predicate = NSPredicate(format: "TRUEPREDICATE")
-        // TODO !! cleanup after tests?
-//        query = CKQuery(recordType: type, predicate: predicate)
-//        receiver = rec
-//        database = db
-//
-//        super.init()
-        self.init(type: type, matching: predicate, to: rec, from: db)
     }
 }
