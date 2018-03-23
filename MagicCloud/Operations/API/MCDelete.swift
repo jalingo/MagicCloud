@@ -24,13 +24,10 @@ public class MCDelete<R: MCMirrorAbstraction>: Operation, MCDatabaseModifier {
 
     /// This constant property is an array that stores the recordables associated with the records that need to be removed from the specified database.
     let recordables: [R.type]
-    
-    /// This association refers to the type of `MCRecordable` that operation is manipulating in the cloud database.
-    typealias T = R.type
 
     // MARK: - Properties: MCCloudErrorHandler
     
-    /// This constant property stores the MCReceiver associated with MCDelete, that was itself storing the recordables to be deleted from the specified database.
+    /// This constant property stores the MCMirror associated with MCDelete, that was itself storing the recordables to be deleted from the specified database.
     let receiver: R
 
     // MARK: - Properties: MCDatabaseOperation
