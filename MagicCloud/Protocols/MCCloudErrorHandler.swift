@@ -11,31 +11,25 @@ import CloudKit
 // MARK: Protocol
 
 /// Types conforming to this protocol can call the `handle:error:from:whileIgnoringUnknownItem` method and resolve cloud errors.
-protocol MCCloudErrorHandler {
- 
-    associatedtype U: MCMirrorAbstraction
-    
-    /// This read-only property returns the local mirror that operation will match up to the cloud database.
-    var receiver: U { get }
-    
-    /// This method handles errors from CKModifyRecordsOperation with MagicCloud framework.
-    func handle(_ error: Error?, from op: Operation, whileIgnoringUnknownItem: Bool)
-}
+protocol MCCloudErrorHandler: MCDatabaseOperation { }
 
 // MARK: - Extension
 
-extension MCCloudErrorHandler where Self: MCDatabaseModifier {
+extension MCCloudErrorHandler {
     
     // MARK: - Functions
 
-    /// This method handles errors from CKModifyRecordsOperation with MagicCloud framework.
-    func handle(_ error: Error?, from op: Operation, whileIgnoringUnknownItem: Bool) {
+    /// This method handles errors from `CKModifyRecordsOperation` with MagicCloud framework.
+    /// !!
+    /// - Parameter receiver: The local mirror that operation will match up to the cloud database.
+    func handle<U: MCMirrorAbstraction>(_ error: Error?, in op: Operation, with recordables: [U.type], from receiver: U, whileIgnoringUnknownItem: Bool, ignoreUnknownAction: OptionalClosure = nil) {
         if let cloudError = error as? CKError {
             let errorHandler = MCErrorHandler(error: cloudError,
                                               originating: op,
-                                              target: database, instances: recordables as! [U.type],
+                                              target: database, instances: recordables,
                                               receiver: receiver)
             errorHandler.ignoreUnknownItem = whileIgnoringUnknownItem
+            errorHandler.ignoreUnknownItemCustomAction = ignoreUnknownAction
 
             OperationQueue().addOperation(errorHandler)
         } else {
@@ -43,4 +37,3 @@ extension MCCloudErrorHandler where Self: MCDatabaseModifier {
         }
     }
 }
-
