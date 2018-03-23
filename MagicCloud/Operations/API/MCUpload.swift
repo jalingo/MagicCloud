@@ -20,20 +20,12 @@ public class MCUpload<R: MCMirrorAbstraction>: Operation, MCDatabaseModifier {
     /// This constant property is an array that stores the recordables associated with the records that need to be uploaded to the specified database.
     let recordables: [R.type]
     
-    /// !!
-    typealias T = R.type
-    
-    // MARK: - Properties: MCCloudErrorHandler
-    
-    /// !!
-    typealias U = R
-    
     // MARK: - Properties: MCDatabaseOperation
 
     /// This read-only property returns the target cloud database for operation.
     let database: MCDatabase
     
-    /// This is the MCReceiver that contains the recordables that are being uploaded to database.
+    /// This is the MCMirror that contains the recordables that are being uploaded to database.
     let receiver: R
     
     // MARK: - Functions
