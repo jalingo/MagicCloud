@@ -114,6 +114,12 @@
 		A1F548182067A24600A8F8AE /* SubscriptionReplacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548162067A24600A8F8AE /* SubscriptionReplacer.swift */; };
 		A1F5481A2067A28E00A8F8AE /* SubscriptionReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548192067A28E00A8F8AE /* SubscriptionReducer.swift */; };
 		A1F5481B2067A28E00A8F8AE /* SubscriptionReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548192067A28E00A8F8AE /* SubscriptionReducer.swift */; };
+		A1F5481D2067A8A700A8F8AE /* CKDatabaseScopeWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F5481C2067A8A700A8F8AE /* CKDatabaseScopeWrapper.swift */; };
+		A1F5481E2067A8A700A8F8AE /* CKDatabaseScopeWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F5481C2067A8A700A8F8AE /* CKDatabaseScopeWrapper.swift */; };
+		A1F548202067A91F00A8F8AE /* DatabaseAbbreviatedAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F5481F2067A91F00A8F8AE /* DatabaseAbbreviatedAccessor.swift */; };
+		A1F548212067A91F00A8F8AE /* DatabaseAbbreviatedAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F5481F2067A91F00A8F8AE /* DatabaseAbbreviatedAccessor.swift */; };
+		A1F548232067A97F00A8F8AE /* MCDatabase Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548222067A97F00A8F8AE /* MCDatabase Extensions.swift */; };
+		A1F548242067A97F00A8F8AE /* MCDatabase Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548222067A97F00A8F8AE /* MCDatabase Extensions.swift */; };
 		A1FEF543203C99190097C125 /* MockRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC0DB3202A740700C2CDE0 /* MockRecordable.swift */; };
 /* End PBXBuildFile section */
 
@@ -245,6 +251,9 @@
 		A1F548132067A22600A8F8AE /* SubscriptionReattempter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionReattempter.swift; sourceTree = "<group>"; };
 		A1F548162067A24600A8F8AE /* SubscriptionReplacer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionReplacer.swift; sourceTree = "<group>"; };
 		A1F548192067A28E00A8F8AE /* SubscriptionReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionReducer.swift; sourceTree = "<group>"; };
+		A1F5481C2067A8A700A8F8AE /* CKDatabaseScopeWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKDatabaseScopeWrapper.swift; sourceTree = "<group>"; };
+		A1F5481F2067A91F00A8F8AE /* DatabaseAbbreviatedAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseAbbreviatedAccessor.swift; sourceTree = "<group>"; };
+		A1F548222067A97F00A8F8AE /* MCDatabase Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MCDatabase Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -342,6 +351,8 @@
 		A1268EE51FBA811F00ADAA74 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				A1F5481F2067A91F00A8F8AE /* DatabaseAbbreviatedAccessor.swift */,
+				A1F5481C2067A8A700A8F8AE /* CKDatabaseScopeWrapper.swift */,
 				A1F548102067A1EE00A8F8AE /* SubscriptionErrorHandler.swift */,
 				A1F548132067A22600A8F8AE /* SubscriptionReattempter.swift */,
 				A1F548162067A24600A8F8AE /* SubscriptionReplacer.swift */,
@@ -386,6 +397,7 @@
 			children = (
 				A1268EE61FBA821400ADAA74 /* TypeAliases & Constants.swift */,
 				A1268EE91FBA821C00ADAA74 /* MCDatabase.swift */,
+				A1F548222067A97F00A8F8AE /* MCDatabase Extensions.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -772,6 +784,7 @@
 				A1A085872061FE2300204EBD /* MCCloudErrorHandler.swift in Sources */,
 				A1CD903920303003005B529C /* MCMirrorAbstraction.swift in Sources */,
 				A17DE9E51FBE56D900D2EB4F /* MCSubscriber.swift in Sources */,
+				A1F5481D2067A8A700A8F8AE /* CKDatabaseScopeWrapper.swift in Sources */,
 				A1E6263F1FD7A6F00036FD67 /* MCRetrier.swift in Sources */,
 				A1F547F62067732800A8F8AE /* SpecialCompleter.swift in Sources */,
 				A1CB77D21FBCBF4B008ADF09 /* VersionConflict.swift in Sources */,
@@ -786,11 +799,13 @@
 				A1CB77281FBA8683008ADF09 /* FailedOp.swift in Sources */,
 				A1CB773C1FBA86CB008ADF09 /* MCErrorHandler.swift in Sources */,
 				A1CB77291FBA8683008ADF09 /* Pause.swift in Sources */,
+				A1F548202067A91F00A8F8AE /* DatabaseAbbreviatedAccessor.swift in Sources */,
 				A1AC8F3F201EC647000B02E8 /* Reachability.swift in Sources */,
 				A1268EE31FBA80BC00ADAA74 /* MCRecordable.swift in Sources */,
 				A1CB77171FBA8535008ADF09 /* MCOperationReplicator.swift in Sources */,
 				A1CB77371FBA86AF008ADF09 /* MCDownload.swift in Sources */,
 				A1F548082067945F00A8F8AE /* UserRecordRetriever.swift in Sources */,
+				A1F548232067A97F00A8F8AE /* MCDatabase Extensions.swift in Sources */,
 				A1F548052067923500A8F8AE /* UserRecordErrorHandler.swift in Sources */,
 				A1268EE71FBA821400ADAA74 /* TypeAliases & Constants.swift in Sources */,
 				A1CD903420302270005B529C /* MCArrayComparer.swift in Sources */,
@@ -848,6 +863,7 @@
 				A1CB77821FBB986F008ADF09 /* MCDownload.swift in Sources */,
 				90C4E8731FC0EAE300A8D329 /* MCUserRecord.swift in Sources */,
 				A1A085882061FE2300204EBD /* MCCloudErrorHandler.swift in Sources */,
+				A1F548212067A91F00A8F8AE /* DatabaseAbbreviatedAccessor.swift in Sources */,
 				A1CB77D31FBCBF52008ADF09 /* BatchError.swift in Sources */,
 				A18190E22058E76200B0BDF8 /* MCDatabaseTests.swift in Sources */,
 				A1CB77D51FBCBF5E008ADF09 /* PartialError.swift in Sources */,
@@ -855,7 +871,9 @@
 				A1CB77571FBA8793008ADF09 /* DownloadTests.swift in Sources */,
 				A1CB774E1FBA874F008ADF09 /* RecordableTests.swift in Sources */,
 				A1F547FA20677C1000A8F8AE /* MCUpload Extensions.swift in Sources */,
+				A1F5481E2067A8A700A8F8AE /* CKDatabaseScopeWrapper.swift in Sources */,
 				A1AC8F40201EC647000B02E8 /* Reachability.swift in Sources */,
+				A1F548242067A97F00A8F8AE /* MCDatabase Extensions.swift in Sources */,
 				A1CB77581FBA8793008ADF09 /* DeleteTests.swift in Sources */,
 				A1A49A2A20365D35002A8148 /* MockMirror.swift in Sources */,
 				A1F548092067945F00A8F8AE /* UserRecordRetriever.swift in Sources */,
