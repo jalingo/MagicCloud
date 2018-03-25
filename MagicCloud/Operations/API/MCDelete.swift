@@ -79,18 +79,3 @@ public class MCDelete<R: MCMirrorAbstraction>: Operation, MCDatabaseModifier, MC
         self.name = "Delete \(String(describing: array?.count)) recs for \(rec.name) to \(db)"
     }
 }
-
-// MARK: - Extension
-
-extension MCDelete: OperationDecorator {
-    
-    /// This method decorates a modify operation.
-    func decorate() -> Operation {
-        let op = CKModifyRecordsOperation(recordsToSave: nil,
-                                          recordIDsToDelete: recordIDs)
-        op.name = self.name
-        uniformSetup(op)
-        
-        return op
-    }
-}

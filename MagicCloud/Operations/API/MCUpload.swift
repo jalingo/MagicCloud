@@ -69,18 +69,3 @@ public class MCUpload<R: MCMirrorAbstraction>: Operation, MCDatabaseModifier, MC
         self.name = "Upload \(String(describing: recs?.count)) recs for \(rec.name) to \(db)"
     }
 }
-
-// MARK: - Extension
-
-extension MCUpload: OperationDecorator {
-    
-    /// This method returns a fully configured Operation, ready to be launched.
-    func decorate() -> Operation {
-        let op = CKModifyRecordsOperation(recordsToSave: self.records,
-                                          recordIDsToDelete: nil)
-        op.name = self.name
-        uniformSetup(op)
-        
-        return op
-    }
-}
