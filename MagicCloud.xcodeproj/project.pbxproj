@@ -100,6 +100,12 @@
 		A1F548002067914100A8F8AE /* ReachabilityChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F547FE2067914100A8F8AE /* ReachabilityChanger.swift */; };
 		A1F548022067918300A8F8AE /* ConnectivityChangeListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548012067918300A8F8AE /* ConnectivityChangeListener.swift */; };
 		A1F548032067918300A8F8AE /* ConnectivityChangeListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548012067918300A8F8AE /* ConnectivityChangeListener.swift */; };
+		A1F548052067923500A8F8AE /* UserRecordErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548042067923500A8F8AE /* UserRecordErrorHandler.swift */; };
+		A1F548062067923500A8F8AE /* UserRecordErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548042067923500A8F8AE /* UserRecordErrorHandler.swift */; };
+		A1F548082067945F00A8F8AE /* UserRecordRetriever.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548072067945F00A8F8AE /* UserRecordRetriever.swift */; };
+		A1F548092067945F00A8F8AE /* UserRecordRetriever.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548072067945F00A8F8AE /* UserRecordRetriever.swift */; };
+		A1F5480B2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F5480A2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift */; };
+		A1F5480C2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F5480A2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift */; };
 		A1FEF543203C99190097C125 /* MockRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC0DB3202A740700C2CDE0 /* MockRecordable.swift */; };
 /* End PBXBuildFile section */
 
@@ -224,6 +230,9 @@
 		A1F547FB20677C8A00A8F8AE /* MCDelete Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MCDelete Extensions.swift"; sourceTree = "<group>"; };
 		A1F547FE2067914100A8F8AE /* ReachabilityChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityChanger.swift; sourceTree = "<group>"; };
 		A1F548012067918300A8F8AE /* ConnectivityChangeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConnectivityChangeListener.swift; path = MagicCloud/Protocols/ConnectivityChangeListener.swift; sourceTree = SOURCE_ROOT; };
+		A1F548042067923500A8F8AE /* UserRecordErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRecordErrorHandler.swift; sourceTree = "<group>"; };
+		A1F548072067945F00A8F8AE /* UserRecordRetriever.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRecordRetriever.swift; sourceTree = "<group>"; };
+		A1F5480A2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCAccountAuthenticationVerifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -322,6 +331,8 @@
 		A1268EE51FBA811F00ADAA74 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				A1F548072067945F00A8F8AE /* UserRecordRetriever.swift */,
+				A1F548042067923500A8F8AE /* UserRecordErrorHandler.swift */,
 				A1F547FE2067914100A8F8AE /* ReachabilityChanger.swift */,
 				A1F548012067918300A8F8AE /* ConnectivityChangeListener.swift */,
 				A1D867392061D73900971C18 /* MCDatabaseOperation.swift */,
@@ -503,6 +514,7 @@
 		A1CD903B2030313E005B529C /* API */ = {
 			isa = PBXGroup;
 			children = (
+				A1F5480A2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift */,
 				A1268EDE1FBA80BC00ADAA74 /* MCRecordable.swift */,
 				A1CD903820303003005B529C /* MCMirrorAbstraction.swift */,
 				A1CD903320302270005B529C /* MCArrayComparer.swift */,
@@ -733,6 +745,7 @@
 				A16EA5031FC666DF001E57F8 /* MCNotificationConverter.swift in Sources */,
 				A1A085842061FD8500204EBD /* MCDatabaseModifier.swift in Sources */,
 				A1CB77CD1FBCB1C1008ADF09 /* LimitExceeded.swift in Sources */,
+				A1F5480B2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift in Sources */,
 				A1AC0DB0202A69AB00C2CDE0 /* MCSubscriberError.swift in Sources */,
 				A1CB77CE1FBCB1C1008ADF09 /* PartialError.swift in Sources */,
 				A1FEF543203C99190097C125 /* MockRecordable.swift in Sources */,
@@ -757,6 +770,8 @@
 				A1268EE31FBA80BC00ADAA74 /* MCRecordable.swift in Sources */,
 				A1CB77171FBA8535008ADF09 /* MCOperationReplicator.swift in Sources */,
 				A1CB77371FBA86AF008ADF09 /* MCDownload.swift in Sources */,
+				A1F548082067945F00A8F8AE /* UserRecordRetriever.swift in Sources */,
+				A1F548052067923500A8F8AE /* UserRecordErrorHandler.swift in Sources */,
 				A1268EE71FBA821400ADAA74 /* TypeAliases & Constants.swift in Sources */,
 				A1CD903420302270005B529C /* MCArrayComparer.swift in Sources */,
 				A1CB77381FBA86AF008ADF09 /* MCDelete.swift in Sources */,
@@ -773,6 +788,7 @@
 				A1CB77C91FBC3241008ADF09 /* VersionConflictTests.swift in Sources */,
 				A16EA5041FC666DF001E57F8 /* MCNotificationConverter.swift in Sources */,
 				A1CD903520302270005B529C /* MCArrayComparer.swift in Sources */,
+				A1F548062067923500A8F8AE /* UserRecordErrorHandler.swift in Sources */,
 				A1AC0DB1202A69AB00C2CDE0 /* MCSubscriberError.swift in Sources */,
 				A1CB77C71FBC3241008ADF09 /* PartialErrorTests.swift in Sources */,
 				A1CB77861FBB9B94008ADF09 /* MCErrorHandler.swift in Sources */,
@@ -804,6 +820,7 @@
 				A1CB77851FBB9881008ADF09 /* Pause.swift in Sources */,
 				A1CD903A20303003005B529C /* MCMirrorAbstraction.swift in Sources */,
 				A17DE9E61FBE56D900D2EB4F /* MCSubscriber.swift in Sources */,
+				A1F5480C2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift in Sources */,
 				A1CB77181FBA8535008ADF09 /* MCOperationReplicator.swift in Sources */,
 				A1CB77821FBB986F008ADF09 /* MCDownload.swift in Sources */,
 				90C4E8731FC0EAE300A8D329 /* MCUserRecord.swift in Sources */,
@@ -817,6 +834,7 @@
 				A1AC8F40201EC647000B02E8 /* Reachability.swift in Sources */,
 				A1CB77581FBA8793008ADF09 /* DeleteTests.swift in Sources */,
 				A1A49A2A20365D35002A8148 /* MockMirror.swift in Sources */,
+				A1F548092067945F00A8F8AE /* UserRecordRetriever.swift in Sources */,
 				A1F547FD20677C8A00A8F8AE /* MCDelete Extensions.swift in Sources */,
 				A1CB775D1FBA87DB008ADF09 /* MCErrorHandlerTests.swift in Sources */,
 			);
