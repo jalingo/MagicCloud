@@ -8,7 +8,7 @@
 
 import CloudKit
 
-protocol SubscriptionLauncher {
+protocol SubscriptionLauncher: AnyObject {
     
     /// This property references CKQuerSubscription being decorated and registered by class.
     var subscription: CKQuerySubscription { get set }
@@ -17,10 +17,10 @@ protocol SubscriptionLauncher {
     var database: MCDatabase { get }
     
     /// This read-only, computed property returns a subsctiption error handler using self as delegate.
-    var subscriptionError: MCSubscriberError { get }
+//    var subscriptionError: MCSubscriberError { get }
 }
 
-extension SubscriptionLauncher {
+extension SubscriptionLauncher where Self: SubscriptionErrorHandler {
     
     /**
      This method creates a subscription that listens for injected change of record type at database and allows consequence.
@@ -30,7 +30,7 @@ extension SubscriptionLauncher {
     func start() {
         // Saves the subscription to database
         database.db.save(self.subscription) { possibleSubscription, possibleError in
-            if let error = possibleError as? CKError { self.subscriptionError.handle(error, whileSubscribing: true) }
+            if let error = possibleError as? CKError { self.handle(error, whileSubscribing: true) }
         }
     }
     
@@ -45,7 +45,7 @@ extension SubscriptionLauncher {
         
         database.db.delete(withSubscriptionID: id) { possibleID, possibleError in
             if let error = possibleError as? CKError {
-                self.subscriptionError.handle(error, whileSubscribing: false, to: subscriptionID)
+                self.handle(error, whileSubscribing: false, to: subscriptionID)
             }
         }
     }

@@ -30,8 +30,6 @@
 		A1A0858A2062009200204EBD /* OperationDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A085892062009200204EBD /* OperationDecorator.swift */; };
 		A1A0858B2062009200204EBD /* OperationDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A085892062009200204EBD /* OperationDecorator.swift */; };
 		A1A49A2A20365D35002A8148 /* MockMirror.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A49A2920365D35002A8148 /* MockMirror.swift */; };
-		A1AC0DB0202A69AB00C2CDE0 /* MCSubscriberError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC0DAF202A69AB00C2CDE0 /* MCSubscriberError.swift */; };
-		A1AC0DB1202A69AB00C2CDE0 /* MCSubscriberError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC0DAF202A69AB00C2CDE0 /* MCSubscriberError.swift */; };
 		A1AC0DB4202A740700C2CDE0 /* MockRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC0DB3202A740700C2CDE0 /* MockRecordable.swift */; };
 		A1AC8F3F201EC647000B02E8 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC8F3E201EC647000B02E8 /* Reachability.swift */; };
 		A1AC8F40201EC647000B02E8 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC8F3E201EC647000B02E8 /* Reachability.swift */; };
@@ -108,6 +106,14 @@
 		A1F5480C2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F5480A2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift */; };
 		A1F5480E206798DB00A8F8AE /* SubscriptionLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F5480D206798DB00A8F8AE /* SubscriptionLauncher.swift */; };
 		A1F5480F206798DB00A8F8AE /* SubscriptionLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F5480D206798DB00A8F8AE /* SubscriptionLauncher.swift */; };
+		A1F548112067A1EE00A8F8AE /* SubscriptionErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548102067A1EE00A8F8AE /* SubscriptionErrorHandler.swift */; };
+		A1F548122067A1EE00A8F8AE /* SubscriptionErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548102067A1EE00A8F8AE /* SubscriptionErrorHandler.swift */; };
+		A1F548142067A22600A8F8AE /* SubscriptionReattempter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548132067A22600A8F8AE /* SubscriptionReattempter.swift */; };
+		A1F548152067A22600A8F8AE /* SubscriptionReattempter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548132067A22600A8F8AE /* SubscriptionReattempter.swift */; };
+		A1F548172067A24600A8F8AE /* SubscriptionReplacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548162067A24600A8F8AE /* SubscriptionReplacer.swift */; };
+		A1F548182067A24600A8F8AE /* SubscriptionReplacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548162067A24600A8F8AE /* SubscriptionReplacer.swift */; };
+		A1F5481A2067A28E00A8F8AE /* SubscriptionReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548192067A28E00A8F8AE /* SubscriptionReducer.swift */; };
+		A1F5481B2067A28E00A8F8AE /* SubscriptionReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548192067A28E00A8F8AE /* SubscriptionReducer.swift */; };
 		A1FEF543203C99190097C125 /* MockRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC0DB3202A740700C2CDE0 /* MockRecordable.swift */; };
 /* End PBXBuildFile section */
 
@@ -180,7 +186,6 @@
 		A1A085862061FE2300204EBD /* MCCloudErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCCloudErrorHandler.swift; sourceTree = "<group>"; };
 		A1A085892062009200204EBD /* OperationDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationDecorator.swift; sourceTree = "<group>"; };
 		A1A49A2920365D35002A8148 /* MockMirror.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMirror.swift; sourceTree = "<group>"; };
-		A1AC0DAF202A69AB00C2CDE0 /* MCSubscriberError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCSubscriberError.swift; sourceTree = "<group>"; };
 		A1AC0DB3202A740700C2CDE0 /* MockRecordable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRecordable.swift; sourceTree = "<group>"; };
 		A1AC8F3E201EC647000B02E8 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		A1B0CF161FC51FBE009474EE /* RemoteNotificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteNotificationTests.swift; sourceTree = "<group>"; };
@@ -236,6 +241,10 @@
 		A1F548072067945F00A8F8AE /* UserRecordRetriever.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRecordRetriever.swift; sourceTree = "<group>"; };
 		A1F5480A2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCAccountAuthenticationVerifier.swift; sourceTree = "<group>"; };
 		A1F5480D206798DB00A8F8AE /* SubscriptionLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionLauncher.swift; sourceTree = "<group>"; };
+		A1F548102067A1EE00A8F8AE /* SubscriptionErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionErrorHandler.swift; sourceTree = "<group>"; };
+		A1F548132067A22600A8F8AE /* SubscriptionReattempter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionReattempter.swift; sourceTree = "<group>"; };
+		A1F548162067A24600A8F8AE /* SubscriptionReplacer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionReplacer.swift; sourceTree = "<group>"; };
+		A1F548192067A28E00A8F8AE /* SubscriptionReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionReducer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -334,6 +343,10 @@
 		A1268EE51FBA811F00ADAA74 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				A1F548102067A1EE00A8F8AE /* SubscriptionErrorHandler.swift */,
+				A1F548132067A22600A8F8AE /* SubscriptionReattempter.swift */,
+				A1F548162067A24600A8F8AE /* SubscriptionReplacer.swift */,
+				A1F548192067A28E00A8F8AE /* SubscriptionReducer.swift */,
 				A1F5480D206798DB00A8F8AE /* SubscriptionLauncher.swift */,
 				A1F548072067945F00A8F8AE /* UserRecordRetriever.swift */,
 				A1F548042067923500A8F8AE /* UserRecordErrorHandler.swift */,
@@ -394,7 +407,6 @@
 			children = (
 				A181C0B0203F84570004B84B /* API */,
 				A17DE9E41FBE56D900D2EB4F /* MCSubscriber.swift */,
-				A1AC0DAF202A69AB00C2CDE0 /* MCSubscriberError.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -746,11 +758,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1F548142067A22600A8F8AE /* SubscriptionReattempter.swift in Sources */,
+				A1F548112067A1EE00A8F8AE /* SubscriptionErrorHandler.swift in Sources */,
 				A16EA5031FC666DF001E57F8 /* MCNotificationConverter.swift in Sources */,
 				A1A085842061FD8500204EBD /* MCDatabaseModifier.swift in Sources */,
 				A1CB77CD1FBCB1C1008ADF09 /* LimitExceeded.swift in Sources */,
 				A1F5480B2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift in Sources */,
-				A1AC0DB0202A69AB00C2CDE0 /* MCSubscriberError.swift in Sources */,
+				A1F5481A2067A28E00A8F8AE /* SubscriptionReducer.swift in Sources */,
 				A1CB77CE1FBCB1C1008ADF09 /* PartialError.swift in Sources */,
 				A1FEF543203C99190097C125 /* MockRecordable.swift in Sources */,
 				A1CB77CF1FBCB1C1008ADF09 /* BatchError.swift in Sources */,
@@ -768,6 +782,7 @@
 				A1F548022067918300A8F8AE /* ConnectivityChangeListener.swift in Sources */,
 				A1F547F920677C1000A8F8AE /* MCUpload Extensions.swift in Sources */,
 				A1268EEA1FBA821C00ADAA74 /* MCDatabase.swift in Sources */,
+				A1F548172067A24600A8F8AE /* SubscriptionReplacer.swift in Sources */,
 				A1CB77281FBA8683008ADF09 /* FailedOp.swift in Sources */,
 				A1CB773C1FBA86CB008ADF09 /* MCErrorHandler.swift in Sources */,
 				A1CB77291FBA8683008ADF09 /* Pause.swift in Sources */,
@@ -794,10 +809,10 @@
 				A16EA5041FC666DF001E57F8 /* MCNotificationConverter.swift in Sources */,
 				A1CD903520302270005B529C /* MCArrayComparer.swift in Sources */,
 				A1F548062067923500A8F8AE /* UserRecordErrorHandler.swift in Sources */,
-				A1AC0DB1202A69AB00C2CDE0 /* MCSubscriberError.swift in Sources */,
 				A1CB77C71FBC3241008ADF09 /* PartialErrorTests.swift in Sources */,
 				A1CB77861FBB9B94008ADF09 /* MCErrorHandler.swift in Sources */,
 				A181C0AF203F787E0004B84B /* MCMirror.swift in Sources */,
+				A1F5481B2067A28E00A8F8AE /* SubscriptionReducer.swift in Sources */,
 				A1CB77D61FBCBF62008ADF09 /* LimitExceeded.swift in Sources */,
 				A1CB77591FBA8793008ADF09 /* UploadTests.swift in Sources */,
 				A1D8673B2061D73900971C18 /* MCDatabaseOperation.swift in Sources */,
@@ -821,6 +836,8 @@
 				A1CB77681FBAAE9A008ADF09 /* MCDatabase.swift in Sources */,
 				A1CD9032203017B3005B529C /* ArrayComparerTests.swift in Sources */,
 				A1CB77841FBB9879008ADF09 /* MCUpload.swift in Sources */,
+				A1F548152067A22600A8F8AE /* SubscriptionReattempter.swift in Sources */,
+				A1F548182067A24600A8F8AE /* SubscriptionReplacer.swift in Sources */,
 				A1A0858B2062009200204EBD /* OperationDecorator.swift in Sources */,
 				A1F548002067914100A8F8AE /* ReachabilityChanger.swift in Sources */,
 				A1CB77851FBB9881008ADF09 /* Pause.swift in Sources */,
@@ -834,6 +851,7 @@
 				A1CB77D31FBCBF52008ADF09 /* BatchError.swift in Sources */,
 				A18190E22058E76200B0BDF8 /* MCDatabaseTests.swift in Sources */,
 				A1CB77D51FBCBF5E008ADF09 /* PartialError.swift in Sources */,
+				A1F548122067A1EE00A8F8AE /* SubscriptionErrorHandler.swift in Sources */,
 				A1CB77571FBA8793008ADF09 /* DownloadTests.swift in Sources */,
 				A1CB774E1FBA874F008ADF09 /* RecordableTests.swift in Sources */,
 				A1F547FA20677C1000A8F8AE /* MCUpload Extensions.swift in Sources */,
