@@ -106,6 +106,8 @@
 		A1F548092067945F00A8F8AE /* UserRecordRetriever.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548072067945F00A8F8AE /* UserRecordRetriever.swift */; };
 		A1F5480B2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F5480A2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift */; };
 		A1F5480C2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F5480A2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift */; };
+		A1F5480E206798DB00A8F8AE /* SubscriptionLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F5480D206798DB00A8F8AE /* SubscriptionLauncher.swift */; };
+		A1F5480F206798DB00A8F8AE /* SubscriptionLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F5480D206798DB00A8F8AE /* SubscriptionLauncher.swift */; };
 		A1FEF543203C99190097C125 /* MockRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC0DB3202A740700C2CDE0 /* MockRecordable.swift */; };
 /* End PBXBuildFile section */
 
@@ -233,6 +235,7 @@
 		A1F548042067923500A8F8AE /* UserRecordErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRecordErrorHandler.swift; sourceTree = "<group>"; };
 		A1F548072067945F00A8F8AE /* UserRecordRetriever.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRecordRetriever.swift; sourceTree = "<group>"; };
 		A1F5480A2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCAccountAuthenticationVerifier.swift; sourceTree = "<group>"; };
+		A1F5480D206798DB00A8F8AE /* SubscriptionLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionLauncher.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -331,6 +334,7 @@
 		A1268EE51FBA811F00ADAA74 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				A1F5480D206798DB00A8F8AE /* SubscriptionLauncher.swift */,
 				A1F548072067945F00A8F8AE /* UserRecordRetriever.swift */,
 				A1F548042067923500A8F8AE /* UserRecordErrorHandler.swift */,
 				A1F547FE2067914100A8F8AE /* ReachabilityChanger.swift */,
@@ -759,6 +763,7 @@
 				A1CB77D21FBCBF4B008ADF09 /* VersionConflict.swift in Sources */,
 				90C4E8721FC0EAE300A8D329 /* MCUserRecord.swift in Sources */,
 				A181C0AE203F787E0004B84B /* MCMirror.swift in Sources */,
+				A1F5480E206798DB00A8F8AE /* SubscriptionLauncher.swift in Sources */,
 				A1D8673A2061D73900971C18 /* MCDatabaseOperation.swift in Sources */,
 				A1F548022067918300A8F8AE /* ConnectivityChangeListener.swift in Sources */,
 				A1F547F920677C1000A8F8AE /* MCUpload Extensions.swift in Sources */,
@@ -810,6 +815,7 @@
 				A1CB77831FBB9874008ADF09 /* MCDelete.swift in Sources */,
 				A1CB77691FBAAE9D008ADF09 /* TypeAliases & Constants.swift in Sources */,
 				A1CB77D11FBCBF47008ADF09 /* VersionConflict.swift in Sources */,
+				A1F5480F206798DB00A8F8AE /* SubscriptionLauncher.swift in Sources */,
 				A1CD903720302802005B529C /* MCMirrorTests.swift in Sources */,
 				A1A085852061FD8500204EBD /* MCDatabaseModifier.swift in Sources */,
 				A1CB77681FBAAE9A008ADF09 /* MCDatabase.swift in Sources */,

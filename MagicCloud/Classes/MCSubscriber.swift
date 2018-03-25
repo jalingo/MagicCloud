@@ -9,9 +9,11 @@
 import CloudKit
 
 /// This public class handles Magic Cloud's CKQuerySubscriptions, allowing for receivers to be listen for changes while handling any errors that might arise (does NOT currently work with generic error handling).
-public class MCSubscriber {
+public class MCSubscriber: SubscriptionLauncher {
 
     // MARK: - Properties
+    
+    // MARK: - Properties: RemoteSubscriber
     
     /// This property references CKQuerSubscription being decorated and registered by class.
     var subscription: CKQuerySubscription
@@ -23,34 +25,6 @@ public class MCSubscriber {
     var subscriptionError: MCSubscriberError { return MCSubscriberError(delegate: self) }
     
     // MARK: - Functions
-    
-    /**
-        This method creates a subscription that listens for injected change of record type at database and allows consequence.
-     
-        - Note: Each MCSubscriber manages a single subscription. For multiple subscriptions use different MCSubscribers.
-     */
-    func start() {
-        // Saves the subscription to database
-        database.db.save(self.subscription) { possibleSubscription, possibleError in
-            if let error = possibleError as? CKError { self.subscriptionError.handle(error, whileSubscribing: true) }
-        }
-    }
-    
-    /**
-        This method unregisters either this class's subscription property or another subscription matching supplied identifier.
-     
-        - Parameter subscriptionID: An optional (defaults nil) string identifier to match against CKQuerySubscription.subscriptionID. If nil, id from subscription property used instead.
-     */
-    func end(subscriptionID: String? = nil) {
-        // This loads id with either parameter or self.subscription's id
-        let id = subscriptionID ?? subscription.subscriptionID
-
-        database.db.delete(withSubscriptionID: id) { possibleID, possibleError in
-            if let error = possibleError as? CKError {
-                self.subscriptionError.handle(error, whileSubscribing: false, to: subscriptionID)
-            }
-        }
-    }
     
     // MARK: - Functions: Constructors
     
