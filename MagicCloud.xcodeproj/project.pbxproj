@@ -96,6 +96,10 @@
 		A1F547FA20677C1000A8F8AE /* MCUpload Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F547F820677C1000A8F8AE /* MCUpload Extensions.swift */; };
 		A1F547FC20677C8A00A8F8AE /* MCDelete Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F547FB20677C8A00A8F8AE /* MCDelete Extensions.swift */; };
 		A1F547FD20677C8A00A8F8AE /* MCDelete Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F547FB20677C8A00A8F8AE /* MCDelete Extensions.swift */; };
+		A1F547FF2067914100A8F8AE /* ReachabilityChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F547FE2067914100A8F8AE /* ReachabilityChanger.swift */; };
+		A1F548002067914100A8F8AE /* ReachabilityChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F547FE2067914100A8F8AE /* ReachabilityChanger.swift */; };
+		A1F548022067918300A8F8AE /* ConnectivityChangeListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548012067918300A8F8AE /* ConnectivityChangeListener.swift */; };
+		A1F548032067918300A8F8AE /* ConnectivityChangeListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F548012067918300A8F8AE /* ConnectivityChangeListener.swift */; };
 		A1FEF543203C99190097C125 /* MockRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC0DB3202A740700C2CDE0 /* MockRecordable.swift */; };
 /* End PBXBuildFile section */
 
@@ -218,6 +222,8 @@
 		A1F547F52067732800A8F8AE /* SpecialCompleter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialCompleter.swift; sourceTree = "<group>"; };
 		A1F547F820677C1000A8F8AE /* MCUpload Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MCUpload Extensions.swift"; sourceTree = "<group>"; };
 		A1F547FB20677C8A00A8F8AE /* MCDelete Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MCDelete Extensions.swift"; sourceTree = "<group>"; };
+		A1F547FE2067914100A8F8AE /* ReachabilityChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityChanger.swift; sourceTree = "<group>"; };
+		A1F548012067918300A8F8AE /* ConnectivityChangeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConnectivityChangeListener.swift; path = MagicCloud/Protocols/ConnectivityChangeListener.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -316,6 +322,8 @@
 		A1268EE51FBA811F00ADAA74 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				A1F547FE2067914100A8F8AE /* ReachabilityChanger.swift */,
+				A1F548012067918300A8F8AE /* ConnectivityChangeListener.swift */,
 				A1D867392061D73900971C18 /* MCDatabaseOperation.swift */,
 				A1A085832061FD8500204EBD /* MCDatabaseModifier.swift */,
 				A1A085862061FE2300204EBD /* MCCloudErrorHandler.swift */,
@@ -739,6 +747,7 @@
 				90C4E8721FC0EAE300A8D329 /* MCUserRecord.swift in Sources */,
 				A181C0AE203F787E0004B84B /* MCMirror.swift in Sources */,
 				A1D8673A2061D73900971C18 /* MCDatabaseOperation.swift in Sources */,
+				A1F548022067918300A8F8AE /* ConnectivityChangeListener.swift in Sources */,
 				A1F547F920677C1000A8F8AE /* MCUpload Extensions.swift in Sources */,
 				A1268EEA1FBA821C00ADAA74 /* MCDatabase.swift in Sources */,
 				A1CB77281FBA8683008ADF09 /* FailedOp.swift in Sources */,
@@ -751,6 +760,7 @@
 				A1268EE71FBA821400ADAA74 /* TypeAliases & Constants.swift in Sources */,
 				A1CD903420302270005B529C /* MCArrayComparer.swift in Sources */,
 				A1CB77381FBA86AF008ADF09 /* MCDelete.swift in Sources */,
+				A1F547FF2067914100A8F8AE /* ReachabilityChanger.swift in Sources */,
 				A1F547FC20677C8A00A8F8AE /* MCDelete Extensions.swift in Sources */,
 				A1A0858A2062009200204EBD /* OperationDecorator.swift in Sources */,
 			);
@@ -775,6 +785,7 @@
 				A1CB77521FBA8773008ADF09 /* PauseTests.swift in Sources */,
 				A1AC0DB4202A740700C2CDE0 /* MockRecordable.swift in Sources */,
 				A1CB77C81FBC3241008ADF09 /* BatchErrorTests.swift in Sources */,
+				A1F548032067918300A8F8AE /* ConnectivityChangeListener.swift in Sources */,
 				A1B0CF171FC51FBE009474EE /* RemoteNotificationTests.swift in Sources */,
 				A1CB77CB1FBC3241008ADF09 /* LimitExceededTests.swift in Sources */,
 				A1268EE41FBA80BC00ADAA74 /* MCRecordable.swift in Sources */,
@@ -789,6 +800,7 @@
 				A1CD9032203017B3005B529C /* ArrayComparerTests.swift in Sources */,
 				A1CB77841FBB9879008ADF09 /* MCUpload.swift in Sources */,
 				A1A0858B2062009200204EBD /* OperationDecorator.swift in Sources */,
+				A1F548002067914100A8F8AE /* ReachabilityChanger.swift in Sources */,
 				A1CB77851FBB9881008ADF09 /* Pause.swift in Sources */,
 				A1CD903A20303003005B529C /* MCMirrorAbstraction.swift in Sources */,
 				A17DE9E61FBE56D900D2EB4F /* MCSubscriber.swift in Sources */,
