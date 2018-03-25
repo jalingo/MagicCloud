@@ -11,7 +11,7 @@ import CloudKit
 // MARK: - Class
 
 /// This wrapper class for CKModifyRecordsOperation saves records for the injected recordables in the specified database.
-public class MCUpload<R: MCMirrorAbstraction>: Operation, MCDatabaseModifier {
+public class MCUpload<R: MCMirrorAbstraction>: Operation, MCDatabaseModifier, MCCloudErrorHandler {    
     
     // MARK: - Properties
     
