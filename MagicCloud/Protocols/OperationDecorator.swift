@@ -11,7 +11,7 @@ import CloudKit
 // MARK: Protocol
 
 /// Types conforming to this protocol can call the `decorate` method and generate a configured Operation.
-protocol OperationDecorator: MCCloudErrorHandler {
+protocol OperationDecorator {
     
     /// This method returns a fully configured Operation, ready to be launched.
     func decorate() -> Operation
@@ -19,17 +19,8 @@ protocol OperationDecorator: MCCloudErrorHandler {
 
 // MARK: - Extension
 
-extension OperationDecorator where Self: Operation & MCDatabaseModifier {
- 
-    // MARK: - Properties
-    
-    /// This read-only, computed property returns a ModifyBlock for uploading with a CKModifyRecordsOperation.
-    var modifyCompletion: ModifyBlock {
-        return { recs, ids, error in
-            guard error == nil else { self.handle(error, from: self, whileIgnoringUnknownItem: false); return }
-        }
-    }
-    
+extension OperationDecorator where Self: Operation & MCDatabaseModifier & SpecialCompleter {
+
     // MARK: - Functions
     
     /// !!
@@ -54,34 +45,7 @@ extension OperationDecorator where Self: Operation & MCDatabaseModifier {
     /// - Parameter op: The operation whose completion block needs to be passed down, and then whose activity needs to be cleaned up.
     func setCompletion(_ op: CKModifyRecordsOperation) {
         let block = completionBlock
-        
-        if let overwrites = op.recordsToSave?.count, overwrites > 0 { op.completionBlock = self.uploadBlock(containing: block) }
-        
-        if let deletions = op.recordIDsToDelete?.count, deletions > 0 { op.completionBlock = self.deleteBlock(containing: block) }
-        
+        op.completionBlock = self.specialCompletion(containing: block)
         completionBlock = nil
-    }
-    
-    // !!
-    fileprivate func uploadBlock(containing block: OptionalClosure) -> OptionalClosure {
-        return {
-            let unchanged: [T] = self.receiver.localRecordables - self.recordables as! [T]
-            let changed = unchanged + self.recordables  // <-- !!
-            self.receiver.localRecordables = changed as! [U.type] //unchanged + self.recordables
-            block?()
-        }
-    }
-    
-    // !!
-    fileprivate func deleteBlock(containing block: OptionalClosure) -> OptionalClosure {
-        return {
-            // originating receiver will ignore notification, this manually removes...
-            let newVal = self.receiver.silentRecordables.filter { silent in
-                !self.recordables.contains(where: { silent.recordID.recordName == $0.recordID.recordName })
-            }
-            self.receiver.localRecordables = newVal
-            
-            block?()
-        }
     }
 }

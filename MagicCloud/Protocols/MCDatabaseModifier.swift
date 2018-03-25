@@ -11,13 +11,19 @@ import CloudKit
 // MARK: Protocol
 
 /// Types conforming to this protocol have the properties needed to prepare and launch `CKModifyRecordsOperation` classes.
-protocol MCDatabaseModifier: MCDatabaseOperation, MCCloudErrorHandler {
+protocol MCDatabaseModifier: MCDatabaseOperation {
     
     /// This association refers to the type of `MCRecordable` that operation is manipulating in the cloud database.
-    associatedtype T: MCRecordable
+    associatedtype R: MCMirrorAbstraction
     
     /// This read-only property returns an array of the recordables that will be modified (added / edited / removed) in the cloud database.
-    var recordables: [T] { get }    
+    var recordables: [R.type] { get }
+    
+    /// This read-only, computed property returns a ModifyBlock for uploading with a CKModifyRecordsOperation.
+    var modifyCompletion: ModifyBlock { get }
+    
+    /// This is the MCMirror that contains the recordables that are being uploaded to database.
+    var receiver: R { get }
 }
 
 extension MCDatabaseModifier {
@@ -39,5 +45,18 @@ extension MCDatabaseModifier {
     /// This read-only, computed property returns an array of `CKRecordID`s for each entry in `recordables` property.
     var recordIDs: [CKRecordID] {
         return recordables.map { $0.recordID }
+    }
+}
+
+extension MCDatabaseModifier where Self: Operation & MCCloudErrorHandler {
+    
+    /// This read-only, computed property returns a ModifyBlock for uploading with a CKModifyRecordsOperation.
+    var modifyCompletion: ModifyBlock {
+        return { recs, ids, error in
+            guard error == nil else { self.handle(error,
+                                                  in: self,
+                                                  whileIgnoringUnknownItem: false,
+                                                  ignoreUnknownAction: nil); return }
+        }
     }
 }
