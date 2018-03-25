@@ -320,9 +320,8 @@
 			children = (
 				A1268EBA1FBA806200ADAA74 /* Info.plist */,
 				A1CB771A1FBA8563008ADF09 /* Resources */,
-				A1CB77191FBA853C008ADF09 /* Classes */,
+				A1CB77191FBA853C008ADF09 /* Concrete Types */,
 				A1268EE51FBA811F00ADAA74 /* Protocols */,
-				A1CB77331FBA869D008ADF09 /* Operations */,
 			);
 			path = MagicCloud;
 			sourceTree = "<group>";
@@ -373,13 +372,13 @@
 			path = Mocks;
 			sourceTree = "<group>";
 		};
-		A181C0B0203F84570004B84B /* API */ = {
+		A181C0B0203F84570004B84B /* Classes */ = {
 			isa = PBXGroup;
 			children = (
 				A181C0AD203F787E0004B84B /* MCMirror.swift */,
 				90C4E8711FC0EAE300A8D329 /* MCUserRecord.swift */,
 			);
-			path = API;
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		A181C0B1203F84E40004B84B /* API */ = {
@@ -402,13 +401,14 @@
 			path = "Error Cases";
 			sourceTree = "<group>";
 		};
-		A1CB77191FBA853C008ADF09 /* Classes */ = {
+		A1CB77191FBA853C008ADF09 /* Concrete Types */ = {
 			isa = PBXGroup;
 			children = (
-				A181C0B0203F84570004B84B /* API */,
+				A1CB77331FBA869D008ADF09 /* Operations */,
+				A181C0B0203F84570004B84B /* Classes */,
 				A17DE9E41FBE56D900D2EB4F /* MCSubscriber.swift */,
 			);
-			path = Classes;
+			path = "Concrete Types";
 			sourceTree = "<group>";
 		};
 		A1CB771A1FBA8563008ADF09 /* Resources */ = {
