@@ -9,9 +9,9 @@
 import CloudKit
 
 /// Types conforming to the protocol can call the generic `resolve:error:in:from:to:withPolicy:whileIgnoringUnknowns:unknownCustomAction` method that selects resolution strategy based on error code and then executes said resolution.
-protocol ResolutionSwitcher: MCRetrier { }
+protocol ResolutionSwitcher: MCRetrier, BatchErrorResolver { }
 
-extension ResolutionSwitcher where Self: Operation {
+extension ResolutionSwitcher where Self: Operation & MCDatabaseModifier {
     
     /// This generic method selects resolution strategy based on error code and then executes said resolution.
     ///
@@ -42,15 +42,7 @@ extension ResolutionSwitcher where Self: Operation {
             completionBlock = nil
             
         // These errors occur when a batch of requests fails or partially fails (batch operations).
-        case .limitExceeded, .batchRequestFailed, .partialFailure:
-            resolvingOperation = BatchError(error: error,
-                                            occuredIn: originatingOp,
-                                            target: database, receiver: receiver, instances: recordables)
-            
-            if let resolver = resolvingOperation as? BatchError<R> {
-                resolver.ignoreUnknownItem = ignoreUnknownItem
-                resolver.ignoreUnknownItemCustomAction = ignoreUnknownItemCustomAction
-            }
+        case .limitExceeded, .batchRequestFailed, .partialFailure: resolveBatch(error, in: originatingOp)
             
         // These errors occur as a result of environmental factors, and originating operation should be retried after a set amount of time.
         case .networkUnavailable, .networkFailure, .serviceUnavailable, .requestRateLimited, .zoneBusy:

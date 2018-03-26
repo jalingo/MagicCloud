@@ -23,25 +23,24 @@ class MCErrorHandler<R: MCMirrorAbstraction>: Operation, ConsoleErrorPrinter, Ge
     
     // MARK: - Properties
     
+    /// This save policy will be used if version conflict detected (CKError.serverRecordChanged).
+    /// - Default: `CKRecordSavePolicy.changedKeys`
+    var conflictResolutionPolicy: CKRecordSavePolicy = .changedKeys
+    
+    // MARK: - Properties: MCDatabaseModifier
+    
     /// This property represents the instances conforming to recordable that were interacting with cloud.
-    fileprivate var recordables = [R.type]()
+    var recordables = [R.type]()
     
     // MARK: - Properties: MCRecordableReceiver
     
     /// !!
-    fileprivate let receiver: R
+    let receiver: R
 
     /// This is the database cloud activity generated an error in.
-    fileprivate var database: MCDatabase
+    var database: MCDatabase
     
-    // MARK: - Properties: Accessors
-    
-    /**
-        This save policy will be used if version conflict detected (CKError.serverRecordChanged).
-     
-        - Default: CKRecordSavePolicy.changedKeys
-     */
-    var conflictResolutionPolicy: CKRecordSavePolicy = .changedKeys
+    // MARK: - Properties: PartialErrorResolver
     
     /// Skips over any error handling for `.unknownItem` errors, except `ignoreUnknownItemCustomAction`.
     var ignoreUnknownItem = false
@@ -74,7 +73,9 @@ class MCErrorHandler<R: MCMirrorAbstraction>: Operation, ConsoleErrorPrinter, Ge
         notifyExternalAccessors()
         
         if isCancelled { return }
-        resolve(error, in: originatingOp, with: recordables, from: receiver, to: database, withPolicy: conflictResolutionPolicy, whileIgnoringUnknowns: ignoreUnknownItem, unknownCustomAction: ignoreUnknownItemCustomAction)
+        resolve(error, in: originatingOp, with: recordables, from: receiver, to: database,
+                withPolicy: conflictResolutionPolicy,
+                whileIgnoringUnknowns: ignoreUnknownItem, unknownCustomAction: ignoreUnknownItemCustomAction)
     }
     
     /**
@@ -92,5 +93,13 @@ class MCErrorHandler<R: MCMirrorAbstraction>: Operation, ConsoleErrorPrinter, Ge
         database = target
         
         super.init()
+    }
+}
+
+extension MCErrorHandler: MCDatabaseModifier {
+    
+    /// - Warning: This placeholder property is never called, and is only used for `MCDatabaseModifier` conformance.
+    var modifyCompletion: ModifyBlock {
+        return { _,_,_ in }
     }
 }

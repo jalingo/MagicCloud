@@ -28,7 +28,7 @@ class PartialError<R: MCMirrorAbstraction>: Operation {
     
     var database: MCDatabase
     
-    /// Skips over any error handling for `.unknownItem` errors.
+    /// If true, skips over any error handling for `.unknownItem` errors.
     var ignoreUnknownItem = false
     
     /// Allows user to set a customized completion block for `.ignoreUnknownItem` situations.
