@@ -14,7 +14,7 @@ import CloudKit
 
 extension MCDelete: OperationDecorator {
     
-    /// This method decorates a modify operation.
+    /// This method returns a fully configured Operation, ready to be launched.
     func decorate() -> Operation {
         let op = CKModifyRecordsOperation(recordsToSave: nil,
                                           recordIDsToDelete: recordIDs)
@@ -29,7 +29,8 @@ extension MCDelete: OperationDecorator {
 
 extension MCDelete: SpecialCompleter {
     
-    /// !!
+    /// This method returns a completion block that will launch the injected block after performing follow up procedures.
+    /// - Parameter block: Usually the original completion block, this closure will be run after follow up procedures are executed.
     func specialCompletion(containing block: OptionalClosure) -> OptionalClosure {
         return {
             // originating receiver will ignore notification, this manually removes...

@@ -29,7 +29,8 @@ extension MCUpload: OperationDecorator {
 
 extension MCUpload: SpecialCompleter {
     
-    /// !!
+    /// This method returns a completion block that will launch the injected block after performing follow up procedures.
+    /// - Parameter block: Usually the original completion block, this closure will be run after follow up procedures are executed.
     func specialCompletion(containing block: OptionalClosure) -> OptionalClosure {
         return {
             let unchanged: [R.type] = self.receiver.localRecordables - self.recordables as! [R.type]

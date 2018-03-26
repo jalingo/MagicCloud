@@ -14,7 +14,7 @@ import CloudKit
 
 extension MCDownload: OperationDecorator {
     
-    /// !!
+    /// This method returns a fully configured Operation, ready to be launched.
     func decorate() -> Operation {
         let op = CKQueryOperation(query: query)
         op.name = self.name
@@ -28,8 +28,9 @@ extension MCDownload: OperationDecorator {
 
 extension MCDownload: SpecialCompleter {
     
-    /// !!
-    func specialCompletion(containing: OptionalClosure) -> OptionalClosure {
+    /// This method returns a completion block that will launch the injected block after performing follow up procedures.
+    /// - Parameter block: Usually the original completion block, this closure will be run after follow up procedures are executed.
+    func specialCompletion(containing block: OptionalClosure) -> OptionalClosure {
         // No additional follow up is required...
-        return containing }
+        return block }
 }
