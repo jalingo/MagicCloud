@@ -8,7 +8,7 @@
 
 import CloudKit
 
-/// This public class handles Magic Cloud's CKQuerySubscriptions, allowing for receivers to be listen for changes while handling any errors that might arise (does NOT currently work with generic error handling).
+/// This public class handles Magic Cloud's CKQuerySubscriptions, allowing for receivers to be listen for changes while handling any errors that might arise.
 public class MCSubscriber: SubscriptionErrorHandler {
 
     // MARK: - Properties
@@ -20,9 +20,6 @@ public class MCSubscriber: SubscriptionErrorHandler {
     
     /// This read-only, constant property stores database that subscription will register with (pub / priv).
     let database: MCDatabase
-
-    /// This read-only, computed property returns a subsctiption error handler using self as delegate.
-//    var subscriptionError: MCSubscriberError { return MCSubscriberError(delegate: self) }
     
     // MARK: - Functions
     
