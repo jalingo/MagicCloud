@@ -19,8 +19,8 @@ extension MCUpload: OperationDecorator {
         let op = CKModifyRecordsOperation(recordsToSave: self.records,
                                           recordIDsToDelete: nil)
         op.name = self.name
-        uniformSetup(op)
-        
+        setupModifier(op)
+
         return op
     }
 }

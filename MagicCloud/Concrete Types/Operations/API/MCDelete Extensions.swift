@@ -19,8 +19,8 @@ extension MCDelete: OperationDecorator {
         let op = CKModifyRecordsOperation(recordsToSave: nil,
                                           recordIDsToDelete: recordIDs)
         op.name = self.name
-        uniformSetup(op)
-        
+        setupModifier(op)
+
         return op
     }
 }

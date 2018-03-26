@@ -11,19 +11,9 @@ import CloudKit
 /**
     Downloads records from specified database, converts them back to recordables and then loads them into associated receiver. Destination is the receiver's 'recordables' property, an array of receiver's associated type, but array is NOT emptied or otherwise prepared before appending results.
  */
-public class MCDownload<R: MCMirrorAbstraction>: Operation, MCDatabaseOperation {
+public class MCDownload<R: MCMirrorAbstraction>: Operation, MCDatabaseQuerier, MCCloudErrorHandler {
 
     // MARK: - Properties
-    
-    /**
-        The maximum number of records to return at one time.
-     
-        For most queries, leave the value of this property set to the default value, which is represented by the **CKQueryOperationMaximumResults** constant. When using that value, the server chooses a limit that aims to provide an optimal number of results that returns as many records as possible while minimizing delays in receiving those records. However, if you know that you want to process a fixed number of results, change the value of this property accordingly.
-     */
-    var limit: Int?
-    
-    /// This property stores a customized completion block triggered by `Unknown Item` errors.
-    var unknownItemCustomAction: OptionalClosure
     
     /**
         A CKQuery object manages the criteria to apply when searching for records in a database. You create a query object as the first step in the search process. The query object stores the search parameters, including the type of records to search, the match criteria (predicate) to apply, and the sort parameters to apply to the results. The second step is to use the query object to initialize a CKQueryOperation object, which you then execute to generate the results.
@@ -34,92 +24,34 @@ public class MCDownload<R: MCMirrorAbstraction>: Operation, MCDatabaseOperation 
      */
     var query: CKQuery
     
-    // MARK: - MCCloudErrorHandler
+    // MARK: - MCDatabaseQuerier
+    
+    /**
+     The maximum number of records to return at one time.
+     
+     For most queries, leave the value of this property set to the default value, which is represented by the **CKQueryOperationMaximumResults** constant. When using that value, the server chooses a limit that aims to provide an optimal number of results that returns as many records as possible while minimizing delays in receiving those records. However, if you know that you want to process a fixed number of results, change the value of this property accordingly.
+     */
+    var limit: Int?
+    
+    /// This property stores a customized completion block triggered by `Unknown Item` errors.
+    var unknownItemCustomAction: OptionalClosure
     
     /// This is the receiver that downloaded records will be sent to as instances conforming to Recordable.
     let receiver: R
-    
-    // MARK: - Properties: MCDatabaseOperation
     
     /// This read-only property returns the target cloud database for operation.
     let database: MCDatabase
     
     // MARK: - Functions
-     
-    /// This method configures a CKQueryOperation with settings, appropriate completion blocks and name.
-    fileprivate func decorate(op: CKQueryOperation) {
-        if let integer = limit { op.resultsLimit = integer }
-    
-        if database.scope == MCDatabase.privateDB.scope { op.zoneID = CKRecordZone.default().zoneID}
-        
-        op.recordFetchedBlock = recordFetched()
-        op.queryCompletionBlock = queryCompletion(op: op)
-        
-        // This passes the completion block down to the end of the operation.
-        op.completionBlock = self.completionBlock
-        self.completionBlock = nil
-        
-        op.name = "Download @ \(database)"
-    }
-    
-    /// This method supplies a completion block for CKQueryOperation.recordFetchedBlock.
-    fileprivate func recordFetched() -> FetchBlock {
-        return { record in            
-            let recordable = R.type().prepare(from: record)
-
-            // This if statement checks to avoid downloading duplicates.
-            if !self.receiver.silentRecordables.contains(where: {$0.recordID.recordName == recordable.recordID.recordName}) {
-                self.receiver.silentRecordables.append(recordable)
-            }
-        }
-    }
-    
-    /// This method supplies a completion block for CKQueryOperation.queryCompletionBlock.
-    fileprivate func queryCompletion(op: CKQueryOperation) -> QueryBlock {
-        return { cursor, error in
-            if let queryCursor = cursor {
-                self.database.db.add(self.followUp(cursor: queryCursor, op: op))
-            } else {
-                guard error == nil else {
-                    if let cloudError = error as? CKError {
-                        let errorHandler = MCErrorHandler(error: cloudError,
-                                                          originating: op,
-                                                          target: self.database, instances: [],
-                                                          receiver: self.receiver)
-                        errorHandler.ignoreUnknownItem = true
-                        errorHandler.ignoreUnknownItemCustomAction = self.unknownItemCustomAction
-                        OperationQueue().addOperation(errorHandler)
-                    }
-                    
-                    return
-                }
-            }
-        }
-    }
-    
-    /// This method creates an operation that can finish an incomplete query from a CKQueryCursor.
-    fileprivate func followUp(cursor: CKQueryCursor, op: CKQueryOperation) -> CKQueryOperation {
-        let newOp = CKQueryOperation(cursor: cursor)
-   
-        newOp.queryCompletionBlock = op.queryCompletionBlock
-        newOp.recordFetchedBlock = op.recordFetchedBlock
-        newOp.resultsLimit = op.resultsLimit
-        
-        return newOp
-    }
     
     // MARK: - Functions: Operation
     
     /// If not cancelled, this method override will decorate and launch a CKQueryOperation in the specifified database.
     public override func main() {
-        
         if isCancelled { return }
         
         let op = CKQueryOperation(query: query)
-        
-        if isCancelled { return }
-
-        decorate(op: op)
+        setupQuerier(op)
         
         if isCancelled { return }
 
@@ -172,5 +104,7 @@ public class MCDownload<R: MCMirrorAbstraction>: Operation, MCDatabaseOperation 
         database = db
         
         super.init()
+        
+        self.name = "\(Date.timeIntervalBetween1970AndReferenceDate) - MCDownload \(query.description) from \(self.database)"
     }
 }

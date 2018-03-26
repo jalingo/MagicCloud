@@ -66,6 +66,6 @@ public class MCUpload<R: MCMirrorAbstraction>: Operation, MCDatabaseModifier, MC
         
         super.init()
         
-        self.name = "Upload \(String(describing: recs?.count)) recs for \(rec.name) to \(db)"
+        self.name = "\(Date.timeIntervalBetween1970AndReferenceDate) - Upload \(String(describing: recs?.count)) recs for \(rec.name) to \(db)"
     }
 }

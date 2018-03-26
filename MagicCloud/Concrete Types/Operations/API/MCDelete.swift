@@ -76,6 +76,6 @@ public class MCDelete<R: MCMirrorAbstraction>: Operation, MCDatabaseModifier, MC
         
         super.init()
         
-        self.name = "Delete \(String(describing: array?.count)) recs for \(rec.name) to \(db)"
+        self.name = "\(Date.timeIntervalBetween1970AndReferenceDate) - MCDelete \(self.recordables.count) recs from \(self.database)"
     }
 }
