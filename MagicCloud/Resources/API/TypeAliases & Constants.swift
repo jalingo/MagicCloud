@@ -25,8 +25,3 @@ public typealias NotifyBlock = (Notification) -> Void
 // MARK: - Local Notification Objects
 
 typealias LocalChangePackage = (ids: [CKRecordID], reason: CKQueryNotificationReason, originatingRec: String, db: MCDatabase)
-
-// MARK: - Global Constants
-
-/// This string key ("CLOUD_KIT_ERROR"), is used as a name to listen for during error handling. When observed, attached object is an optional CKError value.
-public let MCErrorNotification = "CLOUD_KIT_ERROR"

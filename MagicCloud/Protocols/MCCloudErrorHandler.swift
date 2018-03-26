@@ -26,7 +26,7 @@ extension MCCloudErrorHandler {
     ///     - receiver: This is the instance of the associated `MCMirrorAbstraction` and may be interacted with during error resolution.
     ///     - database: This argument enumerates the scope of the database being interacted with when error was thrown.
     ///     - whileIgnoringUnknownItem: When true, the method will disregard errors that resulted from an expected record being found. This would be useful if making a query where there may or may not be results. If false, unknown item situations will be resolved normally.
-    ///     - ignoreUnknownAction: When not nil, this closure will be executed if an unknown item situation occurs. Usually this occurs instead of typical error handling, but `whileIgnoringUnknownItem` can be false when this is set, allowing for closure to be executed in addition to typical error handling.
+    ///     - ignoreUnknownAction: When not nil, this closure will be executed if an unknown item situation occurs. If set, `ignoreUnknownItem` will be treated as true, regardless of passed argument.
     func handle<U: MCMirrorAbstraction>(_ error: Error?, in op: Operation, with recordables: [U.type], from receiver: U, to database: MCDatabase, whileIgnoringUnknownItem: Bool, ignoreUnknownAction: OptionalClosure = nil) {
         if let cloudError = error as? CKError {
             let errorHandler = MCErrorHandler(error: cloudError,
@@ -53,7 +53,7 @@ extension MCCloudErrorHandler where Self: MCDatabaseModifier {
     ///     - error: The cloud error that needs to be resolved.
     ///     - op: The operation that generated the error, and (if needed) this operation will be copied and relaunched.
     ///     - whileIgnoringUnknownItem: When true, the method will disregard errors that resulted from an expected record being found. This would be useful if making a query where there may or may not be results. If false, unknown item situations will be resolved normally.
-    ///     - ignoreUnknownAction: When not nil, this closure will be executed if an unknown item situation occurs. Usually this occurs instead of typical error handling, but `whileIgnoringUnknownItem` can be false when this is set, allowing for closure to be executed in addition to typical error handling.
+    ///     - ignoreUnknownAction: When not nil, this closure will be executed if an unknown item situation occurs. If set, `ignoreUnknownItem` will be treated as true, regardless of passed argument.
     func handle(_ error: Error?, in op: Operation, whileIgnoringUnknownItem: Bool, ignoreUnknownAction: OptionalClosure = nil) {
         handle(error,
                in: op,

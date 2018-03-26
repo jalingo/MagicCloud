@@ -19,21 +19,18 @@ import CloudKit
  
     Operation requires local cache to conform to `Recordable` protocol for version conflict resolution.
  */
-class MCErrorHandler<R: MCMirrorAbstraction>: Operation, MCRetrier {
+class MCErrorHandler<R: MCMirrorAbstraction>: Operation, ConsoleErrorPrinter, GenericErrorNotifier, ResolutionSwitcher {
     
     // MARK: - Properties
-    
-    fileprivate let receiver: R
-    
-    /// This is the error that needs to be handled by this operation.
-    fileprivate let error: CKError
-    
-    /// This is the operation that was running when error was generated.
-    fileprivate let originatingOp: Operation
     
     /// This property represents the instances conforming to recordable that were interacting with cloud.
     fileprivate var recordables = [R.type]()
     
+    // MARK: - Properties: MCRecordableReceiver
+    
+    /// !!
+    fileprivate let receiver: R
+
     /// This is the database cloud activity generated an error in.
     fileprivate var database: MCDatabase
     
@@ -59,88 +56,25 @@ class MCErrorHandler<R: MCMirrorAbstraction>: Operation, MCRetrier {
         }
     }
     
+    // MARK: - Properties: GenericErrorNotifier
+    
+    /// This is the error that needs to be handled by this operation.
+    let error: CKError
+    
+    /// This is the operation that was running when error was generated.
+    let originatingOp: Operation
+    
     // MARK: - Functions
     
     override func main() {
         if isCancelled { return }
-print("""
-    !E- ERROR: \(error.code) \(error.localizedDescription) \(error)
-    !E- for \(String(describing: originatingOp.name))
-    !E- w/recordables: \(recordables.map({$0.recordID}))
-    !E- on: \(database)
-    """)
-        // This console message reports instances when error shouldn't be ignored or isn't partial failure.
-        if !(error.code == .unknownItem && ignoreUnknownItem) || !(error.code == .partialFailure) {
-            let name = Notification.Name(MCErrorNotification)
-            NotificationCenter.default.post(name: name, object: error)
-        }
+        printAbout(error, from: originatingOp, to: database, with: recordables)
+
+        if isCancelled { return }
+        notifyExternalAccessors()
         
         if isCancelled { return }
-        
-        // After the following switch identifies the type of error, variable will contain response.
-        var resolvingOperation: Operation?
-        
-        switch error.code {
-            
-        // This error occurs when record's change tag indicates a version conflict (modify operations).
-        case .serverRecordChanged:
-            resolvingOperation = VersionConflict(rec: receiver,
-                                                 error: error,
-                                                 target: database,
-                                                 policy: self.conflictResolutionPolicy,
-                                                 instances: recordables,
-                                                 completionBlock: completionBlock)
-            completionBlock = nil
-     
-        // These errors occur when a batch of requests fails or partially fails (batch operations).
-        case .limitExceeded, .batchRequestFailed, .partialFailure:
-            resolvingOperation = BatchError(error: error,
-                                            occuredIn: originatingOp,
-                                            target: database, receiver: receiver, instances: recordables)
-                                            
-            if let resolver = resolvingOperation as? BatchError<R> {
-                resolver.ignoreUnknownItem = self.ignoreUnknownItem
-                resolver.ignoreUnknownItemCustomAction = self.ignoreUnknownItemCustomAction
-            }
-    
-        // These errors occur as a result of environmental factors, and originating operation should
-        // be retried after a set amount of time.
-        case .networkUnavailable, .networkFailure, .serviceUnavailable, .requestRateLimited, .zoneBusy:
-            guard let retryAfterValue = error.userInfo[CKErrorRetryAfterKey] as? TimeInterval else { return }
-
-            if isCancelled { return }
-
-            let q = DispatchQueue(label: retriableLabel)
-            if let op = replicate(originatingOp, with: receiver) {
-                
-                if isCancelled { return }
-
-                q.asyncAfter(deadline: .now() + retryAfterValue) {
-                    if self.isCancelled { return }
-                    
-                    if let cloudOp = op as? CKDatabaseOperation {
-                        self.database.db.add(cloudOp)
-                    } else {
-                        OperationQueue().addOperation(op)
-                    }
-                }
-            }
-        
-        // These errors occur when CloudKit has a problem with a CKSharedDatabase operation.    // <-- Not currently supported but left here as a reminder for future versions.
-//        case .alreadyShared, .tooManyParticipants:
-        
-        // This case allows .unknownItem to be ignored (query / fetch / modify operations).
-        case .unknownItem where ignoreUnknownItem:
-            if let block = ignoreUnknownItemCustomAction { block() }
-            
-        // These fatal errors do not require any further handling.
-        default: break
-        }
-        
-        if isCancelled { return }
-        
-        // After resolution determined in previous switch statement, resolution is initiated here.
-        if let op = resolvingOperation { OperationQueue().addOperation(op) }
+        resolve(error, in: originatingOp, with: recordables, from: receiver, to: database, withPolicy: conflictResolutionPolicy, whileIgnoringUnknowns: ignoreUnknownItem, unknownCustomAction: ignoreUnknownItemCustomAction)
     }
     
     /**
