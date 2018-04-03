@@ -13,13 +13,11 @@ class LimitExceededTests: XCTestCase {
     
     // MARK: - Properties
     
-    var testOp: LimitExceeded<MockReceiver>?
+    var testOp: MockBatchSplitter?
     
-    var mock: MCUpload<MockReceiver>?
+    var mock: MCUpload<MCMirror<MockRecordable>>?
     
-    var mockRec = MockReceiver() {
-didSet { print("ø- instantiating MockReceiver") }
-    }
+    var mockRec = MCMirror<MockRecordable>(db: .privateDB)
     
     var mocks: [MockRecordable]?
     
@@ -49,7 +47,8 @@ didSet { print("ø- instantiating MockReceiver") }
         }
         
         // Creates mock error situation.
-        testOp = LimitExceeded(error: error, occuredIn: mock!, rec: mockRec, instances: mocks!, target: .privateDB)
+        testOp = MockBatchSplitter(error: error, in: mock!, from: mockRec)
+        //LimitExceeded(error: error, occuredIn: mock!, rec: mockRec, instances: mocks!, target: .privateDB)
         
         // These operations are used in test sequence.
         let prepOp = MCDelete(mocks, of: mockRec, from: .privateDB)
@@ -102,7 +101,7 @@ didSet { print("ø- instantiating MockReceiver") }
         }
         
         /*
-         * Test Breakdown:  
+         * Test Breakdown:
          * (1) prepOp ensures no mocks in db
          * (2) testOp fulfills failedOp, saving mocks to db
          * (3) pause gives testOp time to complete async
@@ -138,5 +137,40 @@ didSet { print("ø- instantiating MockReceiver") }
         mock = nil
         
         super.tearDown()
+    }
+}
+
+class MockBatchSplitter: Operation, MCDatabaseModifier, MCCloudErrorHandler, BatchSplitter {
+    
+    // MARK: - Properties
+
+    var error: CKError
+    
+    var failedOp: Operation
+    
+    // MARK: - Properties: MCDatabaseModifier & MCCloudErrorHandler
+
+    var receiver: MCMirror<MockRecordable>
+    
+    var recordables: [MockBatchSplitter.R.type] {
+        get { return receiver.silentRecordables }
+        set { receiver.localRecordables = newValue }
+    }
+    
+    typealias R = MCMirror<MockRecordable>
+    
+    var database: MCDatabase
+
+    // MARK: - Functions
+    
+    override func main() {
+        self.splitBatch(error: error, in: failedOp)
+    }
+    
+    init(error err: CKError, in op: Operation, from rec: MCMirror<MockRecordable>) {
+        error = err
+        failedOp = op
+        receiver = rec
+        database = rec.db
     }
 }
