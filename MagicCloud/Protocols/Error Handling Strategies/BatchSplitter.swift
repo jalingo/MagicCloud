@@ -15,6 +15,9 @@ extension BatchSplitter where Self: MCDatabaseModifier {
     
     func splitBatch(error cloudError: CKError, in erringOperation: Operation) {
         let halfwayIndex = (recordables.count / 2) - 1
+        
+        guard halfwayIndex > 0 else { return }
+        
         let firstHalf = recordables[0..<halfwayIndex]
         let secondHalf = recordables[halfwayIndex...recordables.endIndex - 1]
         

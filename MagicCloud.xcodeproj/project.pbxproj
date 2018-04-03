@@ -42,6 +42,7 @@
 		A1AC8F3F201EC647000B02E8 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC8F3E201EC647000B02E8 /* Reachability.swift */; };
 		A1AC8F40201EC647000B02E8 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AC8F3E201EC647000B02E8 /* Reachability.swift */; };
 		A1B0CF171FC51FBE009474EE /* RemoteNotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B0CF161FC51FBE009474EE /* RemoteNotificationTests.swift */; };
+		A1C475662073002F0072554F /* VersionConflictResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C475652073002F0072554F /* VersionConflictResolverTests.swift */; };
 		A1CB77171FBA8535008ADF09 /* MCOperationReplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77141FBA8535008ADF09 /* MCOperationReplicator.swift */; };
 		A1CB77181FBA8535008ADF09 /* MCOperationReplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77141FBA8535008ADF09 /* MCOperationReplicator.swift */; };
 		A1CB77281FBA8683008ADF09 /* FailedOp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77251FBA8682008ADF09 /* FailedOp.swift */; };
@@ -65,10 +66,9 @@
 		A1CB77851FBB9881008ADF09 /* Pause.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77261FBA8682008ADF09 /* Pause.swift */; };
 		A1CB77861FBB9B94008ADF09 /* MCErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB773B1FBA86CB008ADF09 /* MCErrorHandler.swift */; };
 		A1CB77871FBB9CB7008ADF09 /* FailedOp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77251FBA8682008ADF09 /* FailedOp.swift */; };
-		A1CB77C71FBC3241008ADF09 /* PartialErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77C21FBC3241008ADF09 /* PartialErrorTests.swift */; };
+		A1CB77C71FBC3241008ADF09 /* PartialResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77C21FBC3241008ADF09 /* PartialResolverTests.swift */; };
 		A1CB77C81FBC3241008ADF09 /* BatchErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77C31FBC3241008ADF09 /* BatchErrorTests.swift */; };
-		A1CB77C91FBC3241008ADF09 /* VersionConflictTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77C41FBC3241008ADF09 /* VersionConflictTests.swift */; };
-		A1CB77CB1FBC3241008ADF09 /* LimitExceededTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77C61FBC3241008ADF09 /* LimitExceededTests.swift */; };
+		A1CB77CB1FBC3241008ADF09 /* BatchSplitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77C61FBC3241008ADF09 /* BatchSplitterTests.swift */; };
 		A1CB77D91FBCE8F0008ADF09 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1CB77D81FBCE8E5008ADF09 /* CloudKit.framework */; };
 		A1CB77E21FBCF132008ADF09 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77E11FBCF131008ADF09 /* AppDelegate.swift */; };
 		A1CB77E41FBCF132008ADF09 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CB77E31FBCF132008ADF09 /* ViewController.swift */; };
@@ -215,6 +215,7 @@
 		A1AC0DB3202A740700C2CDE0 /* MockRecordable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRecordable.swift; sourceTree = "<group>"; };
 		A1AC8F3E201EC647000B02E8 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		A1B0CF161FC51FBE009474EE /* RemoteNotificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteNotificationTests.swift; sourceTree = "<group>"; };
+		A1C475652073002F0072554F /* VersionConflictResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionConflictResolverTests.swift; sourceTree = "<group>"; };
 		A1CB77141FBA8535008ADF09 /* MCOperationReplicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCOperationReplicator.swift; sourceTree = "<group>"; };
 		A1CB77251FBA8682008ADF09 /* FailedOp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FailedOp.swift; sourceTree = "<group>"; };
 		A1CB77261FBA8682008ADF09 /* Pause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pause.swift; sourceTree = "<group>"; };
@@ -229,10 +230,9 @@
 		A1CB77551FBA8792008ADF09 /* DeleteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteTests.swift; sourceTree = "<group>"; };
 		A1CB77561FBA8792008ADF09 /* UploadTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadTests.swift; sourceTree = "<group>"; };
 		A1CB775C1FBA87DB008ADF09 /* MCErrorHandlerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCErrorHandlerTests.swift; sourceTree = "<group>"; };
-		A1CB77C21FBC3241008ADF09 /* PartialErrorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartialErrorTests.swift; sourceTree = "<group>"; };
+		A1CB77C21FBC3241008ADF09 /* PartialResolverTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartialResolverTests.swift; sourceTree = "<group>"; };
 		A1CB77C31FBC3241008ADF09 /* BatchErrorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchErrorTests.swift; sourceTree = "<group>"; };
-		A1CB77C41FBC3241008ADF09 /* VersionConflictTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionConflictTests.swift; sourceTree = "<group>"; };
-		A1CB77C61FBC3241008ADF09 /* LimitExceededTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LimitExceededTests.swift; sourceTree = "<group>"; };
+		A1CB77C61FBC3241008ADF09 /* BatchSplitterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchSplitterTests.swift; sourceTree = "<group>"; };
 		A1CB77D81FBCE8E5008ADF09 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		A1CB77DF1FBCF131008ADF09 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1CB77E11FBCF131008ADF09 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -258,7 +258,7 @@
 		A1F547F820677C1000A8F8AE /* MCUpload Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MCUpload Extensions.swift"; sourceTree = "<group>"; };
 		A1F547FB20677C8A00A8F8AE /* MCDelete Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MCDelete Extensions.swift"; sourceTree = "<group>"; };
 		A1F547FE2067914100A8F8AE /* ReachabilityChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityChanger.swift; sourceTree = "<group>"; };
-		A1F548012067918300A8F8AE /* ConnectivityChangeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConnectivityChangeListener.swift; path = "MagicCloud/Protocols/New Group/ConnectivityChangeListener.swift"; sourceTree = SOURCE_ROOT; };
+		A1F548012067918300A8F8AE /* ConnectivityChangeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConnectivityChangeListener.swift; path = "MagicCloud/Protocols/Reachability Strategies/ConnectivityChangeListener.swift"; sourceTree = SOURCE_ROOT; };
 		A1F548042067923500A8F8AE /* UserRecordErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRecordErrorHandler.swift; sourceTree = "<group>"; };
 		A1F548072067945F00A8F8AE /* UserRecordRetriever.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRecordRetriever.swift; sourceTree = "<group>"; };
 		A1F5480A2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCAccountAuthenticationVerifier.swift; sourceTree = "<group>"; };
@@ -556,9 +556,9 @@
 			children = (
 				A1CB775C1FBA87DB008ADF09 /* MCErrorHandlerTests.swift */,
 				A1CB77C31FBC3241008ADF09 /* BatchErrorTests.swift */,
-				A1CB77C61FBC3241008ADF09 /* LimitExceededTests.swift */,
-				A1CB77C21FBC3241008ADF09 /* PartialErrorTests.swift */,
-				A1CB77C41FBC3241008ADF09 /* VersionConflictTests.swift */,
+				A1CB77C61FBC3241008ADF09 /* BatchSplitterTests.swift */,
+				A1CB77C21FBC3241008ADF09 /* PartialResolverTests.swift */,
+				A1C475652073002F0072554F /* VersionConflictResolverTests.swift */,
 			);
 			path = ErrorHandling;
 			sourceTree = "<group>";
@@ -893,19 +893,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1F5483C2068F8C300A8F8AE /* PartialErrorResolver.swift in Sources */,
-				A1CB77C91FBC3241008ADF09 /* VersionConflictTests.swift in Sources */,
 				A15B671F206A29B800450C97 /* RetriableErrorResolver.swift in Sources */,
 				A16EA5041FC666DF001E57F8 /* MCNotificationConverter.swift in Sources */,
 				A1F548272067AAC400A8F8AE /* MCDownload Extensions.swift in Sources */,
 				A1CD903520302270005B529C /* MCArrayComparer.swift in Sources */,
 				A1F548062067923500A8F8AE /* UserRecordErrorHandler.swift in Sources */,
 				A1F548392068F1CC00A8F8AE /* BatchSplitter.swift in Sources */,
-				A1CB77C71FBC3241008ADF09 /* PartialErrorTests.swift in Sources */,
+				A1CB77C71FBC3241008ADF09 /* PartialResolverTests.swift in Sources */,
 				A1CB77861FBB9B94008ADF09 /* MCErrorHandler.swift in Sources */,
 				A181C0AF203F787E0004B84B /* MCMirror.swift in Sources */,
 				A1F5481B2067A28E00A8F8AE /* SubscriptionReducer.swift in Sources */,
 				A1CB77591FBA8793008ADF09 /* UploadTests.swift in Sources */,
 				A1D8673B2061D73900971C18 /* MCDatabaseOperation.swift in Sources */,
+				A1C475662073002F0072554F /* VersionConflictResolverTests.swift in Sources */,
 				A1F547F72067732800A8F8AE /* SpecialCompleter.swift in Sources */,
 				A1CB774C1FBA874F008ADF09 /* RecieverTests.swift in Sources */,
 				A1CB77521FBA8773008ADF09 /* PauseTests.swift in Sources */,
@@ -915,7 +915,7 @@
 				A15B671C206A26A400450C97 /* VersionConflictKeys.swift in Sources */,
 				A1B0CF171FC51FBE009474EE /* RemoteNotificationTests.swift in Sources */,
 				A15B67162069088D00450C97 /* BatchErrorResolver.swift in Sources */,
-				A1CB77CB1FBC3241008ADF09 /* LimitExceededTests.swift in Sources */,
+				A1CB77CB1FBC3241008ADF09 /* BatchSplitterTests.swift in Sources */,
 				A1268EE41FBA80BC00ADAA74 /* MCRecordable.swift in Sources */,
 				A1E626401FD7A6F00036FD67 /* MCRetrier.swift in Sources */,
 				A1F5482A2067B2B800A8F8AE /* MCDatabaseQuerier.swift in Sources */,
