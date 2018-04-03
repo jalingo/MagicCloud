@@ -13,7 +13,7 @@ class PartialErrorTests: XCTestCase {
     
     // MARK: - Properties
     
-    var testOp: PartialError<MockReceiver>?
+    var testOp: MockPartialResolver?
     
     var error: CKError {
      
@@ -33,13 +33,11 @@ class PartialErrorTests: XCTestCase {
         return CKError(_nsError: error)
     }
     
-    var failedOp: MCUpload<MockReceiver>?
+    var failedOp: MCUpload<MCMirror<MockRecordable>>?
     
     var mocks: [MCRecordable]?
     
-    var mockRec = MockReceiver() {
-didSet { print("ø- instantiating MockReceiver") }
-    }
+    var mockRec = MCMirror<MockRecordable>(db: .privateDB)
     
     var database: MCDatabase { return .privateDB }
     
@@ -50,7 +48,7 @@ didSet { print("ø- instantiating MockReceiver") }
         mocks?.append(MockRecordable())
         mocks?.append(MockRecordable(created: Date.distantPast))
         
-        mockRec = MockReceiver()
+        mockRec = MCMirror<MockRecordable>(db: .privateDB)
     }
     
     // MARK: - Functions: Unit Tests
@@ -145,7 +143,8 @@ didSet { print("ø- instantiating MockReceiver") }
 
         loadMocks()
         failedOp = MCUpload(mocks as? [MockRecordable], from: mockRec, to: database)
-        testOp = PartialError(error: error, occuredIn: failedOp!, at: mockRec, instances: mocks as! [MockRecordable], target: database)
+        testOp = MockPartialResolver(error: error, in: failedOp!, from: mockRec, on: database)
+//        testOp = PartialError(error: error, occuredIn: failedOp!, at: mockRec, instances: mocks as! [MockRecordable], target: database)
     }
     
     override func tearDown() {
@@ -154,5 +153,42 @@ didSet { print("ø- instantiating MockReceiver") }
         testOp = nil
         
         super.tearDown()
+    }
+}
+
+class MockPartialResolver: Operation, MCDatabaseModifier, MCCloudErrorHandler, PartialErrorResolver {
+
+    // MARK: - Properties
+    
+    var error: CKError
+    
+    var failedOp: Operation
+    
+    var ignoreUnknownItem: Bool = false
+    
+    var ignoreUnknownItemCustomAction: OptionalClosure
+
+    // MARK: - Properties: MCDatabaseModifier & MCCloudErrorHandler
+    
+    var receiver: MCMirror<MockRecordable>
+    
+    var recordables = [MockPartialResolver.R.type]()
+    
+    typealias R = MCMirror<MockRecordable>
+    
+    var database: MCDatabase
+    
+    // MARK: - Functions
+    
+    override func main() {
+        self.resolvePartial(error, in: failedOp)
+    }
+    
+    init(error: CKError, in op: Operation, from mockRec: MCMirror<MockRecordable>, on db: MCDatabase) {
+        self.error = error
+        self.failedOp = op
+        
+        receiver = mockRec as MCMirror<MockRecordable>
+        database = db
     }
 }
