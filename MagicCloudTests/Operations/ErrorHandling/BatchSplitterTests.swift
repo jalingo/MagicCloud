@@ -47,7 +47,7 @@ class LimitExceededTests: XCTestCase {
         }
         
         // Creates mock error situation.
-        testOp = MockBatchSplitter(error: error, in: mock!, from: mockRec)
+        testOp = MockBatchSplitter(error: error, with: mocks!, in: mock!, from: mockRec)
         //LimitExceeded(error: error, occuredIn: mock!, rec: mockRec, instances: mocks!, target: .privateDB)
         
         // These operations are used in test sequence.
@@ -152,10 +152,7 @@ class MockBatchSplitter: Operation, MCDatabaseModifier, MCCloudErrorHandler, Bat
 
     var receiver: MCMirror<MockRecordable>
     
-    var recordables: [MockBatchSplitter.R.type] {
-        get { return receiver.silentRecordables }
-        set { receiver.localRecordables = newValue }
-    }
+    var recordables: [MockBatchSplitter.R.type]
     
     typealias R = MCMirror<MockRecordable>
     
@@ -167,10 +164,11 @@ class MockBatchSplitter: Operation, MCDatabaseModifier, MCCloudErrorHandler, Bat
         self.splitBatch(error: error, in: failedOp)
     }
     
-    init(error err: CKError, in op: Operation, from rec: MCMirror<MockRecordable>) {
+    init(error err: CKError, with recs: [MockRecordable], in op: Operation, from rec: MCMirror<MockRecordable>) {
         error = err
         failedOp = op
         receiver = rec
         database = rec.db
+        recordables = recs
     }
 }

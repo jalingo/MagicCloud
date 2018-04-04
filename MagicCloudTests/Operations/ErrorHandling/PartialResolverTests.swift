@@ -35,7 +35,7 @@ class PartialErrorTests: XCTestCase {
     
     var failedOp: MCUpload<MCMirror<MockRecordable>>?
     
-    var mocks: [MCRecordable]?
+    var mocks: [MockRecordable]?
     
     var mockRec = MCMirror<MockRecordable>(db: .privateDB)
     
@@ -44,7 +44,7 @@ class PartialErrorTests: XCTestCase {
     // MARK: - Functions
     
     func loadMocks() {
-        mocks = [MCRecordable]()
+        mocks = [MockRecordable]()
         mocks?.append(MockRecordable())
         mocks?.append(MockRecordable(created: Date.distantPast))
         
@@ -64,9 +64,9 @@ class PartialErrorTests: XCTestCase {
         }
     
         // These operations are used in test sequence.
-        let prepOp = MCDelete(mocks as? [MockRecordable], of: mockRec, from: database)
+        let prepOp = MCDelete(mocks, of: mockRec, from: database)
         let pause   = Pause(seconds: 3)
-        let cleanUp = MCDelete(mocks as? [MockRecordable], of: mockRec, from: database)
+        let cleanUp = MCDelete(mocks, of: mockRec, from: database)
         
         // This operation will verify that mock was uploaded, and record it's findings in `recordInDatabase`.
         let mockIDs = mocks!.map({ $0.recordID })
@@ -77,7 +77,7 @@ class PartialErrorTests: XCTestCase {
                     let errorHandler = MCErrorHandler(error: cloudError,
                                                       originating: verifyOp,
                                                       target: self.database,
-                                                      instances: self.mocks as! [MockRecordable],
+                                                      instances: self.mocks!,
                                                       receiver: self.mockRec)
                     OperationQueue().addOperation(errorHandler)
                 } else {
@@ -97,7 +97,7 @@ class PartialErrorTests: XCTestCase {
                     let errorHandler = MCErrorHandler(error: cloudError,
                                                       originating: verifyOp,
                                                       target: self.database,
-                                                      instances: self.mocks as! [MockRecordable],
+                                                      instances: self.mocks!,
                                                       receiver: self.mockRec)
                     errorHandler.ignoreUnknownItem = true
                     OperationQueue().addOperation(errorHandler)
@@ -142,8 +142,8 @@ class PartialErrorTests: XCTestCase {
         super.setUp()
 
         loadMocks()
-        failedOp = MCUpload(mocks as? [MockRecordable], from: mockRec, to: database)
-        testOp = MockPartialResolver(error: error, in: failedOp!, from: mockRec, on: database)
+        failedOp = MCUpload(mocks, from: mockRec, to: database)
+        testOp = MockPartialResolver(error: error, in: failedOp!, with: mocks!, from: mockRec, on: database)
 //        testOp = PartialError(error: error, occuredIn: failedOp!, at: mockRec, instances: mocks as! [MockRecordable], target: database)
     }
     
@@ -172,7 +172,7 @@ class MockPartialResolver: Operation, MCDatabaseModifier, MCCloudErrorHandler, P
     
     var receiver: MCMirror<MockRecordable>
     
-    var recordables = [MockPartialResolver.R.type]()
+    var recordables: [MockPartialResolver.R.type]
     
     typealias R = MCMirror<MockRecordable>
     
@@ -184,11 +184,11 @@ class MockPartialResolver: Operation, MCDatabaseModifier, MCCloudErrorHandler, P
         self.resolvePartial(error, in: failedOp)
     }
     
-    init(error: CKError, in op: Operation, from mockRec: MCMirror<MockRecordable>, on db: MCDatabase) {
+    init(error: CKError, in op: Operation, with recs: [MockRecordable], from mockRec: MCMirror<MockRecordable>, on db: MCDatabase) {
         self.error = error
         self.failedOp = op
-        
-        receiver = mockRec as MCMirror<MockRecordable>
-        database = db
+        self.recordables = recs
+        self.receiver = mockRec as MCMirror<MockRecordable>
+        self.database = db
     }
 }

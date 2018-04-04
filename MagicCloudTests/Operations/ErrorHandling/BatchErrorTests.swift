@@ -13,7 +13,7 @@ class BatchErrorTests: XCTestCase {
     
     // MARK: - Properties
     
-    var mocks: [MCRecordable]?
+    var mocks: [MockRecordable]?
     
     var mockOp: MockOperation?
     
@@ -28,7 +28,7 @@ class BatchErrorTests: XCTestCase {
     // MARK: - Functions
     
     func loadMocks() {
-        mocks = [MCRecordable]()
+        mocks = [MockRecordable]()
         mocks?.append(MockRecordable())
         mocks?.append(MockRecordable(created: Date.distantPast))
         
@@ -55,8 +55,7 @@ class BatchErrorTests: XCTestCase {
         let name = Notification.Name(MCErrorNotification)
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
 
-        let testOp = MockBatchErrorResolver(error: error, in: mockOp!, from: mockRec)
-            //BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
+        let testOp = MockBatchErrorResolver(error: error, with: mocks!, in: mockOp!, from: mockRec)
         OperationQueue().addOperation(testOp)
 
         let group = DispatchGroup()
@@ -79,8 +78,7 @@ class BatchErrorTests: XCTestCase {
         let name = Notification.Name(MCErrorNotification)
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
 
-        let testOp = MockBatchErrorResolver(error: error, in: mockOp!, from: mockRec)
-            //BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
+        let testOp = MockBatchErrorResolver(error: error, with: mocks!, in: mockOp!, from: mockRec)
         OperationQueue().addOperation(testOp)
         
         let group = DispatchGroup()
@@ -103,8 +101,7 @@ class BatchErrorTests: XCTestCase {
         let name = Notification.Name(MCErrorNotification)
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
 
-        let testOp = MockBatchErrorResolver(error: error, in: mockOp!, from: mockRec)
-            //BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
+        let testOp = MockBatchErrorResolver(error: error, with: mocks!, in: mockOp!, from: mockRec)
         OperationQueue().addOperation(testOp)
         
         let group = DispatchGroup()
@@ -159,10 +156,7 @@ class MockBatchErrorResolver: Operation, MCDatabaseModifier, MCCloudErrorHandler
     
     var receiver: MCMirror<MockRecordable>
     
-    var recordables: [MockBatchErrorResolver.R.type] {
-        get { return receiver.silentRecordables }
-        set { receiver.localRecordables = newValue }
-    }
+    var recordables: [MockBatchErrorResolver.R.type]
     
     typealias R = MCMirror<MockRecordable>
     
@@ -172,10 +166,11 @@ class MockBatchErrorResolver: Operation, MCDatabaseModifier, MCCloudErrorHandler
     
     override func main() { self.resolveBatch(error, in: failedOp) }
     
-    init(error err: CKError, in op: Operation, from rec: MCMirror<MockRecordable>) {
+    init(error err: CKError, with recs: [MockRecordable], in op: Operation, from rec: MCMirror<MockRecordable>) {
         error = err
         failedOp = op
         receiver = rec
         database = rec.db
+        recordables = recs
     }
 }
