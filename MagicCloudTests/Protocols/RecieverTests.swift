@@ -236,29 +236,30 @@ class RecievesRecTests: XCTestCase {
         wait(for: [e], timeout: 15)
         XCTAssertNotEqual(receiver.silentRecordables.count, 0)
     }
-    
-    func testReceiverWrappersSelfRegulatesRemotely() {
-        let receiver = MCMirror<MockRecordable>(db: .publicDB)
 
-        print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY ADDED TO DATABASE")
-        let mockAddedToDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
-        wait(for: [mockAddedToDatabase], timeout: 30)
-        
-        // Test pauses here to give app time to react and download recordable to receiver.
-        let firstPause = Pause(seconds: 4)
-        OperationQueue().addOperation(firstPause)
-        firstPause.waitUntilFinished()
-        
-        XCTAssertNotEqual(receiver.silentRecordables.count, 0)
-        
-        let mockRemovedFromDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
-        
-        // Test pauses here to give external device time to remove mock from the database.
-        print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY REMOVED FROM DATABASE")
-        wait(for: [mockRemovedFromDatabase], timeout: 30)
-        
-        XCTAssertEqual(receiver.silentRecordables.count, 0)
-    }
+    // This test requires manual interactions with a USER.
+//    func testReceiverWrappersSelfRegulatesRemotely() {
+//        let receiver = MCMirror<MockRecordable>(db: .publicDB)
+//
+//        print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY ADDED TO DATABASE")
+//        let mockAddedToDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
+//        wait(for: [mockAddedToDatabase], timeout: 30)
+//
+//        // Test pauses here to give app time to react and download recordable to receiver.
+//        let firstPause = Pause(seconds: 4)
+//        OperationQueue().addOperation(firstPause)
+//        firstPause.waitUntilFinished()
+//
+//        XCTAssertNotEqual(receiver.silentRecordables.count, 0)
+//
+//        let mockRemovedFromDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
+//
+//        // Test pauses here to give external device time to remove mock from the database.
+//        print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY REMOVED FROM DATABASE")
+//        wait(for: [mockRemovedFromDatabase], timeout: 30)
+//
+//        XCTAssertEqual(receiver.silentRecordables.count, 0)
+//    }
     
     func testReceiverReactsCloudAccountChanges() {
         
@@ -281,40 +282,41 @@ class RecievesRecTests: XCTestCase {
         XCTAssert(mock?.silentRecordables.count != 0)
     }
     
-    func testReceiverReactsNetworkChanges() {
-        
-        // loads mocks into the database, with enough delay (currently) to accomodate mock?.downloadAll:db:
-        let _ = prepareDatabase()
-
-        // There's an unaccounted for notification (maybe wifi has to wind up in test mode...), but it needs to be waited on to prevent wifiDisabled from triggering before TESTER can make change.
-        let weirdTrigger = expectation(forNotification: .reachabilityChanged, object: nil, handler: nil)
-        wait(for: [weirdTrigger], timeout: 5)
-
-        // empties receiver, so that triggered download can be detected
-        mock?.silentRecordables = []
-
-        // pauses long enough for tester to disable wifi and download to take effect, then tests download occured
-        let wifiDisabled = expectation(forNotification: .reachabilityChanged, object: nil, handler: nil)
-        print("         ** DISABLE WIFI OFF ON TEST DEVICE **")
-        
-        wait(for: [wifiDisabled], timeout: 30)
-        XCTAssert(mock?.silentRecordables.count != 0)
-        
-        let airportMode = expectation(forNotification: .reachabilityChanged, object: nil, handler: nil)
-        print("         ** PLACE TEST DEVICE IN AIRPORT MODE **")
-
-        wait(for: [airportMode], timeout: 30)
-        XCTAssert(mock?.silentRecordables.count != 0)
-        
-        // empties receiver, so that triggered download can be detected
-        mock?.silentRecordables = []
-
-        let signalReturned = expectation(forNotification: .reachabilityChanged, object: nil, handler: nil)
-        print("         ** REMOVE TEST DEVICE FROM AIRPORT MODE **")
-
-        wait(for: [signalReturned], timeout: 30)
-        XCTAssert(mock?.silentRecordables.count != 0)
-    }
+    // This test requires manual interactions with a USER.
+//    func testReceiverReactsNetworkChanges() {
+//        
+//        // loads mocks into the database, with enough delay (currently) to accomodate mock?.downloadAll:db:
+//        let _ = prepareDatabase()
+//
+//        // There's an unaccounted for notification (maybe wifi has to wind up in test mode...), but it needs to be waited on to prevent wifiDisabled from triggering before TESTER can make change.
+//        let weirdTrigger = expectation(forNotification: .reachabilityChanged, object: nil, handler: nil)
+//        wait(for: [weirdTrigger], timeout: 5)
+//
+//        // empties receiver, so that triggered download can be detected
+//        mock?.silentRecordables = []
+//
+//        // pauses long enough for tester to disable wifi and download to take effect, then tests download occured
+//        let wifiDisabled = expectation(forNotification: .reachabilityChanged, object: nil, handler: nil)
+//        print("         ** DISABLE WIFI OFF ON TEST DEVICE **")
+//        
+//        wait(for: [wifiDisabled], timeout: 30)
+//        XCTAssert(mock?.silentRecordables.count != 0)
+//        
+//        let airportMode = expectation(forNotification: .reachabilityChanged, object: nil, handler: nil)
+//        print("         ** PLACE TEST DEVICE IN AIRPORT MODE **")
+//
+//        wait(for: [airportMode], timeout: 30)
+//        XCTAssert(mock?.silentRecordables.count != 0)
+//        
+//        // empties receiver, so that triggered download can be detected
+//        mock?.silentRecordables = []
+//
+//        let signalReturned = expectation(forNotification: .reachabilityChanged, object: nil, handler: nil)
+//        print("         ** REMOVE TEST DEVICE FROM AIRPORT MODE **")
+//
+//        wait(for: [signalReturned], timeout: 30)
+//        XCTAssert(mock?.silentRecordables.count != 0)
+//    }
     
     // MARK: - Functions: XCTestCase
     
