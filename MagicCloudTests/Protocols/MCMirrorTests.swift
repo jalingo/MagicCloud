@@ -85,14 +85,6 @@ class MCMirrorTests: XCTestCase {
         }
     }
     
-    func testMirrorDownloadsAllBeforeFinishingInit() {
-        let _ = prepDatabase()
-        
-        let mirror = MCMirror<MockRecordable>(db: .publicDB)
-
-        XCTAssert(mirror.silentRecordables.count != 0, "\(mirror.silentRecordables.count)")        
-    }
-    
     func testMirrorMakesAdditions() {
         let mirror = MCMirror<MockRecordable>(db: .publicDB)
 
@@ -115,7 +107,7 @@ class MCMirrorTests: XCTestCase {
 
         mirror.cloudRecordables.removeAll()
 
-        let pause = Pause(seconds: 3)
+        let pause = Pause(seconds: 5)
         q.addOperation(pause)
         
         pause.waitUntilFinished()

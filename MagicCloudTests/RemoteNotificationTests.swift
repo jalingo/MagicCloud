@@ -31,45 +31,46 @@ class RemoteNotificationTests: XCTestCase {
 
     // MARK: - Functions: Tests
     
-    func testNotificationReceiverCanConvertRemoteNotificationToLocal() {
-        mockRec?.subscribeToChanges(on: .publicDB)
-        
-        let mockAddedToDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
-        
-        // Test pauses here to give external device time to add a mock to the database.
-        // Ensure mock is using the appropriate identifier, or deletion will fail locally.
-        print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY ADDED TO DATABASE")
-        wait(for: [mockAddedToDatabase], timeout: 30)
-
-        // Test pauses here to give app time to react and download recordable to receiver.
-        let firstPause = Pause(seconds: 4)
-        OperationQueue().addOperation(firstPause)
-        firstPause.waitUntilFinished()
-        
-        let firstResult = mockRec?.silentRecordables.count
-        XCTAssert(firstResult == 1)
-        
-        let mockRemovedFromDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
-        
-        // Test pauses here to give external device time to remove mock from the database.
-        print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY REMOVED FROM DATABASE")
-        wait(for: [mockRemovedFromDatabase], timeout: 30)
-        
-        // Test pauses here to give app time to react and delete recordable from receiver.
-        let secondPause = Pause(seconds: 2)
-        OperationQueue().addOperation(secondPause)
-        secondPause.waitUntilFinished()
-        
-        if let lastResult = firstResult {
-            XCTAssert(mockRec?.silentRecordables.count == lastResult - 1)
-        } else {
-            XCTFail()
-        }
-        
-        mockRec?.unsubscribeToChanges()
-
-        let pause = Pause(seconds: 2)
-        OperationQueue().addOperation(pause)
-        pause.waitUntilFinished()
-    }
+    // This test requires manual interactions with a USER.
+//    func testNotificationReceiverCanConvertRemoteNotificationToLocal() {
+//        mockRec?.subscribeToChanges(on: .publicDB)
+//
+//        let mockAddedToDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
+//
+//        // Test pauses here to give external device time to add a mock to the database.
+//        // Ensure mock is using the appropriate identifier, or deletion will fail locally.
+//        print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY ADDED TO DATABASE")
+//        wait(for: [mockAddedToDatabase], timeout: 30)
+//
+//        // Test pauses here to give app time to react and download recordable to receiver.
+//        let firstPause = Pause(seconds: 4)
+//        OperationQueue().addOperation(firstPause)
+//        firstPause.waitUntilFinished()
+//
+//        let firstResult = mockRec?.silentRecordables.count
+//        XCTAssert(firstResult == 1)
+//
+//        let mockRemovedFromDatabase = expectation(forNotification: Notification.Name(MockRecordable().recordType), object: nil, handler: nil)
+//
+//        // Test pauses here to give external device time to remove mock from the database.
+//        print("** WAITING 30 SECONDS FOR MOCK_RECORDABLE TO BE MANUALLY REMOVED FROM DATABASE")
+//        wait(for: [mockRemovedFromDatabase], timeout: 30)
+//
+//        // Test pauses here to give app time to react and delete recordable from receiver.
+//        let secondPause = Pause(seconds: 2)
+//        OperationQueue().addOperation(secondPause)
+//        secondPause.waitUntilFinished()
+//
+//        if let lastResult = firstResult {
+//            XCTAssert(mockRec?.silentRecordables.count == lastResult - 1)
+//        } else {
+//            XCTFail()
+//        }
+//
+//        mockRec?.unsubscribeToChanges()
+//
+//        let pause = Pause(seconds: 2)
+//        OperationQueue().addOperation(pause)
+//        pause.waitUntilFinished()
+//    }
 }

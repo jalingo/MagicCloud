@@ -13,11 +13,11 @@ class BatchErrorTests: XCTestCase {
     
     // MARK: - Properties
     
-    var mocks: [MCRecordable]?
+    var mocks: [MockRecordable]?
     
     var mockOp: MockOperation?
     
-    var mockRec = MockReceiver() 
+    var mockRec = MCMirror<MockRecordable>(db: .privateDB)
     
     var errorMatch: CKError?
     
@@ -28,11 +28,11 @@ class BatchErrorTests: XCTestCase {
     // MARK: - Functions
     
     func loadMocks() {
-        mocks = [MCRecordable]()
+        mocks = [MockRecordable]()
         mocks?.append(MockRecordable())
         mocks?.append(MockRecordable(created: Date.distantPast))
         
-        mockRec = MockReceiver()
+        mockRec = MCMirror<MockRecordable>(db: db)
     }
     
     func genError(code: Int) -> CKError {
@@ -55,7 +55,7 @@ class BatchErrorTests: XCTestCase {
         let name = Notification.Name(MCErrorNotification)
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
 
-        let testOp = BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
+        let testOp = MockBatchErrorResolver(error: error, with: mocks!, in: mockOp!, from: mockRec)
         OperationQueue().addOperation(testOp)
 
         let group = DispatchGroup()
@@ -78,7 +78,7 @@ class BatchErrorTests: XCTestCase {
         let name = Notification.Name(MCErrorNotification)
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
 
-        let testOp = BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
+        let testOp = MockBatchErrorResolver(error: error, with: mocks!, in: mockOp!, from: mockRec)
         OperationQueue().addOperation(testOp)
         
         let group = DispatchGroup()
@@ -101,7 +101,7 @@ class BatchErrorTests: XCTestCase {
         let name = Notification.Name(MCErrorNotification)
         let observer = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: detectionBlock())
 
-        let testOp = BatchError(error: error, occuredIn: mockOp!, target: db, receiver: mockRec, instances: mocks as! [MockRecordable])
+        let testOp = MockBatchErrorResolver(error: error, with: mocks!, in: mockOp!, from: mockRec)
         OperationQueue().addOperation(testOp)
         
         let group = DispatchGroup()
@@ -116,17 +116,6 @@ class BatchErrorTests: XCTestCase {
         
         NotificationCenter.default.removeObserver(observer)
     }
-    
-//    func testPerformance() {
-//        self.measure {
-//            let error = self.genError(code: CKError.batchRequestFailed.rawValue)
-//            let op = MockBatchError(error: error, occuredIn: self.mockOp, instances: self.mocks!, target: self.db)
-//            
-//            ErrorQueue().addOperation(op)
-//            op.waitUntilFinished()
-//            print("Performance Test Completed")
-//        }
-//    }
     
     // MARK: - Functions: XCTestCase
     
@@ -144,10 +133,44 @@ class BatchErrorTests: XCTestCase {
         errorMatch = nil
         
         super.tearDown()
-    }    
+    }
 }
 
 // MARK: - Mocks
 
 class MockOperation: Operation { }
 
+class MockBatchErrorResolver: Operation, MCDatabaseModifier, MCCloudErrorHandler, BatchErrorResolver {
+    
+    // MARK: - Properties
+
+    var error: CKError
+    
+    var failedOp: Operation
+    
+    // MARK: - Properties: MCDatabaseModifier, MCCloudErrorHandler
+    
+    var ignoreUnknownItem: Bool = false
+    
+    var ignoreUnknownItemCustomAction: OptionalClosure
+    
+    var receiver: MCMirror<MockRecordable>
+    
+    var recordables: [MockBatchErrorResolver.R.type]
+    
+    typealias R = MCMirror<MockRecordable>
+    
+    var database: MCDatabase
+    
+    // MARK: - Functions
+    
+    override func main() { self.resolveBatch(error, in: failedOp) }
+    
+    init(error err: CKError, with recs: [MockRecordable], in op: Operation, from rec: MCMirror<MockRecordable>) {
+        error = err
+        failedOp = op
+        receiver = rec
+        database = rec.db
+        recordables = recs
+    }
+}
