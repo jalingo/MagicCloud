@@ -1,13 +1,6 @@
 {
   "warnings": [
     {
-      "file": "/Users/jameslingo/Documents/Dev/Swift/MagicCloud/MagicCloud/Protocols/API/MCAccountAuthenticationVerifier.swift",
-      "line": null,
-      "symbol": "MCAccountAuthenticationVerifier",
-      "symbol_kind": "source.lang.swift.decl.extension",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/jameslingo/Documents/Dev/Swift/MagicCloud/MagicCloudTests/Mocks/MockRecordable.swift",
       "line": 48,
       "symbol": "MockRecordable.init(created:)",
