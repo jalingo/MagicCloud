@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   # ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
   s.name         = "MagicCloud"
-  s.version      = "2.9.9"
+  s.version      = "3.0.1"
   s.summary      = "A CloudKit framework that makes database interactions a breeze."
 
 s.description  = <<-DESC

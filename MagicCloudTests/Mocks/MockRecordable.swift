@@ -45,6 +45,8 @@ public class MockRecordable: MCRecordable {
     
     public required init() { }
     
+    /// This is the default constructor and should be used whenever generating mocks for testing.
+    /// - Parameter created: The date record was created, it will be used in constructing the mock record id.
     public init(created: Date? = nil) {
         if let date = created { self.created = date }
         _recordID = CKRecordID(recordName: "Mock Created: \(self.created)")

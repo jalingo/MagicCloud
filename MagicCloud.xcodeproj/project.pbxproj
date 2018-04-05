@@ -88,6 +88,8 @@
 		A1D8673B2061D73900971C18 /* MCDatabaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D867392061D73900971C18 /* MCDatabaseOperation.swift */; };
 		A1E6263F1FD7A6F00036FD67 /* MCRetrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E6263E1FD7A6F00036FD67 /* MCRetrier.swift */; };
 		A1E626401FD7A6F00036FD67 /* MCRetrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E6263E1FD7A6F00036FD67 /* MCRetrier.swift */; };
+		A1E82ABB20760D3A0082E70B /* MCMirrorAbstraction Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E82ABA20760D3A0082E70B /* MCMirrorAbstraction Extension.swift */; };
+		A1E82ABC20760D3A0082E70B /* MCMirrorAbstraction Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E82ABA20760D3A0082E70B /* MCMirrorAbstraction Extension.swift */; };
 		A1F547F62067732800A8F8AE /* SpecialCompleter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F547F52067732800A8F8AE /* SpecialCompleter.swift */; };
 		A1F547F72067732800A8F8AE /* SpecialCompleter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F547F52067732800A8F8AE /* SpecialCompleter.swift */; };
 		A1F547F920677C1000A8F8AE /* MCUpload Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F547F820677C1000A8F8AE /* MCUpload Extensions.swift */; };
@@ -254,6 +256,7 @@
 		A1CD903820303003005B529C /* MCMirrorAbstraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCMirrorAbstraction.swift; sourceTree = "<group>"; };
 		A1D867392061D73900971C18 /* MCDatabaseOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCDatabaseOperation.swift; sourceTree = "<group>"; };
 		A1E6263E1FD7A6F00036FD67 /* MCRetrier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCRetrier.swift; sourceTree = "<group>"; };
+		A1E82ABA20760D3A0082E70B /* MCMirrorAbstraction Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MCMirrorAbstraction Extension.swift"; sourceTree = "<group>"; };
 		A1F547F52067732800A8F8AE /* SpecialCompleter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialCompleter.swift; sourceTree = "<group>"; };
 		A1F547F820677C1000A8F8AE /* MCUpload Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MCUpload Extensions.swift"; sourceTree = "<group>"; };
 		A1F547FB20677C8A00A8F8AE /* MCDelete Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MCDelete Extensions.swift"; sourceTree = "<group>"; };
@@ -609,6 +612,7 @@
 				A1F5480A2067949E00A8F8AE /* MCAccountAuthenticationVerifier.swift */,
 				A1268EDE1FBA80BC00ADAA74 /* MCRecordable.swift */,
 				A1CD903820303003005B529C /* MCMirrorAbstraction.swift */,
+				A1E82ABA20760D3A0082E70B /* MCMirrorAbstraction Extension.swift */,
 				A1CD903320302270005B529C /* MCArrayComparer.swift */,
 				A16EA5021FC666DF001E57F8 /* MCNotificationConverter.swift */,
 			);
@@ -866,6 +870,7 @@
 				A1268EEA1FBA821C00ADAA74 /* MCDatabase.swift in Sources */,
 				A1F548172067A24600A8F8AE /* SubscriptionReplacer.swift in Sources */,
 				A1F548292067B2B800A8F8AE /* MCDatabaseQuerier.swift in Sources */,
+				A1E82ABB20760D3A0082E70B /* MCMirrorAbstraction Extension.swift in Sources */,
 				A1F548262067AAC400A8F8AE /* MCDownload Extensions.swift in Sources */,
 				A1CB77281FBA8683008ADF09 /* FailedOp.swift in Sources */,
 				A1CB773C1FBA86CB008ADF09 /* MCErrorHandler.swift in Sources */,
@@ -908,6 +913,7 @@
 				A1C475662073002F0072554F /* VersionConflictResolverTests.swift in Sources */,
 				A1F547F72067732800A8F8AE /* SpecialCompleter.swift in Sources */,
 				A1CB774C1FBA874F008ADF09 /* RecieverTests.swift in Sources */,
+				A1E82ABC20760D3A0082E70B /* MCMirrorAbstraction Extension.swift in Sources */,
 				A1CB77521FBA8773008ADF09 /* PauseTests.swift in Sources */,
 				A1AC0DB4202A740700C2CDE0 /* MockRecordable.swift in Sources */,
 				A1CB77C81FBC3241008ADF09 /* BatchErrorTests.swift in Sources */,

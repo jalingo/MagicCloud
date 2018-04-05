@@ -9,6 +9,7 @@
 import CloudKit
 import UIKit
 
+/// Types conforming to this protocol can call the `verifyAccountAuthentication` method and check to see that USER is logged in to their iCloud Account.
 protocol MCAccountAuthenticationVerifier { }
 
 extension MCAccountAuthenticationVerifier {

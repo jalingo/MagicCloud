@@ -1,6 +1,7 @@
-MagicCloud
-==========
+![alt text](https://raw.githubusercontent.com/jalingo/MagicCloud/master/Badge.png)
 
+MagicCloud       
+==========
 [![License](https://img.shields.io/github/license/jalingo/MagicCloud.svg)](http://opensource.org/licenses/BSD-new)
 [![CocoaPods Platform](https://img.shields.io/cocoapods/p/MagicCloud.svg)](https://github.com/jalingo/MagicCloud)
 [![Language](https://img.shields.io/badge/language-Swift-orange.svg)](https://github.com/jalingo/MagicCloud)
@@ -20,7 +21,9 @@ Check out the **Quick Start Guide** and see an app add working cloud functionali
 
 Meet the requirements for **CloudKit**, which includes a _paid developer account_.
 
-An **iOS** (min 10.3), project. (Why wouldn't you use Swift for that?)
+An **iOS** project (min 10.3), that requires a relational database. (Why wouldn't you use Swift for that?)
+
+Does **NOT** directly support shared databases (upcoming version).
 
 ## Getting Started
 
@@ -42,7 +45,7 @@ platform :ios, '10.3'   # <- 10.3 minimum requirement, can be more recent...
 use_frameworks!         # <- MagicCloud is a swift framework, ensure this is present.
 
 target '<Your Target Name>' do
-    pod 'MagicCloud', '~> 2.9.6'  # <- Be sure to use the current version.
+    pod 'MagicCloud', '~> 2.9.9'  # <- Be sure to use the current version.
 end
 ```
 
