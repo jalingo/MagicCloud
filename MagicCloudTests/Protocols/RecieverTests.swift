@@ -87,7 +87,7 @@ class RecievesRecTests: XCTestCase {
     func testReceiverCanDownloadAll() {
         let _ = prepareDatabase()
         
-        let pause = Pause(seconds: 3)
+        let pause = Pause(seconds: 5)
         mock?.downloadAll(from: .publicDB) { pause.start() }
         pause.waitUntilFinished()
         

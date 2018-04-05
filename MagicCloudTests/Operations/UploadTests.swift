@@ -188,11 +188,11 @@ class UploadTests: XCTestCase {
         databaseToCleanUp = d
 
         let altReceiver = MCMirror<MockRecordable>(db: d)
-
+print(" alt receiver = \(altReceiver.name), mock receiver = \(String(describing: mockRec?.name))")
         // This q delay gives subscriptions time to error handle...
-        let pause = Pause(seconds: 2)
-        DispatchQueue(label: "test q").asyncAfter(deadline: .now() + 2) {
-            pause.completionBlock = { print("** pause finished") }
+        let pause = Pause(seconds: 5)
+        DispatchQueue(label: "test q").asyncAfter(deadline: .now() + 5) {
+            pause.completionBlock = { print(" ** pause finished") }
             pause.addDependency(self.testOp!)
             OperationQueue().addOperation(pause)
             OperationQueue().addOperation(self.testOp!)

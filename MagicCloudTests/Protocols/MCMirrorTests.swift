@@ -107,7 +107,7 @@ class MCMirrorTests: XCTestCase {
 
         mirror.cloudRecordables.removeAll()
 
-        let pause = Pause(seconds: 3)
+        let pause = Pause(seconds: 5)
         q.addOperation(pause)
         
         pause.waitUntilFinished()
